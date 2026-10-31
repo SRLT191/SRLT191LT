@@ -303,7 +303,8 @@
   #word-card { min-width: 0; }
 
   /* card mode indicator */
-  #card-mode-bar { display: flex; align-items: center; width: 100%; margin-bottom: 4px; min-height: 20px; }
+  #card-mode-bar { display: flex; align-items: center; width: 100%; margin-bottom: 4px; min-height: 20px; gap: 8px; }
+  #card-cat { font-size: 12px; color: var(--c-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
   #card-mode-indicator { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; opacity: 0; transition: opacity 0.2s; }
   #card-mode-indicator.de-ru { opacity: 1; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); border: 1px solid var(--c-accent-focus-ring); }
   /* word card */
@@ -1120,6 +1121,32 @@
     #russian-word { font-size: 84px; }
     #word-card { min-height: 280px; }
   }
+  /* Größe der Lernkarte (Einstellung „Darstellung“), nur am PC; eine selbst gezogene Breite hat Vorrang */
+  @media (max-width: 700px) { #cardsize-row { display: none; } }
+  @media (min-width: 701px) {
+    html[data-cardsize="gross"] #inner { max-width: 960px; }
+    html[data-cardsize="gross"] #russian-word { font-size: 100px; }
+    html[data-cardsize="gross"] #word-card { min-height: 320px; }
+    html[data-cardsize="gross"] #flip-show-btn, html[data-cardsize="gross"] #flip-judge .mc-btn, html[data-cardsize="gross"] #answer-input { font-size: 19px; }
+    html[data-cardsize="sehrgross"] #inner { max-width: 1140px; }
+    html[data-cardsize="sehrgross"] #russian-word { font-size: 124px; }
+    html[data-cardsize="sehrgross"] #word-card { min-height: 380px; }
+    html[data-cardsize="sehrgross"] #flip-show-btn, html[data-cardsize="sehrgross"] #flip-judge .mc-btn, html[data-cardsize="sehrgross"] #answer-input { font-size: 21px; }
+    html[data-cardsize] .card-act { height: 40px; font-size: 14.5px; }
+    /* lange Wörter (z. B. „Wirtschaft / Ökonomie“) kleiner, damit sie in eine Zeile passen */
+    html[data-cardsize="gross"] #russian-word[data-len="lang"] { font-size: 72px; }
+    html[data-cardsize="gross"] #russian-word[data-len="sehrlang"] { font-size: 56px; }
+    html[data-cardsize="sehrgross"] #russian-word[data-len="lang"] { font-size: 88px; }
+    html[data-cardsize="sehrgross"] #russian-word[data-len="sehrlang"] { font-size: 66px; }
+  }
+  /* 6 Seitenleiste auf großen Bildschirmen eine Stufe größer */
+  @media (min-width: 1600px) and (hover: hover) {
+    .sub-btn { font-size: 13.5px; padding-top: 6px; padding-bottom: 6px; }
+    .sub-btn-count { font-size: 11.5px; }
+    .tile-fav-btn { font-size: 14.5px; }
+  }
+  /* 8 Fortschrittsstrich der Kategorie als Balken erkennbar: Spur sichtbar, etwas kräftiger */
+  .sub-btn[style*="--sub-p"]::after { height: 3px; opacity: 1; background: linear-gradient(to right, var(--c-success-border) var(--sub-p, 0%), var(--c-track-bg) var(--sub-p, 0%)); }
   /* Handy: Bereiche als Leiste unten, Einstellungen dort mit */
   @media (max-width: 700px) {
     #app-header { position: fixed; top: auto; bottom: 0; left: 0; right: 0; height: 62px; padding: 0 4px calc(env(safe-area-inset-bottom, 0px)); gap: 0; border-bottom: 0; border-top: 0.5px solid var(--c-border); }
@@ -1377,6 +1404,7 @@
     <div id="word-card">
       <div id="card-mode-bar">
         <span id="card-mode-indicator"></span>
+        <span id="card-cat" title="Kategorie"></span>
         <div style="flex:1"></div>
         <span id="card-level"></span>
       </div>
@@ -2848,6 +2876,11 @@
           <i class="ti ti-moon" aria-hidden="true"></i>
           <div class="set-text"><strong>Darstellung</strong><span>Farbschema der App</span></div>
           <div class="set-seg" role="group" aria-label="Farbschema" id="theme-seg"><button type="button" data-mode="light" onclick="setThemeMode('light')">Hell</button><button type="button" data-mode="dark" onclick="setThemeMode('dark')">Dunkel</button><button type="button" data-mode="system" onclick="setThemeMode('system')">Wie das System</button></div>
+        </div>
+        <div class="set-row" id="cardsize-row">
+          <i class="ti ti-cards" aria-hidden="true"></i>
+          <div class="set-text"><strong>Größe der Lernkarte</strong><span>Nur am PC: automatisch wächst die Karte mit breiten Fenstern; groß und sehr groß für große Bildschirme</span></div>
+          <div class="set-seg" role="group" aria-label="Größe der Lernkarte" id="cardsize-seg"><button type="button" data-mode="auto" onclick="setCardSize('auto')">Automatisch</button><button type="button" data-mode="gross" onclick="setCardSize('gross')">Groß</button><button type="button" data-mode="sehrgross" onclick="setCardSize('sehrgross')">Sehr groß</button></div>
         </div>
         <div class="set-row">
           <i class="ti ti-text-caption" aria-hidden="true"></i>
@@ -8423,7 +8456,7 @@ function updateSettingsSummaries() {
     ueben: [sel('maxlevel-select'), sel('blocksize-select'), 'Tagesziel ' + sel('daygoal-select'), 'Ziel ' + sel('sessiongoal-select'), an('cognate-toggle') ? 'ohne Lehnwörter' : '', an('lifedemote-toggle') ? 'Rückstufung an' : ''],
     niveau: [sel('mylevel-select')],
     aussprache: ['Vorlesen ' + (an('autoplay-toggle') ? 'an' : 'aus'), (() => { try { return russianVoice ? russianVoice.name : ''; } catch (e) { return ''; } })(), sel('speakrate-select'), 'Umschrift: ' + (typeof TR_MODE_LABEL !== 'undefined' ? ({ speech: 'Aussprache', letters: 'Buchstaben', off: 'aus' })[transcriptionMode] : '')],
-    darstellung: [{ light: 'hell', dark: 'dunkel', system: 'wie das System' }[themeMode()], ruFontMode() === 'sans' ? 'Russisch ohne Serifen' : 'Russisch mit Serifen'],
+    darstellung: [{ light: 'hell', dark: 'dunkel', system: 'wie das System' }[themeMode()], ruFontMode() === 'sans' ? 'Russisch ohne Serifen' : 'Russisch mit Serifen', { auto: '', gross: 'Karte groß', sehrgross: 'Karte sehr groß' }[cardSizeMode()]],
     speichern: [typeof ghConnected === 'function' && ghConnected() ? 'GitHub · ' + (ghDirty() ? 'nicht gespeichert' : 'gespeichert') : 'Sicherung als Datei'],
     kuerzel: ['Enter, Pfeile, 1–5, Leer, Esc, +, ?'],
     zuruecksetzen: ['Übungsstand · Gesamtstand'],
@@ -8441,7 +8474,7 @@ function openSettings() {
   ghEditing = false;
   ghFillForm();
   applyThemeButton();
-  applyRuFont();
+  applyRuFont(); applyCardSize();
   applyTranscriptionButton();
   fillVoiceSelects();
   renderSettingsSections();
@@ -8674,7 +8707,7 @@ const BACKUP_KEYS = ['vokabeltrainer-grammar-info-open','vokabeltrainer-grammar-
   'vokabeltrainer-hearquiz-settings','vokabeltrainer-hoertrainer-cats','vokabeltrainer-hoertrainer-pause',
   'vokabeltrainer-autoplay','vokabeltrainer-block-size','vokabeltrainer-direction',
   'vokabeltrainer-skip-cognates','vokabeltrainer-theme','vokabeltrainer-session-goal',
-  'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-alphabet-order'];
+  'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-alphabet-order','vokabeltrainer-card-size'];
 function exportBackup() {
   flushSaves();
   const data = { app: APP_ID, version: 1, saved: new Date().toISOString(), data: {} };
@@ -14878,6 +14911,7 @@ function renderCard(word) {
   wordEl.textContent = quizDirection === 'de-ru' ? getDeDisplay(currentWord) : currentWord.ru;
   // Sprache auszeichnen, damit Screenreader russische Wörter russisch lesen
   wordEl.lang = quizDirection === 'de-ru' ? 'de' : 'ru';
+  { const n = wordEl.textContent.length; wordEl.dataset.len = n > 22 ? 'sehrlang' : n > 13 ? 'lang' : ''; }
   const revealEl = document.getElementById('correct-reveal-text');
   if (revealEl) revealEl.lang = quizDirection === 'de-ru' ? 'ru' : 'de';
   renderTranscription();
@@ -14887,6 +14921,7 @@ function renderCard(word) {
   updateBookmarkBtnIcon();
   const lvEl = document.getElementById('card-level');
   if (lvEl) { const lv = wordLevel(word); lvEl.innerHTML = lvlBadge(lv); lvEl.dataset.lv = lv || ''; }
+  { const ce = document.getElementById('card-cat'); if (ce) { const c = getWordCategory(word); ce.textContent = c; ce.title = c ? 'Kategorie: ' + c : ''; } }
 
   document.getElementById('correct-reveal').style.display = 'none';
   { const sd = document.getElementById('sentence-diff'); if (sd) { sd.classList.remove('visible'); sd.style.display = 'none'; } }
@@ -15706,6 +15741,20 @@ function setRuFont(mode) {
   try { if (mode === 'sans') localStorage.setItem(RU_FONT_KEY, 'sans'); else localStorage.removeItem(RU_FONT_KEY); } catch (e) {}
   applyRuFont();
 }
+// Größe der Lernkarte: automatisch (wächst mit dem Fenster), groß, sehr groß – nur am PC (ab 701 px)
+const CARD_SIZE_KEY = 'vokabeltrainer-card-size';
+function cardSizeMode() { try { const v = localStorage.getItem(CARD_SIZE_KEY); return v === 'gross' || v === 'sehrgross' ? v : 'auto'; } catch (e) { return 'auto'; } }
+function setCardSize(mode) {
+  try { if (mode === 'gross' || mode === 'sehrgross') localStorage.setItem(CARD_SIZE_KEY, mode); else localStorage.removeItem(CARD_SIZE_KEY); } catch (e) {}
+  applyCardSize();
+}
+function applyCardSize() {
+  const m = cardSizeMode();
+  if (m === 'auto') document.documentElement.removeAttribute('data-cardsize'); else document.documentElement.setAttribute('data-cardsize', m);
+  document.querySelectorAll('#cardsize-seg button').forEach(b => { const on = b.dataset.mode === m; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+  if (typeof updateSettingsSummaries === 'function') updateSettingsSummaries();
+}
+try { applyCardSize(); } catch (e) {}
 function applyRuFont() {
   const m = ruFontMode();
   if (m === 'sans') document.documentElement.setAttribute('data-rufont', 'sans'); else document.documentElement.removeAttribute('data-rufont');
