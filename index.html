@@ -470,6 +470,10 @@
     /* schmale Text- und Symbolknöpfe mindestens 44 px breit, Auswahl-Leiste und Links 44 px hoch */
     .tool-btn, .mode-btn { min-width: 44px; }
     #sidebar-mobile-toggle { min-height: 44px; }
+    /* Seitenleiste: Blockwahl und Stern sichtbar groß (Symbol 18 px, Fläche 44 px); Blockwahl als Knopf erkennbar */
+    .tile-fav-btn { width: 44px; height: 44px; font-size: 18px; border-radius: 10px; }
+    .tile-fav-btn::after { content: none; }
+    .tile-blocks-btn { background: var(--c-surface-alt); color: var(--c-accent); }
     .picker-quick a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; }
     html .list-search, html .conj-input { height: 44px; }
     .cat-group-title[data-cats], html .cat-check-row { min-height: 44px; }
