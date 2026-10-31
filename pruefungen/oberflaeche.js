@@ -85,6 +85,9 @@ const OPEN = {
     const r = { hover: matchMedia('(hover: none)').matches, sicht: !det.hidden, text: det.textContent, plan: document.querySelector('#lvl-plan-tabs .mode-btn.active').dataset.l, vorher, aria: document.querySelector('.lvl-row[data-l="B2"]').getAttribute('aria-expanded') };
     det.querySelector('button').click(); r.nachLink = document.querySelector('#lvl-plan-tabs .mode-btn.active').dataset.l; return r; });
   ok('4 Handy: Antippen zeigt Zahlen und Übungsstand, öffnet den Plan erst über den Link', h.hover && h.sicht && /noch nicht geübt/.test(h.text) && /aktuell \(Übungsstand\)/.test(h.text) && h.plan === h.vorher && h.aria === 'true' && h.nachLink === 'B2', JSON.stringify(h));
+  const bl = await m.evaluate(() => { setAppView('vocab'); selectWholeCat('Reisen'); const b = document.querySelector('.tile-wrap-active .tile-blocks-btn') || document.querySelector('.tile-blocks-btn');
+    b.style.display = 'flex'; const r = b.getBoundingClientRect(), cs = getComputedStyle(b), st = getComputedStyle(b.nextElementSibling || b); return { w: Math.round(r.width), h: Math.round(r.height), icon: parseFloat(getComputedStyle(b.querySelector('i')).fontSize), bg: cs.backgroundColor, stern: Math.round((b.nextElementSibling || b).getBoundingClientRect().width) }; });
+  ok('Handy: Blockwahl und Stern in der Seitenleiste 44 px groß mit 18-px-Symbol, Blockwahl als Knopf erkennbar', bl.w >= 44 && bl.h >= 44 && bl.icon >= 18 && bl.stern >= 44 && !/rgba\(0, 0, 0, 0\)|transparent/.test(bl.bg), JSON.stringify(bl));
   await ctx.close();
 
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));

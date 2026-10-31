@@ -456,6 +456,13 @@
     #grammar-cats .grammar-chip { justify-content: center; padding: 6px 4px; font-size: 12px; gap: 4px; min-width: 0; }
     #grammar-nav { padding-left: 0; border-left: none; }
   }
+  /* Handy-Ansicht mit Touch: Blockwahl und Stern in der Kategorienliste sichtbar groß (Symbol 18 px, Fläche 44 px),
+     Blockwahl als Knopf erkennbar. Nur bis 700 px – in der schmalen PC-Seitenleiste würde sonst der Kategoriename abgeschnitten. */
+  @media (pointer: coarse) and (max-width: 700px) {
+    .tile-fav-btn { width: 44px; height: 44px; font-size: 18px; border-radius: 10px; }
+    .tile-fav-btn::after { content: none; }
+    .tile-blocks-btn { background: var(--c-surface-alt); color: var(--c-accent); }
+  }
   /* ── Touch-Geräte: Tippflächen mindestens 44 px, Eingaben ohne Zoom ── */
   @media (pointer: coarse) {
     .tool-btn, .mode-btn, .grammar-chip, .case-opt, .tile, .gt-settings-toggle, .gt-more-item,
