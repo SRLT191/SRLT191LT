@@ -595,7 +595,18 @@
   .sb-answer-row:empty::before { content: attr(data-placeholder); color: var(--c-text-faint); }
   .sb-word-bank .sentence-word-btn { min-height: 44px; min-width: 44px; font-size: 17px; padding: 0.6rem 1rem; }
   @media (max-width: 600px) { .gt-field { width: 100%; } .gt-field-label { width: 100%; } }
-  .gt-toggle[aria-pressed="true"] { background: var(--c-accent-soft-bg); color: var(--c-accent-strong); border-color: var(--c-accent); }
+  /* Hilfe-Schalter sieht wie ein Schalter aus (nicht wie ein weiterer Auswahlknopf) */
+  .gt-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .gt-toggle::after { content: ''; flex-shrink: 0; width: 26px; height: 15px; border-radius: 99px; margin-left: 2px;
+    background: radial-gradient(circle at 7.5px 50%, #fff 5px, transparent 5.6px), var(--c-track-bg); box-shadow: inset 0 0 0 1px var(--c-border-field); transition: background .15s; }
+  .gt-toggle[aria-pressed="true"]::after { background: radial-gradient(circle at 18.5px 50%, #fff 5px, transparent 5.6px), var(--c-accent); box-shadow: none; }
+  .gt-toggle[aria-pressed="false"] { color: var(--c-text-muted); }
+  /* Tastenhinweis bei „Weiter“: Enter führt nach dem Prüfen bzw. nach der Wahl weiter */
+  .gt-kbd-next { display: none; margin-left: 2px; }
+  @media (hover: hover) {
+    .grammar-panel:has(.conj-input.correct, .conj-input.wrong, .conj-input.revealed, .case-opt.correct) .gt-kbd-next { display: inline-grid; }
+    .grammar-panel:has(.conj-input.correct, .conj-input.wrong, .conj-input.revealed, .case-opt.correct) .gt-primary .gt-kbd { display: none; }
+  }
   .gt-task { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.75rem; }
   .gt-task > .case-question, .gt-task > .conj-de-hint { flex: 1; min-width: 0; margin-bottom: 0; }
   .gt-task-tools { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; padding-top: 4px; }
@@ -603,6 +614,24 @@
   .gt-task .case-question { padding: 10px 52px 12px; }
   .gt-task > .case-question + .gt-task-tools { position: absolute; top: 0; right: 0; padding-top: 0; }
   .gt-task .case-question .case-prep { color: var(--c-text-primary); }
+  /* Umformen: Ausgangsform klein, Art der Umformung, gesuchte Form groß als Lücke */
+  .tf-from { display: block; font-size: 14px; color: var(--c-text-muted); }
+  .tf-from [lang="ru"] { font-size: 17px; font-weight: 600; color: var(--c-text-secondary, var(--c-text)); }
+  .tf-task { display: inline-block; margin: 8px 0 4px; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); }
+  .case-question .tf-gap { margin: 4px 0 2px; }
+  .tf-person { color: var(--c-text-primary); }
+  .tf-blank { display: inline-block; min-width: 4.2em; border-bottom: 2px solid var(--c-accent); color: transparent; line-height: 1.1; }
+  .tf-blank.tf-filled { min-width: 0; color: var(--c-text-primary); border-bottom-color: currentColor; }
+  .tf-blank.tf-filled.ok { color: var(--c-success-text); }
+  .tf-blank.tf-filled.bad { color: var(--c-error-text); }
+  .tf-fehler { list-style: none; margin: 12px auto 4px; padding: 0; max-width: 460px; text-align: left; font-size: 14px; color: var(--c-text); }
+  .tf-fehler li { padding: 5px 0; border-bottom: 1px solid var(--c-border-light); }
+  .tf-fehler b { color: var(--c-text-primary); }
+  .tf-end-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+  .tf-end-actions .tool-btn { font-size: 13.5px; padding: 8px 14px; color: var(--c-text); }
+  .tf-end-actions .gt-primary { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; }
+  .tf-end-actions .gt-primary:hover { opacity: .92; background: var(--c-accent); }
+  .tf-done .conj-row, .tf-done .gt-actions { display: none; }
   .gt-task .conj-de-hint { font-size: 15px; color: var(--c-text-muted); padding-top: 2px; }
   .gt-task .conj-de-hint b { font-size: 26px; line-height: 1.25; margin-right: 4px; color: var(--c-text-primary); }
   .gt-icon-btn { padding: 6px 9px; font-size: 15px; }
@@ -1033,6 +1062,9 @@
     #grammar-side #grammar-nav .grammar-chip.active { background: var(--c-accent-soft-bg); color: var(--c-accent); font-weight: 500; border: 0; }
     #grammar-side #grammar-nav .grammar-chip.active i { color: var(--c-accent); }
     #grammar-side .grammar-chip .lvl-badge { margin-left: auto; }
+    /* Fortschrittsstrich je Werkzeug, wie bei den Vokabelkategorien */
+    #grammar-side #grammar-nav .grammar-chip { position: relative; }
+    #grammar-side #grammar-nav .grammar-chip[style*="--gt-p"]::after { content: ''; position: absolute; left: 34px; right: 10px; bottom: 1px; height: 3px; border-radius: 2px; background: linear-gradient(to right, var(--c-success-border) var(--gt-p, 0%), var(--c-track-bg) var(--gt-p, 0%)); pointer-events: none; }
   }
   /* Vokabeln: Fortschrittszeile */
   #inner { max-width: 600px; }
@@ -1116,6 +1148,9 @@
     .status-lbl { display: inline; }
     body[data-view="vocab"] #main-content { padding-top: clamp(2rem, 9vh, 7rem); }
   }
+  /* Grammatik wächst auf breiten Bildschirmen mit (wie die Lernkarte) */
+  @media (min-width: 1200px) and (hover: hover) { #grammar-view { max-width: 800px; } }
+  @media (min-width: 1600px) and (hover: hover) { #grammar-view { max-width: 880px; } #grammar-view .case-question .case-prep { font-size: 36px; } #grammar-view .conj-input { font-size: 17px; } }
   @media (min-width: 1600px) and (hover: hover) {
     #inner { max-width: 820px; }
     #russian-word { font-size: 84px; }
@@ -1133,6 +1168,16 @@
     html[data-cardsize="sehrgross"] #word-card { min-height: 380px; }
     html[data-cardsize="sehrgross"] #flip-show-btn, html[data-cardsize="sehrgross"] #flip-judge .mc-btn, html[data-cardsize="sehrgross"] #answer-input { font-size: 21px; }
     html[data-cardsize] .card-act { height: 40px; font-size: 14.5px; }
+    /* gilt auch für die Grammatikfenster */
+    html[data-cardsize="gross"] #grammar-view { max-width: 1000px; }
+    html[data-cardsize="sehrgross"] #grammar-view { max-width: 1180px; }
+    html[data-cardsize="gross"] #grammar-view .case-question .case-prep { font-size: 44px; }
+    html[data-cardsize="sehrgross"] #grammar-view .case-question .case-prep { font-size: 54px; }
+    html[data-cardsize="gross"] #grammar-view .case-question { font-size: 17px; }
+    html[data-cardsize="sehrgross"] #grammar-view .case-question { font-size: 19px; }
+    html[data-cardsize="gross"] #grammar-view :is(.conj-input, .case-opt) { font-size: 19px; }
+    html[data-cardsize="sehrgross"] #grammar-view :is(.conj-input, .case-opt) { font-size: 21px; }
+    html[data-cardsize] #grammar-view .gt-actions .tool-btn { font-size: 14.5px; min-height: 40px; }
     /* lange Wörter (z. B. „Wirtschaft / Ökonomie“) kleiner, damit sie in eine Zeile passen */
     html[data-cardsize="gross"] #russian-word[data-len="lang"] { font-size: 72px; }
     html[data-cardsize="gross"] #russian-word[data-len="sehrlang"] { font-size: 56px; }
@@ -1545,7 +1590,7 @@
 </div>
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" id="rektion-check-btn" onclick="checkRektion()" style="display:none"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealRektion()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
-<button class="tool-btn" onclick="nextRektion()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextRektion()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="rektion-result" role="status"></div>
 <div class="conj-result" id="rektion-score"></div>
 </div>
@@ -1584,7 +1629,7 @@
 <div class="case-options gender-options" id="gender-opts"></div>
 <div class="conj-actions gt-actions">
 <button class="tool-btn" onclick="revealGender()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
-<button class="tool-btn" onclick="nextGender()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextGender()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="gender-result" role="status"></div>
 <div class="conj-result" id="gender-score"></div>
 </div>
@@ -1626,7 +1671,7 @@
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkAspect()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealAspect()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextAspect()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextAspect()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="aspect-result" role="status"></div>
 <div class="conj-note" id="aspect-note" style="display:none"></div>
 <div class="conj-result" id="aspect-score"></div>
@@ -2063,7 +2108,7 @@
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkNumNoun()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealNumNoun()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextNumNoun()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextNumNoun()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="numnoun-result" role="status"></div>
 <div class="conj-result" id="numnoun-score"></div>
 </div>
@@ -2099,7 +2144,7 @@
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkCaseForm('noun')"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealCaseForm('noun')"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextCaseForm('noun')">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextCaseForm('noun')">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="caseform-result" role="status"></div>
 <div class="conj-result" id="caseform-score"></div>
 </div>
@@ -2140,7 +2185,7 @@
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkCaseForm('adj')"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealCaseForm('adj')"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextCaseForm('adj')">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextCaseForm('adj')">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="caseadj-result" role="status"></div>
 <div class="conj-result" id="caseadj-score"></div>
 </div>
@@ -2179,7 +2224,7 @@
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkPronForm()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealPronForm()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextPronForm()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextPronForm()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="pronform-result" role="status"></div>
 <div class="conj-result" id="pronform-score"></div>
 </div>
@@ -2213,7 +2258,7 @@
 </div>
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkAdjForm()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealAdjForm()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
-<button class="tool-btn" onclick="nextAdjForm()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextAdjForm()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="adjform-result" role="status"></div>
 <div class="conj-result" id="adjform-score"></div>
 </div>
@@ -2291,11 +2336,11 @@
 </div>
 <div class="conj-actions gt-actions" id="case-choice-actions">
 <button class="tool-btn" onclick="gtChoiceReveal(CASE_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
-<button class="tool-btn" onclick="gtChoiceNext(CASE_CHOICE)">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="gtChoiceNext(CASE_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div class="conj-actions gt-actions" id="case-input-actions" style="display:none">
 <button class="tool-btn gt-primary" onclick="checkCaseWord()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealCaseWord()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextCaseWord()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextCaseWord()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="case-result" role="status"></div>
 <div class="conj-result" id="case-score"></div>
 </div>
@@ -2346,7 +2391,7 @@
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkMotionPair()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealMotionPair()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextMotionPair()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextMotionPair()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="motion-pair-result" role="status"></div>
 <div class="conj-note" id="motion-pair-note" style="display:none"></div>
 <div class="conj-result" id="motion-pair-score"></div>
@@ -2357,7 +2402,7 @@
 <div class="case-options case-options-2" id="motion-opts"></div>
 <div class="conj-actions gt-actions">
 <button class="tool-btn" onclick="gtChoiceReveal(MOTION_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
-<button class="tool-btn" onclick="gtChoiceNext(MOTION_CHOICE)">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="gtChoiceNext(MOTION_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="motion-q-result" role="status"></div>
 <div class="conj-result" id="motion-q-score"></div>
 </div>
@@ -2384,23 +2429,26 @@
 <p>• <strong>Futur (unvollendet):</strong> буду, будешь … + Infinitiv: я буду делать – ich werde machen.</p>
 <p>• <strong>Imperativ:</strong> die du-Befehlsform: говорить → говори!</p>
 <p>• <strong>vollendet (Futur):</strong> der vollendete Partner mit Präsensendungen – сделаю heißt schon „ich werde (fertig) machen“.</p>
-<p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em> und <em>Aspekt</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
-<p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 20 frische Aufgaben und setzt den Zähler zurück.</p>
+<p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em> und <em>Aspekt</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
+<p>Eine Runde hat 20 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
+<p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 20 neue Aufgaben und setzt den Zähler zurück.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
 <button class="mode-btn active" id="transform-scope-btn-all" onclick="setTransformScope('all')">Alle</button>
 <button class="mode-btn" id="transform-scope-btn-past" onclick="setTransformScope('past')">Vergangenheit</button>
+<button class="mode-btn" id="transform-scope-btn-future" onclick="setTransformScope('future')">Futur</button>
+<button class="mode-btn" id="transform-scope-btn-imperative" onclick="setTransformScope('imperative')">Imperativ</button>
 <button class="mode-btn" id="transform-scope-btn-aspect" onclick="setTransformScope('aspect')">Aspekt</button>
 </div><button aria-pressed="true" class="tool-btn gt-toggle" id="transform-hint-toggle" onclick="toggleTransformHint()" title="Zielverb im Hinweis ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="transform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakTransform()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
-<input autocomplete="off" class="conj-input" id="transform-input" onkeydown="if(event.key==='Enter') checkTransform()" placeholder="Form eingeben…" type="text"/>
+<input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="transform-input" onkeydown="if(event.key==='Enter') checkTransform()" placeholder="Form eingeben…" type="text"/>
 
 </div>
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" onclick="checkTransform()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealTransform()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 
-<button class="tool-btn" onclick="nextTransform()">Weiter <i class="ti ti-arrow-right"></i></button></div>
+<button class="tool-btn" onclick="nextTransform()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="transform-result" role="status"></div>
 <div class="conj-result" id="transform-score"></div>
 </div>
@@ -2882,7 +2930,7 @@
         </div>
         <div class="set-row" id="cardsize-row">
           <i class="ti ti-cards" aria-hidden="true"></i>
-          <div class="set-text"><strong>Größe der Lernkarte</strong><span>Nur am PC: automatisch wächst die Karte mit breiten Fenstern; groß und sehr groß für große Bildschirme</span></div>
+          <div class="set-text"><strong>Größe der Lernkarte</strong><span>Nur am PC, gilt für Lernkarte und Grammatikfenster: automatisch wachsen sie mit breiten Fenstern; groß und sehr groß für große Bildschirme</span></div>
           <div class="set-seg" role="group" aria-label="Größe der Lernkarte" id="cardsize-seg"><button type="button" data-mode="auto" onclick="setCardSize('auto')">Automatisch</button><button type="button" data-mode="gross" onclick="setCardSize('gross')">Groß</button><button type="button" data-mode="sehrgross" onclick="setCardSize('sehrgross')">Sehr groß</button></div>
         </div>
         <div class="set-row">
@@ -13999,6 +14047,8 @@ const GRAMMAR_TOOL_LEVEL = {
   decline: 'A1', caseadj: 'A1', adjform: 'A2',
   pronoun: 'A1', pronform: 'A1', casedrill: 'A1', wordgroup: 'A2', sentencebuild: 'A1',
 };
+// nur Abzeichen, kein eigener Punkt im Stufenplan (Imperativ zählt dort schon über Konjugieren)
+const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2']];
 const GRAMMAR_PART_LEVEL = [
   ['#conj-tense-btn-imperative', 'A2'], ['[onclick="setTransformScope(\'aspect\')"]', 'A2'],
   ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'],
@@ -14016,12 +14066,12 @@ function applyLevelMarks() {
     if (chip) {
       if (!chip.querySelector('.lvl-badge')) chip.insertAdjacentHTML('beforeend', ' ' + lvlBadge(l));
       chip.classList.toggle('lvl-above', ueber(l));
-      chip.title = ueber(l) ? 'Stufe ' + l + ' – über deinem Niveau (Ausblick)' : 'Stufe ' + l;
+      chip.title = (ueber(l) ? 'Stufe ' + l + ' – über deinem Niveau (Ausblick)' : 'Stufe ' + l) + (chip.dataset.stand ? ' · ' + chip.dataset.stand : '');
     }
     const title = document.querySelector('#overlay-' + tool + ' .overlay-title');
     if (title && !title.querySelector('.lvl-badge')) title.insertAdjacentHTML('beforeend', ' ' + lvlBadge(l));
   });
-  GRAMMAR_PART_LEVEL.forEach(([sel, l]) => document.querySelectorAll(sel).forEach(b => {
+  GRAMMAR_PART_LEVEL.concat(GRAMMAR_BADGE_LEVEL).forEach(([sel, l]) => document.querySelectorAll(sel).forEach(b => {
     b.dataset.lvl = l;
     b.classList.toggle('lvl-above', ueber(l));
     b.title = (b.title && !/^Stufe /.test(b.title) ? b.title + ' · ' : '') + 'Stufe ' + l + (ueber(l) ? ' – über deinem Niveau' : '');
@@ -16782,6 +16832,13 @@ function openGrammarCategory(cat) {
 
 // zeigt pro Werkzeug „X von Y gelernt" (mindestens einmal richtig) in der Kopfzeile des Werkzeugs
 // store: Lernstand (Standard: Übungsstand); sink: statt Anzeige die Texte sammeln
+// Fortschrittsanzeige (gtp-…) → Werkzeug-Knopf in der Seitenleiste (gchip-…)
+const GTP_CHIP = {
+  'gtp-conj': 'conjugate', 'gtp-aspect-fwd': 'aspect', 'gtp-motion': 'motion', 'gtp-transform': 'transform', 'gtp-rektion': 'rektion',
+  'gtp-noun': 'noun', 'gtp-caseform': 'caseform', 'gtp-numnoun': 'numnoun', 'gtp-gender': 'gender', 'gtp-decl': 'decline',
+  'gtp-caseadj': 'caseadj', 'gtp-adjform': 'adjform', 'gtp-pronoun': 'pronoun', 'gtp-pronform': 'pronform', 'gtp-case': 'casedrill',
+  'gtp-wordgroup': 'wordgroup', 'gtp-sentencebuild': 'sentencebuild',
+};
 function updateGrammarTileProgress(store, sink) {
   const all = store || loadGrammarSrs();
   const learned = (toolKey, total) => {
@@ -16816,6 +16873,19 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-adjform', learned('adjform', adjFormTotal()));
   set('gtp-rektion', learned('rektion', rektionTotal()));
   set('gtp-gender', learned('gender', genderTotal()));
+  // Seitenleiste: Fortschrittsstrich je Werkzeug (wie bei den Vokabelkategorien)
+  if (!sink && !store) {
+    const stand = {};
+    updateGrammarTileProgress(all, stand);
+    Object.entries(GTP_CHIP).forEach(([gtp, tool]) => {
+      const chip = document.getElementById('gchip-' + tool), m = /^(\d+) von (\d+)/.exec(stand[gtp] || '');
+      if (!chip || !m || !+m[2]) return;
+      const anteil = +m[1] / +m[2] * 100;
+      chip.style.setProperty('--gt-p', (anteil > 0 && anteil < 1 ? 1 : Math.round(anteil)) + '%');
+      chip.dataset.stand = m[1] + ' von ' + m[2] + ' gelernt';
+      chip.title = (chip.title ? chip.title.replace(/ · \d+ von \d+ gelernt$/, '') + ' · ' : '') + chip.dataset.stand;
+    });
+  }
   // Tooltip: Gesamtstand (je gelernt) zum Vergleich
   if (!sink && !store) {
     const ever = {};
@@ -17561,7 +17631,7 @@ const conjugationData = {
     future:{ "я":"буду заканчивать", "ты":"будешь заканчивать", "он / она / оно":"будет заканчивать", "мы":"будем заканчивать", "вы":"будете заканчивать", "они":"будут заканчивать" },
     past:{ "он":"заканчивал", "она":"заканчивала", "оно":"заканчивало", "они":"заканчивали" },
     imperative:{ "ты":"заканчивай", "вы":"заканчивайте" } },
-  "бегать": { de:"laufen (wdh.)", nonPastLabel:"Präsens",
+  "бегать": { de:"laufen (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"бегаю", "ты":"бегаешь", "он / она / оно":"бегает", "мы":"бегаем", "вы":"бегаете", "они":"бегают" },
     future:{ "я":"буду бегать", "ты":"будешь бегать", "он / она / оно":"будет бегать", "мы":"будем бегать", "вы":"будете бегать", "они":"будут бегать" },
     past:{ "он":"бегал", "она":"бегала", "оно":"бегало", "они":"бегали" },
@@ -17576,12 +17646,12 @@ const conjugationData = {
     future:{ "я":"буду шагать", "ты":"будешь шагать", "он / она / оно":"будет шагать", "мы":"будем шагать", "вы":"будете шагать", "они":"будут шагать" },
     past:{ "он":"шагал", "она":"шагала", "оно":"шагало", "они":"шагали" },
     imperative:{ "ты":"шагай", "вы":"шагайте" } },
-  "летать": { de:"fliegen (wdh.)", nonPastLabel:"Präsens",
+  "летать": { de:"fliegen (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"летаю", "ты":"летаешь", "он / она / оно":"летает", "мы":"летаем", "вы":"летаете", "они":"летают" },
     future:{ "я":"буду летать", "ты":"будешь летать", "он / она / оно":"будет летать", "мы":"будем летать", "вы":"будете летать", "они":"будут летать" },
     past:{ "он":"летал", "она":"летала", "оно":"летало", "они":"летали" },
     imperative:{ "ты":"летай", "вы":"летайте" } },
-  "плавать": { de:"schwimmen (wdh.)", nonPastLabel:"Präsens",
+  "плавать": { de:"schwimmen (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"плаваю", "ты":"плаваешь", "он / она / оно":"плавает", "мы":"плаваем", "вы":"плаваете", "они":"плавают" },
     future:{ "я":"буду плавать", "ты":"будешь плавать", "он / она / оно":"будет плавать", "мы":"будем плавать", "вы":"будете плавать", "они":"будут плавать" },
     past:{ "он":"плавал", "она":"плавала", "оно":"плавало", "они":"плавали" },
@@ -17742,27 +17812,27 @@ const conjugationData = {
     future:{ "я":"буду находить", "ты":"будешь находить", "он / она / оно":"будет находить", "мы":"будем находить", "вы":"будете находить", "они":"будут находить" },
     past:{ "он":"находил", "она":"находила", "оно":"находило", "они":"находили" },
     imperative:{ "ты":"находи", "вы":"находите" } },
-  "ходить": { de:"gehen (wdh.)", nonPastLabel:"Präsens",
+  "ходить": { de:"gehen (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"хожу", "ты":"ходишь", "он / она / оно":"ходит", "мы":"ходим", "вы":"ходите", "они":"ходят" },
     future:{ "я":"буду ходить", "ты":"будешь ходить", "он / она / оно":"будет ходить", "мы":"будем ходить", "вы":"будете ходить", "они":"будут ходить" },
     past:{ "он":"ходил", "она":"ходила", "оно":"ходило", "они":"ходили" },
     imperative:{ "ты":"ходи", "вы":"ходите" } },
-  "ездить": { de:"fahren (wdh.)", nonPastLabel:"Präsens",
+  "ездить": { de:"fahren (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"езжу", "ты":"ездишь", "он / она / оно":"ездит", "мы":"ездим", "вы":"ездите", "они":"ездят" },
     future:{ "я":"буду ездить", "ты":"будешь ездить", "он / она / оно":"будет ездить", "мы":"будем ездить", "вы":"будете ездить", "они":"будут ездить" },
     past:{ "он":"ездил", "она":"ездила", "оно":"ездило", "они":"ездили" },
     imperative:{ "ты":"езди", "вы":"ездите" } },
-  "носить": { de:"tragen (wdh.)", nonPastLabel:"Präsens",
+  "носить": { de:"tragen (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"ношу", "ты":"носишь", "он / она / оно":"носит", "мы":"носим", "вы":"носите", "они":"носят" },
     future:{ "я":"буду носить", "ты":"будешь носить", "он / она / оно":"будет носить", "мы":"будем носить", "вы":"будете носить", "они":"будут носить" },
     past:{ "он":"носил", "она":"носила", "оно":"носило", "они":"носили" },
     imperative:{ "ты":"носи", "вы":"носите" } },
-  "водить": { de:"führen (wdh.)", nonPastLabel:"Präsens",
+  "водить": { de:"führen (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"вожу", "ты":"водишь", "он / она / оно":"водит", "мы":"водим", "вы":"водите", "они":"водят" },
     future:{ "я":"буду водить", "ты":"будешь водить", "он / она / оно":"будет водить", "мы":"будем водить", "вы":"будете водить", "они":"будут водить" },
     past:{ "он":"водил", "она":"водила", "оно":"водило", "они":"водили" },
     imperative:{ "ты":"води", "вы":"водите" } },
-  "возить": { de:"befördern (wdh.)", nonPastLabel:"Präsens",
+  "возить": { de:"befördern (hin und her, regelmäßig)", nonPastLabel:"Präsens",
     nonPast:{ "я":"вожу", "ты":"возишь", "он / она / оно":"возит", "мы":"возим", "вы":"возите", "они":"возят" },
     future:{ "я":"буду возить", "ты":"будешь возить", "он / она / оно":"будет возить", "мы":"будем возить", "вы":"будете возить", "они":"будут возить" },
     past:{ "он":"возил", "она":"возила", "оно":"возило", "они":"возили" },
@@ -17817,12 +17887,12 @@ const conjugationData = {
     future:{ "я":"буду уметь", "ты":"будешь уметь", "он / она / оно":"будет уметь", "мы":"будем уметь", "вы":"будете уметь", "они":"будут уметь" },
     past:{ "он":"умел", "она":"умела", "оно":"умело", "они":"умели" },
     imperative:{ "ты":"умей", "вы":"умейте" } },
-  "нести": { de:"tragen (best.)", nonPastLabel:"Präsens",
+  "нести": { de:"tragen (in eine Richtung)", nonPastLabel:"Präsens",
     nonPast:{ "я":"несу", "ты":"несёшь", "он / она / оно":"несёт", "мы":"несём", "вы":"несёте", "они":"несут" },
     future:{ "я":"буду нести", "ты":"будешь нести", "он / она / оно":"будет нести", "мы":"будем нести", "вы":"будете нести", "они":"будут нести" },
     past:{ "он":"нёс", "она":"несла", "оно":"несло", "они":"несли" },
     imperative:{ "ты":"неси", "вы":"несите" } },
-  "вести": { de:"führen (best.)", nonPastLabel:"Präsens",
+  "вести": { de:"führen (in eine Richtung)", nonPastLabel:"Präsens",
     nonPast:{ "я":"веду", "ты":"ведёшь", "он / она / оно":"ведёт", "мы":"ведём", "вы":"ведёте", "они":"ведут" },
     future:{ "я":"буду вести", "ты":"будешь вести", "он / она / оно":"будет вести", "мы":"будем вести", "вы":"будете вести", "они":"будут вести" },
     past:{ "он":"вёл", "она":"вела", "оно":"вело", "они":"вели" },
@@ -17832,7 +17902,7 @@ const conjugationData = {
     future:{ "я":"буду ползти", "ты":"будешь ползти", "он / она / оно":"будет ползти", "мы":"будем ползти", "вы":"будете ползти", "они":"будут ползти" },
     past:{ "он":"полз", "она":"ползла", "оно":"ползло", "они":"ползли" },
     imperative:{ "ты":"ползи", "вы":"ползите" } },
-  "везти": { de:"befördern (best.)", nonPastLabel:"Präsens",
+  "везти": { de:"befördern (in eine Richtung)", nonPastLabel:"Präsens",
     nonPast:{ "я":"везу", "ты":"везёшь", "он / она / оно":"везёт", "мы":"везём", "вы":"везёте", "они":"везут" },
     future:{ "я":"буду везти", "ты":"будешь везти", "он / она / оно":"будет везти", "мы":"будем везти", "вы":"будете везти", "они":"будут везти" },
     past:{ "он":"вёз", "она":"везла", "оно":"везло", "они":"везли" },
@@ -17842,7 +17912,7 @@ const conjugationData = {
     future:{ "я":"буду лезть", "ты":"будешь лезть", "он / она / оно":"будет лезть", "мы":"будем лезть", "вы":"будете лезть", "они":"будут лезть" },
     past:{ "он":"лез", "она":"лезла", "оно":"лезло", "они":"лезли" },
     imperative:{ "ты":"лезь", "вы":"лезьте" } },
-  "плыть": { de:"schwimmen (best.)", nonPastLabel:"Präsens",
+  "плыть": { de:"schwimmen (in eine Richtung)", nonPastLabel:"Präsens",
     nonPast:{ "я":"плыву", "ты":"плывёшь", "он / она / оно":"плывёт", "мы":"плывём", "вы":"плывёте", "они":"плывут" },
     future:{ "я":"буду плыть", "ты":"будешь плыть", "он / она / оно":"будет плыть", "мы":"будем плыть", "вы":"будете плыть", "они":"будут плыть" },
     past:{ "он":"плыл", "она":"плыла", "оно":"плыло", "они":"плыли" },
@@ -18197,7 +18267,7 @@ const TOOL_SETTINGS = [
   ['rkHintVisible', ...tsProp(() => rektionState, 'hintVisible'), TS_BOOL],
   ['gdScope', ...tsProp(() => genderState, 'scope'), tsOneOf('all', 'easy', 'hard')],
   ['transformHintVisible', ...tsProp(() => transformState, 'hintVisible'), TS_BOOL],
-  ['transformScope', ...tsProp(() => transformState, 'scope'), tsOneOf('all', 'past', 'aspect')],
+  ['transformScope', ...tsProp(() => transformState, 'scope'), tsOneOf('all', 'past', 'future', 'imperative', 'aspect')],
   ['grammarNotesVisible', () => grammarNotesVisible, v => { grammarNotesVisible = v; }, TS_BOOL],
   ['hoertrainerOrder', ...tsProp(() => htState, 'order'), tsOneOf('shuffle', 'seq')],
 ];
@@ -20706,7 +20776,7 @@ function wgPanelBodyHtml(p) {
     + '<button class="tool-btn gt-primary" onclick="checkWordgroup()"><i class="ti ti-check"></i> Prüfen <kbd class="gt-kbd" aria-hidden="true">⏎</kbd></button>'
     + '<button class="tool-btn" id="' + p + '-step-btn" style="display:none" onclick="revealWordgroupStep()" title="Deckt das nächste Wort der Lösung auf"><i class="ti ti-bulb"></i> Wort-Tipp <kbd class="gt-kbd" aria-hidden="true">2</kbd></button>'
     + '<button class="tool-btn" onclick="revealWordgroup()"><i class="ti ti-eye"></i> Lösung zeigen <kbd class="gt-kbd" aria-hidden="true">3</kbd></button>'
-    + '<button class="tool-btn" onclick="nextWordgroup()">Weiter <i class="ti ti-arrow-right"></i></button>'
+    + '<button class="tool-btn" onclick="nextWordgroup()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button>'
     + '</div>'
     + '<div class="conj-result" id="' + p + '-result" role="status" aria-live="polite"></div>'
     + '<div class="conj-result" id="' + p + '-score"></div>';
@@ -23503,6 +23573,8 @@ const transformState = {
   correct: 0,
   answered: false,
   lastInput: '',
+  fehler: [],          // in dieser Runde falsch, aufgedeckt oder übersprungen
+  bewertet: -1,        // Index der Aufgabe, deren erste Bewertung schon zählt
 };
 
 function toggleTransformHint() {
@@ -23558,10 +23630,12 @@ function buildTransformItems() {
   return items.filter(i => normalizeYo(i.from.toLowerCase()) !== normalizeYo(i.answer.toLowerCase()));
 }
 
+const TRANSFORM_SCOPES = ['all', 'past', 'future', 'imperative', 'aspect'];
 function setTransformScope(scope) {
+  if (!TRANSFORM_SCOPES.includes(scope)) scope = 'all';
   transformState.scope = scope;
   saveToolSettings();
-  ['all', 'past', 'aspect'].forEach(s =>
+  TRANSFORM_SCOPES.forEach(s =>
     document.getElementById('transform-scope-btn-' + s).classList.toggle('active', s === scope));
   restartTransform();
 }
@@ -23571,18 +23645,68 @@ function openTransform() {
   showGrammarPanel('transform');
 }
 
-function restartTransform() {
-  let pool = buildTransformItems();
-  if (transformState.scope === 'past') pool = pool.filter(i => i.kind === 'past');
-  if (transformState.scope === 'aspect') pool = pool.filter(i => i.kind === 'aspect');
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
-  }
-  transformState.queue = pool.slice(0, 20);
+const TRANSFORM_ROUND = 20;
+function transformId(t) { return t.prompt + ':' + t.task; }
+function shuffleInPlace(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+// Runde zusammenstellen: 1. fällige Wiederholungen  2. zuletzt falsch (gesehen,
+// aber noch nie richtig)  3. neue  4. die am längsten nicht geübten.
+// Innerhalb einer Gruppe zufällig, die fertige Runde wird noch einmal gemischt.
+function transformRoundPick(pool, now) {
+  const srs = loadGrammarSrs().transform || {}, life = loadLifetime().g.transform || {};
+  const t0 = now || Date.now();
+  const gruppe = t => {
+    const id = transformId(t), e = life[id], s = srs[id];
+    if (e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= t0) return 0;
+    if (s && !srsDone(s)) return 1;
+    if (!s) return 2;
+    return 3;
+  };
+  const g = [[], [], [], []];
+  shuffleInPlace(pool.slice()).forEach(t => g[gruppe(t)].push(t));
+  g[3].sort((a, b) => ((srs[transformId(a)] || {}).lastSeen || 0) - ((srs[transformId(b)] || {}).lastSeen || 0));
+  return shuffleInPlace([].concat(...g).slice(0, TRANSFORM_ROUND));
+}
+function transformPool() {
+  const pool = buildTransformItems();
+  return transformState.scope === 'all' ? pool : pool.filter(i => i.kind === transformState.scope);
+}
+function startTransformRound(queue) {
+  transformState.queue = queue;
   transformState.index = 0;
   transformState.correct = 0;
+  transformState.fehler = [];
+  transformState.bewertet = -1;
   renderTransform();
+}
+function restartTransform() { startTransformRound(transformRoundPick(transformPool())); }
+function repeatTransformErrors() {
+  if (!transformState.fehler.length) return;
+  startTransformRound(shuffleInPlace(transformState.fehler.slice()));
+  const input = document.getElementById('transform-input');
+  if (input) input.focus();
+}
+// erste Bewertung einer Aufgabe: falsch oder aufgedeckt → Fehlerliste der Runde
+function transformNoteResult(t, ok) {
+  const st = transformState;
+  if (st.bewertet === st.index) return;
+  st.bewertet = st.index;
+  if (ok !== true) st.fehler.push(t);
+}
+// gesuchte Form als Lücke: „они ___“, beim Imperativ „(ты) ___!“
+function transformGapHtml(item, fill) {
+  const person = item.prompt.split(' + ')[0];
+  const luecke = fill
+    ? '<span class="tf-blank tf-filled ' + fill.cls + '">' + htmlEsc(fill.text) + '</span>'
+    : '<span class="tf-blank" aria-label="Lücke">___</span>';
+  return item.kind === 'imperative'
+    ? '<span class="tf-person">(' + person + ')</span> ' + luecke + '!'
+    : '<span class="tf-person">' + person + '</span> ' + luecke;
+}
+function transformPlaceholder(item) {
+  return item.task + ' für ' + item.prompt.split(' + ')[0];
 }
 
 function renderTransform() {
@@ -23594,20 +23718,34 @@ function renderTransform() {
   input.className = 'conj-input';
   input.disabled = false;
   document.getElementById('transform-result').textContent = '';
+  const panel = document.getElementById('overlay-transform');
+  if (panel) panel.classList.toggle('tf-done', !item);
   if (!item) {
+    const st = transformState, n = st.queue.length;
+    const fehler = st.fehler.map(t => '<li><span lang="ru">' + htmlEsc(t.from) + '</span> → ' + htmlEsc(t.task) + ', ' + htmlEsc(t.prompt.split(' + ')[0])
+      + ': <b lang="ru">' + htmlEsc(t.answer) + '</b></li>').join('');
     document.getElementById('transform-q').innerHTML =
-      '<span class="case-prep">Fertig</span>' + transformState.correct + ' von ' + transformState.queue.length + ' richtig';
+      '<span class="case-prep">Runde fertig</span>' + st.correct + ' von ' + n + ' richtig'
+      + (st.fehler.length
+        ? '<ul class="tf-fehler" aria-label="Fehler dieser Runde">' + fehler + '</ul>'
+          + '<span class="tf-end-actions"><button class="tool-btn gt-primary" id="transform-repeat-btn" onclick="repeatTransformErrors()" type="button"><i class="ti ti-repeat"></i> Fehler wiederholen (' + st.fehler.length + ')</button>'
+          + '<button class="tool-btn" onclick="restartTransform()" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button></span>'
+        : '<span class="case-hint">Keine Fehler.</span><span class="tf-end-actions"><button class="tool-btn gt-primary" onclick="restartTransform()" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button></span>');
     document.getElementById('transform-score').textContent = '';
     input.disabled = true;
+    input.placeholder = 'Runde fertig';
     return;
   }
-  // Der Hinweis nennt Person und Zielverb. Letzteres verrät bei Aspektaufgaben
-  // den vollendeten Partner — deshalb lässt es sich ausblenden.
-  const person = item.prompt.split(' + ')[0];
-  const hinweis = transformState.hintVisible ? item.prompt : person;
+  // Groß steht die gesuchte Form als Lücke, darüber Ausgangsform und Art der
+  // Umformung. Der Hinweis nennt das Zielverb – das verrät bei Aspektaufgaben den
+  // vollendeten Partner, deshalb lässt er sich ausblenden.
+  const ziel = item.prompt.split(' + ')[1];
   document.getElementById('transform-q').innerHTML =
-    '<span class="case-prep" lang="ru">' + item.from + '</span>' + item.de +
-    '<span class="case-hint">→ ' + item.task + ' &nbsp;·&nbsp; ' + hinweis + '</span>';
+    '<span class="tf-from"><span lang="ru">' + htmlEsc(item.from) + '</span> · ' + htmlEsc(item.de) + '</span>'
+    + '<span class="tf-task">→ ' + htmlEsc(item.task) + '</span>'
+    + '<span class="case-prep tf-gap" id="transform-gap" lang="ru">' + transformGapHtml(item) + '</span>'
+    + (transformState.hintVisible ? '<span class="case-hint">von <span lang="ru">' + htmlEsc(ziel) + '</span></span>' : '');
+  input.placeholder = transformPlaceholder(item);
   document.getElementById('transform-score').textContent =
     (transformState.index + 1) + ' / ' + transformState.queue.length + ' · ' + transformState.correct + ' richtig';
 }
@@ -23615,11 +23753,18 @@ function renderTransform() {
 // Umformen arbeitet eine feste Runde ab (queue/index) und zählt selbst mit.
 const TRANSFORM_DRILL = {
   p: 'transform', st: transformState, task: () => transformState.queue[transformState.index],
-  srs: () => 'transform', id: t => t.prompt + ':' + t.task,
+  srs: () => 'transform', id: transformId,
   restart: () => {
     if (transformState.index >= transformState.queue.length) return;
+    const t = transformState.queue[transformState.index];
+    if (t && !transformState.answered) transformNoteResult(t, null);   // übersprungen
     transformState.index++;
     renderTransform();
+  },
+  after: (t, ok) => {
+    transformNoteResult(t, ok);
+    const gap = document.getElementById('transform-gap');
+    if (gap) gap.innerHTML = transformGapHtml(t, { text: t.answer, cls: ok === true ? 'ok' : ok === false ? 'bad' : 'shown' });
   },
   score: st => (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.correct + ' richtig',
 };
