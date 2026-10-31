@@ -1254,6 +1254,9 @@
   .home-lgi { display: inline-flex; align-items: center; cursor: help; border-radius: 4px; }
   .home-lgi:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 1px; }
   .home-t span { cursor: help; }
+  [data-hl] .home-t span { opacity: .3; transition: opacity .12s; }
+  [data-hl="1"] .home-t .s1, [data-hl="2"] .home-t .s2, [data-hl="3"] .home-t .s3, [data-hl="4"] .home-t .s4, [data-hl="5"] .home-t .s5 { opacity: 1; }
+  [data-hl] :is(.home-n, .home-p, .lvl-num, .lvl-pct) { font-weight: 600; color: var(--c-text-primary); }
   .home-lvr.home-lvr-sum { cursor: default; border-top: 0.5px solid var(--c-border-light); padding-top: 9px; }
   .home-lvr.home-lvr-sum:hover b { color: inherit; }
   .home-lv-sum { margin-top: 10px; }
@@ -7775,12 +7778,42 @@ function homeStufenRows(rows, opt) {
   return rows.map((l, idx) => {
     const sum = l.L === 'Gesamt', key = (opt.id || 'lv') + '-' + idx, txt = homeZeileText(l, wort), name = l.name || (sum ? 'Gesamt' : l.L);
     const klick = sum ? '' : `role="button" tabindex="0" aria-expanded="false" aria-controls="home-det-${key}" onclick="homeLvClick(event, '${key}', ${opt.klick ? `'${opt.klick}'` : 'null'})" onkeydown="homeKey(event)"`;
-    const segs = l.stufen.map((n, i) => n ? `<span class="s${i + 1}" style="width:${l.total ? n / l.total * 100 : 0}%" title="${htmlEsc(name)} · Wiederholung ${i + 1}${i + 1 === LIFE_RUNS_MAX ? ' (sicher)' : ''}: ${n} ${n === 1 ? wort[0] : wort[1]} (${homeProz(n, l.total)} von ${l.total})"></span>` : '').reverse().join('');
+    const segs = l.stufen.map((n, i) => n ? `<span class="s${i + 1}" data-st="${i + 1}" style="width:${l.total ? n / l.total * 100 : 0}%" title="${htmlEsc(name)} · Wiederholung ${i + 1}${i + 1 === LIFE_RUNS_MAX ? ' (sicher)' : ''}: ${n} ${n === 1 ? wort[0] : wort[1]} (${homeProz(n, l.total)} von ${l.total})"></span>` : '').reverse().join('');
     const up = l.bereit ? `<span class="home-up" title="${l.bereit} ${l.bereit === 1 ? wort[0] + ' kann' : wort[1] + ' können'} heute mit einer richtigen Antwort eine Stufe aufsteigen">↑${l.bereit}</span>` : '<span class="home-up" aria-hidden="true"></span>';
-    return `<div class="home-lvr${sum ? ' home-lvr-sum' : ''}" data-key="${key}" ${klick} aria-label="${htmlEsc(name)}: ${l.sicher + l.arbeit} von ${l.total} geübt · ${htmlEsc(txt)}" title="${htmlEsc(txt)}"><b>${sum ? 'Σ' : htmlEsc(l.L)}</b><div class="home-t">${segs}</div>${up}<span class="home-n">${l.sicher + l.arbeit} / ${l.total}</span><span class="home-p">${l.total ? Math.round((l.sicher + l.arbeit) / l.total * 100) : 0} %</span></div>`
+    return `<div class="home-lvr${sum ? ' home-lvr-sum' : ''}" data-key="${key}" data-stufen="${l.stufen.join(',')}" data-total="${l.total}" ${klick} aria-label="${htmlEsc(name)}: ${l.sicher + l.arbeit} von ${l.total} geübt · ${htmlEsc(txt)}" title="${htmlEsc(txt)}"><b>${sum ? 'Σ' : htmlEsc(l.L)}</b><div class="home-t">${segs}</div>${up}<span class="home-n" title="geübt (Wiederholung 1–5) von gesamt – über einen Balkenabschnitt oder die Legende fahren zeigt eine einzelne Wiederholungsstufe">${l.sicher + l.arbeit} / ${l.total}</span><span class="home-p" title="Anteil geübt (Wiederholung 1–5)">${l.total ? Math.round((l.sicher + l.arbeit) / l.total * 100) : 0} %</span></div>`
       + (sum ? '' : `<div class="home-lv-det" id="home-det-${key}" hidden>${l.name ? '<b>' + htmlEsc(l.name) + ':</b> ' : ''}${htmlEsc(txt)}${opt.klick ? ` <button type="button" class="home-lv-link" onclick="${opt.klick}()">${opt.klickText || 'Übersicht'} →</button>` : ''}</div>`);
   }).join('');
 }
+// Wiederholungsstufe hervorheben: Darüberfahren über einen Balkenabschnitt (diese Zeile) oder über die Legende
+// (alle Zeilen der Karte) zeigt rechts Anzahl und Anteil genau dieser Stufe; Wegfahren stellt „geübt“ wieder her
+function stufeZeigen(el, an) {
+  const k = +el.dataset.st; if (!k) return;
+  const legende = el.classList.contains('home-lgi');
+  const scope = legende ? el.closest('.home-card, #level-overview-body') : el.closest('[data-stufen]');
+  if (!scope) return;
+  const rows = scope.matches('[data-stufen]') ? [scope] : [...scope.querySelectorAll('[data-stufen]')];
+  rows.forEach(r => {
+    const nEl = r.querySelector('.home-n, .lvl-num'), pEl = r.querySelector('.home-p, .lvl-pct');
+    if (an) {
+      const st = r.dataset.stufen.split(',').map(Number), tot = +r.dataset.total || 0, n = st[k - 1] || 0;
+      [nEl, pEl].forEach(x => { if (x && x.dataset.orig == null) x.dataset.orig = x.textContent; });
+      if (nEl) nEl.textContent = n + ' / ' + tot;
+      if (pEl) pEl.textContent = homeProz(n, tot);
+      r.dataset.hl = k;
+    } else {
+      [nEl, pEl].forEach(x => { if (x && x.dataset.orig != null) { x.textContent = x.dataset.orig; delete x.dataset.orig; } });
+      delete r.dataset.hl;
+    }
+  });
+}
+['mouseover', 'focusin'].forEach(ev => document.addEventListener(ev, e => {
+  const t = e.target.closest && e.target.closest('.home-t span[data-st], .home-lgi[data-st]'); if (t) stufeZeigen(t, true);
+}));
+['mouseout', 'focusout'].forEach(ev => document.addEventListener(ev, e => {
+  const t = e.target.closest && e.target.closest('.home-t span[data-st], .home-lgi[data-st]'); if (!t) return;
+  if (e.relatedTarget && t.contains(e.relatedTarget)) return;
+  stufeZeigen(t, false);
+}));
 // Klick auf eine Zeile: am PC die Übersicht öffnen (falls es eine gibt), sonst – und immer am Handy,
 // wo es kein Überfahren gibt – die Zahlen darunter auf- und zuklappen
 function homeLvClick(ev, key, fn) {
@@ -8058,7 +8091,7 @@ function renderHome() {
         return vergleich + best; })()}`
       : '<div class="home-s home-empty" id="home-weeksum">Diese Woche noch nichts geübt.</div>'}</div>
     ${(() => { const summe = homeLevelSumme(s.levels), gram = homeGrammarRows(Date.now()), gsum = homeLevelSumme(gram);
-      return `<div class="home-card home-wide" id="home-stufen"><div class="home-k"><i class="ti ti-school"></i>Stand je Sprachstufe<span class="home-legend">Wiederholung${[1, 2, 3, 4, 5].map(i => `<span class="home-lgi" tabindex="0" title="${homeStufeInfo(i)}"><span class="home-lg s${i}"></span>${i === 5 ? '5 sicher' : i}</span>`).join('')}</span></div>
+      return `<div class="home-card home-wide" id="home-stufen"><div class="home-k"><i class="ti ti-school"></i>Stand je Sprachstufe<span class="home-legend">Wiederholung${[1, 2, 3, 4, 5].map(i => `<span class="home-lgi" tabindex="0" data-st="${i}" title="${homeStufeInfo(i)}"><span class="home-lg s${i}"></span>${i === 5 ? '5 sicher' : i}</span>`).join('')}</span></div>
       <div class="home-lv">${homeStufenRows([...s.levels, summe], { id: 'lv', klick: 'openLevelOverview', klickText: 'Stufenübersicht' })}</div>
       <div class="home-s home-lv-sum">${summe.total} Vokabeln insgesamt · ${summe.sicher} sicher · ${summe.arbeit} in Wiederholung · ${summe.total - summe.sicher - summe.arbeit} noch nicht geübt${summe.bereit ? ' · ' + summe.bereit + ' heute aufstiegsbereit' : ''}${summe.sicherAb.length ? ' · ' + homeSicherAbText(summe.sicherAb) : ''}</div>
       ${(() => { const v = homeSicherVerlauf(Date.now()); if (v.some(p => p.n)) return homeVerlaufSvg(v); const t = homeErsteSicher(Date.now());
@@ -14039,7 +14072,7 @@ function levelZiel(rows) {
 }
 // Balkenreihe in den Farben der Wiederholungsstufen (wie „Stand je Sprachstufe“ auf der Startseite)
 function levelBalken(l, name, wort) {
-  return '<div class="home-t lvl-t">' + l.stufen.map((n, i) => n ? '<span class="s' + (i + 1) + '" style="width:' + (l.total ? n / l.total * 100 : 0) + '%" title="'
+  return '<div class="home-t lvl-t">' + l.stufen.map((n, i) => n ? '<span class="s' + (i + 1) + '" data-st="' + (i + 1) + '" style="width:' + (l.total ? n / l.total * 100 : 0) + '%" title="'
     + htmlEsc(name) + ' · Wiederholung ' + (i + 1) + (i + 1 === LIFE_RUNS_MAX ? ' (sicher)' : '') + ': ' + n + ' ' + (n === 1 ? wort[0] : wort[1]) + ' (' + homeProz(n, l.total) + ' von ' + l.total + ')"></span>' : '').reverse().join('') + '</div>';
 }
 function toggleLevelInfo(force) {
@@ -14076,11 +14109,11 @@ function openLevelOverview() {
     + 'Die Balken zeigen den <strong>Gesamtstand</strong>, der beim Zurücksetzen erhalten bleibt: Ein Wort zählt als gelernt, sobald es einmal richtig beantwortet wurde, '
     + 'und steigt mit jeder richtigen Antwort nach wachsendem Abstand eine Wiederholungsstufe auf (Wiederholung 5 = sicher). Den aktuellen Übungsstand zeigt der Hinweis beim Darüberfahren. '
     + 'Ein Klick auf eine Stufe öffnet ihren Stufenplan.</p></div>';
-  const legende = '<span class="home-legend lvl-legend2">Wiederholung' + [1, 2, 3, 4, 5].map(i => '<span class="home-lgi" tabindex="0" title="' + homeStufeInfo(i) + '"><span class="home-lg s' + i + '"></span>' + (i === 5 ? '5 sicher' : i) + '</span>').join('') + '</span>';
+  const legende = '<span class="home-legend lvl-legend2">Wiederholung' + [1, 2, 3, 4, 5].map(i => '<span class="home-lgi" tabindex="0" data-st="' + i + '" title="' + homeStufeInfo(i) + '"><span class="home-lg s' + i + '"></span>' + (i === 5 ? '5 sicher' : i) + '</span>').join('') + '</span>';
   // linke Spalte: Wörter und Grammatik
   let links = '<div class="lvl-hrow"><h4 class="lvl-h">Wörter</h4>' + legende + '</div><div class="lvl-rows">' + rows.map(r => {
     const l = r.L, g = r.sicher + r.arbeit, txt = homeZeileText(r, W) + ' · aktuell (Übungsstand): ' + st[l].learned + ' von ' + st[l].total;
-    return '<div class="lvl-row' + (l === ziel ? ' lvl-ziel' : '') + '" role="button" tabindex="0" data-l="' + l + '" onclick="levelRowClick(\'' + l + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();levelRowClick(\'' + l + '\')}"'
+    return '<div class="lvl-row' + (l === ziel ? ' lvl-ziel' : '') + '" role="button" tabindex="0" data-stufen="' + r.stufen.join(',') + '" data-total="' + r.total + '" data-l="' + l + '" onclick="levelRowClick(\'' + l + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();levelRowClick(\'' + l + '\')}"'
       + ' title="' + htmlEsc(txt) + '" aria-label="' + l + ': ' + g + ' von ' + r.total + ' Wörtern gelernt · ' + htmlEsc(txt) + ' · Stufenplan öffnen">'
       + lvlBadge(l) + levelBalken(r, l, W) + '<span class="lvl-num">' + g + ' / ' + r.total + '</span><span class="lvl-pct">' + pct(g, r.total) + ' %</span></div>'
       + '<div class="lvl-det" id="lvl-det-' + l + '" hidden>' + htmlEsc(txt) + ' <button type="button" class="home-lv-link" onclick="levelRowClick(\'' + l + '\', true)">Stufenplan ' + l + ' →</button></div>';
@@ -14091,7 +14124,7 @@ function openLevelOverview() {
     + Object.keys(GRAMMAR_TOOL_LEVEL).filter(t => GRAMMAR_TOOL_LEVEL[t] === l).map(t => {
       const z = toolZeilen[t] = levelToolZeile(t, now), a = grammarToolProgress(t), g = z.sicher + z.arbeit;
       const txt = homeZeileText(z, A) + ' · aktuell (Übungsstand): ' + pct(a.n, a.total) + ' %';
-      return '<button class="lvl-tool" type="button" onclick="openToolFromLevels(\'' + t + '\')" title="' + htmlEsc(txt) + '" aria-label="' + htmlEsc(chipName(t)) + ': ' + pct(g, z.total) + ' % gelernt · ' + htmlEsc(txt) + '">'
+      return '<button class="lvl-tool" type="button" data-stufen="' + z.stufen.join(',') + '" data-total="' + z.total + '" onclick="openToolFromLevels(\'' + t + '\')" title="' + htmlEsc(txt) + '" aria-label="' + htmlEsc(chipName(t)) + ': ' + pct(g, z.total) + ' % gelernt · ' + htmlEsc(txt) + '">'
         + '<span class="lvl-tool-name">' + chipName(t) + '</span>' + levelBalken(z, chipName(t), A) + '<span class="lvl-pct">' + pct(g, z.total) + ' %</span></button>';
     }).join('') + '</div></div>').join('')
     + (ohne.length ? '<p class="lvl-none lvl-gr-none">' + ohne[0] + (ohne.length > 1 ? '–' + ohne[ohne.length - 1] : '') + ': noch keine eigenen Grammatikwerkzeuge – hier zählen die Wörter.</p>' : '');
