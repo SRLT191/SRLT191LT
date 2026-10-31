@@ -1208,6 +1208,11 @@
   .home-week { display: flex; gap: 6px; align-items: flex-end; height: 56px; margin-top: 6px; }
   .home-week div { flex: 1; border-radius: 4px 4px 2px 2px; background: var(--c-accent); opacity: .85; }
   .home-week div.leer { background: var(--c-track-bg); opacity: 1; }
+  .home-wn span { font-variant-numeric: tabular-nums; color: var(--c-text-secondary); font-size: 11px; }
+  .home-wn span.heute { font-weight: 600; color: var(--c-text-primary); }
+  .home-best .ti, .home-erste-sicher .ti { margin-right: 4px; }
+  .home-erste-sicher { margin-top: 10px; }
+  .home-lv-actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
   .home-wl { display: flex; gap: 6px; font-size: 10.5px; color: var(--c-text-muted); } .home-wl span { flex: 1; text-align: center; }
   .home-legend { margin-left: auto; text-transform: none; letter-spacing: 0; display: flex; align-items: center; gap: 4px; }
   .home-lg { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-left: 8px; }
@@ -2738,6 +2743,9 @@
             <option value="100">100 Antworten</option>
             <option value="200">200 Antworten</option>
             <option value="500">500 Antworten</option>
+            <option value="1000">1000 Antworten</option>
+            <option value="2000">2000 Antworten</option>
+            <option value="5000">5000 Antworten</option>
           </select>
         </div>
         <div class="set-row">
@@ -7913,10 +7921,52 @@ function homePlanText(s) {
     const neu = pool.filter(w => !lifeVocabEntry(w)).length;
     const teile = [faellig ? faellig + ' fällig' : '', neu ? neu + ' neu' : ''].filter(Boolean);
     const gesamt = s.dueWords + s.dueGrammar;
-    // die Zahl am Knopf gilt für alles; hier steht, was davon in der gewählten Auswahl liegt
-    return 'Vokabeln · ' + name + (teile.length ? ': ' + teile.join(', ') : '') + (gesamt && activeMain !== 'all' && activeMain !== 'due' ? ' · insgesamt ' + gesamt + ' fällig' : '');
+    // was davon in der gewählten Auswahl liegt; alle Fälligen stehen in der Karte „Fällig“
+    void gesamt;
+    return 'Vokabeln · ' + name + (teile.length ? ': ' + teile.join(', ') : '');
   } catch (e) { return ''; }
 }
+// „Weiterlernen“: was als Nächstes kommt (Bereich bzw. Auswahl und wie viel darin offen ist)
+function homeGoLabel() {
+  const last = viewTimes().last;
+  try {
+    if (last === 'grammar' || last === 'listening') {
+      const p = last === 'grammar' ? readStoredPanel(GRAMMAR_PANEL_KEY, 'grammarPanel') : readStoredPanel(LISTENING_PANEL_KEY, 'listeningPanel');
+      const name = last === 'grammar' ? (p && document.querySelector('#overlay-' + p + ' .overlay-title')) : (p && document.getElementById('lchip-' + p));
+      const t = name ? (() => { const c = name.cloneNode(true); c.querySelectorAll('.lvl-badge').forEach(x => x.remove()); return c.textContent.replace(/\s+/g, ' ').trim(); })() : '';
+      return (t ? t.replace(/^\S+ · /, '') : (last === 'grammar' ? 'Grammatik' : 'Hören'));
+    }
+    const name = activeMain === 'all' ? 'Alle Kategorien' : activeMain === 'multi' ? 'Auswahl' : activeMain === 'bookmarks' ? 'Merkliste'
+      : activeMain === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : activeMain === 'session' ? 'Fehler der Runde' : activeMain === 'due' ? 'Fällige' : activeMain === 'hard' ? 'Oft falsch'
+      : (activeSub || activeMain);
+    const offen = getPool().filter(w => !hasCorrectAnswer(w)).length;
+    return name + ' · ' + (offen ? offen + ' offen' : 'alles erledigt');
+  } catch (e) { return ''; }
+}
+// Frühester Tag, an dem ein Wort sicher (Wiederholung 5) sein kann – bei jeder Wiederholung pünktlich richtig
+function homeErsteSicher(now) {
+  let best = 0;
+  allVocabWords().forEach(w => {
+    const e = lifeVocabEntry(w), d = (e && e.d) || 0; if (!d || d >= LIFE_RUNS_MAX) return;
+    let t = Math.max(now, lifeNextDue(e));
+    for (let k = d + 1; k < LIFE_RUNS_MAX; k++) t += LIFE_STEP_DAYS[k] * LIFE_DAY_MS;
+    if (!best || t < best) best = t;
+  });
+  return best;
+}
+// Bestwerte aus dem Tagesprotokoll: bester Tag und längste Serie
+function homeBestwerte(log) {
+  const keys = Object.keys(log).filter(k => (log[k] || [0])[0] > 0).sort();
+  let bestK = '', bestN = 0, serie = 0, lang = 0, vor = null;
+  keys.forEach(k => {
+    const n = log[k][0]; if (n > bestN) { bestN = n; bestK = k; }
+    const d = new Date(k + 'T12:00:00');
+    serie = vor && Math.round((d - vor) / LIFE_DAY_MS) === 1 ? serie + 1 : 1; vor = d; lang = Math.max(lang, serie);
+  });
+  return { bestK, bestN, lang };
+}
+// Vorwoche: Antworten der sieben Tage vor dieser Woche
+function homeVorwoche(log) { let n = 0; for (let i = 7; i < 14; i++) n += (log[dayKey(daysAgo(i))] || [0])[0]; return n; }
 function renderHome() {
   const el = document.getElementById('home-view'); if (!el) return;
   const s = homeStats(), h = new Date().getHours();
@@ -7935,12 +7985,12 @@ function renderHome() {
     return '';
   };
   const zuletzt = ['vocab', 'grammar', 'listening'].filter(v => s.times[v]).sort((a, b) => s.times[b] - s.times[a]);
-  const plan = homePlanText(s);
+  const plan = homePlanText(s), goLabel = homeGoLabel();
   const naechste = s.forecast.find(d => d.n);
   const kommend = s.forecast.slice(due ? 0 : 1).filter(d => d.n).slice(0, 3).map(d => d.tag + ' ' + d.n).join(' · ');
   el.innerHTML = `
   <div class="home-hello"><div><h1 lang="ru">${gruss}</h1><p>${htmlEsc(datum)}${s.streak ? ' · <i class="ti ti-flame"></i> ' + s.streak + (s.streak === 1 ? ' Tag' : ' Tage') + ' in Folge geübt' : ''}</p></div>
-    <div class="home-go-wrap"><button class="home-go" type="button" onclick="homeContinue()"><i class="ti ti-player-play"></i>Weiterlernen${due ? '<span>· ' + due + ' fällig</span>' : ''}</button>
+    <div class="home-go-wrap"><button class="home-go" type="button" onclick="homeContinue()"><i class="ti ti-player-play"></i>Weiterlernen${goLabel ? '<span>· ' + htmlEsc(goLabel) + '</span>' : ''}</button>
     ${plan ? `<div class="home-plan" id="home-plan">${htmlEsc(plan)}</div>` : ''}</div></div>
   <div class="home-sync" id="home-sync" role="status" hidden><i class="ti ti-upload"></i><span>Lernstand noch nicht auf GitHub gespeichert</span><button type="button" onclick="ghSync()">Jetzt speichern</button></div>
   <div class="home-grid">
@@ -7959,20 +8009,28 @@ function renderHome() {
       ${vorschau}</div>`;
     })()}
     <div class="home-card home-row home-pair home-click" id="home-today" role="button" tabindex="0" onclick="homeOpenGoal()" onkeydown="homeKey(event)" title="${s.goal ? 'Tagesziel ändern' : 'Tagesziel festlegen'}">${s.goal > 0 ? `<div class="home-ring${s.today.a >= s.goal ? ' voll' : ''}" style="--p:${ziel}%" role="img" aria-label="${s.today.a} von ${s.goal}"><span>${s.today.a >= s.goal ? '<i class="ti ti-check"></i>' : ziel + ' %'}</span></div>` : ''}
-      <div><div class="home-k"><i class="ti ti-target-arrow"></i>Heute</div><div class="home-big">${s.today.a} <small>${s.goal > 0 ? 'von ' + s.goal + (s.today.a >= s.goal ? ' ✓' : '') : (s.today.a === 1 ? 'Antwort' : 'Antworten')}</small></div>
+      <div><div class="home-k"><i class="ti ti-target-arrow"></i>Heute</div><div class="home-big">${s.today.a} <small>${s.goal > 0 ? (s.today.a >= s.goal ? (s.today.a >= 2 * s.goal ? (s.today.a / s.goal).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' × Tagesziel ✓' : 'von ' + s.goal + ' ✓') : 'von ' + s.goal) : (s.today.a === 1 ? 'Antwort' : 'Antworten')}</small></div>
       <div class="home-s">${s.today.r} richtig · ${s.today.a - s.today.r} falsch</div>
       ${s.gewinn.neu + s.gewinn.auf + s.gewinn.gNeu + s.gewinn.gAuf ? `<div class="home-s home-gewinn" id="home-gewinn"><i class="ti ti-chart-line"></i>${[s.gewinn.neu ? s.gewinn.neu + ' neu gelernt' : '', s.gewinn.auf ? s.gewinn.auf + ' aufgestiegen' : '', s.gewinn.gNeu + s.gewinn.gAuf ? 'Grammatik ' + (s.gewinn.gNeu + s.gewinn.gAuf) : ''].filter(Boolean).join(' · ')}</div>` : ''}
+      ${s.goal > 0 && s.today.a >= 2 * s.goal && DAY_GOALS.some(n => n > s.goal) ? `<div class="home-goal-pick" id="home-goal-up" role="group" aria-label="Höheres Tagesziel wählen"><span class="home-s">Höheres Ziel:</span>${DAY_GOALS.filter(n => n > s.goal).slice(0, 3).map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>` : ''}
       ${s.goal > 0 ? '' : `<div class="home-goal-pick" role="group" aria-label="Tagesziel festlegen"><span class="home-s">Tagesziel:</span>${DAY_GOALS.map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>`}</div></div>
     <div class="home-card"><div class="home-k"><i class="ti ti-chart-bar"></i>Diese Woche</div>
       ${s.weekSum ? `<div class="home-week" role="img" aria-label="Antworten der letzten sieben Tage: ${s.week.map(d => d.tag + ' ' + d.n).join(', ')}">${s.week.map((d, i) => `<div class="${d.n ? '' : 'leer'}${i === 6 ? ' heute' : ''}" style="height:${d.n ? Math.max(8, Math.round(d.n / max * 100)) : 6}%" title="${d.tag}: ${d.n ? d.n + (d.n === 1 ? ' Antwort' : ' Antworten') + ' · ' + Math.round(d.r / d.n * 100) + ' % richtig' : 'nicht geübt'}"></div>`).join('')}</div>
       <div class="home-wl">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.tag}</span>`).join('')}</div>
-      <div class="home-s" id="home-weeksum">${s.weekSum} ${s.weekSum === 1 ? 'Antwort' : 'Antworten'} · Ø ${Math.round(s.weekSum / Math.max(1, s.weekDays))} je Übungstag (${s.weekDays} von 7) · ${Math.round(s.weekRight / s.weekSum * 100)} % richtig</div>`
+      <div class="home-wl home-wn" id="home-weeknums">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.n || '–'}</span>`).join('')}</div>
+      <div class="home-s" id="home-weeksum">${s.weekSum} ${s.weekSum === 1 ? 'Antwort' : 'Antworten'} · Ø ${Math.round(s.weekSum / Math.max(1, s.weekDays))} je Übungstag (${s.weekDays} von 7) · ${Math.round(s.weekRight / s.weekSum * 100)} % richtig</div>
+      ${(() => { const log = loadDaylog(), vw = homeVorwoche(log), b = homeBestwerte(log);
+        const vergleich = vw ? `<div class="home-s" id="home-vorwoche">${s.weekSum >= vw ? '+' : '−'}${Math.abs(Math.round((s.weekSum - vw) / vw * 100))} % zur Vorwoche (${vw})</div>` : '';
+        const best = b.bestN ? `<div class="home-s home-best" id="home-best"><i class="ti ti-trophy"></i>Bester Tag: ${b.bestK === dayKey() ? 'heute' : new Date(b.bestK + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' })} (${b.bestN}) · längste Serie: ${b.lang} ${b.lang === 1 ? 'Tag' : 'Tage'}</div>` : '';
+        return vergleich + best; })()}`
       : '<div class="home-s home-empty" id="home-weeksum">Diese Woche noch nichts geübt.</div>'}</div>
     ${(() => { const summe = homeLevelSumme(s.levels), gram = homeGrammarRows(Date.now()), gsum = homeLevelSumme(gram);
       return `<div class="home-card home-wide" id="home-stufen"><div class="home-k"><i class="ti ti-school"></i>Stand je Sprachstufe<span class="home-legend">Wiederholung${[1, 2, 3, 4, 5].map(i => `<span class="home-lgi" tabindex="0" title="${homeStufeInfo(i)}"><span class="home-lg s${i}"></span>${i === 5 ? '5 sicher' : i}</span>`).join('')}</span></div>
       <div class="home-lv">${homeStufenRows([...s.levels, summe], { id: 'lv', klick: 'openLevelOverview', klickText: 'Stufenübersicht' })}</div>
       <div class="home-s home-lv-sum">${summe.total} Vokabeln insgesamt · ${summe.sicher} sicher · ${summe.arbeit} in Wiederholung · ${summe.total - summe.sicher - summe.arbeit} noch nicht geübt${summe.bereit ? ' · ' + summe.bereit + ' heute aufstiegsbereit' : ''}${summe.sicherAb.length ? ' · ' + homeSicherAbText(summe.sicherAb) : ''}</div>
-      ${homeVerlaufSvg(homeSicherVerlauf(Date.now()))}</div>
+      ${(() => { const v = homeSicherVerlauf(Date.now()); if (v.some(p => p.n)) return homeVerlaufSvg(v); const t = homeErsteSicher(Date.now());
+        return t ? `<div class="home-s home-erste-sicher" id="home-erste-sicher"><i class="ti ti-flag"></i>Erste sichere Wörter frühestens am ${new Date(t).toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'numeric' }).replace(',', '')}</div>` : ''; })()}
+      ${(() => { const z = levelZiel(s.levels); return `<div class="home-lv-actions"><button type="button" class="home-btn" id="home-lv-ueben" onclick="practiceLevel('${z.l}')" title="${htmlEsc('Ziel ' + z.l + ': ' + z.warum)}"><i class="ti ti-player-play"></i>Wörter bis ${z.l} üben</button></div>`; })()}</div>
       <div class="home-card home-wide" id="home-gstufen"><div class="home-k"><i class="ti ti-book"></i>Stand Grammatik</div>
       <div class="home-lv">${homeStufenRows([...gram, gsum], { id: 'gr', wort: ['Aufgabe', 'Aufgaben'] })}</div>
       <div class="home-s home-lv-sum">${gsum.total} Grammatikaufgaben · ${gsum.sicher} sicher · ${gsum.arbeit} in Wiederholung · ${gsum.total - gsum.sicher - gsum.arbeit} noch nicht geübt${gsum.bereit ? ' · ' + gsum.bereit + ' heute aufstiegsbereit' : ''}</div></div>`; })()}
@@ -9087,7 +9145,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 
 // Sitzungsziel: einfacher Fortschrittsbalken für die laufende Runde
 // Tagesziel für die Startseite (Antworten pro Tag) – getrennt vom Sitzungsziel einer Runde
-const DAY_GOAL_KEY = 'vokabeltrainer-day-goal', DAY_GOALS = [50, 100, 200, 500];
+const DAY_GOAL_KEY = 'vokabeltrainer-day-goal', DAY_GOALS = [50, 100, 200, 500, 1000, 2000, 5000];
 let dayGoal = 0;
 try { const v = parseInt(localStorage.getItem(DAY_GOAL_KEY), 10); if (v > 0) dayGoal = v; } catch (e) {}
 function setDayGoal(v) {
