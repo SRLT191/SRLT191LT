@@ -31,13 +31,13 @@ const { chromium } = require('playwright');
     week: document.getElementById('home-weeksum').textContent, wTip: [...document.querySelectorAll('.home-week div')].map(x => x.title),
     gew: document.getElementById('home-gewinn').textContent.trim(), pick: [...document.querySelectorAll('.home-goal-pick button')].map(x => x.textContent).join(),
   }));
-  ok('Knopf: Gesamtzahl; Zeile darunter: Auswahl und „insgesamt“', r.go.replace(/\s/g, '') === 'Weiterlernen·5fällig' && /^Vokabeln · Sport: 3 fällig, \d+ neu · insgesamt 5 fällig$/.test(r.plan), r.go + ' | ' + r.plan);
+  ok('Knopf: was als Nächstes kommt (Kategorie und offen); Zeile darunter: fällig und neu in der Auswahl', /^Weiterlernen· Sport · \d+ offen$/.test(r.go.replace(/\s+/g, ' ').replace('Weiterlernen ·', 'Weiterlernen·')) && /^Vokabeln · Sport: 3 fällig, \d+ neu$/.test(r.plan), r.go + ' | ' + r.plan);
   ok('Vorschau als Balkenreihe über 8 Tage, „später heute“, Zahlen im Tooltip', r.fcBars === 8 && /^Fällig in den kommenden Tagen: später heute 1, morgen 1,/.test(r.fc) && r.morgen === 'morgen: 1 fällig', r.fc);
   ok('Fällige nach Stufe: Balken und Text', r.st === 'Wiederholung 1: 3 · Wiederholung 2: 1 · Wiederholung 3: 1' && r.stSegs === 's1,s2,s3', r.st + ' / ' + r.stSegs);
   ok('Woche: Schnitt je Übungstag', r.week === '90 Antworten · Ø 30 je Übungstag (3 von 7) · 86 % richtig', r.week);
   ok('Woche: Tooltip je Balken mit Antworten und Quote', r.wTip[6] === 'Do: 30 Antworten · 90 % richtig' && r.wTip[0] === 'Fr: nicht geübt', r.wTip.join(' | '));
   ok('Heute: neu gelernt, aufgestiegen, Grammatik', r.gew === '1 neu gelernt · 2 aufgestiegen · Grammatik 1', r.gew);
-  ok('ohne Tagesziel: Knöpfe 50 · 100 · 200 · 500', r.pick === '50,100,200,500', r.pick);
+  ok('ohne Tagesziel: Knöpfe 50 · 100 · 200 · 500 · 1000 · 2000 · 5000', r.pick === '50,100,200,500,1000,2000,5000', r.pick);
   // Älteste zuerst
   const alt = await p.evaluate(() => { document.querySelectorAll('.home-due-btns button')[1].click(); const order = []; for (let i = 0; i < 5; i++) { order.push(currentWord.ru); updateScore(currentWord, true); nextWord(); } return { a: activeMain, order }; });
   const erwartet = await p.evaluate(() => { const ws = allVocabWords(), sport = getAllWordsOfCat('Sport'); return [ws[0], sport[1], ws[1], sport[0], sport[2]].map(w => w.ru); });
