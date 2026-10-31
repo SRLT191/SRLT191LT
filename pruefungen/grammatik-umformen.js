@@ -11,15 +11,16 @@ const { chromium } = require('playwright');
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(300);
 
   // 1/2 Aufgabe als Lücke, Platzhalter
+  await p.evaluate(() => { window.sichtbar = el => { const c = el.cloneNode(true); c.querySelectorAll('.sr-only').forEach(x => x.remove()); return c.textContent; }; });
   const a = await p.evaluate(() => { setAppView('grammar'); setTransformScope('past'); openTransform();
     const q = document.getElementById('transform-q'), t = transformState.queue[0];
-    return { from: q.querySelector('.tf-from [lang="ru"]').textContent, task: q.querySelector('.tf-task').textContent, gap: q.querySelector('.tf-gap').textContent.replace(/\s+/g, ' ').trim(),
+    return { from: q.querySelector('.tf-from [lang="ru"]').textContent, task: q.querySelector('.tf-task').textContent, gap: sichtbar(q.querySelector('.tf-gap')).replace(/\s+/g, ' ').trim(),
       ph: document.getElementById('transform-input').placeholder, t, big: parseFloat(getComputedStyle(q.querySelector('.tf-gap')).fontSize), klein: parseFloat(getComputedStyle(q.querySelector('.tf-from')).fontSize) }; });
   const person = a.t.prompt.split(' + ')[0];
   ok('1 gesuchte Form groß als Lücke („они ___“), Ausgangsform klein darüber', a.gap === person + ' ___' && a.from === a.t.from && a.big > 2 * a.klein && a.task === '→ Vergangenheit', JSON.stringify(a));
   ok('2 Platzhalter nennt die Aufgabe', a.ph === 'Vergangenheit für ' + person, a.ph);
   const imp = await p.evaluate(() => { setTransformScope('imperative'); const q = transformState.queue;
-    return { alle: q.every(t => t.kind === 'imperative'), gap: document.querySelector('#transform-q .tf-gap').textContent.replace(/\s+/g, ' ').trim(), n: q.length,
+    return { alle: q.every(t => t.kind === 'imperative'), gap: sichtbar(document.querySelector('#transform-q .tf-gap')).replace(/\s+/g, ' ').trim(), n: q.length,
       badge: document.getElementById('transform-scope-btn-imperative').dataset.lvl === 'A2' }; });
   ok('4 Auswahl „Imperativ“: nur Imperativ, Lücke „(ты) ___!“, Abzeichen A2', imp.alle && imp.n === 20 && imp.gap === '(ты) ___!' && imp.badge, JSON.stringify(imp));
   const fut = await p.evaluate(() => { setTransformScope('future'); const r = transformState.queue.every(t => t.kind === 'future'); return r; });
@@ -67,7 +68,7 @@ const { chromium } = require('playwright');
     revealTransform(); nextTransform();
     nextTransform();
     while (transformState.index < transformState.queue.length) { inp.value = transformState.queue[transformState.index].answer; checkTransform(); checkTransform(); }
-    const li = [...document.querySelectorAll('#transform-q .tf-fehler li')].map(x => x.textContent);
+    const li = [...document.querySelectorAll('#transform-q .gt-fehler li')].map(x => x.textContent);
     return { li, n: transformState.fehler.length, richtig: transformState.correct, btn: (document.getElementById('transform-repeat-btn') || {}).textContent,
       eingabe: getComputedStyle(document.querySelector('#overlay-transform .conj-row')).display };
   });

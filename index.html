@@ -58,10 +58,10 @@
     --c-dot: #d0d0d0;
     --c-text-primary: #1a1a1a;
     --c-text-secondary: #555;
-    --c-text-tertiary: #888;
-    --c-text-muted: #767676;
-    --c-text-faint: #8a8a8a;
-    --c-text-soft: #999;
+    --c-text-tertiary: #6a6a66;
+    --c-warm: #b06a10;
+    --c-text-muted: #5f5f5b;
+    --c-text-faint: #6a6a66;
     --c-text-dim: #777;
     --c-text-de: #444;
     --c-text-label: #333;
@@ -101,9 +101,9 @@
     --c-text-primary: #e8e8e6;
     --c-text-secondary: #b0b6be;
     --c-text-tertiary: #8a9099;
+    --c-warm: #e0a24a;
     --c-text-muted: #8a919c;
     --c-text-faint: #8a919c;
-    --c-text-soft: #8a9099;
     --c-text-dim: #b0b6be;
     --c-text-de: #cdd1d8;
     --c-text-label: #cdd1d8;
@@ -205,8 +205,8 @@
   .settings-item { display: flex; align-items: center; gap: 6px; }
   .settings-item i { font-size: 14px; color: var(--c-text-tertiary); flex-shrink: 0; transition: color 0.2s; }
   .session-del { margin-left: 8px; width: 22px; height: 22px; line-height: 1; font-size: 16px; color: var(--c-text-tertiary); background: transparent; border: 0.5px solid var(--c-border); border-radius: 50%; cursor: pointer; flex-shrink: 0; }
-  .session-del:hover { color: var(--c-danger, #e5484d); border-color: currentColor; }
-  .cat-check-row-done .cat-count { color: var(--c-success, #2e7d32); }
+  .session-del:hover { color: var(--c-error-text); border-color: currentColor; }
+  .cat-check-row-done .cat-count { color: var(--c-success-text); }
   .set-row { display: flex; align-items: center; gap: 12px; padding: 12px 2px; border-bottom: 0.5px solid var(--c-border-light); }
   .set-row:last-child { border-bottom: 0; }
   .set-row > i { font-size: 18px; color: var(--c-text-tertiary); flex-shrink: 0; }
@@ -506,7 +506,7 @@
   .lvl-num { font-size: 12px; color: var(--c-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .lvl-gr { display: grid; grid-template-columns: 32px 1fr; gap: 10px; margin-bottom: 8px; align-items: start; }
   .lvl-gr-tools { display: flex; flex-wrap: wrap; gap: 6px; }
-  .lvl-tool { display: inline-flex; gap: 8px; align-items: center; border: 0.5px solid var(--c-border-input); background: var(--c-surface); color: var(--c-text); border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
+  .lvl-tool { display: inline-flex; gap: 8px; align-items: center; border: 0.5px solid var(--c-border-input); background: var(--c-surface); color: var(--c-text-primary); border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
   .lvl-tool:hover { background: var(--c-surface-alt); }
   /* Fortschritt nach Stufen: Ziel oben, am PC zwei Spalten */
   #overlay-levels .overlay-box { width: 980px; }
@@ -534,7 +534,7 @@
   .lvl-tool .lvl-t { height: 6px; }
   .lvl-gr-none { margin: 0 0 4px 42px; }
   .lvl-schwach { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
-  .lvl-chip { font: inherit; font-size: 12px; border: 0.5px solid var(--c-border-input); background: var(--c-surface); color: var(--c-text); border-radius: 99px; padding: 4px 10px; cursor: pointer; }
+  .lvl-chip { font: inherit; font-size: 12px; border: 0.5px solid var(--c-border-input); background: var(--c-surface); color: var(--c-text-primary); border-radius: 99px; padding: 4px 10px; cursor: pointer; }
   .lvl-chip:hover { background: var(--c-surface-alt); color: var(--c-accent-strong); }
   .lvl-next strong { color: var(--c-text-primary); }
   .lvl-more { font-size: 12px; color: var(--c-text-muted); align-self: center; }
@@ -576,7 +576,7 @@
   .gt-more-btn:hover, .gt-more-btn[aria-expanded="true"] { background: var(--c-surface-alt); }
   .gt-more-menu { display: none; position: absolute; right: 0; top: calc(100% + 4px); z-index: 30; min-width: 210px; background: var(--c-surface); border: 0.5px solid var(--c-border-light); border-radius: 10px; box-shadow: 0 6px 24px var(--c-shadow-strong); padding: 4px; }
   .gt-more.open .gt-more-menu { display: block; }
-  .gt-more-item { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; border: none; background: none; padding: 9px 10px; border-radius: 7px; font-size: 13px; color: var(--c-text); cursor: pointer; }
+  .gt-more-item { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; border: none; background: none; padding: 9px 10px; border-radius: 7px; font-size: 13px; color: var(--c-text-primary); cursor: pointer; }
   .gt-more-item:hover, .gt-more-item:focus-visible { background: var(--c-surface-alt); }
   .gt-more-item.gt-on::after { content: '✓'; margin-left: auto; color: var(--c-accent-strong); font-weight: 600; }
   .gt-modes { margin-bottom: 0.7rem; }
@@ -616,22 +616,24 @@
   .gt-task .case-question .case-prep { color: var(--c-text-primary); }
   /* Umformen: Ausgangsform klein, Art der Umformung, gesuchte Form groß als Lücke */
   .tf-from { display: block; font-size: 14px; color: var(--c-text-muted); }
-  .tf-from [lang="ru"] { font-size: 17px; font-weight: 600; color: var(--c-text-secondary, var(--c-text)); }
+  .tf-from [lang="ru"] { font-size: 17px; font-weight: 600; color: var(--c-text-secondary, var(--c-text-primary)); }
   .tf-task { display: inline-block; margin: 8px 0 4px; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); }
   .case-question .tf-gap { margin: 4px 0 2px; }
   .tf-person { color: var(--c-text-primary); }
+  /* nur für Vorleseprogramme */
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .tf-blank { display: inline-block; min-width: 4.2em; border-bottom: 2px solid var(--c-accent); color: transparent; line-height: 1.1; }
   .tf-blank.tf-filled { min-width: 0; color: var(--c-text-primary); border-bottom-color: currentColor; }
   .tf-blank.tf-filled.ok { color: var(--c-success-text); }
   .tf-blank.tf-filled.bad { color: var(--c-error-text); }
-  .tf-fehler { list-style: none; margin: 12px auto 4px; padding: 0; max-width: 460px; text-align: left; font-size: 14px; color: var(--c-text); }
-  .tf-fehler li { padding: 5px 0; border-bottom: 1px solid var(--c-border-light); }
-  .tf-fehler b { color: var(--c-text-primary); }
-  .tf-end-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
-  .tf-end-actions .tool-btn { font-size: 13.5px; padding: 8px 14px; color: var(--c-text); }
-  .tf-end-actions .gt-primary { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; }
-  .tf-end-actions .gt-primary:hover { opacity: .92; background: var(--c-accent); }
-  .tf-done .conj-row, .tf-done .gt-actions { display: none; }
+  .gt-fehler { list-style: none; margin: 12px auto 4px; padding: 0; max-width: 460px; text-align: left; font-size: 14px; color: var(--c-text-primary); }
+  .gt-fehler li { padding: 5px 0; border-bottom: 1px solid var(--c-border-light); }
+  .gt-fehler b { color: var(--c-text-primary); }
+  .gt-end-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+  .gt-end-actions .tool-btn { font-size: 13.5px; padding: 8px 14px; color: var(--c-text-primary); }
+  .gt-end-actions .gt-primary { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; }
+  .gt-end-actions .gt-primary:hover { opacity: .92; background: var(--c-accent); }
+  .gt-done .conj-row, .gt-done .gt-actions, .gt-done .case-options { display: none; }
   .gt-task .conj-de-hint { font-size: 15px; color: var(--c-text-muted); padding-top: 2px; }
   .gt-task .conj-de-hint b { font-size: 26px; line-height: 1.25; margin-right: 4px; color: var(--c-text-primary); }
   .gt-icon-btn { padding: 6px 9px; font-size: 15px; }
@@ -639,6 +641,7 @@
   .gt-pick:hover { background: var(--c-accent-soft-bg); }
   .gt-chev { font-size: 13px; opacity: 0.8; }
   .gt-actions { flex-wrap: wrap; margin-top: 10px; }
+  .gt-actions .tool-btn { min-height: 39px; }
   .gt-actions .gt-primary { flex: 2; background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; font-size: 13px; padding: 8px 12px; }
   .gt-actions .gt-primary:hover { opacity: 0.92; background: var(--c-accent); }
   .gt-kbd { font: 600 10.5px/1 inherit; padding: 2px 5px; border-radius: 4px; border: 1px solid currentColor; opacity: 0.6; margin-left: 2px; }
@@ -662,7 +665,7 @@
   }
   .grammar-panel-progress { font-size: 12px; font-weight: 600; color: var(--c-accent-strong); white-space: nowrap; margin-left: 10px; }
   .grammar-panel-progress:empty { display: none; }
-  .grammar-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--c-border-light); background: var(--c-surface); color: var(--c-text); border-radius: 999px; padding: 7px 13px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .grammar-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--c-border-light); background: var(--c-surface); color: var(--c-text-primary); border-radius: 999px; padding: 7px 13px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
   .grammar-chip:hover { border-color: var(--c-accent); }
   .grammar-chip.active { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); }
   .grammar-panel { display: none; background: var(--c-surface); border: 0.5px solid var(--c-border-light); border-radius: 16px; box-shadow: 0 2px 12px var(--c-shadow-strong); }
@@ -697,6 +700,8 @@
   .verb-row-active .td-ru { color: var(--c-accent-strong); font-weight: 500; }
   .td-ru { font-size: 18px; font-weight: 500; color: var(--c-text-primary); }
   .td-tr { font-size: 12px; color: var(--c-text-faint); font-style: italic; }
+  /* lange Vokabelliste: Zeilen außerhalb des sichtbaren Bereichs erst beim Hinrollen zeichnen */
+  #vocab-table-body tr { content-visibility: auto; contain-intrinsic-size: auto 48px; }
   .td-de { color: var(--c-text-de); }
   .motion-list-note { display: block; margin-top: 2px; font-size: 0.82em; opacity: 0.75; }
   .td-cat { font-size: 12px; color: var(--c-text-muted); white-space: nowrap; }
@@ -752,7 +757,7 @@
   border-radius: 10px;
   font-size: 16px;
   letter-spacing: 0.5px;
-  color: var(--c-text);
+  color: var(--c-text-primary);
 }
 .wg-stepwise .wg-step-open { color: var(--c-text-faint); }
 
@@ -836,7 +841,7 @@
   .cat-check-row-new i { color: var(--c-accent); }
   .cat-check-row-new span:first-of-type { color: var(--c-accent-strong); font-weight: 600; }
   .hq-flip-answer { min-height: 54px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
-    font-size: 22px; font-weight: 600; color: var(--c-text); overflow-wrap: anywhere; }
+    font-size: 22px; font-weight: 600; color: var(--c-text-primary); overflow-wrap: anywhere; }
   .hq-flip-answer .hq-flip-sub { font-size: 15px; font-weight: 400; color: var(--c-text-muted); }
   .hq-flip-answer .hq-flip-tr { font-size: 15px; font-weight: 400; font-style: italic; color: var(--c-text-faint); }
   .hq-flip-answer .hq-flip-hidden { font-size: 17px; font-weight: 400; color: var(--c-text-faint); }
@@ -888,14 +893,14 @@
   }
   .conj-grid { display: grid; gap: 8px; margin-bottom: 1rem; }
   .case-question { text-align: center; padding: 18px 12px 14px; font-size: 15px; color: var(--c-text-tertiary); }
-  .case-question .case-prep { display: block; font-size: 30px; font-weight: 600; color: var(--c-text); margin-bottom: 6px; }
-  .case-question .case-hint { display: block; font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .case-question .case-prep { display: block; font-size: 30px; font-weight: 600; color: var(--c-text-primary); margin-bottom: 6px; }
+  .case-question .case-hint { display: block; font-size: 13px; margin-top: 4px; }
   .case-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
   .case-options-2 { grid-template-columns: repeat(2, 1fr); }
   .gender-options { grid-template-columns: repeat(4, 1fr); }
   .gender-options .case-opt { font-size: 16px; font-weight: 500; }
-  .case-question .case-sentence { display: block; font-size: 19px; font-weight: 500; color: var(--c-text); margin-bottom: 8px; line-height: 1.5; }
-  .case-opt { border: 1px solid var(--c-border-light); background: var(--c-surface); border-radius: 9px; padding: 12px 6px; font-size: 14px; color: var(--c-text); cursor: pointer; transition: all 0.15s; }
+  .case-question .case-sentence { display: block; font-size: 19px; font-weight: 500; color: var(--c-text-primary); margin-bottom: 8px; line-height: 1.5; }
+  .case-opt { border: 1px solid var(--c-border-light); background: var(--c-surface); border-radius: 9px; padding: 12px 6px; font-size: 14px; color: var(--c-text-primary); cursor: pointer; transition: all 0.15s; }
   .case-opt:hover { border-color: var(--c-accent); }
   .case-opt.correct { border-color: var(--c-success-border); color: var(--c-success-text); background: var(--c-success-bg); font-weight: 600; }
   .case-opt.wrong { border-color: var(--c-error-border); color: var(--c-error-text); background: var(--c-error-bg); }
@@ -1241,7 +1246,7 @@
   .home-hello { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .home-hello h1 { margin: 0; font-size: 28px; font-weight: 600; }
   .home-hello p { margin: 4px 0 0; color: var(--c-text-muted); font-size: 14px; }
-  .home-hello p .ti-flame { color: var(--c-warm, #c9821d); }
+  .home-hello p .ti-flame { color: var(--c-warm); }
   .home-go { height: 52px; padding: 0 24px; border-radius: 14px; border: 0; background: var(--c-accent); color: var(--c-on-accent); display: flex; align-items: center; gap: 10px; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 18px var(--c-shadow-soft, rgba(0,0,0,.12)); }
   .home-go span { opacity: .8; font-weight: 400; font-size: 14px; }
   .home-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; grid-auto-flow: row dense; }
@@ -1305,7 +1310,7 @@
   .home-lvr.home-lvr-sum { cursor: default; border-top: 0.5px solid var(--c-border-light); padding-top: 9px; }
   .home-lvr.home-lvr-sum:hover b { color: inherit; }
   .home-lv-sum { margin-top: 10px; }
-  .home-up { width: 40px; flex-shrink: 0; text-align: right; font-size: 12px; color: var(--c-st4); font-weight: 600; cursor: help; font-variant-numeric: tabular-nums; }
+  .home-up { width: 40px; flex-shrink: 0; text-align: right; font-size: 12px; color: var(--c-success-text); font-weight: 600; cursor: help; font-variant-numeric: tabular-nums; }
   .home-lv-det { font-size: 12.5px; color: var(--c-text-secondary); margin: -4px 0 4px 34px; line-height: 1.45; }
   .home-lv-link { border: 0; background: none; color: var(--c-accent); font: inherit; font-weight: 600; padding: 4px 0; cursor: pointer; min-height: 32px; }
   .home-verlauf { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
@@ -1618,7 +1623,7 @@
 <p><strong>Faustregeln für -ь:</strong> -тель und -арь → männlich (учитель, словарь); Monatsnamen → männlich (июнь, декабрь); -ость/-есть → weiblich (скорость); nach ж, ш, ч, щ → immer weiblich (ночь, вещь, мышь). Alle übrigen Wörter auf -ь muss man mit dem Geschlecht lernen (день m, дверь f).</p>
 <p><strong>Ausnahmen:</strong> Männliche Personen auf -а/-я sind männlich (папа, дедушка, дядя, мужчина). кофе ist männlich. Unveränderliche Fremdwörter sind meist sächlich (метро, кино, меню, такси). Ausnahmen innerhalb der Faustregeln: гость m, тесть m, метель f.</p>
 <p><strong>Nur Plural:</strong> Manche Wörter haben keine Einzahl: деньги, часы (Uhr), очки, брюки, ножницы, каникулы. Begleiter und Adjektive stehen dann immer im Plural: эти часы, новые часы.</p>
-<p><strong>Bedienung:</strong> Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Regel stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung, das zählt als nicht gewusst. Eine Runde hat 20 Wörter; <em>Regelfälle</em> fragt nur Wörter ab, deren Endung eindeutig ist, <em>Schwierige</em> nur -ь, Ausnahmen und Plural-Wörter. Im ⋯-Menü startet <em>Neue Runde</em>.</p>
+<p><strong>Bedienung:</strong> Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Regel stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung, das zählt als nicht gewusst. Eine Runde hat 20 Wörter; <em>Regelfälle</em> fragt nur Wörter ab, deren Endung eindeutig ist, <em>Schwierige</em> nur -ь, Ausnahmen und Plural-Wörter. Im ⋯-Menü startet <em>Neue Runde</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" role="group" aria-label="Umfang">
 <button class="mode-btn active" id="gender-scope-all" onclick="setGenderScope('all')">Alle</button>
@@ -2318,7 +2323,7 @@
 <p><strong>Präpositionen mit zwei Fällen:</strong> Dann entscheidet die Bedeutung. Bei в, на, за, под gilt: Richtung (wohin?) → Akkusativ, Ort (wo?) → Präpositiv (в, на) bzw. Instrumental (за, под). Beispiel: в школу (in die Schule) – в школе (in der Schule). с heißt mit Instrumental „mit“, mit Genitiv „von, seit“.</p>
 <p>Die Übersicht zeigt alle Präpositionen nach Fall geordnet:</p>
 <table class="conj-info-table" id="case-info-table"></table>
-<p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung, das zählt als nicht gewusst. <em>Form bilden</em> – Präposition und Substantiv zur Wortgruppe verbinden. Im ⋯-Menü mischt <em>Neue Runde</em> alle Präpositionen neu und setzt den Zähler zurück.</p>
+<p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung, das zählt als nicht gewusst. <em>Form bilden</em> – Präposition und Substantiv zur Wortgruppe verbinden. Im ⋯-Menü mischt <em>Neue Runde</em> alle Präpositionen neu und setzt den Zähler zurück. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="conj-toolbar gt-modes"><div class="tense-switcher">
 <button class="mode-btn active" id="case-mode-btn-abstract" onclick="setCaseMode('abstract')">Fall wählen</button>
@@ -2369,7 +2374,7 @@
 <p>• einmalig: сейчас, в этот момент.</p>
 <p><strong>Zu Fuß oder mit Fahrzeug</strong> muss man immer unterscheiden: in der Stadt oft zu Fuß (идти/ходить), in eine andere Stadt immer mit Fahrzeug (ехать/ездить) – auch wenn man im Deutschen „gehen“ sagt.</p>
 <p><strong>Vergangenheit:</strong> Die einmaligen Verben sind oft unregelmäßig (идти → шёл, шла, шли; нести → нёс, несла), die wiederholten regelmäßig (ходил, носил).</p>
-<p><strong>Bedienung:</strong> <em>Partner</em> – zum Verb den Partner bilden, Richtung oben wählbar. <em>Wahl</em> – im Satz das passende Verb antippen: Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung, das zählt als nicht gewusst. <em>Anhören</em> liest den Satz vor – vor der Antwort mit einer Pause an der Lücke, danach vollständig; im ⋯-Menü mischt <em>Neue Runde</em> die Wahl-Sätze neu. <em>Liste</em> – alle 8 Paare im Überblick. Alle Formen der 16 Verben (Präsens, Futur, Vergangenheit, Imperativ) übst du im Werkzeug <em>Konjugieren</em>.</p>
+<p><strong>Bedienung:</strong> <em>Partner</em> – zum Verb den Partner bilden, Richtung oben wählbar. <em>Wahl</em> – im Satz das passende Verb antippen: Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung, das zählt als nicht gewusst. <em>Anhören</em> liest den Satz vor – vor der Antwort mit einer Pause an der Lücke, danach vollständig; im ⋯-Menü mischt <em>Neue Runde</em> die Wahl-Sätze neu. <em>Liste</em> – alle 8 Paare im Überblick. Alle Formen der 16 Verben (Präsens, Futur, Vergangenheit, Imperativ) übst du im Werkzeug <em>Konjugieren</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
@@ -8081,13 +8086,26 @@ function homeBestwerte(log) {
 }
 // Vorwoche: Antworten der sieben Tage vor dieser Woche
 function homeVorwoche(log) { let n = 0; for (let i = 7; i < 14; i++) n += (log[dayKey(daysAgo(i))] || [0])[0]; return n; }
+// Startseite: Karte „Diese Woche“ (Balken, Zahlen je Tag, Vorwoche, Bestwerte)
+function homeWeekCard(s) {
+  const max = Math.max(1, ...s.week.map(d => d.n));
+  return `<div class="home-card"><div class="home-k"><i class="ti ti-chart-bar"></i>Diese Woche</div>
+      ${s.weekSum ? `<div class="home-week" role="img" aria-label="Antworten der letzten sieben Tage: ${s.week.map(d => d.tag + ' ' + d.n).join(', ')}">${s.week.map((d, i) => `<div class="${d.n ? '' : 'leer'}${i === 6 ? ' heute' : ''}" style="height:${d.n ? Math.max(8, Math.round(d.n / max * 100)) : 6}%" title="${d.tag}: ${d.n ? d.n + (d.n === 1 ? ' Antwort' : ' Antworten') + ' · ' + Math.round(d.r / d.n * 100) + ' % richtig' : 'nicht geübt'}"></div>`).join('')}</div>
+      <div class="home-wl">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.tag}</span>`).join('')}</div>
+      <div class="home-wl home-wn" id="home-weeknums">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.n || '–'}</span>`).join('')}</div>
+      <div class="home-s" id="home-weeksum">${s.weekSum} ${s.weekSum === 1 ? 'Antwort' : 'Antworten'} · Ø ${Math.round(s.weekSum / Math.max(1, s.weekDays))} je Übungstag (${s.weekDays} von 7) · ${Math.round(s.weekRight / s.weekSum * 100)} % richtig</div>
+      ${(() => { const log = loadDaylog(), vw = homeVorwoche(log), b = homeBestwerte(log);
+        const vergleich = vw ? `<div class="home-s" id="home-vorwoche">${s.weekSum >= vw ? '+' : '−'}${Math.abs(Math.round((s.weekSum - vw) / vw * 100))} % zur Vorwoche (${vw})</div>` : '';
+        const best = b.bestN ? `<div class="home-s home-best" id="home-best"><i class="ti ti-trophy"></i>Bester Tag: ${b.bestK === dayKey() ? 'heute' : new Date(b.bestK + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' })} (${b.bestN}) · längste Serie: ${b.lang} ${b.lang === 1 ? 'Tag' : 'Tage'}</div>` : '';
+        return vergleich + best; })()}`
+      : '<div class="home-s home-empty" id="home-weeksum">Diese Woche noch nichts geübt.</div>'}</div>`;
+}
 function renderHome() {
   const el = document.getElementById('home-view'); if (!el) return;
   const s = homeStats(), h = new Date().getHours();
   const gruss = h < 5 ? 'Доброй ночи!' : h < 11 ? 'Доброе утро!' : h < 18 ? 'Добрый день!' : h < 23 ? 'Добрый вечер!' : 'Доброй ночи!';
   const datum = new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
   const due = s.dueWords + s.dueGrammar;
-  const max = Math.max(1, ...s.week.map(d => d.n));
   const ziel = s.goal > 0 ? Math.min(100, Math.round(s.today.a / s.goal * 100)) : 0;
   const ansicht = { vocab: ['ti-cards', 'Vokabeln'], grammar: ['ti-book-2', 'Grammatik'], listening: ['ti-headphones', 'Hören'] };
   const panelName = v => {
@@ -8101,7 +8119,6 @@ function renderHome() {
   const zuletzt = ['vocab', 'grammar', 'listening'].filter(v => s.times[v]).sort((a, b) => s.times[b] - s.times[a]);
   const plan = homePlanText(s), goLabel = homeGoLabel();
   const naechste = s.forecast.find(d => d.n);
-  const kommend = s.forecast.slice(due ? 0 : 1).filter(d => d.n).slice(0, 3).map(d => d.tag + ' ' + d.n).join(' · ');
   el.innerHTML = `
   <div class="home-hello"><div><h1 lang="ru">${gruss}</h1><p>${htmlEsc(datum)}${s.streak ? ' · <i class="ti ti-flame"></i> ' + s.streak + (s.streak === 1 ? ' Tag' : ' Tage') + ' in Folge geübt' : ''}</p></div>
     <div class="home-go-wrap"><button class="home-go" type="button" onclick="homeContinue()"><i class="ti ti-player-play"></i>Weiterlernen${goLabel ? '<span>· ' + htmlEsc(goLabel) + '</span>' : ''}</button>
@@ -8128,16 +8145,7 @@ function renderHome() {
       ${s.gewinn.neu + s.gewinn.auf + s.gewinn.gNeu + s.gewinn.gAuf ? `<div class="home-s home-gewinn" id="home-gewinn"><i class="ti ti-chart-line"></i>${[s.gewinn.neu ? s.gewinn.neu + ' neu gelernt' : '', s.gewinn.auf ? s.gewinn.auf + ' aufgestiegen' : '', s.gewinn.gNeu + s.gewinn.gAuf ? 'Grammatik ' + (s.gewinn.gNeu + s.gewinn.gAuf) : ''].filter(Boolean).join(' · ')}</div>` : ''}
       ${s.goal > 0 && s.today.a >= 2 * s.goal && DAY_GOALS.some(n => n > s.goal) ? `<div class="home-goal-pick" id="home-goal-up" role="group" aria-label="Höheres Tagesziel wählen"><span class="home-s">Höheres Ziel:</span>${DAY_GOALS.filter(n => n > s.goal).slice(0, 3).map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>` : ''}
       ${s.goal > 0 ? '' : `<div class="home-goal-pick" role="group" aria-label="Tagesziel festlegen"><span class="home-s">Tagesziel:</span>${DAY_GOALS.map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>`}</div></div>
-    <div class="home-card"><div class="home-k"><i class="ti ti-chart-bar"></i>Diese Woche</div>
-      ${s.weekSum ? `<div class="home-week" role="img" aria-label="Antworten der letzten sieben Tage: ${s.week.map(d => d.tag + ' ' + d.n).join(', ')}">${s.week.map((d, i) => `<div class="${d.n ? '' : 'leer'}${i === 6 ? ' heute' : ''}" style="height:${d.n ? Math.max(8, Math.round(d.n / max * 100)) : 6}%" title="${d.tag}: ${d.n ? d.n + (d.n === 1 ? ' Antwort' : ' Antworten') + ' · ' + Math.round(d.r / d.n * 100) + ' % richtig' : 'nicht geübt'}"></div>`).join('')}</div>
-      <div class="home-wl">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.tag}</span>`).join('')}</div>
-      <div class="home-wl home-wn" id="home-weeknums">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.n || '–'}</span>`).join('')}</div>
-      <div class="home-s" id="home-weeksum">${s.weekSum} ${s.weekSum === 1 ? 'Antwort' : 'Antworten'} · Ø ${Math.round(s.weekSum / Math.max(1, s.weekDays))} je Übungstag (${s.weekDays} von 7) · ${Math.round(s.weekRight / s.weekSum * 100)} % richtig</div>
-      ${(() => { const log = loadDaylog(), vw = homeVorwoche(log), b = homeBestwerte(log);
-        const vergleich = vw ? `<div class="home-s" id="home-vorwoche">${s.weekSum >= vw ? '+' : '−'}${Math.abs(Math.round((s.weekSum - vw) / vw * 100))} % zur Vorwoche (${vw})</div>` : '';
-        const best = b.bestN ? `<div class="home-s home-best" id="home-best"><i class="ti ti-trophy"></i>Bester Tag: ${b.bestK === dayKey() ? 'heute' : new Date(b.bestK + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' })} (${b.bestN}) · längste Serie: ${b.lang} ${b.lang === 1 ? 'Tag' : 'Tage'}</div>` : '';
-        return vergleich + best; })()}`
-      : '<div class="home-s home-empty" id="home-weeksum">Diese Woche noch nichts geübt.</div>'}</div>
+    ${homeWeekCard(s)}
     ${(() => { const summe = homeLevelSumme(s.levels), gram = homeGrammarRows(Date.now()), gsum = homeLevelSumme(gram);
       return `<div class="home-card home-wide" id="home-stufen"><div class="home-k"><i class="ti ti-school"></i>Stand je Sprachstufe<span class="home-legend">Wiederholung${[1, 2, 3, 4, 5].map(i => `<span class="home-lgi" tabindex="0" data-st="${i}" title="${homeStufeInfo(i)}"><span class="home-lg s${i}"></span>${i === 5 ? '5 sicher' : i}</span>`).join('')}</span></div>
       <div class="home-lv">${homeStufenRows([...s.levels, summe], { id: 'lv', klick: 'openLevelOverview', klickText: 'Stufenübersicht' })}</div>
@@ -8481,6 +8489,9 @@ let selectedBlocksByCat = {};
 let blockPickerCat = null; // Kategorie, für die das Block-Auswahl-Fenster gerade offen ist
 let selectedCats = new Set(); // für Mehrfachauswahl-Modus ('multi')
 let currentWord = null;
+// Start: noch keine Ansicht – sie wird am Ende des Skripts gesetzt (meist „Heute“)
+let appView = '';
+let cardSpeakPending = false;
 let correct = 0, wrong = 0, streak = 0, answered = false, showTranscription = true;
 // Transliteration: 'speech' = nach der Aussprache, 'letters' = Buchstabe für Buchstabe, 'off' = aus
 let transcriptionMode = 'speech';
@@ -8665,7 +8676,7 @@ function openWordDetail(w) {
   sentRow.style.display = sent ? '' : 'none';
   if (sent) {
     document.getElementById('wd-sentence-ru').textContent = sent.ru;
-    document.getElementById('wd-sentence-ru').insertAdjacentHTML('beforeend', ' ' + lvlBadge(sentenceLevel(sent.ru)));
+    document.getElementById('wd-sentence-ru').insertAdjacentHTML('beforeend', ' ' + lvlBadge(sentenceLevel(sent.ru, w.ru.split(' / '))));
     document.getElementById('wd-sentence-de').textContent = sent.de;
   }
   const cat = getWordCategory(w);
@@ -12601,11 +12612,6 @@ const SENTENCE_PAIRS = [
     targets: ['рентген'],
   },
   {
-    ru: 'Мой отец — инженер.',
-    de: 'Mein Vater ist Ingenieur.',
-    targets: ['инженер'],
-  },
-  {
     ru: 'Пекарь печёт хлеб рано утром.',
     de: 'Der Bäcker backt früh am Morgen Brot.',
     targets: ['пекарь', 'хлеб'],
@@ -12983,7 +12989,7 @@ const SENTENCE_PAIRS = [
   { ru: 'Над городом смог.', de: 'Über der Stadt liegt Smog.', targets: ['смог'] },
   { ru: 'На окне снежинка.', de: 'Am Fenster ist eine Schneeflocke.', targets: ['снежинка'] },
   { ru: 'С крыши висит сосулька.', de: 'Vom Dach hängt ein Eiszapfen.', targets: ['сосулька'] },
-  { ru: 'Сегодня непогода.', de: 'Heute ist Unwetter.', targets: ['непогода'] },
+  { ru: 'Сегодня непогода.', de: 'Heute herrscht Unwetter.', targets: ['непогода'] },
   { ru: 'Вечером приятная прохлада.', de: 'Am Abend ist eine angenehme Kühle.', targets: ['прохлада'] },
   { ru: 'Термометр показывает минус пять.', de: 'Das Thermometer zeigt minus fünf.', targets: ['термометр'] },
   { ru: 'Это большое животное.', de: 'Das ist ein großes Tier.', targets: ['животное'] },
@@ -13960,6 +13966,10 @@ Object.entries(MERGED_CARDS).forEach(([ru, parts]) => {
   if (ls.length && !WORD_LEVEL.has(ru)) WORD_LEVEL.set(ru, ls.sort((a, b) => LEVELS.indexOf(a) - LEVELS.indexOf(b))[0]);
 });
 function wordLevel(w) { return (w && WORD_LEVEL.get(w.ru)) || null; }
+// klein geschrieben, damit Eigennamen im Satz (Америка) und am Satzanfang gefunden werden;
+// bei gleich geschriebenen Wörtern (Уран/уран) zählt die leichtere Stufe
+const WORD_LEVEL_LC = new Map();
+LEVELS.forEach(l => WORD_LEVEL.forEach((wl, ru) => { if (wl === l && !WORD_LEVEL_LC.has(ru.toLowerCase())) WORD_LEVEL_LC.set(ru.toLowerCase(), l); }));
 // Stufen der Wortformen in den Übungssätzen (alles, was hier fehlt, gilt als A1).
 // Quelle wie bei den Wörtern: Grundform über die Formentabellen von OpenRussian.org
 // (CC BY-SA 4.0), Stufe nach Häufigkeitsrang (OpenSubtitles-Liste) bzw. Vokabelstufe.
@@ -13974,12 +13984,18 @@ const SENT_FORM_LISTS = {
 const SENT_FORM_LEVEL = new Map();
 Object.entries(SENT_FORM_LISTS).forEach(([l, list]) => list.split(' ').forEach(f => { if (f) SENT_FORM_LEVEL.set(f, l); }));
 // Stufe eines Satzes = Stufe seines schwersten Worts
-function sentenceLevel(ru) {
+// targets: die Wörter, zu denen der Satz gehört – der Satz ist nie leichter als sie
+// (gebeugte Formen neuer Wörter stehen oft nicht in SENT_FORM_LISTS und gälten sonst als A1)
+function sentenceLevel(ru, targets) {
   let max = 0;
   (String(ru).toLowerCase().match(/[а-яё]+(?:-[а-яё]+)?/g) || []).forEach(t => {
     const f = t.replace(/ё/g, 'е');
-    const l = SENT_FORM_LEVEL.get(f) || WORD_LEVEL.get(t) || WORD_LEVEL.get(f) || 'A1';
+    const l = SENT_FORM_LEVEL.get(f) || WORD_LEVEL_LC.get(t) || WORD_LEVEL_LC.get(f) || 'A1';
     max = Math.max(max, LEVELS.indexOf(l));
+  });
+  (targets || []).forEach(t => {
+    const l = WORD_LEVEL.get(t) || WORD_LEVEL_LC.get(String(t).toLowerCase());
+    if (l) max = Math.max(max, LEVELS.indexOf(l));
   });
   return LEVELS[max];
 }
@@ -15000,7 +15016,11 @@ function renderCard(word) {
   renderTranscription();
   const speakBtn = document.getElementById('speak-btn');
   if (speakBtn) speakBtn.style.display = (quizDirection === 'ru-de') ? '' : 'none';
-  if (autoplayAudio && quizDirection === 'ru-de') speak(currentWord.ru);
+  // Auto-Vorlesen nur, wenn die Vokabeln zu sehen sind – sonst beim Wechsel dorthin nachholen
+  cardSpeakPending = false;
+  if (autoplayAudio && quizDirection === 'ru-de') {
+    if (appView === 'vocab') speak(currentWord.ru); else cardSpeakPending = true;
+  }
   updateBookmarkBtnIcon();
   const lvEl = document.getElementById('card-level');
   if (lvEl) { const lv = wordLevel(word); lvEl.innerHTML = lvlBadge(lv); lvEl.dataset.lv = lv || ''; }
@@ -15250,6 +15270,7 @@ function gtChoose(c, choice) {
   if (!it || c.answered) return;
   c.answered = true;
   const ok = choice === c.right(it);
+  if (!ok && c.fehler) c.fehler(it);
   gtChoiceMark(c, it, choice);
   const [key, id] = c.srs(it);
   progressMark(key, id, ok);
@@ -15266,6 +15287,7 @@ function gtChoiceReveal(c) {
   const it = c.item();
   if (!it || c.answered) return;
   c.answered = true;
+  if (c.fehler) c.fehler(it);
   gtChoiceMark(c, it, null);
   const [key, id] = c.srs(it);
   progressSeen(key, id);
@@ -15275,7 +15297,7 @@ function gtChoiceNext(c) {
   const it = c.item();
   if (!it) return;
   clearTimeout(c.timer);
-  if (!c.answered) { const [key, id] = c.srs(it); progressSeen(key, id); }
+  if (!c.answered) { const [key, id] = c.srs(it); progressSeen(key, id); if (c.fehler) c.fehler(it); }
   c.advance();
 }
 // Enter nach dem Antworten = nächste Aufgabe (im gerade sichtbaren Wahl-Werkzeug)
@@ -15294,6 +15316,18 @@ document.addEventListener('keydown', e => {
   gtChoiceNext(c);
 });
 
+// Rundenende der Werkzeuge mit Runden (Geschlecht, Kasus wählen, Bewegungsverben-Wahl, Umformen):
+// Ergebnis, Fehlerliste mit Lösung (falsch, aufgedeckt, übersprungen), „Fehler wiederholen“ und „Neue Runde“.
+//   fehler: [{ frage, loesung }] (schon als HTML), id: Präfix für den Wiederholen-Knopf
+function gtRoundEndHtml(richtig, n, fehler, id, wiederholen, neu) {
+  const neuBtn = primary => '<button class="tool-btn' + (primary ? ' gt-primary' : '') + '" onclick="' + neu + '" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button>';
+  return '<span class="case-prep">Runde fertig</span>' + richtig + ' von ' + n + ' richtig'
+    + (fehler.length
+      ? '<ul class="gt-fehler" aria-label="Fehler dieser Runde">' + fehler.map(f => '<li>' + f.frage + ': <b>' + f.loesung + '</b></li>').join('') + '</ul>'
+        + '<span class="gt-end-actions"><button class="tool-btn gt-primary" id="' + id + '-repeat-btn" onclick="' + wiederholen + '" type="button"><i class="ti ti-repeat"></i> Fehler wiederholen (' + fehler.length + ')</button>' + neuBtn(false) + '</span>'
+      : '<span class="case-hint">Keine Fehler.</span><span class="gt-end-actions">' + neuBtn(true) + '</span>');
+}
+function gtSetDone(panelId, done) { const p = document.getElementById(panelId); if (p) p.classList.toggle('gt-done', done); }
 function gtAnswers(c, t) { return c.answers ? c.answers(t) : [t.answer]; }
 function gtScore(c) {
   const el = document.getElementById(c.p + '-score');
@@ -16556,7 +16590,6 @@ const GRAMMAR_PANEL_OPENERS = {
   wordgroup: () => openWordgroup(), sentencebuild: () => openSentenceBuild(), aspect: () => openAspect(),
   caseform: () => openCaseForm('noun'), caseadj: () => openCaseAdj(), pronform: () => openPronForm(), adjform: () => openAdjForm(),
 };
-let appView = 'vocab';
 
 // PC (> 700 px): Bereiche und Werkzeuge der Grammatik stehen in der Seitenleiste,
 // am Handy wie bisher über dem Werkzeug
@@ -16602,6 +16635,7 @@ function setAppView(view) {
   appView = view;
   applyViewVisibility(view);
   if (view === 'home') renderHome();
+  if (view === 'vocab' && cardSpeakPending && currentWord && !answered && autoplayAudio && quizDirection === 'ru-de') { cardSpeakPending = false; speak(currentWord.ru); }
   if (view === 'grammar' && !document.querySelector('#grammar-view .grammar-panel.open')) {
     const last = readStoredPanel(GRAMMAR_PANEL_KEY, 'grammarPanel');
     if (last && GRAMMAR_PANEL_OPENERS[last]) GRAMMAR_PANEL_OPENERS[last]();
@@ -17088,6 +17122,7 @@ let vocabListPool = [];
     const tb = document.getElementById('vocab-table-body');
     if (tb && tb.firstChild) tb.textContent = '';
     vocabListPool = [];
+    vocabListRows = [];
   }).observe(ov, { attributes: true, attributeFilter: ['class'] });
 })();
 // Handy: Öffnet sich die Bildschirmtastatur, soll die Aufgabe über dem Feld
@@ -17150,6 +17185,7 @@ function openVocabList() {
   const vb = document.querySelector('#overlay-vocab .overlay-body'); if (vb) { vb.scrollLeft = 0; vb.scrollTop = 0; }
 }
 
+let vocabListRows = [];
 function renderVocabTable() {
   const search = document.getElementById('vocab-search').value.trim().toLowerCase();
   const sortMode = document.getElementById('vocab-sort').value;
@@ -17187,12 +17223,22 @@ function renderVocabTable() {
   const tbody = document.getElementById('vocab-table-body');
   const emptyMsg = document.getElementById('vocab-empty');
   tbody.innerHTML = '';
+  vocabListRows = list;
+  // Zeilen als ein HTML-Text auf einmal einsetzen (statt 3600 einzelner Elemente) – Klick über die Tabelle
+  if (!tbody.dataset.klick) {
+    tbody.dataset.klick = '1';
+    tbody.addEventListener('click', ev => {
+      const tr = ev.target.closest('tr[data-i]');
+      if (tr && !ev.target.closest('button')) openWordDetail(vocabListRows[+tr.dataset.i]);
+    });
+  }
 
   if (list.length === 0) {
     emptyMsg.style.display = 'block';
   } else {
     emptyMsg.style.display = 'none';
-    list.forEach(w => {
+    const rows = [];
+    list.forEach((w, i) => {
       const s = scores[w.ru];
       let pill;
       if (!s || (s.correct === 0 && s.wrong === 0)) {
@@ -17208,18 +17254,14 @@ function renderVocabTable() {
       const cat = getWordCategory(w);
       const block = getWordBlockLabel(w, cat);
       const catText = cat + (block ? ' · ' + block : '');
-      const tr = document.createElement('tr');
-      tr.title = 'Details zu diesem Wort';
-      tr.tabIndex = 0;
-      tr.onclick = (ev) => { if (!ev.target.closest('button')) openWordDetail(w); };
-      tr.innerHTML = `
+      rows.push(`<tr data-i="${i}" tabindex="0" title="Details zu diesem Wort">
         <td><div class="td-ru" lang="ru">${w.ru} ${lvlBadge(wordLevel(w))}</div><div class="td-tr">[ ${trFor(w)} ]</div></td>
         <td class="td-de">${w.de.join(', ')}</td>
         <td class="td-cat">${catText}</td>
         <td class="td-score">${pill}${(le => le && le.d ? ' <span class="ever-ok runs-' + le.d + '" role="img" title="' + lifeRunsText(le) + '" aria-label="' + lifeRunsText(le) + '"><i class="ti ti-circle-check" aria-hidden="true"></i>' + le.d + '/' + LIFE_RUNS_MAX + '</span>' : '')(lifeVocabEntry(w))}</td>
-        <td class="td-bookmark">${bookmarkCell}</td>`;
-      tbody.appendChild(tr);
+        <td class="td-bookmark">${bookmarkCell}</td></tr>`);
     });
+    tbody.innerHTML = rows.join('');
   }
 }
 
@@ -21044,7 +21086,6 @@ function setWgType(t) {
     const b = document.getElementById(wgId('type-' + x));
     if (b) b.classList.toggle('active', x === t);
   });
-  const isSentence = WG_SENTENCE_TYPES.includes(t);
   // Numerus-Umschalter nur bei Nominalphrasen; Kasusfilter nur wo der Kasus frei ist
   // Numerus nur dort, wo er wirklich wirkt: Begleiter sind nur im Singular
   // hinterlegt, Zahl+Adj+Subst bestimmt die Formen selbst.
@@ -21500,7 +21541,7 @@ function speakAspect() {
 }
 function speakTransform() {
   const item = transformState.queue[transformState.index];
-  if (item) speak(item.from);
+  if (item) speak(transformState.answered ? item.answer : item.from);
 }
 function speakCaseDrill() {
   if (caseState.mode === 'word' && caseState.wordCurrent)
@@ -22371,7 +22412,7 @@ const GENDER_LIST = {
   m: ('рыцарь князь рубль парень шампунь штабель пароль баррель кашель дождь ливень штиль уровень корабль зять картофель февраль апрель июнь июль '
     + 'сентябрь октябрь ноябрь декабрь день полдень медведь олень гусь лось локоть ноготь ремень огонь корень стебель '
     + 'король некрополь монастырь ячмень никель уголь спектакль фестиваль руль автомобиль туннель гвоздь кабель пиксель модуль '
-    + 'гость папа дедушка дядя мужчина кофе камень зверь конь').split(' '),
+    + 'гость папа дедушка дядя мужчина юноша кофе камень зверь конь').split(' '),
   f: ('очередь подпись печать медаль площадь степень болезнь боль тетрадь изморось оттепель слякоть жизнь цель часть '
     + 'свекровь мать соль морковь власть прибыль лошадь грудь ладонь печень бровь голень скатерть цепь обувь дверь мебель '
     + 'кровать тень ель водоросль летопись церковь заповедь исповедь проповедь мечеть ересь степь медь ртуть любовь '
@@ -22381,7 +22422,7 @@ const GENDER_LIST = {
     + 'аплодисменты тиски плоскогубцы пассатижи опилки макароны выборы переговоры осадки гастроли вилы кадры права').split(' '),
 };
 // Wörter mit zwei Geschlechtern, reine Pluralformen zählbarer Wörter und Unsicheres
-const GENDER_EXCLUDE = new Set(('коллега судья сирота тёзка торнадо промилле пенальти дьюти-фри листья семена данные '
+const GENDER_EXCLUDE = new Set(('коллега судья сирота тёзка полвека торнадо промилле пенальти дьюти-фри листья семена данные '
   + 'выходные лёгкие родители '
   // im Wortschatz in der Mehrzahl, haben aber eine Einzahl – „nur Pl“ wäre falsch
   + 'лыжи заморозки близнецы показатели советы санкции потери волосы ягодицы спички перчатки носки сапоги '
@@ -22393,7 +22434,7 @@ function genderOf(ru) {
   if (GENDER_EXCLUDE.has(ru)) return null;
   const inList = g => GENDER_LIST[g].includes(ru);
   if (inList('pl')) return { g: 'pl', why: 'Nur Plural: Es gibt keine Einzahl – das Wort steht immer in der Mehrzahl.', hard: true };
-  if (['папа', 'дедушка', 'дядя', 'мужчина'].includes(ru))
+  if (['папа', 'дедушка', 'дядя', 'мужчина', 'юноша'].includes(ru))
     return { g: 'm', why: 'Männlich trotz -а/-я: Gemeint ist eine männliche Person.', hard: true };
   if (ru === 'кофе') return { g: 'm', why: 'кофе ist eine Ausnahme: männlich, obwohl es auf -е endet und unveränderlich ist.', hard: true };
   if (ru === 'пони') return { g: 'm', why: 'Unveränderliche Fremdwörter für Tiere sind männlich (пони, кенгуру, шимпанзе).', hard: true };
@@ -22418,6 +22459,7 @@ function genderOf(ru) {
   return null;
 }
 let genderPoolCache = null;
+const GENDER_ADJ_NOUN = /^[a-zäöüß]+(e|er|es|en) [A-ZÄÖÜ][a-zäöüß]+$/;
 function genderPool() {
   if (genderPoolCache) return genderPoolCache;
   const seen = new Map();
@@ -22427,7 +22469,8 @@ function genderPool() {
       const de = (w.de && w.de[0]) || '';
       // Karten mit zwei Wörtern (паллета / поддон): jedes Wort einzeln abfragen
       (w.ru || '').split(' / ').forEach(ru => {
-        if (!ru || seen.has(ru) || !/^[а-яё-]+$/.test(ru) || !/^[A-ZÄÖÜ]/.test(de)) return;
+        // Substantiv = deutsche Übersetzung großgeschrieben oder „Adjektiv + Substantiv“ (alter Mann, offene Stelle)
+        if (!ru || seen.has(ru) || !/^[а-яё-]+$/.test(ru) || !(/^[A-ZÄÖÜ]/.test(de) || GENDER_ADJ_NOUN.test(de))) return;
         const info = genderOf(ru);
         if (info) seen.set(ru, Object.assign({ id: ru, ru, de: stripClarification(de) }, info));
       });
@@ -22443,6 +22486,7 @@ const genderState = {
   index: 0,
   correct: 0,
   answered: false,
+  fehler: [],
 };
 function genderScopePool() {
   const p = genderPool();
@@ -22477,11 +22521,16 @@ function restartGender() {
     const id = progressNext('gender', rest, prev);
     queue.push(id); prev = id;
   }
-  genderState.queue = queue.map(id => pool.find(x => x.id === id));
+  startGenderRound(queue.map(id => pool.find(x => x.id === id)));
+}
+function startGenderRound(queue) {
+  genderState.queue = queue;
   genderState.index = 0;
   genderState.correct = 0;
+  genderState.fehler = [];
   renderGenderQuestion();
 }
+function repeatGenderErrors() { if (genderState.fehler.length) startGenderRound(shuffleInPlace(genderState.fehler.slice())); }
 function renderGenderQuestion() {
   const st = genderState;
   gtChoiceReset(GENDER_CHOICE);
@@ -22489,9 +22538,10 @@ function renderGenderQuestion() {
   const optEl = document.getElementById('gender-opts');
   document.getElementById('gender-result').textContent = '';
   const item = st.queue[st.index];
+  gtSetDone('overlay-gender', !item);
   if (!item) {
-    qEl.innerHTML = '<span class="case-prep">Fertig</span>' + st.correct + ' von ' + st.queue.length + ' richtig';
-    optEl.innerHTML = '<button class="case-opt" type="button" onclick="restartGender()" style="grid-column:1/-1">Neue Runde</button>';
+    qEl.innerHTML = gtRoundEndHtml(st.correct, st.queue.length, (st.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.ru) + '</span> (' + htmlEsc(x.de) + ')', loesung: x.g === 'pl' ? 'nur Plural' : x.g + ' – ' + GENDER_NAME[x.g] })), 'gender', 'repeatGenderErrors()', 'restartGender()');
+    optEl.innerHTML = '';
     document.getElementById('gender-score').textContent = '';
     return;
   }
@@ -22511,6 +22561,7 @@ const GENDER_CHOICE = {
     document.getElementById('gender-score').textContent = (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.correct + ' richtig';
   },
   advance: () => { genderState.index++; renderGenderQuestion(); },
+  fehler: it => genderState.fehler.push(it),
 };
 GT_CHOICES.push(GENDER_CHOICE);
 function answerGender(g) { gtChoose(GENDER_CHOICE, g); }
@@ -23078,6 +23129,7 @@ const caseState = {
   index: 0,
   correct: 0,
   answered: 0,
+  fehler: [],
   wordCurrent: null,
   wordDone: 0,
   wordCorrect: 0,
@@ -23096,6 +23148,7 @@ function toggleCaseHint() {
 
 function setCaseMode(mode) {
   caseState.mode = mode;
+  gtSetDone('overlay-casedrill', false);
   saveToolSettings();
   document.getElementById('case-mode-btn-abstract').classList.toggle('active', mode === 'abstract');
   document.getElementById('case-mode-btn-word').classList.toggle('active', mode === 'word');
@@ -23151,19 +23204,27 @@ function restartCaseDrill() {
     const j = Math.floor(Math.random() * (i + 1));
     [caseState.queue[i], caseState.queue[j]] = [caseState.queue[j], caseState.queue[i]];
   }
+  startCaseRound(caseState.queue);
+}
+function startCaseRound(queue) {
+  caseState.queue = queue;
   caseState.index = 0;
   caseState.correct = 0;
   caseState.answered = 0;
+  caseState.fehler = [];
   renderCaseQuestion();
 }
+function repeatCaseErrors() { if (caseState.fehler.length) startCaseRound(shuffleInPlace(caseState.fehler.slice())); }
 
 function renderCaseQuestion() {
   gtChoiceReset(CASE_CHOICE);
   const qEl = document.getElementById('case-question');
   const optEl = document.getElementById('case-options');
   document.getElementById('case-result').textContent = '';
-  if (caseState.index >= caseState.queue.length) {
-    qEl.innerHTML = '<span class="case-prep">Fertig</span>' + caseState.correct + ' von ' + caseState.queue.length + ' richtig';
+  const fertig = caseState.index >= caseState.queue.length;
+  gtSetDone('overlay-casedrill', fertig && caseState.mode === 'abstract');
+  if (fertig) {
+    qEl.innerHTML = gtRoundEndHtml(caseState.correct, caseState.queue.length, (caseState.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.prep) + '</span>' + (x.hint ? ' (' + htmlEsc(x.hint) + ')' : ''), loesung: htmlEsc(x.kasus) })), 'case', 'repeatCaseErrors()', 'restartCaseDrill()');
     optEl.innerHTML = '';
     document.getElementById('case-score').textContent = '';
     return;
@@ -23190,6 +23251,7 @@ const CASE_CHOICE = {
       (caseState.index + 1) + ' / ' + caseState.queue.length + ' · ' + caseState.correct + ' richtig';
   },
   advance: () => { caseState.index++; renderCaseQuestion(); },
+  fehler: it => caseState.fehler.push(it),
 };
 GT_CHOICES.push(CASE_CHOICE);
 function answerCaseDrill(kasus) { gtChoose(CASE_CHOICE, kasus); }
@@ -23371,6 +23433,7 @@ const motionState = {
   queue: [],
   qIndex: 0,
   qCorrect: 0,
+  fehler: [],
 };
 
 // Wahl-Drill: der Kontext im Satz entscheidet, welche der beiden Formen passt.
@@ -23515,18 +23578,26 @@ function restartMotionQuiz() {
     const j = Math.floor(Math.random() * (i + 1));
     [motionState.queue[i], motionState.queue[j]] = [motionState.queue[j], motionState.queue[i]];
   }
+  startMotionRound(motionState.queue);
+}
+function startMotionRound(queue) {
+  motionState.queue = queue;
   motionState.qIndex = 0;
   motionState.qCorrect = 0;
+  motionState.fehler = [];
   renderMotionQuestion();
 }
+function repeatMotionErrors() { if (motionState.fehler.length) startMotionRound(shuffleInPlace(motionState.fehler.slice())); }
 
 function renderMotionQuestion() {
   gtChoiceReset(MOTION_CHOICE);
   const qEl = document.getElementById('motion-q');
   const optEl = document.getElementById('motion-opts');
   document.getElementById('motion-q-result').textContent = '';
-  if (motionState.qIndex >= motionState.queue.length) {
-    qEl.innerHTML = '<span class="case-prep">Fertig</span>' + motionState.qCorrect + ' von ' + motionState.queue.length + ' richtig';
+  const fertig = motionState.qIndex >= motionState.queue.length;
+  gtSetDone('motion-quiz-view', fertig);
+  if (fertig) {
+    qEl.innerHTML = gtRoundEndHtml(motionState.qCorrect, motionState.queue.length, (motionState.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.ru) + '</span>', loesung: '<span lang="ru">' + htmlEsc(x.correct) + '</span>' })), 'motion', 'repeatMotionErrors()', 'restartMotionQuiz()');
     optEl.innerHTML = '';
     document.getElementById('motion-q-score').textContent = '';
     return;
@@ -23551,6 +23622,7 @@ const MOTION_CHOICE = {
       (motionState.qIndex + 1) + ' / ' + motionState.queue.length + ' · ' + motionState.qCorrect + ' richtig';
   },
   advance: () => { motionState.qIndex++; renderMotionQuestion(); },
+  fehler: it => motionState.fehler.push(it),
 };
 GT_CHOICES.push(MOTION_CHOICE);
 function answerMotionQuiz(form) { gtChoose(MOTION_CHOICE, form); }
@@ -23700,7 +23772,7 @@ function transformGapHtml(item, fill) {
   const person = item.prompt.split(' + ')[0];
   const luecke = fill
     ? '<span class="tf-blank tf-filled ' + fill.cls + '">' + htmlEsc(fill.text) + '</span>'
-    : '<span class="tf-blank" aria-label="Lücke">___</span>';
+    : '<span class="tf-blank"><span class="sr-only">Lücke</span><span aria-hidden="true">___</span></span>';
   return item.kind === 'imperative'
     ? '<span class="tf-person">(' + person + ')</span> ' + luecke + '!'
     : '<span class="tf-person">' + person + '</span> ' + luecke;
@@ -23719,18 +23791,12 @@ function renderTransform() {
   input.disabled = false;
   document.getElementById('transform-result').textContent = '';
   const panel = document.getElementById('overlay-transform');
-  if (panel) panel.classList.toggle('tf-done', !item);
+  if (panel) panel.classList.toggle('gt-done', !item);
   if (!item) {
-    const st = transformState, n = st.queue.length;
-    const fehler = st.fehler.map(t => '<li><span lang="ru">' + htmlEsc(t.from) + '</span> → ' + htmlEsc(t.task) + ', ' + htmlEsc(t.prompt.split(' + ')[0])
-      + ': <b lang="ru">' + htmlEsc(t.answer) + '</b></li>').join('');
-    document.getElementById('transform-q').innerHTML =
-      '<span class="case-prep">Runde fertig</span>' + st.correct + ' von ' + n + ' richtig'
-      + (st.fehler.length
-        ? '<ul class="tf-fehler" aria-label="Fehler dieser Runde">' + fehler + '</ul>'
-          + '<span class="tf-end-actions"><button class="tool-btn gt-primary" id="transform-repeat-btn" onclick="repeatTransformErrors()" type="button"><i class="ti ti-repeat"></i> Fehler wiederholen (' + st.fehler.length + ')</button>'
-          + '<button class="tool-btn" onclick="restartTransform()" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button></span>'
-        : '<span class="case-hint">Keine Fehler.</span><span class="tf-end-actions"><button class="tool-btn gt-primary" onclick="restartTransform()" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button></span>');
+    const st = transformState;
+    document.getElementById('transform-q').innerHTML = gtRoundEndHtml(st.correct, st.queue.length,
+      st.fehler.map(t => ({ frage: '<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + htmlEsc(t.task) + ', ' + htmlEsc(t.prompt.split(' + ')[0]), loesung: '<span lang="ru">' + htmlEsc(t.answer) + '</span>' })),
+      'transform', 'repeatTransformErrors()', 'restartTransform()');
     document.getElementById('transform-score').textContent = '';
     input.disabled = true;
     input.placeholder = 'Runde fertig';
@@ -23794,15 +23860,15 @@ function buildDictationPool() {
       if (!v.ru || !v.ru.includes('___') || v.ru.includes('%rand%')) return;
       const entry = findVocabEntry(word);
       const de = entry ? v.de.replace(/___/g, stripClarification(entry.de[0])) : v.de.replace(/___/g, '…');
-      out.push({ ru: capitalize(v.ru.replace(/___/g, word)), de: capitalize(de) });
+      out.push({ ru: capitalize(v.ru.replace(/___/g, word)), de: capitalize(de), tg: [word] });
     });
   });
   SENTENCE_PAIRS.forEach(p => {
-    if (p.ru && !p.ru.includes('%rand%')) out.push({ ru: p.ru, de: p.de });
+    if (p.ru && !p.ru.includes('%rand%')) out.push({ ru: p.ru, de: p.de, tg: p.targets || [] });
   });
   // gleiche Sätze nur einmal (sie kommen aus Vorlagen und Satzpaaren)
   const gesehen = new Set();
-  return out.filter(x => !gesehen.has(x.ru) && gesehen.add(x.ru)).map(x => Object.assign(x, { lvl: sentenceLevel(x.ru) }));
+  return out.filter(x => !gesehen.has(x.ru) && gesehen.add(x.ru)).map(x => { const lvl = sentenceLevel(x.ru, x.tg); delete x.tg; return Object.assign(x, { lvl }); });
 }
 
 function openDictation() {
@@ -24424,7 +24490,6 @@ function restartHearquiz(forceWord) {
   hqState.answered = false; hqState.lastCorrect = false; hqState.revealed = false; hqState.lastInput = '';
   const typeRow = document.getElementById('hq-type-row');
   const choiceRow = document.getElementById('hq-choice-row');
-  const checkBtn = document.getElementById('hq-check-btn');
   typeRow.style.display = hqState.mode === 'type' ? '' : 'none';
   choiceRow.style.display = hqState.mode === 'choice' ? '' : 'none';
   const flipRow = document.getElementById('hq-flip-row');
