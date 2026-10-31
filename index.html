@@ -16085,6 +16085,18 @@ function resetDialogSize(id) {
   });
   window.addEventListener('resize', () => { const s = dialogSizes(); document.querySelectorAll('.overlay').forEach(o => { const b = o.querySelector('.overlay-box'); if (b && s[o.id]) applyDialogSize(b, s[o.id]); }); });
 })();
+// Gedrückt gehaltene Taste: Die automatische Tastenwiederholung des Systems darf keine weiteren Antworten auslösen
+// (1/2/3/4 bewerten oder wählen, Enter prüft, deckt auf und geht weiter, Leertaste liest vor).
+// Ein Druck = ein Schritt. In Eingabefeldern bleiben Ziffern und Leertaste wiederholbar, Enter nie.
+window.addEventListener('keydown', e => {
+  if (!e.repeat) return;
+  const t = e.target, tag = ((t && t.tagName) || '').toLowerCase();
+  if (tag === 'textarea') return;
+  const imFeld = tag === 'input' || tag === 'select' || (t && t.isContentEditable);
+  if (e.key === 'Enter' || (!imFeld && (/^[1-9]$/.test(e.key) || e.key === ' ' || e.code === 'Space'))) {
+    e.preventDefault(); e.stopImmediatePropagation();
+  }
+}, true);
 // Fokus in Dialogen: beim Öffnen in den Dialog, Tab bleibt darin, beim Schließen zurück zum Auslöser
 const dialogStack = [];
 function dialogFocusables(box) {
