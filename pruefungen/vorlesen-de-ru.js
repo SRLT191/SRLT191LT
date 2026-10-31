@@ -10,7 +10,8 @@ const { chromium } = require('playwright');
   const ev = (f, a) => p.evaluate(f, a);
   // eine Karte in Richtung dir und Modus mode zeigen; liefert, was beim Anzeigen gesprochen wurde
   const karte = (dir, mode, auto) => ev(([dir, mode, auto]) => {
-    autoplayAudio = auto; setDirection(dir); setMode(mode);
+    // vorgelesen wird nur in der Vokabelansicht (beim Start steht „Heute“)
+    setAppView('vocab'); autoplayAudio = auto; setDirection(dir); setMode(mode);
     const w = allVocabWords().find(x => x.ru === 'книга'); __sp.length = 0; renderCard(w);
     return { beimAnzeigen: [...__sp], ru: w.ru };
   }, [dir, mode, auto]);

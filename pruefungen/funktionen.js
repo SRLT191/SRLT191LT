@@ -55,7 +55,8 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
   }));
   await check('V5 Richtung DE→RU', () => ev(async () => {
     nextWord(); setDirection('de-ru'); const w = currentWord;
-    document.getElementById('answer-input').value = w.ru.split(' / ')[0]; await checkAnswer();
+    // ganze Karte eintippen: bei Bewegungsverb-Paaren (идти / ходить) sind beide Verben gefragt
+    document.getElementById('answer-input').value = w.ru; await checkAnswer();
     const ok = (scores[getKey(w)] || {}).correct >= 1; setDirection('ru-de'); return ok;
   }));
   await check('V6 Auswahl-Modus zeigt Optionen', () => ev(() => { setMode('mc'); const n = document.querySelectorAll('#mc-options button, .mc-option, .mc-btn').length; return { ok: n >= 4, info: n + ' Optionen' }; }));
