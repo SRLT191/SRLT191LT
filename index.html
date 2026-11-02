@@ -567,6 +567,9 @@
   .ever-ok .ti { font-size: 13px; margin-right: 1px; }
   .ever-ok.runs-1, .ever-ok.runs-2 { opacity: .7; }
   .ever-ok.runs-5 { font-weight: 600; }
+  /* Vokabelliste: nächste Wiederholungsstufe jetzt möglich (hervorgehoben) bzw. ab wann */
+  .runs-up { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 1px 6px; border-radius: 99px; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); vertical-align: middle; white-space: nowrap; cursor: help; }
+  .runs-wait { font-size: 11px; color: var(--c-text-tertiary); vertical-align: middle; white-space: nowrap; cursor: help; font-variant-numeric: tabular-nums; }
   /* ── Einheitliches Gerüst der Grammatikwerkzeuge ── */
   .grammar-panel-header { gap: 8px; flex-wrap: wrap; }
   .gt-settings-row .tense-switcher { flex-wrap: wrap; }
@@ -718,7 +721,7 @@
     #overlay-vocab .vocab-table th, #overlay-vocab .vocab-table td { padding-left: 6px; padding-right: 6px; }
   }
   @container (max-width: 400px) {
-    #overlay-vocab .td-score .ever-ok { display: none; }
+    #overlay-vocab .td-score .ever-ok, #overlay-vocab .td-score .runs-wait, #overlay-vocab .runs-up-t { display: none; }
     #overlay-vocab .vocab-table { table-layout: fixed; }
     #overlay-vocab .vocab-table th:nth-child(1) { width: 36%; } #overlay-vocab .vocab-table th:nth-child(4) { width: 58px; } #overlay-vocab .vocab-table th:nth-child(5) { width: 30px; }
     #overlay-vocab .td-de { hyphens: auto; }
@@ -3128,10 +3131,11 @@
           <option value="status-open">Status: Offen zuerst</option>
           <option value="status-learned">Status: Gelernt zuerst</option>
           <option value="runs-asc">Wiederholt: wenig zuerst</option>
+          <option value="runs-ready">Nächste Stufe: jetzt möglich zuerst</option>
         </select>
       </div>
       <table class="vocab-table">
-        <thead><tr><th>Russisch</th><th>Deutsch</th><th>Kategorie</th><th>Stand</th><th class="th-bookmark"></th></tr></thead>
+        <thead><tr><th>Russisch</th><th>Deutsch</th><th>Kategorie</th><th title="Übungsstand (– / erledigt / offen) · Wiederholungsstufe ✓ x/5 · ↑ jetzt: nächste Stufe mit einer richtigen Antwort möglich · ab …: frühestens dann">Stand</th><th class="th-bookmark"></th></tr></thead>
         <tbody id="vocab-table-body"></tbody>
       </table>
       <div class="list-empty" id="vocab-empty" style="display:none">Keine Treffer für diese Suche.</div>
@@ -7681,6 +7685,22 @@ function lifeRunsText(e) {
   if (e.z) s += ' · zuletzt geübt ' + lifeDateTime(e.z);
   else if (e.dd) s += ' · zuletzt am ' + new Date(e.dd).toLocaleDateString('de-DE');
   return s;
+}
+// Vokabelliste: Hinweis, ob ein Wort jetzt mit einer richtigen Antwort eine Wiederholungsstufe
+// aufsteigen kann („↑ jetzt“) oder ab wann („ab 4.11.“, heute „ab 18 Uhr“); sichere Wörter ohne Hinweis
+function lifeStufeBereit(e, now) {
+  const d = (e && e.d) || 0;
+  if (!d || d >= LIFE_RUNS_MAX) return null;
+  const due = lifeNextDue(e);
+  return { jetzt: due <= now, due };
+}
+function lifeStufeHinweisHtml(e, now) {
+  const b = lifeStufeBereit(e, now);
+  if (!b) return '';
+  if (b.jetzt) return ' <span class="runs-up" title="Nächste Wiederholungsstufe jetzt möglich – eine richtige Antwort bringt das Wort auf ' + (e.d + 1) + ' von ' + LIFE_RUNS_MAX + '">↑<span class="runs-up-t"> jetzt</span></span>';
+  const t = new Date(b.due), heute = new Date(now).toDateString() === t.toDateString();
+  const kurz = heute ? 'ab ' + t.getHours() + ' Uhr' : 'ab ' + t.getDate() + '.' + (t.getMonth() + 1) + '.';
+  return ' <span class="runs-wait" title="Nächste Wiederholungsstufe ab ' + lifeDateTime(b.due) + '">' + kurz + '</span>';
 }
 let lifetime = null;
 function lifeFromSrs(map, id, st) {
@@ -17398,6 +17418,8 @@ function renderVocabTable() {
   });
   else if (sortMode === 'status-open') list = [...list].sort((a, b) => statusRatio(a) - statusRatio(b));
   else if (sortMode === 'status-learned') list = [...list].sort((a, b) => statusRatio(b) - statusRatio(a));
+  else if (sortMode === 'runs-ready') { const now = Date.now(), rang = w => { const b = lifeStufeBereit(lifeVocabEntry(w), now); return b ? (b.jetzt ? 0 : b.due) : Infinity; };
+    list = [...list].sort((a, b) => rang(a) - rang(b) || a.ru.localeCompare(b.ru, 'ru')); }
   else if (sortMode === 'runs-asc') list = [...list].sort((a, b) => ((lifeVocabEntry(a) || {}).d || 0) - ((lifeVocabEntry(b) || {}).d || 0) || a.ru.localeCompare(b.ru, 'ru'));
 
   const tbody = document.getElementById('vocab-table-body');
@@ -17417,7 +17439,7 @@ function renderVocabTable() {
     emptyMsg.style.display = 'block';
   } else {
     emptyMsg.style.display = 'none';
-    const rows = [];
+    const rows = [], jetzt = Date.now();
     list.forEach((w, i) => {
       const s = scores[w.ru];
       let pill;
@@ -17438,7 +17460,7 @@ function renderVocabTable() {
         <td><div class="td-ru" lang="ru">${w.ru} ${lvlBadge(wordLevel(w))}</div><div class="td-tr">[ ${trFor(w)} ]</div></td>
         <td class="td-de">${w.de.join(', ')}</td>
         <td class="td-cat">${catText}</td>
-        <td class="td-score">${pill}${(le => le && le.d ? ' <span class="ever-ok runs-' + le.d + '" role="img" title="' + lifeRunsText(le) + '" aria-label="' + lifeRunsText(le) + '"><i class="ti ti-circle-check" aria-hidden="true"></i>' + le.d + '/' + LIFE_RUNS_MAX + '</span>' : '')(lifeVocabEntry(w))}</td>
+        <td class="td-score">${pill}${(le => le && le.d ? ' <span class="ever-ok runs-' + le.d + '" role="img" title="' + lifeRunsText(le) + '" aria-label="' + lifeRunsText(le) + '"><i class="ti ti-circle-check" aria-hidden="true"></i>' + le.d + '/' + LIFE_RUNS_MAX + '</span>' + lifeStufeHinweisHtml(le, jetzt) : '')(lifeVocabEntry(w))}</td>
         <td class="td-bookmark">${bookmarkCell}</td></tr>`);
     });
     tbody.innerHTML = rows.join('');
