@@ -10,14 +10,14 @@ Stand: 2026-11-01. Jeder Befehl löst eine vollständige Prüfroutine aus: Der B
 
 | Befehl | Was er auslöst |
 | --- | --- |
-| Prüfe Lerndaten | Alle zwölf Befehle der Tabelle *Lerndaten* nacheinander |
+| Prüfe Lerndaten | Alle dreizehn Befehle der Tabelle *Lerndaten* nacheinander |
 | Prüfe Code und Oberfläche | Alle zwölf Befehle der Tabelle *Code und Oberfläche* nacheinander |
 | Prüfe Bedienung und Lernführung | Alle zwölf Befehle der Tabelle *Bedienung und Lernführung* nacheinander |
 | Prüfe die Benutzeroberfläche | Alle acht Befehle der Tabelle *Benutzeroberfläche* nacheinander |
 | Prüfe die Grammatikwerkzeuge | Alle fünf Befehle der Tabelle *Grammatikwerkzeuge* nacheinander |
 | Prüfe Speicher und Lernniveau | Alle elf Befehle der Tabelle *Speicher und Lernniveau* nacheinander |
 | Prüfe GitHub und Seite | Alle sechs Befehle der Tabelle *GitHub und Seite* nacheinander |
-| Mach eine Gesamtprüfung | Alle sieben Tabellen, also jeden Befehl dieses Plans (66 Befehle) |
+| Mach eine Gesamtprüfung | Alle sieben Tabellen, also jeden Befehl dieses Plans (67 Befehle) |
 
 Bei einem Sammelbefehl wird jeder Einzelbefehl vollständig abgearbeitet; gemeldet wird am Ende eine Liste der Funde, nach Befehl gruppiert, mit je einem Korrekturvorschlag. „Überprüfe alle Übersetzungen“ ist die einzige Prüfung, die Wort für Wort gelesen wird und entsprechend lange dauert.
 
@@ -39,6 +39,7 @@ Sammelbefehl: **Prüfe Lerndaten**
 | Überprüfe die deutschen Übungssätze | Die deutsche Seite aller fest geschriebenen Sätze (Satzbau aller Satzarten und Zeiten, Kurzform- und Komparativsätze, Diktat): natürliches Deutsch, passende Zeit, du/ihr/Sie passend zur russischen Anrede, Artikel und Fälle | „Sie spielen nicht Fußball“; „Machen Sie …“ bei einer ты-Aufgabe |
 | Überprüfe die Querbezüge der Daten | Dasselbe Wort in Wortschatz, Konjugations-/Deklinationstabellen, Geschlechterliste, Rektion, Aspektpaaren und Sätzen ohne Widerspruch: Geschlecht, Übersetzung, Aspektpartner, Belebtheit, Rektion | Geschlecht im Werkzeug anders als in der Deklinationstabelle; Aspektpartner im Wortschatz ≠ Aspektpaar-Werkzeug |
 | Prüfe neue Wörter für die Grammatikwerkzeuge | Ob neue Wörter dort ankommen, wo sie sollen: Substantive im Werkzeug Geschlecht (Wörter auf -ь ohne Faustregel, männliche Personen auf -а/-я, Fremdwörter, Pluralwörter brauchen einen Eintrag in GENDER_LIST), neue Wörter mit Sprachniveau (WORD_LEVEL_LISTS; ohne Eintrag gibt es keine Stufe und der Stufenfilter blendet das Wort nicht aus), Verben mit Konjugationstabelle, neue Tabellen-Substantive und -Adjektive mit Bedeutungsklasse (WG_NOUN_CLASS / WG_ADJ_FIT, sonst tauchen sie in den Wortgruppen nicht auf), mögliche Rektions- und Satzbaueinträge; Liste der Wörter, die still herausfallen | Neues Substantiv auf -ь fehlt ohne Hinweis im Werkzeug Geschlecht |
+| Sortiere die Kategorien nach Stufe | Welche Kategorien hinten neue Wörter mit niedrigerer Stufe haben (Prüfung `stufen-sortierung` meldet sie als Hinweis „-- “); Vorschlag: neu sortieren A1 → C1, innerhalb einer Stufe Reihenfolge behalten – Substantivkategorien erst, wenn ihre Sortierung beauftragt ist | Neues A1-Wort steht hinter den C1-Wörtern |
 
 ## Code und Oberfläche
 
@@ -181,7 +182,7 @@ Sammelbefehl: **Prüfe GitHub und Seite**
 - Nach Änderungen an Lernlogik, Zurücksetzen oder Gesamtstand: Übungsstand + Gesamtstand + Sicherung und Zusammenführen.
 - Nach einem neuen Speicherschlüssel oder einer neuen Einstellung: Speicherschlüssel + Sicherung und Zusammenführen.
 - Nach Änderungen an Stufen, Filtern oder Hörwerkzeugen: Stufenfilter + Stufenplan und Abschluss + Einstufungstest.
-- Nach einer größeren Wortschatzrunde: Prüfe Lerndaten.
+- Nach einer größeren Wortschatzrunde: Prüfe Lerndaten (enthält das Neusortieren nach Stufe).
 - Nach jedem Merge: Überprüfe die Seite (Kurzform: erreichbar, Stand von `main`).
 - Nach Änderungen am Workflow oder an den Prüfskripten: Überprüfe die automatischen Prüfungen.
 - Nach Änderungen an Schutzregeln oder Repository-Einstellungen: Überprüfe die Schutzregeln.
@@ -205,6 +206,7 @@ Noch nicht gebaut; wird erst nach ausdrücklichem Auftrag umgesetzt.
 
 - Vorschläge erst bestätigen lassen, dann einbauen.
 - Pro Runde höchstens 5 neue Wörter, außer es wird ausdrücklich mehr verlangt.
+- Neue Wörter kommen immer ans Ende ihrer Kategorie, auch wenn ihre Stufe niedriger ist als die der bestehenden; nach Stufe neu sortiert wird später gesammelt (Befehl „Sortiere die Kategorien nach Stufe“, Teil von *Prüfe Lerndaten*).
 - Bei jeder Wortschatz-Erweiterung zuerst A1-Wörter (FIPI „Уровень 1“, Vormerkliste), dann A2 (Lexikalisches Minimum „Базовый уровень“), dann schwerere vorschlagen.
 - Nur die bestätigten Übersetzungen eintragen, nichts dazuerfinden — zu viele Übersetzungen machen das Lernen schwerer.
 - Wörter mit verschiedener Bedeutung nicht zusammenlegen; gleiche Übersetzung bei verschiedenen Wörtern ist in Ordnung. Echte Synonyme, Aspektpaare (Reihenfolge: zuerst unvollendet, dann vollendet – брать / взять) und Einzahl/Mehrzahl können eine Karte „A / B“ bilden: Eintrag in MERGED_CARDS (übernimmt den Lernstand), ruAlt mit beiden Wörtern, im Werkzeug Geschlecht zählen beide einzeln.
