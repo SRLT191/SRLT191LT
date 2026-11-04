@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(300);
   const R = []; const check = async (n, f) => { try { const r = await f(); const ok = typeof r === 'object' ? r.ok : r; R.push([ok ? 'OK ' : 'XX ', n, r && r.info || '']); } catch (e) { R.push(['XX ', n, e.message]); } };
-  const sent = w => p.evaluate(w => { const v = allVocabWords().find(x => x.ru === w); return getWordSentence(v); }, w);
+  const sent = w => p.evaluate(w => { const v = allVocabWords().find(x => x.ru === w || x.ru.split(' / ').includes(w)); return getWordSentence(v); }, w);
   await check('Sätze: keine Ziffern bei миллион/миллиард, грамм im Nominativ', async () => {
     const a = await sent('миллион'), b2 = await sent('миллиард'), c = await sent('грамм');
     return { ok: !/\d/.test(a.de + b2.de) && /Million/.test(a.de) && /Milliarde/.test(b2.de) && /^Один грамм/.test(c.ru), info: a.de + ' / ' + b2.de + ' / ' + c.ru };
