@@ -11,7 +11,7 @@ const STICHPROBE = ['музей', 'экскурсия', 'баскетбол', '�
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(300);
   const R = []; const check = async (n, f) => { try { const r = await f(); const ok = typeof r === 'object' ? r.ok : r; R.push([ok ? 'OK ' : 'XX ', n, r && r.info || '']); } catch (e) { R.push(['XX ', n, e.message]); } };
   await check('Stichprobe der A2-Liste steht auf A2', () => p.evaluate(S => {
-    const f = S.filter(ru => { const w = allVocabWords().find(x => x.ru === ru); return !w || wordLevel(w) !== 'A2'; });
+    const f = S.filter(ru => { const w = allVocabWords().find(x => x.ru === ru || x.ru.split(' / ').includes(ru)); return !w || wordLevel(w) !== 'A2'; });
     return { ok: !f.length, info: f.join(', ') };
   }, STICHPROBE));
   await check('A1 bleibt unberührt (Monate, Zahlen, Jahreszeiten)', () => p.evaluate(() => {
