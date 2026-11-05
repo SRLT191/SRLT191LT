@@ -8112,14 +8112,14 @@ const GRAMMAR_CAT_LABEL = { verb: 'Verben', noun: 'Substantive', adj: 'Adjektive
 function grammarToolSources() {
   const aspN = Object.keys(aspectData).filter(k => aspectData[k].pf).length;
   return {
-    conjugate: [['conj'], getAllVocabVerbs().length], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
+    conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
     motion: [['motion:fwd', 'motion:back', 'motion:quiz'], motionPairKeys().length * 2 + MOTION_QUIZ.length],
     transform: [['transform'], buildTransformItems().length], rektion: [['rektion'], rektionTotal()],
-    noun: [['noun'], Object.keys(nounDeclensionData).length], caseform: [['caseform'], caseFormTotal('noun')],
+    noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun')],
     numnoun: [['numnoun'], Object.keys(nounDeclensionData).length * 3], gender: [['gender'], genderTotal()],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
-    pronoun: [['pronoun'], PRONOUN_GROUPS.reduce((n, g) => n + g[1]().length, 0)], pronform: [['pronform'], pronFormTotal()],
-    casedrill: [['case'], PREP_CASES.length], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
+    pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
+    casedrill: [['case', 'case:word'], PREP_CASES.length * 2], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
     sentencebuild: [Object.keys(loadLifetime().g || {}).filter(k => k.startsWith('sb:')), SB_ITEMS.length],
   };
 }
@@ -17220,24 +17220,24 @@ function updateGrammarTileProgress(store, sink) {
   };
   const set = sink ? (spanId, text) => { sink[spanId] = text; }
     : (spanId, text) => { const el = document.getElementById(spanId); if (el) el.textContent = text; };
-  set('gtp-conj', learned('conj', getAllVocabVerbs().length));
+
   // mehrere Lernstände zusammenzählen (Aspekt: beide Richtungen; Bewegung: beide Richtungen + Wahl)
   const learnedMulti = (keys, total) => {
     const n = keys.reduce((sum, k) => sum + Object.values(all[k] || {}).filter(srsDone).length, 0);
     return n + ' von ' + total + ' gelernt';
   };
+  set('gtp-conj', learnedMulti(CONJ_SRS_KEYS, conjTotal()));
   const aspN = Object.keys(aspectData).filter(k => aspectData[k].pf).length;
   set('gtp-aspect-fwd', learnedMulti(['aspect:fwd', 'aspect:back'], aspN * 2));
-  set('gtp-noun', learned('noun', Object.keys(nounDeclensionData).length));
+  set('gtp-noun', learnedMulti(['noun', 'noun:pl'], nounTotal()));
   set('gtp-decl', learned('decl', Object.keys(declensionData).length));
   set('gtp-sentencebuild', sbLearnedCount(all) + ' von ' + SB_ITEMS.length + ' gelernt');
   // Wortgruppen: Adj+Subst 6 Fälle × 2 Zahlen, Begleiter 6 Fälle, Präposition 7 × 2, Zahl 3 Genera
   set('gtp-wordgroup', learned('wordgroup', 12 + 6 + 14 + 3));
   set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz'], motionPairKeys().length * 2 + MOTION_QUIZ.length));
   set('gtp-transform', learned('transform', buildTransformItems().length));
-  set('gtp-case', learned('case', PREP_CASES.length));
-  set('gtp-pronoun', learned('pronoun',
-    PRONOUN_GROUPS.reduce((n, g) => n + g[1]().length, 0)));
+  set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length * 2));
+  set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
   set('gtp-numnoun', learned('numnoun', Object.keys(nounDeclensionData).length * 3));
   set('gtp-caseform', learned('caseform', caseFormTotal('noun')));
   set('gtp-caseadj', learned('caseadj', caseFormTotal('adj')));
@@ -19153,13 +19153,13 @@ function checkConjugationTable() {
     const hilfe = gtTableHelped('#conj-grid');
     if (!hilfe) {
       conjState.done++; conjState.correct++;
-      progressMark('conj', document.getElementById('conj-verb-select').value, true);
-    } else { conjState.attempted = true; progressSeen('conj', document.getElementById('conj-verb-select').value); }
+      progressMark(conjSrsKey(), document.getElementById('conj-verb-select').value, true);
+    } else { conjState.attempted = true; progressSeen(conjSrsKey(), document.getElementById('conj-verb-select').value); }
     document.getElementById('conj-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Verb';
   } else {
     // erste vollständige, aber fehlerhafte Prüfung als Versuch zählen
-    if (!conjState.attempted && filled === res.total) { conjState.attempted = true; conjState.done++; progressMark('conj', document.getElementById('conj-verb-select').value, false); }
+    if (!conjState.attempted && filled === res.total) { conjState.attempted = true; conjState.done++; progressMark(conjSrsKey(), document.getElementById('conj-verb-select').value, false); }
     conjState.allCorrect = false;
   }
   updateConjScore();
@@ -19172,6 +19172,16 @@ function updateConjScore() {
 // sonst der Reihe nach. Gleiche Logik für Adjektive, Substantive, Pronomen.
 // Das nächste Wort folgt der Reihenfolge der Liste — also dem Sortierschalter
 // des jeweiligen Werkzeugs — und nicht mehr einer Zufallswahl aus dem Lernstand.
+// Lernstand je Form (5.11.): jede Zeit, Singular/Plural und jedes Geschlecht eines Pronomens zählt
+// eigens. Die Grundform behält den alten Schlüssel (bisheriger Lernstand gilt für Präsens, Singular, m).
+function conjSrsKey() { return conjState.tense === 'nonpast' ? 'conj' : 'conj:' + conjState.tense; }
+function nounSrsKey() { return nounState.number === 'pl' ? 'noun:pl' : 'noun'; }
+function pronounSrsKey(p) { const e = pronounEntry(p); return !e || e.kind !== 'gender' || pronounGender === 'masc' ? 'pronoun' : 'pronoun:' + pronounGender; }
+const CONJ_SRS_KEYS = ['conj', 'conj:past', 'conj:future', 'conj:imperative'];
+const PRONOUN_SRS_KEYS = ['pronoun', 'pronoun:fem', 'pronoun:neut', 'pronoun:plural'];
+function conjTotal() { return Object.keys(conjugationData).length * CONJ_SRS_KEYS.length; }
+function nounTotal() { return Object.keys(nounDeclensionData).length * 2; }
+function pronounTotal() { return PRONOUN_GROUPS.reduce((n, g) => n + g[1]().reduce((m, p) => m + ((pronounEntry(p) || {}).kind === 'gender' ? 4 : 1), 0), 0); }
 function nextGrammarTableItem(selectId, render, toolKey) {
   const sel = document.getElementById(selectId);
   if (!sel) return;
@@ -19191,7 +19201,7 @@ function nextPronounItem() { nextGrammarTableItem('pronoun-select', renderPronou
 // zufälliges aus dem Lernstand.
 function nextConjugationVerb() {
   const sel = document.getElementById('conj-verb-select');
-  if (!conjState.allCorrect && !conjState.attempted) progressSeen('conj', sel.value);
+  if (!conjState.allCorrect && !conjState.attempted) progressSeen(conjSrsKey(), sel.value);
   const opts = [...sel.options].map(o => o.value);
   if (!opts.length) return;
   const i = opts.indexOf(sel.value);
@@ -19207,7 +19217,7 @@ function nextConjugationVerb() {
 const FORM_PICKERS = {
   conj: {
     titel: 'Verb wählen', kurz: 'Verb', icon: 'ti-table', selectId: 'conj-verb-select', btnId: 'conj-verb-btn',
-    srsKey: 'conj', suchtext: 'Verb oder Übersetzung suchen…',
+    get srsKey() { return conjSrsKey(); }, suchtext: 'Verb oder Übersetzung suchen…',
     spalten: ['Verb', 'Deutsch', 'Klasse', 'Vollendet'],
     liste: () => getSortedConjVerbs(),
     de: inf => (conjugationData[inf] || {}).de || '',
@@ -19238,7 +19248,7 @@ const FORM_PICKERS = {
   },
   noun: {
     titel: 'Substantiv wählen', kurz: 'Substantiv', icon: 'ti-box', selectId: 'noun-select', btnId: 'noun-pick-btn',
-    srsKey: 'noun', suchtext: 'Substantiv oder Übersetzung suchen…',
+    get srsKey() { return nounSrsKey(); }, suchtext: 'Substantiv oder Übersetzung suchen…',
     spalten: ['Substantiv', 'Deutsch', 'Klasse'],
     liste: () => getSortedNouns(),
     de: n => (nounDeclensionData[n] || {}).de || '',
@@ -19252,7 +19262,7 @@ const FORM_PICKERS = {
   },
   pronoun: {
     titel: 'Pronomen wählen', kurz: 'Pronomen', icon: 'ti-user', selectId: 'pronoun-select', btnId: 'pronoun-pick-btn',
-    srsKey: 'pronoun', suchtext: 'Pronomen oder Übersetzung suchen…',
+    srsKey: 'pronoun', srsKeyFor: p => pronounSrsKey(p), suchtext: 'Pronomen oder Übersetzung suchen…',
     spalten: ['Pronomen', 'Deutsch'],
     liste: () => PRONOUN_GROUPS.flatMap(g => g[1]()),
     de: p => ((pronounEntry(p) || {}).d || {}).de || '',
@@ -19324,7 +19334,7 @@ function renderFormPicker() {
   const such = document.getElementById('formpicker-search');
   const frage = such ? such.value.trim().toLowerCase() : '';
   const aktuell = document.getElementById(cfg.selectId).value;
-  const srs = (loadGrammarSrs() || {})[cfg.srsKey] || {};
+  const srsAlle = loadGrammarSrs() || {}, srs = srsAlle[cfg.srsKey] || {};
   let liste = cfg.liste();
   if (frage) {
     liste = liste.filter(id => id.toLowerCase().includes(frage)
@@ -19346,7 +19356,7 @@ function renderFormPicker() {
         tbody.appendChild(tr);
       }
     }
-    const st = srs[id];
+    const st = cfg.srsKeyFor ? (srsAlle[cfg.srsKeyFor(id)] || {})[id] : srs[id];
     let pill;
     if (!st) pill = '<span class="score-pill unseen">–</span>';
     else if (srsDone(st)) pill = '<span class="score-pill good"><i class="ti ti-check" style="font-size:10px"></i>erledigt</span>';
@@ -20640,12 +20650,12 @@ function checkNounTable() {
     const hilfe = gtTableHelped('#noun-grid');
     if (!hilfe) {
       nounState.done++; nounState.correct++;
-      progressMark('noun', document.getElementById('noun-select').value, true);
-    } else { nounState.attempted = true; progressSeen('noun', document.getElementById('noun-select').value); }
+      progressMark(nounSrsKey(), document.getElementById('noun-select').value, true);
+    } else { nounState.attempted = true; progressSeen(nounSrsKey(), document.getElementById('noun-select').value); }
     document.getElementById('noun-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Wort';
   } else {
-    if (!nounState.attempted && filled === res.total) { nounState.attempted = true; nounState.done++; progressMark('noun', document.getElementById('noun-select').value, false); }
+    if (!nounState.attempted && filled === res.total) { nounState.attempted = true; nounState.done++; progressMark(nounSrsKey(), document.getElementById('noun-select').value, false); }
     nounState.allCorrect = false;
   }
   updateNounScore();
@@ -20654,9 +20664,9 @@ function checkNounTable() {
 // springt zum nächsten Substantiv in der aktuellen Sortierreihenfolge
 function nextNounInList() {
   const select = document.getElementById('noun-select');
-  if (!nounState.allCorrect && !nounState.attempted) progressSeen('noun', select.value);
+  if (!nounState.allCorrect && !nounState.attempted) progressSeen(nounSrsKey(), select.value);
   const sorted = getSortedNouns();
-  select.value = progressNext('noun', sorted, select.value);
+  select.value = progressNext(nounSrsKey(), sorted, select.value);
   renderNounTable();
 }
 
@@ -23387,8 +23397,8 @@ function checkPronounTable() {
   const hilfe = gtTableHelped('#pronoun-grid');
   if (pron && gefuellt === inputs.length && inputs.length && !pronounAttempted) {
     pronounAttempted = true;
-    if (hilfe) progressSeen('pronoun', pron);
-    else progressMark('pronoun', pron, correctCount === inputs.length);
+    if (hilfe) progressSeen(pronounSrsKey(pron), pron);
+    else progressMark(pronounSrsKey(pron), pron, correctCount === inputs.length);
   }
   pronounAllCorrect = inputs.length > 0 && gefuellt === inputs.length && correctCount === inputs.length;
   if (pronounAllCorrect) {
