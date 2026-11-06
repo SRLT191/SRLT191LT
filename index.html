@@ -647,6 +647,9 @@
   .gt-actions .tool-btn { min-height: 39px; }
   .gt-actions .gt-primary { flex: 2; background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; font-size: 13px; padding: 8px 12px; }
   .gt-actions .gt-primary:hover { opacity: 0.92; background: var(--c-accent); }
+  .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
+  .gt-rate-q { font-weight: 600; }
+  .gt-rate .tool-btn { min-height: 40px; }
   .gt-kbd { font: 600 10.5px/1 inherit; padding: 2px 5px; border-radius: 4px; border: 1px solid currentColor; opacity: 0.6; margin-left: 2px; }
   @media (hover: none) { .gt-kbd { display: none; } }
   .conj-info-panel { position: relative; }
@@ -2967,7 +2970,7 @@
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Lösung zeigen</strong><span>In allen Grammatik- und Hörwerkzeugen; im Hörquiz-Aufdecken liest 3 erneut vor</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Wort-Tipp</strong><span>Im Satzbau: deckt das nächste Wort der Lösung auf</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Antwort wählen</strong><span>Im Auswahl-Modus der Vokabeln die passende Option</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Gewusst / Nicht gewusst</strong><span>Im Aufdecken-Modus (Vokabeln und Hörquiz), nach dem Aufdecken</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Gewusst / Nicht gewusst</strong><span>Im Aufdecken-Modus (Vokabeln und Hörquiz), nach dem Aufdecken; in der Grammatik nach „Lösung zeigen“ (1 zählt als richtig, 2 als falsch)</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Rückgängig</strong><span>Im Aufdecken-Modus der Vokabeln: nimmt die letzte Bewertung zurück, auch nach „Alles gelernt!“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Neu anfangen</strong><span>Im Aufdecken-Modus der Vokabeln bei „Alles gelernt!“: setzt den Fortschritt zurück</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Bewertung zurücknehmen</strong><span>Im Hörquiz-Aufdecken, wenn du dich verdrückt hast</span></div></div>
@@ -15569,8 +15572,9 @@ function renderSentenceDiff(userTokens, targetTokens) {
 // Prüfen, Lösung zeigen und Weiter laufen bei allen Werkzeugen mit einem
 // Eingabefeld gleich ab: Leere Eingabe tut nichts; nur die erste Antwort je
 // Aufgabe zählt für Lernstand und Zähler; ein zweites „Prüfen“ ohne Änderung
-// (oder nach einer richtigen Antwort) führt weiter; „Lösung zeigen“ und
-// Überspringen werden als „gesehen, nicht gekonnt“ vermerkt.
+// (oder nach einer richtigen Antwort) führt weiter; nach „Lösung zeigen“ bewertet
+// man sich selbst (Gewusst/Nicht gewusst, siehe gtRateOffer); Überspringen und
+// Weitergehen ohne Bewertung werden als „gesehen, nicht gekonnt“ vermerkt.
 // Jedes Werkzeug beschreibt nur, was bei ihm anders ist:
 //   p        Präfix der Element-IDs (<p>-input, <p>-result, <p>-score)
 //   st       Zustand (answered, lastInput, lastCorrect, done, correct)
@@ -15586,7 +15590,7 @@ function renderSentenceDiff(userTokens, targetTokens) {
 // und Geschlecht laufen gleich ab: Antippen bewertet sofort und markiert die
 // richtige Option. Richtig → nach kurzer Pause automatisch weiter. Falsch →
 // die Erklärung bleibt stehen, weiter mit Enter oder „Weiter“. „Lösung zeigen“
-// (Taste 3) markiert die Lösung und zählt als „gesehen, nicht gekonnt“.
+// (Taste 3) markiert die Lösung; danach Selbstbewertung wie beim Aufgabenmotor.
 // Ist das Werkzeug beim Ablauf der Pause nicht mehr zu sehen, wartet es.
 //   panel     ID des Panels        opts / result  IDs von Optionen und Ergebniszeile
 //   active()  ob gerade der Wahl-Modus läuft (Werkzeuge mit zwei Modi)
@@ -15594,6 +15598,36 @@ function renderSentenceDiff(userTokens, targetTokens) {
 //   srs(it)   [Lernstand-Schlüssel, ID]
 //   text(it, ok)  Rückmeldung      onAnswer(it, ok)  Zähler nachführen
 //   advance()     nächste Aufgabe aufbauen (ruft gtChoiceReset)
+// ── Selbstbewertung nach dem Aufdecken (5.11.) ────────────────────
+// Wie der Aufdecken-Modus der Vokabeln: Nach „Lösung zeigen“ sagt man selbst, ob man es wusste.
+// „Gewusst“ (Taste 1) zählt als richtig, „Nicht gewusst“ (Taste 2) als falsch; beides führt weiter.
+// Wer ohne Bewertung weitergeht, hat die Aufgabe nur gesehen. Angeboten wird sie nur, solange die
+// Aufgabe noch nicht beantwortet war (nach einer falschen Antwort zählt diese).
+//   res   Ergebniszeile (Element oder ID)   mark(ok)  Lernstand und Zähler   next()  weiter
+let gtRate = null;
+function gtRateOffer(res, mark, next) {
+  if (typeof res === 'string') res = document.getElementById(res);
+  if (!res) return;
+  const box = document.createElement('span');
+  box.className = 'gt-rate'; box.setAttribute('role', 'group'); box.setAttribute('aria-label', 'Selbst bewerten');
+  box.innerHTML = '<span class="gt-rate-q">Gewusst?</span>'
+    + '<button class="tool-btn gt-rate-yes" type="button" aria-keyshortcuts="1"><i class="ti ti-check" aria-hidden="true"></i> Gewusst <kbd aria-hidden="true" class="gt-kbd">1</kbd></button>'
+    + '<button class="tool-btn gt-rate-no" type="button" aria-keyshortcuts="2"><i class="ti ti-x" aria-hidden="true"></i> Nicht gewusst <kbd aria-hidden="true" class="gt-kbd">2</kbd></button>';
+  res.appendChild(box);
+  const r = { box, mark, next };
+  box.querySelector('.gt-rate-yes').onclick = () => gtRateAnswer(true, r);
+  box.querySelector('.gt-rate-no').onclick = () => gtRateAnswer(false, r);
+  gtRate = r;
+}
+function gtRateLive() { const r = gtRate; return r && !r.done && r.box.isConnected && r.box.getClientRects().length ? r : null; }
+function gtRateAnswer(ok, r) {
+  r = r || gtRateLive();
+  if (!r || r.done) return false;
+  r.done = true; if (gtRate === r) gtRate = null;
+  r.mark(ok); r.next();
+  return true;
+}
+function gtDropFehler(liste, it) { const i = liste.lastIndexOf(it); if (i >= 0) liste.splice(i, 1); }
 const GT_CHOICE_PAUSE = 900;
 function gtChoiceReset(c) { clearTimeout(c.timer); c.answered = false; }
 function gtChoiceMark(c, it, choice) {
@@ -15630,6 +15664,11 @@ function gtChoiceReveal(c) {
   const [key, id] = c.srs(it);
   progressSeen(key, id);
   document.getElementById(c.result).innerHTML = c.text(it, null);
+  gtRateOffer(c.result, ok => {
+    progressMark(key, id, ok);
+    if (c.onAnswer) c.onAnswer(it, ok);
+    if (ok && c.unfehler) c.unfehler(it);
+  }, () => gtChoiceNext(c));
 }
 function gtChoiceNext(c) {
   const it = c.item();
@@ -15710,12 +15749,21 @@ function gtReveal(c) {
   const input = document.getElementById(c.p + '-input');
   input.value = answer;
   input.className = 'conj-input revealed';
-  if (!st.answered) progressSeen(c.srs(t), c.id(t));
+  const neu = !st.answered;
+  if (neu) progressSeen(c.srs(t), c.id(t));
   st.answered = true;
   st.lastCorrect = false;
   st.lastInput = answer;               // nächster Druck auf „Prüfen“ führt weiter
   if (c.extra) document.getElementById(c.p + '-result').innerHTML = c.extra(t, null);
   if (c.after) c.after(t, null);
+  if (neu) gtRateOffer(c.p + '-result', ok => {
+    st.done = (st.done || 0) + 1;
+    if (ok) st.correct = (st.correct || 0) + 1;
+    st.lastCorrect = ok;
+    progressMark(c.srs(t), c.id(t), ok);
+    gtScore(c);
+    if (c.rated) c.rated(t, ok);
+  }, () => gtNext(c));
 }
 function gtNext(c) {
   const t = c.task();
@@ -17345,6 +17393,15 @@ function keyListeningSpace(e) {
   }
   return false;
 }
+function keyGtRate(e) {
+  // Nach „Lösung zeigen“ in der Grammatik: 1 = gewusst, 2 = nicht gewusst (auch im Feld mit der Lösung)
+  if ((e.key !== '1' && e.key !== '2') || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open')) return false;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'textarea' || tag === 'select' || !gtRateLive()) return false;
+  e.preventDefault(); gtRateAnswer(e.key === '1');
+  return true;
+}
 function keyToolReveal(e) {
   // Taste 2 im Satzbau: Wort-Tipp (gleiche Regel wie Taste 3)
   if (e.key === '2' && appView === 'grammar' && !document.querySelector('.overlay.open')) {
@@ -17424,7 +17481,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyListeningSpace(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyListeningSpace(e) || keyGtRate(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -19505,7 +19562,11 @@ function revealFormInput(input) {
   input.classList.add('revealed');
 }
 
-function revealConjugationTable() { revealFormTable('conj-grid', 'conj-result'); }
+function revealConjugationTable() {
+  const neu = !conjState.attempted && !conjState.allCorrect, verb = document.getElementById('conj-verb-select').value, key = conjSrsKey();
+  revealFormTable('conj-grid', 'conj-result');
+  if (neu) gtRateOffer('conj-result', ok => { conjState.attempted = true; conjState.done++; if (ok) conjState.correct++; progressMark(key, verb, ok); updateConjScore(); }, nextConjugationVerb);
+}
 function revealConjugationRow(i) { revealFormRow('conj-input-', i); }
 
 // ── Deklinationstabelle (Adjektive) ──────────────────────────────
@@ -20185,7 +20246,11 @@ function nextAdjInList() {
   renderDeclensionTable();
 }
 
-function revealDeclensionTable() { revealFormTable('decl-grid', 'decl-result'); }
+function revealDeclensionTable() {
+  const neu = !declState.attempted && !declState.allCorrect, adj = document.getElementById('decl-adj-select').value;
+  revealFormTable('decl-grid', 'decl-result');
+  if (neu) gtRateOffer('decl-result', ok => { declState.attempted = true; declState.done++; if (ok) declState.correct++; progressMark('decl', adj, ok); updateDeclScore(); }, nextAdjInList);
+}
 function revealDeclensionRow(i) { revealFormRow('decl-input-', i); }
 
 // ── Substantivdeklination ───────────────────────────────────────
@@ -20670,7 +20735,11 @@ function nextNounInList() {
   renderNounTable();
 }
 
-function revealNounTable() { revealFormTable('noun-grid', 'noun-result'); }
+function revealNounTable() {
+  const neu = !nounState.attempted && !nounState.allCorrect, noun = document.getElementById('noun-select').value, key = nounSrsKey();
+  revealFormTable('noun-grid', 'noun-result');
+  if (neu) gtRateOffer('noun-result', ok => { nounState.attempted = true; nounState.done++; if (ok) nounState.correct++; progressMark(key, noun, ok); updateNounScore(); }, nextNounInList);
+}
 function revealNounRow(i) { revealFormRow('noun-input-', i); }
 
 // ── Grammatik-Wiederholung (Fehlerqueue) ────────────────────────
@@ -21835,7 +21904,7 @@ function restartWordgroup() {
   };
   applySbHelpLevel();
   wgState.answered = false; wgState.lastCorrect = false; wgState.lastInput = '';
-  wgState.revealStep = 0;
+  wgState.revealStep = 0; wgState.revealed = false;
   renderWordgroupTask();
   wgSyncSpeak();
   renderWgStepwise();
@@ -22012,7 +22081,7 @@ function checkWordgroup() {
   } else {
     val = wgEl('input').value.trim().replace(/\s+/g, ' ');
   }
-  if (wgState.answered && (wgState.lastCorrect || val === wgState.lastInput)) { nextWordgroup(); return; }
+  if (wgState.revealed || (wgState.answered && (wgState.lastCorrect || val === wgState.lastInput))) { nextWordgroup(); return; }
   if (!val) return;
   wgState.lastInput = val;
   const strip = t => normalizeYo(t.toLowerCase()).replace(/[.?!,]+/g, '').replace(/\s+/g, ' ').trim();
@@ -22037,16 +22106,24 @@ function checkWordgroup() {
     }
   }
   wgState.lastCorrect = ok;
+  // Wort für Wort teilweise aufgedeckt: mit Lösungshilfe, zählt nur als gesehen
+  const hilfe = wgState.revealStep > 0;
   if (!wgState.answered) {
-    wgState.done++; if (ok) wgState.correct++;
-    if (wgState.current.srsKey) progressMark('wordgroup', wgState.current.srsKey, ok);
+    const cur = wgState.current;
+    if (hilfe) {
+      if (cur.srsKey) progressSeen('wordgroup', cur.srsKey);
+      if (cur.sbId) progressSeen(sbSrsKey(), cur.sbId);
+    } else {
+      wgState.done++; if (ok) wgState.correct++;
+      if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
+      if (cur.sbId) progressMark(sbSrsKey(), cur.sbId, ok);
+    }
   }
   wgState.answered = true;
   wgSyncSpeak();
   if (wgState.answerMode === 'type') {
     wgEl('input').className = 'conj-input ' + (ok ? 'correct' : 'wrong');
   }
-  if (wgState.current.sbId) progressMark(sbSrsKey(), wgState.current.sbId, ok);
   // weibliche Form erkannt bzw. Hinweis darauf, dass sie auch gilt
   const femTreffer = ok && (wgState.current.femAnswers || []).map(strip).includes(user);
   const femNote = !ok || !wgState.current.femSwap ? ''
@@ -22054,7 +22131,7 @@ function checkWordgroup() {
     : ' (als Frau: ' + wgState.current.femSwap[1] + ')';
   const orderNote = (ok && !typo && !femTreffer && user !== target) ? ' (andere Wortstellung — auch richtig)' : femNote;
   wgEl('result').innerHTML = ok
-    ? 'Richtig' + typo + orderNote + ' — nochmal „Prüfen“ für die nächste Aufgabe'
+    ? 'Richtig' + typo + orderNote + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für die nächste Aufgabe'
     : 'Richtig wäre: ' + wordgroupBreakdown(val, wgState.current.tokens);
   wgEl('score').textContent = wgState.correct + ' von ' + wgState.done + ' richtig';
 }
@@ -22081,8 +22158,24 @@ function revealWordgroup() {
   } else {
     wgEl('answer-row').textContent = wgState.current.answer;
   }
+  const neu = !wgState.answered;
   wgState.answered = true;
   wgSyncSpeak();
+  if (neu) wgOfferRate();
+}
+// Lösung ganz aufgedeckt (auf einmal oder Wort für Wort): Selbstbewertung; „Prüfen“ führt weiter
+function wgOfferRate() {
+  const cur = wgState.current;
+  wgState.revealed = true;
+  if (cur.srsKey) progressSeen('wordgroup', cur.srsKey);
+  if (cur.sbId) progressSeen(sbSrsKey(), cur.sbId);
+  wgEl('result').textContent = '';
+  gtRateOffer(wgEl('result'), ok => {
+    wgState.done++; if (ok) wgState.correct++;
+    if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
+    if (cur.sbId) progressMark(sbSrsKey(), cur.sbId, ok);
+    wgEl('score').textContent = wgState.correct + ' von ' + wgState.done + ' richtig';
+  }, nextWordgroup);
 }
 
 // Deckt die Lösung Wort für Wort auf: jeder Druck zeigt das nächste Wort.
@@ -22101,6 +22194,7 @@ function revealWordgroupStep() {
   renderWgStepwise();
   // alles aufgedeckt = Lösung gezeigt
   if (wgState.revealStep >= toks.length) {
+    const neu = !wgState.answered;
     wgState.answered = true;
     wgSyncSpeak();
     if (wgState.answerMode === 'type') {
@@ -22108,6 +22202,7 @@ function revealWordgroupStep() {
       input.value = wgState.current.answer;
       input.className = 'conj-input revealed';
     }
+    if (neu) wgOfferRate();
   }
 }
 // Zeigt die bisher aufgedeckten Wörter, der Rest bleibt als Platzhalter stehen
@@ -22912,6 +23007,7 @@ const GENDER_CHOICE = {
   },
   advance: () => { genderState.index++; renderGenderQuestion(); },
   fehler: it => genderState.fehler.push(it),
+  unfehler: it => gtDropFehler(genderState.fehler, it),
 };
 GT_CHOICES.push(GENDER_CHOICE);
 function answerGender(g) { gtChoose(GENDER_CHOICE, g); }
@@ -23407,7 +23503,11 @@ function checkPronounTable() {
   }
 }
 
-function revealPronounTable() { revealFormTable('pronoun-grid', 'pronoun-result'); }
+function revealPronounTable() {
+  const pron = (document.getElementById('pronoun-select') || {}).value, neu = !!pron && !pronounAttempted && !pronounAllCorrect;
+  revealFormTable('pronoun-grid', 'pronoun-result');
+  if (neu) { const key = pronounSrsKey(pron); progressSeen(key, pron); gtRateOffer('pronoun-result', ok => { pronounAttempted = true; progressMark(key, pron, ok); }, nextPronounItem); }
+}
 
 function revealPronounRow(i) {
   const input = document.getElementById('pronoun-input-' + i);
@@ -23602,6 +23702,7 @@ const CASE_CHOICE = {
   },
   advance: () => { caseState.index++; renderCaseQuestion(); },
   fehler: it => caseState.fehler.push(it),
+  unfehler: it => gtDropFehler(caseState.fehler, it),
 };
 GT_CHOICES.push(CASE_CHOICE);
 function answerCaseDrill(kasus) { gtChoose(CASE_CHOICE, kasus); }
@@ -23696,8 +23797,18 @@ function revealCaseWord() {
   const input = document.getElementById('case-input');
   input.value = caseState.wordCurrent.answer;
   input.className = 'conj-input revealed';
+  const neu = !caseState.wordAnswered, w = caseState.wordCurrent, id = w.prep + ':' + w.kasus;
   caseState.wordAnswered = true;
-  caseState.wordLastInput = caseState.wordCurrent.answer;
+  caseState.wordLastInput = w.answer;
+  if (!neu) return;
+  progressSeen('case:word', id);
+  const res = document.getElementById('case-result');
+  res.innerHTML = '<span class="case-hint">' + caseRuleExplanation(w) + '</span>';
+  gtRateOffer(res, ok => {
+    progressMark('case:word', id, ok);
+    caseState.wordDone++; if (ok) caseState.wordCorrect++;
+    document.getElementById('case-score').textContent = caseState.wordCorrect + ' von ' + caseState.wordDone + ' richtig';
+  }, nextCaseWord);
 }
 
 // ── Bewegungsverben (determiniert / indeterminiert) ─────────────
@@ -23973,6 +24084,7 @@ const MOTION_CHOICE = {
   },
   advance: () => { motionState.qIndex++; renderMotionQuestion(); },
   fehler: it => motionState.fehler.push(it),
+  unfehler: it => gtDropFehler(motionState.fehler, it),
 };
 GT_CHOICES.push(MOTION_CHOICE);
 function answerMotionQuiz(form) { gtChoose(MOTION_CHOICE, form); }
@@ -24183,6 +24295,7 @@ const TRANSFORM_DRILL = {
     if (gap) gap.innerHTML = transformGapHtml(t, { text: t.answer, cls: ok === true ? 'ok' : ok === false ? 'bad' : 'shown' });
   },
   score: st => (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.correct + ' richtig',
+  rated: (t, ok) => { if (ok) gtDropFehler(transformState.fehler, t); },
 };
 function checkTransform() { gtCheck(TRANSFORM_DRILL); }
 
