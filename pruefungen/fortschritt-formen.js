@@ -1,6 +1,6 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
 // Fortschritt in allen Grammatikwerkzeugen (5.11.): jede richtige Antwort wird gespeichert und zählt;
-// Konjugieren je Zeit (Gesamt = Verben mit Tabelle × 4), Substantive je Zahl, Pronomen je Geschlecht,
+// Konjugieren je Zeit (Gesamt = Verben mit Tabelle × 3; Futur übbar, zählt seit 7.11. nicht), Substantive je Zahl, Pronomen je Geschlecht,
 // Präpositionen auch „Wort einsetzen“. Bisheriger Lernstand gilt für Präsens/Singular/m.
 const { chromium } = require('playwright');
 (async () => {
@@ -51,7 +51,8 @@ const { chromium } = require('playwright');
       const h0 = hdr(), d0 = day(), c0 = calls.length;
       answer(); await wait(20);
       const c = calls.slice(c0);
-      out.push({ name, ok: c.length === 1 && c[0][1] === true && c[0][0].startsWith(key) && hdr() === h0 + 1 && day() === d0 + 1, info: JSON.stringify({ c, h0, h1: hdr() }) });
+      const plus = key === 'conj:future' ? 0 : 1;   // Futur zählt nicht im Lernstand
+      out.push({ name, ok: c.length === 1 && c[0][1] === true && c[0][0].startsWith(key) && hdr() === h0 + plus && day() === d0 + 1, info: JSON.stringify({ c, h0, h1: hdr() }) });
     }
     const all = loadGrammarSrs();
     const tot = { conj: document.getElementById('gtp-conj').textContent, verbs: Object.keys(conjugationData).length, noun: document.getElementById('gtp-noun').textContent, nouns: Object.keys(nounDeclensionData).length, nounT: nounTotal(), case: document.getElementById('gtp-case').textContent, prep: PREP_CASES.length };
@@ -61,7 +62,7 @@ const { chromium } = require('playwright');
     return { out, tot, praesens, vergangen, alt: !!(all.conj && all.conj['иметь']) };
   });
   r.out.forEach(x => ok(x.name + ': richtige Antwort gespeichert, Kopfzeile +1, Tagesprotokoll +1', x.ok, x.ok ? '' : x.info));
-  ok('Gesamtzahlen: Konjugieren = Verben mit Tabelle × 4, Substantive je vorhandener Zahl, Präpositionen × 2', r.tot.conj.endsWith('von ' + r.tot.verbs * 4 + ' gelernt') && r.tot.noun.endsWith('von ' + r.tot.nounT + ' gelernt') && r.tot.nounT === r.tot.nouns * 2 - 2 && r.tot.case.endsWith('von ' + r.tot.prep * 2 + ' gelernt'), JSON.stringify(r.tot));
+  ok('Gesamtzahlen: Konjugieren = Verben mit Tabelle × 3 (Futur zählt nicht), Substantive je vorhandener Zahl, Präpositionen × 2', r.tot.conj.endsWith('von ' + r.tot.verbs * 3 + ' gelernt') && r.tot.noun.endsWith('von ' + r.tot.nounT + ' gelernt') && r.tot.nounT === r.tot.nouns * 2 - 2 && r.tot.case.endsWith('von ' + r.tot.prep * 2 + ' gelernt'), JSON.stringify(r.tot));
   ok('bisheriger Lernstand bleibt (gilt fürs Präsens); Verbliste zeigt den Stand der gewählten Zeit', r.alt && r.praesens && !r.vergangen, JSON.stringify([r.alt, r.praesens, r.vergangen]));
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));

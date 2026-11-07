@@ -649,7 +649,17 @@
   .gt-actions .gt-primary:hover { opacity: 0.92; background: var(--c-accent); }
   #aspect-list .vocab-table { width: 100%; table-layout: fixed; }
   #aspect-list .vocab-table td, #aspect-list .vocab-table th { white-space: normal; overflow-wrap: anywhere; }
-  .conj-class-chip { display: inline-block; font: 600 12px/1.6 inherit; padding: 0 8px; margin-left: 6px; border-radius: 999px; border: 1px solid var(--c-border); color: var(--c-text-muted); vertical-align: middle; white-space: nowrap; }
+  .conj-class-chip { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1.6; font-family: var(--font-ui, inherit); padding: 0 8px; margin-left: 6px; border-radius: 999px; border: 1px solid var(--c-border); color: var(--c-text-muted); vertical-align: middle; white-space: nowrap; }
+  .conj-dots { display: inline-flex; gap: 4px; margin-left: 10px; vertical-align: middle; }
+  .conj-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--c-text-muted); box-sizing: border-box; }
+  .conj-dot.fertig { background: var(--c-accent-strong); border-color: var(--c-accent-strong); }
+  .conj-dot.jetzt { outline: 2px solid var(--c-accent-strong); outline-offset: 1px; }
+  .conj-mixed-chip { border-color: var(--c-accent-strong); color: var(--c-accent-strong); }
+  .conj-after { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; margin-top: 8px; }
+  .conj-after:empty { display: none; }
+  .conj-example { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+  .conj-example [lang="ru"] { font-family: var(--font-ru, inherit); font-size: 1.1em; }
+  .conj-example-de { color: var(--c-text-muted); font-size: .92em; }
   .conj-stem-wrap { display: flex; align-items: center; flex: 1; min-width: 0; gap: 2px; }
   .conj-stem { font-family: var(--font-ru, inherit); font-size: 1.15em; color: var(--c-text-muted); white-space: nowrap; }
   .conj-stem-wrap .conj-input { flex: 1; min-width: 0; }
@@ -1167,6 +1177,8 @@
   }
   /* Grammatik wächst auf breiten Bildschirmen mit (wie die Lernkarte) */
   @media (min-width: 1200px) and (hover: hover) { #grammar-view { max-width: 800px; } }
+  @media (min-width: 1900px) and (hover: hover) { :root[data-cardsize="gross"] #grammar-view { max-width: 1140px; } :root[data-cardsize="sehrgross"] #grammar-view { max-width: 1320px; } }
+  @media (min-width: 1900px) and (hover: hover) { html:not([data-cardsize]) #grammar-view { max-width: 1000px; } html:not([data-cardsize]) #grammar-view .conj-input { font-size: 19px; } html:not([data-cardsize]) #grammar-view .case-question .case-prep { font-size: 42px; } }
   @media (min-width: 1600px) and (hover: hover) { #grammar-view { max-width: 880px; } #grammar-view .case-question .case-prep { font-size: 36px; } #grammar-view .conj-input { font-size: 17px; } }
   @media (min-width: 1600px) and (hover: hover) {
     #inner { max-width: 820px; }
@@ -1805,8 +1817,9 @@
 </div><div class="tense-switcher">
 <button class="mode-btn active" id="conj-tense-btn-nonpast" onclick="setConjTense('nonpast')">Präsens</button>
 <button class="mode-btn" id="conj-tense-btn-past" onclick="setConjTense('past')">Vergangenheit</button>
-<button class="mode-btn" id="conj-tense-btn-future" onclick="setConjTense('future')">Futur</button>
+<button class="mode-btn" id="conj-tense-btn-future" onclick="setConjTense('future')" title="буду + Infinitiv – zum Üben, zählt nicht im Lernstand">Futur</button>
 <button class="mode-btn" id="conj-tense-btn-imperative" onclick="setConjTense('imperative')">Imperativ</button>
+<button class="mode-btn" id="conj-tense-btn-mixed" onclick="setConjMixed()" title="Jedes Verb in einer zufälligen, noch offenen Zeit (Präsens, Vergangenheit, Imperativ)">Gemischt</button>
 </div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="conj-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="conj-verb-btn" onclick="openVerbPicker()" title="Verb aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span id="conj-verb-btn-label">Verb wählen</span>
@@ -1821,6 +1834,7 @@
 
 <button class="tool-btn" onclick="nextConjugationVerb()">Nächstes Verb <i class="ti ti-arrow-right"></i></button></div>
 <div aria-live="polite" class="conj-result" id="conj-result" role="status"></div>
+<div class="conj-after" id="conj-after"></div>
 <div class="conj-result" id="conj-score"></div>
 </div>
 </div>
@@ -18526,6 +18540,7 @@ const conjState = {
   allCorrect: false,
   classHint: false,   // Muster (Konjugationsklasse) neben dem Verb zeigen
   endings: false,     // Nur Endungen: Stamm vorgegeben
+  mixed: false,       // Gemischt: Zeit je Verb zufällig (offene zuerst)
 };
 
 // ── Aspektpartner ───────────────────────────────────────────────
@@ -18669,7 +18684,7 @@ function updateConjAspectButtons(inf) {
   const pfActive = conjState.aspect === 'pf' && pf;
   futureBtn.disabled = !!pfActive;
   futureBtn.style.opacity = pfActive ? '0.4' : '';
-  futureBtn.title = pfActive ? 'Vollendete Verben bilden das Futur ohne буду – siehe Spalte Futur' : '';
+  futureBtn.title = pfActive ? 'Vollendete Verben bilden das Futur ohne буду – siehe Spalte Futur' : 'буду + Infinitiv – zum Üben, zählt nicht im Lernstand';
   if (pfActive && conjState.tense === 'future') {
     conjState.tense = 'nonpast';
     document.getElementById('conj-tense-btn-future').classList.remove('active');
@@ -18753,6 +18768,7 @@ const TOOL_SETTINGS = [
   ['conjSortMode', ...tsProp(() => conjState, 'sortMode'), tsOneOf('rules', 'recent', 'random')],
   ['conjClassHint', ...tsProp(() => conjState, 'classHint'), TS_BOOL],
   ['conjEndings', ...tsProp(() => conjState, 'endings'), TS_BOOL],
+  ['conjMixed', ...tsProp(() => conjState, 'mixed'), TS_BOOL],
   ['declSortMode', ...tsProp(() => declState, 'sortMode'), tsOneOf('type', 'alpha', 'random', 'random-hard')],
   ['nounSortMode', ...tsProp(() => nounState, 'sortMode'), tsOneOf('class', 'alpha', 'random', 'random-reg')],
   ['nounHintVisible', ...tsProp(() => nounState, 'hintVisible'), TS_BOOL],
@@ -19227,26 +19243,38 @@ function nextAspect() { gtNext(ASPECT_DRILL); }
 
 function openConjugate() {
   rebuildConjVerbSelect();
-  conjState.tense = 'nonpast';
+  conjState.tense = conjState.mixed ? conjMixedTense(document.getElementById('conj-verb-select').value) : 'nonpast';
   conjState.aspect = 'ipf';
   document.getElementById('conj-aspect-btn-ipf').classList.add('active');
   document.getElementById('conj-aspect-btn-pf').classList.remove('active');
-  document.getElementById('conj-tense-btn-nonpast').classList.add('active');
-  document.getElementById('conj-tense-btn-past').classList.remove('active');
-  document.getElementById('conj-tense-btn-future').classList.remove('active');
-  document.getElementById('conj-tense-btn-imperative').classList.remove('active');
+  updateConjTenseButtons();
+  updateConjInfoSections();
   renderConjugationTable();
   showGrammarPanel('conjugate');
 }
 
-function setConjTense(tense) {
+function setConjTense(tense, gemischt) {
   conjState.tense = tense;
-  document.getElementById('conj-tense-btn-nonpast').classList.toggle('active', tense === 'nonpast');
-  document.getElementById('conj-tense-btn-past').classList.toggle('active', tense === 'past');
-  document.getElementById('conj-tense-btn-future').classList.toggle('active', tense === 'future');
-  document.getElementById('conj-tense-btn-imperative').classList.toggle('active', tense === 'imperative');
+  if (!gemischt && conjState.mixed) { conjState.mixed = false; saveToolSettings(); }
+  updateConjTenseButtons();
   updateConjInfoSections();
   renderConjugationTable();
+}
+function updateConjTenseButtons() {
+  ['nonpast', 'past', 'future', 'imperative'].forEach(t =>
+    document.getElementById('conj-tense-btn-' + t).classList.toggle('active', !conjState.mixed && conjState.tense === t));
+  document.getElementById('conj-tense-btn-mixed').classList.toggle('active', !!conjState.mixed);
+}
+// Gemischt (7.11.): jedes Verb in einer zufälligen Zeit, bevorzugt einer, die bei diesem Verb noch offen ist
+function conjMixedTense(inf) {
+  const all = loadGrammarSrs();
+  const offen = CONJ_MIX_TENSES.filter(([, key]) => !srsDone((all[key] || {})[inf])).map(x => x[0]);
+  const wahl = offen.length ? offen : CONJ_MIX_TENSES.map(x => x[0]);
+  return wahl[Math.floor(Math.random() * wahl.length)];
+}
+function setConjMixed() {
+  conjState.mixed = true; saveToolSettings();
+  setConjTense(conjMixedTense(document.getElementById('conj-verb-select').value), true);
 }
 
 function renderConjugationTable() {
@@ -19272,8 +19300,11 @@ function renderConjugationTable() {
   // Muster (7.11.): Konjugationsklasse als kleines Abzeichen, nur fürs unvollendete Präsens/Imperativ
   const klasse = conjState.classHint && conjState.aspect !== 'pf' && conjState.tense !== 'past' && conjState.tense !== 'future'
     ? VERB_CLASS_INFO[verbClassKey(inf)] : null;
+  const zeitName = { nonpast: data.nonPastLabel, past: 'Vergangenheit', future: 'Futur', imperative: 'Imperativ' }[conjState.tense];
   document.getElementById('conj-de-hint').innerHTML = '<b lang="ru">' + shownInf + '</b> — ' + data.de +
+    (conjState.mixed ? ' <span class="conj-class-chip conj-mixed-chip">→ ' + zeitName + '</span>' : '') +
     (klasse ? ' <span class="conj-class-chip" title="' + klasse.label + '">' + klasse.kurz + '</span>' : '') +
+    '<span class="conj-dots" id="conj-dots"></span>' +
     (pf ? ' &nbsp;<span style="opacity:0.7">(Aspektpaar ' + inf + ' / ' + pf.pf + ')</span>' : '');
   setGtToggle(document.getElementById('conj-class-toggle'), conjState.classHint);
   setGtToggle(document.getElementById('conj-endings-toggle'), conjState.endings);
@@ -19301,8 +19332,23 @@ function renderConjugationTable() {
       <button class="conj-reveal-one-btn" onclick="revealConjugationRow(${i})" title="Nur diese Form anzeigen" aria-label="Nur diese Form anzeigen"><i class="ti ti-eye"></i></button>
     </div>`).join('');
   document.getElementById('conj-result').textContent = '';
+  document.getElementById('conj-after').innerHTML = '';
   conjState.allCorrect = false; conjState.attempted = false;
   updateConjScore();
+}
+// Nach dem Lösen (7.11.): Beispielsatz aus den Vokabeln und „Tabelle anhören“
+function showConjAfter() {
+  const inf = document.getElementById('conj-verb-select').value, w = findVocabEntry(inf);
+  const satz = w ? getWordSentence(w) : null;
+  document.getElementById('conj-after').innerHTML =
+    '<button class="tool-btn" type="button" onclick="speakConjTable()"><i class="ti ti-volume"></i> Tabelle anhören</button>' +
+    (satz ? '<div class="conj-example"><span lang="ru">' + satz.ru + '</span><span class="conj-example-de">' + satz.de + '</span></div>' : '');
+}
+function speakConjTable() {
+  const rows = [...document.querySelectorAll('#conj-grid .conj-row')].map(r => {
+    const i = r.querySelector('input'); return r.querySelector('.conj-pronoun').textContent.replace(/ \/ .*/, '') + ' ' + i.dataset.answer.split(/\s*[\/|]\s*/)[0];
+  });
+  speak(rows.join('. ') + '.', Math.min(speakRate, 0.9));
 }
 
 // gemeinsamer Anfang der Formen (erste Variante), höchstens bis einen Buchstaben vor der kürzesten Form
@@ -19332,6 +19378,7 @@ function checkConjugationTable() {
     } else { conjState.attempted = true; progressSeen(conjSrsKey(), document.getElementById('conj-verb-select').value); }
     document.getElementById('conj-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Verb';
+    showConjAfter();
   } else {
     // erste vollständige, aber fehlerhafte Prüfung als Versuch zählen
     if (!conjState.attempted && filled === res.total) { conjState.attempted = true; conjState.done++; progressMark(conjSrsKey(), document.getElementById('conj-verb-select').value, false); }
@@ -19339,7 +19386,20 @@ function checkConjugationTable() {
   }
   updateConjScore();
 }
+// Stand je Zeit beim Verb (7.11.): Präsens, Vergangenheit, Imperativ – gefüllt = erledigt
+function updateConjDots() {
+  const el = document.getElementById('conj-dots'); if (!el) return;
+  const inf = document.getElementById('conj-verb-select').value, all = loadGrammarSrs();
+  el.innerHTML = CONJ_MIX_TENSES.map(([t, key, name]) => {
+    const fertig = srsDone((all[key] || {})[inf]);
+    return '<span class="conj-dot' + (fertig ? ' fertig' : '') + (!conjState.mixed && conjState.tense === t || conjState.mixed && conjState.tense === t ? ' jetzt' : '') + '" title="' + name + ': ' + (fertig ? 'erledigt' : 'offen') + '"></span>';
+  }).join('');
+  const n = CONJ_MIX_TENSES.filter(([, key]) => srsDone((all[key] || {})[inf])).length;
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', n + ' von 3 Zeiten erledigt');
+  el.title = CONJ_MIX_TENSES.map(([, key, name]) => name + (srsDone((all[key] || {})[inf]) ? ' ✓' : ' –')).join(' · ');
+}
 function updateConjScore() {
+  updateConjDots();
   const el = document.getElementById('conj-score');
   if (el) el.textContent = conjState.done ? 'In dieser Sitzung: ' + conjState.correct + ' von ' + conjState.done + ' Tabellen richtig' : '';
 }
@@ -19352,7 +19412,9 @@ function updateConjScore() {
 function conjSrsKey() { return conjState.tense === 'nonpast' ? 'conj' : 'conj:' + conjState.tense; }
 function nounSrsKey() { return nounState.number === 'pl' ? 'noun:pl' : 'noun'; }
 function pronounSrsKey(p) { const e = pronounEntry(p); return !e || e.kind !== 'gender' || pronounGender === 'masc' ? 'pronoun' : 'pronoun:' + pronounGender; }
-const CONJ_SRS_KEYS = ['conj', 'conj:past', 'conj:future', 'conj:imperative'];
+// Futur (буду + Infinitiv) ist bei allen Verben gleich gebaut: übbar, zählt aber nicht im Lernstand (7.11.)
+const CONJ_SRS_KEYS = ['conj', 'conj:past', 'conj:imperative'];
+const CONJ_MIX_TENSES = [['nonpast', 'conj', 'Präsens'], ['past', 'conj:past', 'Vergangenheit'], ['imperative', 'conj:imperative', 'Imperativ']];
 const PRONOUN_SRS_KEYS = ['pronoun', 'pronoun:fem', 'pronoun:neut', 'pronoun:plural'];
 function conjTotal() { return Object.keys(conjugationData).length * CONJ_SRS_KEYS.length; }
 function nounTotal() { return Object.keys(nounDeclensionData).reduce((n, k) => n + nounHas(k, 'sg') + nounHas(k, 'pl'), 0); }
@@ -19382,6 +19444,7 @@ function nextConjugationVerb() {
   const i = opts.indexOf(sel.value);
   sel.value = opts[(i + 1) % opts.length];
   saveToolSettings();
+  if (conjState.mixed) { setConjTense(conjMixedTense(sel.value), true); return; }
   renderConjugationTable();
 }
 
@@ -19685,6 +19748,7 @@ function revealFormInput(input) {
 function revealConjugationTable() {
   const neu = !conjState.attempted && !conjState.allCorrect, verb = document.getElementById('conj-verb-select').value, key = conjSrsKey();
   revealFormTable('conj-grid', 'conj-result');
+  showConjAfter();
   if (neu) gtRateOffer('conj-result', ok => { conjState.attempted = true; conjState.done++; if (ok) conjState.correct++; progressMark(key, verb, ok); updateConjScore(); }, nextConjugationVerb);
 }
 function revealConjugationRow(i) { revealFormRow('conj-input-', i); }
