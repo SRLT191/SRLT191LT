@@ -649,6 +649,10 @@
   .gt-actions .gt-primary:hover { opacity: 0.92; background: var(--c-accent); }
   #aspect-list .vocab-table { width: 100%; table-layout: fixed; }
   #aspect-list .vocab-table td, #aspect-list .vocab-table th { white-space: normal; overflow-wrap: anywhere; }
+  .conj-class-chip { display: inline-block; font: 600 12px/1.6 inherit; padding: 0 8px; margin-left: 6px; border-radius: 999px; border: 1px solid var(--c-border); color: var(--c-text-muted); vertical-align: middle; white-space: nowrap; }
+  .conj-stem-wrap { display: flex; align-items: center; flex: 1; min-width: 0; gap: 2px; }
+  .conj-stem { font-family: var(--font-ru, inherit); font-size: 1.15em; color: var(--c-text-muted); white-space: nowrap; }
+  .conj-stem-wrap .conj-input { flex: 1; min-width: 0; }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
   .gt-rate .tool-btn { min-height: 40px; }
@@ -1710,7 +1714,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleConjInfo()" title="Wie funktioniert die Konjugation?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-conj" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item grammar-note-toggle" onclick="closeGtMore(); toggleGrammarNotes()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="gt-more-item" onclick="closeGtMore(); renderConjugationTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item grammar-note-toggle" onclick="closeGtMore(); toggleGrammarNotes()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="gt-more-item" onclick="closeGtMore(); renderConjugationTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button><button class="gt-more-item" id="conj-sort-btn" onclick="cycleConjSortMode()" role="menuitem" title="Reihenfolge der Verben umschalten" type="button"><i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span></button><button aria-checked="false" class="gt-more-item" id="conj-scope-btn" onclick="toggleConjScope()" role="menuitemcheckbox" title="Auch Verben des Wortschatzes ohne Konjugationstabelle in der Liste zeigen" type="button"><i class="ti ti-list-check"></i> <span>Auch Verben ohne Tabelle</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="conj-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <div id="conj-info-nonpast">
@@ -1795,11 +1799,7 @@
 </div>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em> und <em>Erklärung zur Form</em>.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button class="tool-btn" id="conj-sort-btn" onclick="cycleConjSortMode()" title="Sortierung der Verbliste umschalten">
-<i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span>
-</button><button class="tool-btn" id="conj-scope-btn" onclick="toggleConjScope()" title="Alle Verben des Wortschatzes anzeigen, auch ohne Tabelle">
-<i class="ti ti-list-check"></i> <span>Mit Tabelle</span>
-</button><div class="tense-switcher">
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
 <button class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
 <button class="mode-btn" id="conj-aspect-btn-pf" onclick="setConjAspect('pf')">Vollendet</button>
 </div><div class="tense-switcher">
@@ -1807,7 +1807,7 @@
 <button class="mode-btn" id="conj-tense-btn-past" onclick="setConjTense('past')">Vergangenheit</button>
 <button class="mode-btn" id="conj-tense-btn-future" onclick="setConjTense('future')">Futur</button>
 <button class="mode-btn" id="conj-tense-btn-imperative" onclick="setConjTense('imperative')">Imperativ</button>
-</div></div></div></div>
+</div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="conj-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="conj-verb-btn" onclick="openVerbPicker()" title="Verb aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span id="conj-verb-btn-label">Verb wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="conj-verb-select" onchange="saveToolSettings(); renderConjugationTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('conj-verb-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -17110,7 +17110,10 @@ function updateGtSettingsSummary(root) {
       if (a && !/^(Alle|Beide|Alle Wörter|Grundformen)$/.test(a.textContent.trim())) parts.push(a.textContent.trim());
     });
     box.querySelectorAll('.gt-settings-body .gt-toggle').forEach(t => {
-      if (t.style.display !== 'none') parts.push(t.getAttribute('aria-pressed') === 'true' ? 'Hilfe an' : 'Hilfe aus');
+      if (t.style.display === 'none') return;
+      const an = t.getAttribute('aria-pressed') === 'true';
+      if (t.dataset.sum) { if (an) parts.push(t.dataset.sum); }
+      else parts.push(an ? 'Hilfe an' : 'Hilfe aus');
     });
     const sum = box.querySelector('.gt-settings-sum');
     if (sum) sum.textContent = parts.length ? parts.join(' · ') : 'alles gemischt';
@@ -18521,6 +18524,8 @@ const conjState = {
   attempted: false,
   correct: 0,
   allCorrect: false,
+  classHint: false,   // Muster (Konjugationsklasse) neben dem Verb zeigen
+  endings: false,     // Nur Endungen: Stamm vorgegeben
 };
 
 // ── Aspektpartner ───────────────────────────────────────────────
@@ -18746,6 +18751,8 @@ const tsOneOf = (...w) => v => w.includes(v);
 const TOOL_SETTINGS = [
   ['conjScope', ...tsProp(() => conjState, 'scope'), tsOneOf('table', 'all')],
   ['conjSortMode', ...tsProp(() => conjState, 'sortMode'), tsOneOf('rules', 'recent', 'random')],
+  ['conjClassHint', ...tsProp(() => conjState, 'classHint'), TS_BOOL],
+  ['conjEndings', ...tsProp(() => conjState, 'endings'), TS_BOOL],
   ['declSortMode', ...tsProp(() => declState, 'sortMode'), tsOneOf('type', 'alpha', 'random', 'random-hard')],
   ['nounSortMode', ...tsProp(() => nounState, 'sortMode'), tsOneOf('class', 'alpha', 'random', 'random-reg')],
   ['nounHintVisible', ...tsProp(() => nounState, 'hintVisible'), TS_BOOL],
@@ -19028,15 +19035,16 @@ function rebuildConjVerbSelect() {
   if (scopeBtn) {
     const total = getAllVocabVerbs().length;
     const covered = Object.keys(conjugationData).length;
-    scopeBtn.querySelector('span').textContent = conjState.scope === 'all'
-      ? covered + ' / ' + total + ' erfasst'
-      : 'Mit Tabelle';
+    const an = conjState.scope === 'all';
+    scopeBtn.setAttribute('aria-checked', an ? 'true' : 'false');
+    scopeBtn.classList.toggle('gt-on', an);
+    scopeBtn.querySelector('span').textContent = 'Auch Verben ohne Tabelle' + (an ? ' (' + covered + ' von ' + total + ' mit Tabelle)' : '');
   }
   ['conj-sort-btn', 'verbpicker-sort-btn'].forEach(id => {
     const btn = document.getElementById(id);
     if (!btn) return;
     btn.querySelector('i').className = 'ti ' + CONJ_SORT_ICONS[conjState.sortMode];
-    btn.querySelector('span').textContent = CONJ_SORT_LABELS[conjState.sortMode];
+    btn.querySelector('span').textContent = (id === 'conj-sort-btn' ? 'Reihenfolge: ' : '') + CONJ_SORT_LABELS[conjState.sortMode];
   });
   applySavedSelect('conj-verb-select');
   renderConjugationTable();
@@ -19261,8 +19269,14 @@ function renderConjugationTable() {
   const data = getActiveConjData(inf);
   const pf = aspectData[inf];
   const shownInf = data.displayInf || inf;
+  // Muster (7.11.): Konjugationsklasse als kleines Abzeichen, nur fürs unvollendete Präsens/Imperativ
+  const klasse = conjState.classHint && conjState.aspect !== 'pf' && conjState.tense !== 'past' && conjState.tense !== 'future'
+    ? VERB_CLASS_INFO[verbClassKey(inf)] : null;
   document.getElementById('conj-de-hint').innerHTML = '<b lang="ru">' + shownInf + '</b> — ' + data.de +
+    (klasse ? ' <span class="conj-class-chip" title="' + klasse.label + '">' + klasse.kurz + '</span>' : '') +
     (pf ? ' &nbsp;<span style="opacity:0.7">(Aspektpaar ' + inf + ' / ' + pf.pf + ')</span>' : '');
+  setGtToggle(document.getElementById('conj-class-toggle'), conjState.classHint);
+  setGtToggle(document.getElementById('conj-endings-toggle'), conjState.endings);
   document.getElementById('conj-tense-btn-nonpast').textContent = data.nonPastLabel;
   const note = conjState.tense === 'nonpast' ? data.nonPastNote
     : conjState.tense === 'imperative' ? data.imperativeNote
@@ -19277,10 +19291,13 @@ function renderConjugationTable() {
     : conjState.tense === 'past' ? data.past
     : conjState.tense === 'imperative' ? data.imperative
     : data.future) || data.nonPast;
+  // Nur Endungen (7.11.): gemeinsamer Anfang aller Formen ist vorgegeben (стро|ю, стро|ишь …);
+  // jede Zeile behält mindestens einen Buchstaben zum Eintippen. Nicht beim буду-Futur.
+  const stamm = conjState.endings && conjState.tense !== 'future' ? conjStem(Object.values(forms)) : '';
   grid.innerHTML = Object.keys(forms).map((pronoun, i) => `
     <div class="conj-row">
       <span class="conj-pronoun">${pronoun}</span>
-      <input type="text" class="conj-input" id="conj-input-${i}" data-answer="${forms[pronoun]}" aria-label="${pronoun}" autocomplete="off" onkeydown="gtTableEnter(event, checkConjugationTable)">
+      ${stamm ? `<span class="conj-stem-wrap"><span class="conj-stem" lang="ru" aria-hidden="true">${stamm}</span>` : ''}<input type="text" class="conj-input" id="conj-input-${i}" data-answer="${forms[pronoun]}"${stamm ? ` data-stem="${stamm}"` : ''} aria-label="${pronoun}${stamm ? ', Endung nach ' + stamm : ''}" autocomplete="off" onkeydown="gtTableEnter(event, checkConjugationTable)">${stamm ? '</span>' : ''}
       <button class="conj-reveal-one-btn" onclick="revealConjugationRow(${i})" title="Nur diese Form anzeigen" aria-label="Nur diese Form anzeigen"><i class="ti ti-eye"></i></button>
     </div>`).join('');
   document.getElementById('conj-result').textContent = '';
@@ -19288,6 +19305,17 @@ function renderConjugationTable() {
   updateConjScore();
 }
 
+// gemeinsamer Anfang der Formen (erste Variante), höchstens bis einen Buchstaben vor der kürzesten Form
+function conjStem(forms) {
+  const fs = forms.map(f => String(f).split(/\s*[\/|]\s*/)[0].trim()).filter(Boolean);
+  if (!fs.length || fs.some(f => /\s/.test(f))) return '';
+  let p = fs[0];
+  fs.forEach(f => { while (p && !f.startsWith(p)) p = p.slice(0, -1); });
+  const max = Math.min(...fs.map(f => f.length)) - 1;
+  return p.slice(0, Math.max(0, max));
+}
+function toggleConjClassHint() { conjState.classHint = !conjState.classHint; saveToolSettings(); renderConjugationTable(); updateGtSettingsSummary(); }
+function toggleConjEndings() { conjState.endings = !conjState.endings; saveToolSettings(); renderConjugationTable(); updateGtSettingsSummary(); }
 function checkConjugationTable() {
   if (conjState.allCorrect) { nextConjugationVerb(); return; }
   if (gtTablePre('#conj-grid', nextConjugationVerb)) return;
@@ -19313,7 +19341,7 @@ function checkConjugationTable() {
 }
 function updateConjScore() {
   const el = document.getElementById('conj-score');
-  if (el) el.textContent = conjState.done ? conjState.correct + ' von ' + conjState.done + ' Tabellen richtig' : '';
+  if (el) el.textContent = conjState.done ? 'In dieser Sitzung: ' + conjState.correct + ' von ' + conjState.done + ' Tabellen richtig' : '';
 }
 // Nächsten Tabelleneintrag wählen: bevorzugt ungesehene bzw. fällige (SRS),
 // sonst der Reihe nach. Gleiche Logik für Adjektive, Substantive, Pronomen.
@@ -19615,8 +19643,9 @@ function checkGridInputs(gridSelector, resultId, unused) {
     input.classList.remove('revealed');
     clearPartialFeedback(input);
     const answer = input.dataset.answer;
-    const val = input.value.trim();
-    if (!val) { input.classList.remove('correct', 'wrong'); return; }
+    const eingabe = input.value.trim();
+    if (!eingabe) { input.classList.remove('correct', 'wrong'); return; }
+    const val = (input.dataset.stem || '') + eingabe;   // Nur Endungen: Stamm steht davor
     const res = gramMatch(val, answer);
     const ok = res.ok;
     input.classList.toggle('correct', ok);
@@ -19647,7 +19676,8 @@ function revealFormRow(idPrefix, i) {
 }
 function revealFormInput(input) {
   if (!input) return;
-  input.value = input.dataset.answer;
+  const st = input.dataset.stem || '', ans = input.dataset.answer.split(/\s*[\/|]\s*/)[0];
+  input.value = st && ans.startsWith(st) ? ans.slice(st.length) : input.dataset.answer;
   input.classList.remove('correct', 'wrong');
   input.classList.add('revealed');
 }
@@ -20303,7 +20333,7 @@ function renderDeclensionTable() {
 
 function updateDeclScore() {
   const el = document.getElementById('decl-score');
-  if (el) el.textContent = declState.done ? declState.correct + ' von ' + declState.done + ' Tabellen richtig' : '';
+  if (el) el.textContent = declState.done ? 'In dieser Sitzung: ' + declState.correct + ' von ' + declState.done + ' Tabellen richtig' : '';
 }
 function checkDeclensionTable() {
   if (declState.allCorrect) { nextAdjInList(); return; }
@@ -20858,7 +20888,7 @@ function renderNounTable() {
 
 function updateNounScore() {
   const el = document.getElementById('noun-score');
-  if (el) el.textContent = nounState.done ? nounState.correct + ' von ' + nounState.done + ' Tabellen richtig' : '';
+  if (el) el.textContent = nounState.done ? 'In dieser Sitzung: ' + nounState.correct + ' von ' + nounState.done + ' Tabellen richtig' : '';
 }
 function checkNounTable() {
   // Zweiter Klick auf „Prüfen", wenn schon alles richtig war → nächstes Wort
