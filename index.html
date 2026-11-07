@@ -8121,7 +8121,7 @@ function grammarToolSources() {
     motion: [['motion:fwd', 'motion:back', 'motion:quiz'], motionPairKeys().length * 2 + MOTION_QUIZ.length],
     transform: [['transform'], buildTransformItems().length], rektion: [['rektion'], rektionTotal()],
     noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun')],
-    numnoun: [['numnoun'], Object.keys(nounDeclensionData).length * 3], gender: [['gender'], genderTotal()],
+    numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal()],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
     casedrill: [['case', 'case:word'], PREP_CASES.length * 2], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
@@ -17288,7 +17288,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-transform', learned('transform', buildTransformItems().length));
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length * 2));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
-  set('gtp-numnoun', learned('numnoun', Object.keys(nounDeclensionData).length * 3));
+  set('gtp-numnoun', learned('numnoun', numNounNouns().length * 3));
   set('gtp-caseform', learned('caseform', caseFormTotal('noun')));
   set('gtp-caseadj', learned('caseadj', caseFormTotal('adj')));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
@@ -19327,7 +19327,7 @@ function pronounSrsKey(p) { const e = pronounEntry(p); return !e || e.kind !== '
 const CONJ_SRS_KEYS = ['conj', 'conj:past', 'conj:future', 'conj:imperative'];
 const PRONOUN_SRS_KEYS = ['pronoun', 'pronoun:fem', 'pronoun:neut', 'pronoun:plural'];
 function conjTotal() { return Object.keys(conjugationData).length * CONJ_SRS_KEYS.length; }
-function nounTotal() { return Object.keys(nounDeclensionData).length * 2; }
+function nounTotal() { return Object.keys(nounDeclensionData).reduce((n, k) => n + nounHas(k, 'sg') + nounHas(k, 'pl'), 0); }
 function pronounTotal() { return PRONOUN_GROUPS.reduce((n, g) => n + g[1]().reduce((m, p) => m + ((pronounEntry(p) || {}).kind === 'gender' ? 4 : 1), 0), 0); }
 function nextGrammarTableItem(selectId, render, toolKey) {
   const sel = document.getElementById(selectId);
@@ -20618,6 +20618,70 @@ const nounDeclensionData = {
   "поле": { de:"Feld", typeLabel:"2. Klasse · Neutrum · weich",
     sg:{ "Nom.":"поле", "Gen.":"поля", "Dat.":"полю", "Akk.":"поле", "Instr.":"полем", "Präp.":"поле" },
     pl:{ "Nom.":"поля", "Gen.":"полей", "Dat.":"полям", "Akk.":"поля", "Instr.":"полями", "Präp.":"полях" } },
+  "человек": { de:"Mensch", typeLabel:"2. Klasse · männlich · belebt · Plural люди",
+    note:"Der Plural kommt von einem anderen Wort: люди, людей. Nach Zahlen steht aber человек (пять человек).", countGenPl:"человек",
+    sg:{ "Nom.":"человек", "Gen.":"человека", "Dat.":"человеку", "Akk.":"человека", "Instr.":"человеком", "Präp.":"человеке" },
+    pl:{ "Nom.":"люди", "Gen.":"людей", "Dat.":"людям", "Akk.":"людей", "Instr.":"людьми", "Präp.":"людях" } },
+  "ребёнок": { de:"Kind", typeLabel:"2. Klasse · männlich · belebt · Plural дети",
+    note:"Der Plural kommt von einem anderen Wort: дети, детей, Instr. детьми. Nach Zahlen: два ребёнка, пять детей.",
+    sg:{ "Nom.":"ребёнок", "Gen.":"ребёнка", "Dat.":"ребёнку", "Akk.":"ребёнка", "Instr.":"ребёнком", "Präp.":"ребёнке" },
+    pl:{ "Nom.":"дети", "Gen.":"детей", "Dat.":"детям", "Akk.":"детей", "Instr.":"детьми", "Präp.":"детях" } },
+  "друг": { de:"Freund", typeLabel:"2. Klasse · männlich · belebt · Plural -ья (г → з)",
+    note:"Im Plural wird г zu з, dazu die Endung -ья: друзья, Gen. друзей.",
+    sg:{ "Nom.":"друг", "Gen.":"друга", "Dat.":"другу", "Akk.":"друга", "Instr.":"другом", "Präp.":"друге" },
+    pl:{ "Nom.":"друзья", "Gen.":"друзей", "Dat.":"друзьям", "Akk.":"друзей", "Instr.":"друзьями", "Präp.":"друзьях" } },
+  "сын": { de:"Sohn", typeLabel:"2. Klasse · männlich · belebt · Plural -овья",
+    note:"Im Plural wird -овья eingeschoben: сыновья, Gen. сыновей.",
+    sg:{ "Nom.":"сын", "Gen.":"сына", "Dat.":"сыну", "Akk.":"сына", "Instr.":"сыном", "Präp.":"сыне" },
+    pl:{ "Nom.":"сыновья", "Gen.":"сыновей", "Dat.":"сыновьям", "Akk.":"сыновей", "Instr.":"сыновьями", "Präp.":"сыновьях" } },
+  "мужчина": { de:"Mann", typeLabel:"1. Klasse · männlich auf -а · belebt",
+    note:"Wird wie ein weibliches Wort auf -а dekliniert, ist aber männlich: Adjektive stehen männlich (высокий мужчина).",
+    sg:{ "Nom.":"мужчина", "Gen.":"мужчины", "Dat.":"мужчине", "Akk.":"мужчину", "Instr.":"мужчиной", "Präp.":"мужчине" },
+    pl:{ "Nom.":"мужчины", "Gen.":"мужчин", "Dat.":"мужчинам", "Akk.":"мужчин", "Instr.":"мужчинами", "Präp.":"мужчинах" } },
+  "здание": { de:"Gebäude", typeLabel:"2. Klasse · Neutrum · -ие (Präp. -ии)",
+    note:"Wörter auf -ие haben im Präpositiv -ии (в здании) und im Gen. Pl. -ий (зданий).",
+    sg:{ "Nom.":"здание", "Gen.":"здания", "Dat.":"зданию", "Akk.":"здание", "Instr.":"зданием", "Präp.":"здании" },
+    pl:{ "Nom.":"здания", "Gen.":"зданий", "Dat.":"зданиям", "Akk.":"здания", "Instr.":"зданиями", "Präp.":"зданиях" } },
+  "станция": { de:"Station", typeLabel:"1. Klasse · weiblich · -ия (Dat./Präp. -ии)",
+    note:"Wörter auf -ия haben im Dativ und Präpositiv -ии (на станции) und im Gen. Pl. -ий (станций).",
+    sg:{ "Nom.":"станция", "Gen.":"станции", "Dat.":"станции", "Akk.":"станцию", "Instr.":"станцией", "Präp.":"станции" },
+    pl:{ "Nom.":"станции", "Gen.":"станций", "Dat.":"станциям", "Akk.":"станции", "Instr.":"станциями", "Präp.":"станциях" } },
+  "улица": { de:"Straße", typeLabel:"1. Klasse · weiblich · ц (Instr. -ей, Gen. Pl. улиц)",
+    note:"Nach ц steht unbetont е statt о: улицей. Nach ц nie я/ю, im Plural -ы: улицы.",
+    sg:{ "Nom.":"улица", "Gen.":"улицы", "Dat.":"улице", "Akk.":"улицу", "Instr.":"улицей", "Präp.":"улице" },
+    pl:{ "Nom.":"улицы", "Gen.":"улиц", "Dat.":"улицам", "Akk.":"улицы", "Instr.":"улицами", "Präp.":"улицах" } },
+  "яблоко": { de:"Apfel", typeLabel:"2. Klasse · Neutrum · Nom. Pl. -и (к)",
+    note:"Neutrum, aber nach к steht im Plural -и (яблоки) statt -а; Gen. Pl. ohne Endung: яблок.",
+    sg:{ "Nom.":"яблоко", "Gen.":"яблока", "Dat.":"яблоку", "Akk.":"яблоко", "Instr.":"яблоком", "Präp.":"яблоке" },
+    pl:{ "Nom.":"яблоки", "Gen.":"яблок", "Dat.":"яблокам", "Akk.":"яблоки", "Instr.":"яблоками", "Präp.":"яблоках" } },
+  "платье": { de:"Kleid", typeLabel:"2. Klasse · Neutrum · -ье (Gen. Pl. платьев)",
+    note:"Wörter auf -ье: Plural платья, Gen. Pl. платьев.",
+    sg:{ "Nom.":"платье", "Gen.":"платья", "Dat.":"платью", "Akk.":"платье", "Instr.":"платьем", "Präp.":"платье" },
+    pl:{ "Nom.":"платья", "Gen.":"платьев", "Dat.":"платьям", "Akk.":"платья", "Instr.":"платьями", "Präp.":"платьях" } },
+  "глаз": { de:"Auge", typeLabel:"2. Klasse · männlich · Nom. Pl. -а, Gen. Pl. глаз",
+    note:"Plural auf -а (глаза), Gen. Pl. ohne Endung: глаз. Ortsangabe mit в: в глазу.",
+    sg:{ "Nom.":"глаз", "Gen.":"глаза", "Dat.":"глазу", "Akk.":"глаз", "Instr.":"глазом", "Präp.":"глазе" },
+    pl:{ "Nom.":"глаза", "Gen.":"глаз", "Dat.":"глазам", "Akk.":"глаза", "Instr.":"глазами", "Präp.":"глазах" } },
+  "гражданин": { de:"Bürger", typeLabel:"2. Klasse · männlich · belebt · -анин → -ане (Gen. Pl. граждан)",
+    note:"Wörter auf -анин/-янин verlieren im Plural -ин: граждане, Gen. Pl. граждан.",
+    sg:{ "Nom.":"гражданин", "Gen.":"гражданина", "Dat.":"гражданину", "Akk.":"гражданина", "Instr.":"гражданином", "Präp.":"гражданине" },
+    pl:{ "Nom.":"граждане", "Gen.":"граждан", "Dat.":"гражданам", "Akk.":"граждан", "Instr.":"гражданами", "Präp.":"гражданах" } },
+  "сосед": { de:"Nachbar", typeLabel:"2. Klasse · männlich · belebt · Plural weich (соседи)",
+    note:"Singular hart, Plural weich: соседи, соседей, соседям.",
+    sg:{ "Nom.":"сосед", "Gen.":"соседа", "Dat.":"соседу", "Akk.":"соседа", "Instr.":"соседом", "Präp.":"соседе" },
+    pl:{ "Nom.":"соседи", "Gen.":"соседей", "Dat.":"соседям", "Akk.":"соседей", "Instr.":"соседями", "Präp.":"соседях" } },
+  "ухо": { de:"Ohr", typeLabel:"2. Klasse · Neutrum · Plural уши",
+    note:"Der Plural hat einen anderen Stamm: уши, ушей, ушам.",
+    sg:{ "Nom.":"ухо", "Gen.":"уха", "Dat.":"уху", "Akk.":"ухо", "Instr.":"ухом", "Präp.":"ухе" },
+    pl:{ "Nom.":"уши", "Gen.":"ушей", "Dat.":"ушам", "Akk.":"уши", "Instr.":"ушами", "Präp.":"ушах" } },
+  "церковь": { de:"Kirche", typeLabel:"3. Klasse · weiblich · flüchtiges о",
+    note:"Das о fällt außer im Nom./Akk. Sg. und Instr. weg: церкви, церквей; Instr. церковью.",
+    sg:{ "Nom.":"церковь", "Gen.":"церкви", "Dat.":"церкви", "Akk.":"церковь", "Instr.":"церковью", "Präp.":"церкви" },
+    pl:{ "Nom.":"церкви", "Gen.":"церквей", "Dat.":"церквам", "Akk.":"церкви", "Instr.":"церквами", "Präp.":"церквах" } },
+  "деньги": { de:"Geld", typeLabel:"nur Plural · Gen. денег",
+    note:"Gibt es nur im Plural. Gen. mit flüchtigem е: денег (много денег).",
+    sg:{ "Nom.":"—", "Gen.":"—", "Dat.":"—", "Akk.":"—", "Instr.":"—", "Präp.":"—" },
+    pl:{ "Nom.":"деньги", "Gen.":"денег", "Dat.":"деньгам", "Akk.":"деньги", "Instr.":"деньгами", "Präp.":"деньгах" } },
 };
 // Zustand: Substantivdeklination
 const nounState = {
@@ -20673,12 +20737,14 @@ const NOUN_SORT_ICONS = { class: 'ti-sort-ascending-2', alpha: 'ti-abc', random:
 // (flüchtige Vokale, Betonungswechsel, Sonder-Nom./Gen.-Plural, -мя, -ер- usw.).
 function isIrregularNoun(ru) {
   const label = (nounDeclensionData[ru] || {}).typeLabel || '';
-  const IRREG = /flüchtig|Betonung|Nom\. ?Pl|Präp\.|nach в|Gen\. ?Pl|-ья|-ер-|-мя|Sonderfall|лет/;
+  const IRREG = /flüchtig|Betonung|Nom\. ?Pl|Präp\.|nach в|Gen\. ?Pl|-ья|-ер-|-мя|Sonderfall|лет|Plural |auf -а|-анин|-овья/;
   return !/^[123]\. Klasse/.test(label) || IRREG.test(label);
 }
 
+// Hat das Substantiv Formen in dieser Zahl? (любовь nur Singular, деньги nur Plural: dort steht „—“)
+function nounHas(n, num) { const f = (nounDeclensionData[n] || {})[num]; return !!f && !!f['Nom.'] && f['Nom.'] !== '—'; }
 function getSortedNouns() {
-  const nouns = Object.keys(nounDeclensionData);
+  const nouns = Object.keys(nounDeclensionData).filter(n => nounHas(n, nounState.number));
   const regular = nouns.filter(n => !isIrregularNoun(n));
   const irregular = nouns.filter(isIrregularNoun);
 
@@ -20751,12 +20817,14 @@ function setNounNumber(num) {
   nounState.number = num;
   document.getElementById('noun-num-btn-sg').classList.toggle('active', num === 'sg');
   document.getElementById('noun-num-btn-pl').classList.toggle('active', num === 'pl');
-  renderNounTable();
+  rebuildNounSelect();
 }
 
 function renderNounTable() {
   gtTableReset('#noun-grid');
-  const noun = document.getElementById('noun-select').value || Object.keys(nounDeclensionData)[0];
+  const sel = document.getElementById('noun-select');
+  if (!nounHas(sel.value, nounState.number)) sel.value = getSortedNouns()[0];
+  const noun = sel.value || Object.keys(nounDeclensionData)[0];
   refreshFormPicker('noun');
   const data = nounDeclensionData[noun];
   document.getElementById('noun-de-hint').innerHTML = '<b lang="ru">' + noun + '</b> — ' + data.de +
@@ -20847,6 +20915,7 @@ const WG_CASES = ['Nom.', 'Gen.', 'Dat.', 'Akk.', 'Instr.', 'Präp.'];
 function nounGender(ru, data) {
   // 3. Klasse + -мя aus typeLabel, sonst über Endung
   if (/-мя/.test(data.typeLabel) || /neutr/.test(data.typeLabel)) return 'n';
+  if (/männlich/.test(data.typeLabel)) return 'm';   // мужчина: männlich trotz -а
   if (/3\. Klasse/.test(data.typeLabel) || /fem/.test(data.typeLabel)) {
     // -а/-я → fem (1. Klasse), -ь → fem (3. Klasse)
   }
@@ -21269,8 +21338,7 @@ function wgPickAdjNoun(plural) {
 function buildWordgroupPairs() {
   let adjs = Object.keys(declensionData);
   let nouns = Object.keys(nounDeclensionData).filter(n => {
-    const pl = nounDeclensionData[n].pl;
-    return pl && pl['Nom.'] && pl['Nom.'] !== '—';
+    return nounHas(n, 'sg') && nounHas(n, 'pl');
   });
   if (wgState.difficulty === 'easy') {
     // nur harte Adjektive und reguläre Substantive (keine Sonderfälle)
@@ -21692,8 +21760,9 @@ function wgDeclineNP({ det, adj, noun, kasus, number }) {
   // Substantiv — belebt im Akkusativ wie der Genitiv (Plural immer,
   // Singular nur maskulin). Die Regel steht hier und nicht in den Tabellen,
   // damit neue Einträge nicht einzeln gepflegt werden müssen.
+  // Ausnahme: männliche Wörter auf -а/-я (мужчина) haben ihren eigenen Akkusativ (мужчину), nur das Adjektiv folgt der Regel.
   let nform = nd[number][kasus];
-  if (kasus === 'Akk.' && anim && (number === 'pl' || g === 'm')) nform = nd[number]['Gen.'];
+  if (kasus === 'Akk.' && anim && (number === 'pl' || (g === 'm' && !/[ая]$/.test(nd.sg['Nom.'])))) nform = nd[number]['Gen.'];
   tokens.push(nform);
   return { ru: tokens.join(' '), tokens, g };
 }
@@ -23341,8 +23410,10 @@ function openNumNoun() {
   showGrammarPanel('numnoun');
 }
 
+// Zahl + Substantiv braucht Singular und Plural (ohne любовь, деньги)
+function numNounNouns() { return Object.keys(nounDeclensionData).filter(n => nounHas(n, 'sg') && nounHas(n, 'pl')); }
 function restartNumNoun() {
-  const nouns = Object.keys(nounDeclensionData);
+  const nouns = numNounNouns();
   const noun = nouns[Math.floor(Math.random() * nouns.length)];
   // Zahlen so ziehen, dass alle drei Regelfälle und die Teens-Ausnahme vorkommen
   const buckets = [
@@ -23353,7 +23424,9 @@ function restartNumNoun() {
   ];
   const n = buckets[Math.floor(Math.random() * buckets.length)]();
   const [num, kasus, why] = numNounRequiredForm(n);
-  numNounState.current = { n, noun, answer: nounDeclensionData[noun][num][kasus], why,
+  // Zählform: пять человек (nicht людей)
+  const nd = nounDeclensionData[noun], answer = num === 'pl' && kasus === 'Gen.' && nd.countGenPl ? nd.countGenPl : nd[num][kasus];
+  numNounState.current = { n, noun, answer, why,
     de: nounDeclensionData[noun].de };
   numNounState.answered = false;
   numNounState.lastInput = '';
