@@ -1713,7 +1713,7 @@
 <div class="conj-result" id="aspect-score"></div>
 </div>
 <div id="aspect-list" style="display:none">
-<table class="vocab-table"><thead><tr><th>Unvollendet</th><th>Vollendet</th><th>Deutsch</th></tr></thead>
+<table class="vocab-table"><thead><tr><th>Unvollendet</th><th>Vollendet</th><th>Deutsch</th><th>Bildung</th></tr></thead>
 <tbody id="aspect-list-body"></tbody></table>
 </div>
 </div>
@@ -19147,14 +19147,53 @@ function progressNext(toolKey, allItems, currentId) {
 // Ausgenommen: Bewegungsverb-Paare (идти / ходить …), beide Teile unvollendet – die übt das Werkzeug Bewegungsverben.
 const MOTION_INDET = ['ходить', 'ездить', 'бегать', 'летать', 'плавать', 'носить', 'водить', 'возить', 'лазить', 'таскать', 'ползать', 'катать', 'гонять', 'бродить'];
 let aspectPairsCache = null;
+// Bildungsart des Paares (8.11.), wird nach der Antwort gezeigt. Regeln erkennen Vorsilben, Suffixe
+// und den Wechsel -ать/-ять → -ить; was davon abweicht, steht hier von Hand.
+const ASPECT_FORMATION_MANUELL = {
+  'брать': 'anderer Stamm', 'говорить': 'anderer Stamm', 'класть': 'anderer Stamm', 'садиться': 'anderer Stamm',
+  'становиться': 'anderer Stamm', 'возвращаться': 'anderer Stamm',
+  'покупать': 'Sonderfall: das unvollendete Verb hat die Vorsilbe по- und -а- (по-куп-а-ть)',
+  'входить': 'Bewegungsverb mit Vorsilbe: -ходить / -йти', 'выходить': 'Bewegungsverb mit Vorsilbe: -ходить / -йти',
+  'переходить': 'Bewegungsverb mit Vorsilbe: -ходить / -йти', 'приходить': 'Bewegungsverb mit Vorsilbe: -ходить / -йти',
+  'проходить': 'Bewegungsverb mit Vorsilbe: -ходить / -йти', 'уходить': 'Bewegungsverb mit Vorsilbe: -ходить / -йти',
+  'находить': 'Vorsilbe на- mit -ходить / -йти (wie die Bewegungsverben)',
+  'приезжать': 'Bewegungsverb mit Vorsilbe: -езжать / -ехать', 'уезжать': 'Bewegungsverb mit Vorsilbe: -езжать / -ехать',
+  'переезжать': 'Bewegungsverb mit Vorsilbe: -езжать / -ехать', 'переводить': 'Vorsilbe пере- mit -водить / -вести',
+  'выбирать': 'Stammwechsel: -бира- → -бра-', 'собирать': 'Stammwechsel: -бира- → -бра-', 'убирать': 'Stammwechsel: -бира- → -бра-',
+  'посылать': 'Stammwechsel: -сыла- → -сла-', 'начинать': 'Stammwechsel: начина- → нача-', 'понимать': 'Stammwechsel: понима- → поня-',
+  'умирать': 'Stammwechsel: -мира- → -мере-', 'помогать': 'Stammwechsel: помога- → помочь (г → ч)',
+  'падать': 'Vorsilbe у- mit Stammwechsel (пад- → пас-)', 'играть': 'Vorsilbe с- (и wird nach с zu ы: сыграть)',
+  'вспоминать': 'Endung -ать → -ить (вспомина- → вспомни-)', 'запоминать': 'Endung -ать → -ить (запомина- → запомни-)',
+  'побеждать': 'Endung -ать → -ить (жд → д)', 'рождаться': 'Endung -ать → -ить (жд → д)',
+  'поздравлять': 'Endung -ять → -ить (вл → в)', 'появляться': 'Endung -ять → -ить (вл → в)',
+  'предлагать': 'Endung -ать → -ить (г → ж, а → о)', 'спрашивать': 'Suffix -ива- beim unvollendeten Verb (ш → с)',
+  'заканчивать': 'Suffix -ива- beim unvollendeten Verb (а → о)', 'отдыхать': 'Suffix -ну- beim vollendeten Verb (ы → о)', 'опаздывать': 'Suffix -ыва- beim unvollendeten Verb',
+};
+function aspectFormation(i, pf) {
+  if (ASPECT_FORMATION_MANUELL[i]) return ASPECT_FORMATION_MANUELL[i];
+  const ohne = x => x.replace(/(ся|сь)$/, ''), a = ohne(i), q = ohne(pf);
+  if (q.endsWith(a) && q.length > a.length) return 'Vorsilbe ' + q.slice(0, q.length - a.length) + '-';
+  if (a.replace(/вать$/, 'ть') === q) return 'Suffix -ва- beim unvollendeten Verb';
+  if (/ывать$/.test(a) && a.replace(/ывать$/, 'ать') === q) return 'Suffix -ыва- beim unvollendeten Verb';
+  if (/ивать$/.test(a) && a.replace(/ивать$/, 'ать') === q) return 'Suffix -ива- beim unvollendeten Verb';
+  if (/овывать$/.test(a) && a.replace(/овывать$/, 'овать') === q) return 'Suffix -ыва- beim unvollendeten Verb';
+  if (/нуть$/.test(q) && a.slice(0, -3) === q.slice(0, -4)) return 'Suffix -ну- beim vollendeten Verb';
+  if (/нуть$/.test(q) && a.slice(0, -4) === q.slice(0, -5)) return 'Suffix -ну- beim vollendeten Verb';
+  if (/[ая]ть$/.test(a) && /ить$/.test(q)) {
+    const sa = a.slice(0, -3), sq = q.slice(0, -3);
+    if (sa === sq) return 'Endung -' + a.slice(-3) + ' → -ить';
+    if (sa.slice(0, -1) === sq.slice(0, -1)) return 'Endung -' + a.slice(-3) + ' → -ить (' + sa.slice(-1) + ' → ' + sq.slice(-1) + ')';
+  }
+  return '';
+}
 function aspectPairs() {
   if (aspectPairsCache) return aspectPairsCache;
   const out = {};
-  Object.keys(aspectData).forEach(k => { const d = aspectData[k]; if (d.pf) out[k] = { pf: d.pf, de: d.de, note: d.note || '' }; });
+  Object.keys(aspectData).forEach(k => { const d = aspectData[k]; if (d.pf) out[k] = { pf: d.pf, de: d.de, note: d.note || '', bildung: aspectFormation(k, d.pf) }; });
   WORTART_GROUPS['Verben'].forEach(cat => getAllWordsOfCat(cat).forEach(w => {
     const teile = MERGED_CARDS[w.ru];
     if (!teile || teile.length !== 2 || out[teile[0]] || MOTION_INDET.includes(teile[1])) return;
-    out[teile[0]] = { pf: teile[1], de: [].concat(w.de).join(', '), note: '' };
+    out[teile[0]] = { pf: teile[1], de: [].concat(w.de).join(', '), note: '', bildung: aspectFormation(teile[0], teile[1]) };
   }));
   return (aspectPairsCache = out);
 }
@@ -19184,7 +19223,7 @@ function renderAspectList() {
     .forEach(ipf => {
       const d = P[ipf];
       const tr = document.createElement('tr');
-      tr.innerHTML = '<td class="td-ru" lang="ru">' + ipf + '</td><td class="td-ru" lang="ru">' + d.pf + '</td><td class="td-de">' + d.de + '</td>';
+      tr.innerHTML = '<td class="td-ru" lang="ru">' + ipf + '</td><td class="td-ru" lang="ru">' + d.pf + '</td><td class="td-de">' + d.de + '</td><td class="td-de aspect-bildung">' + (d.bildung || '') + '</td>';
       tbody.appendChild(tr);
     });
 }
@@ -19213,7 +19252,7 @@ function restartAspect() {
   const answer = aspectState.dir === 'fwd' ? d.pf : ipf;
   const givenLabel = aspectState.dir === 'fwd' ? 'unvollendet' : 'vollendet';
   const wantLabel = aspectState.dir === 'fwd' ? 'vollendet' : 'unvollendet';
-  aspectState.current = { ipf, given, answer, de: d.de, note: d.note || '' };
+  aspectState.current = { ipf, given, answer, de: d.de, note: d.note || '', bildung: d.bildung || '' };
   aspectState.answered = false; aspectState.lastCorrect = false; aspectState.lastInput = '';
   const input = document.getElementById('aspect-input');
   input.value = ''; input.className = 'conj-input'; input.disabled = false;
@@ -19231,9 +19270,10 @@ const ASPECT_DRILL = {
   srs: () => 'aspect:' + aspectState.dir, id: t => t.ipf,
   restart: () => restartAspect(), weiter: 'das nächste Paar',
   after: t => {
-    // erläuternde Notiz zur Bildungsart, falls vorhanden
+    // Bildungsart (8.11.) und erläuternde Notiz – erst nach der Antwort
     const noteEl = document.getElementById('aspect-note');
-    if (t.note) { noteEl.textContent = t.note; noteEl.style.display = 'block'; }
+    const text = [t.bildung ? 'Bildung: ' + t.bildung + '.' : '', t.note].filter(Boolean).join(' ');
+    if (text) { noteEl.textContent = text; noteEl.style.display = 'block'; }
     else noteEl.style.display = 'none';
   },
 };
