@@ -647,6 +647,8 @@
   .gt-actions .tool-btn { min-height: 39px; }
   .gt-actions .gt-primary { flex: 2; background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; font-size: 13px; padding: 8px 12px; }
   .gt-actions .gt-primary:hover { opacity: 0.92; background: var(--c-accent); }
+  #aspect-list .vocab-table { width: 100%; table-layout: fixed; }
+  #aspect-list .vocab-table td, #aspect-list .vocab-table th { white-space: normal; overflow-wrap: anywhere; }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
   .gt-rate .tool-btn { min-height: 40px; }
@@ -8113,7 +8115,7 @@ function homeLvClick(ev, key, fn) {
 const GRAMMAR_CAT_LABEL = { verb: 'Verben', noun: 'Substantive', adj: 'Adjektive', pron: 'Pronomen', prep: 'Präpositionen', syntax: 'Sätze' };
 // je Werkzeug: Schlüssel im Lernstand und Zahl der Aufgaben (wie „X von Y gelernt“ im Werkzeug)
 function grammarToolSources() {
-  const aspN = Object.keys(aspectData).filter(k => aspectData[k].pf).length;
+  const aspN = Object.keys(aspectPairs()).length;
   return {
     conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
     motion: [['motion:fwd', 'motion:back', 'motion:quiz'], motionPairKeys().length * 2 + MOTION_QUIZ.length],
@@ -17275,7 +17277,7 @@ function updateGrammarTileProgress(store, sink) {
     return n + ' von ' + total + ' gelernt';
   };
   set('gtp-conj', learnedMulti(CONJ_SRS_KEYS, conjTotal()));
-  const aspN = Object.keys(aspectData).filter(k => aspectData[k].pf).length;
+  const aspN = Object.keys(aspectPairs()).length;
   set('gtp-aspect-fwd', learnedMulti(['aspect:fwd', 'aspect:back'], aspN * 2));
   set('gtp-noun', learnedMulti(['noun', 'noun:pl'], nounTotal()));
   set('gtp-decl', learned('decl', Object.keys(declensionData).length));
@@ -19043,8 +19045,24 @@ function progressNext(toolKey, allItems, currentId) {
 }
 
 // ── Aspektpaare ─────────────────────────────────────────────────
-// Zeigt ein Verb und fragt nach dem Aspektpartner. Datenbasis: aspectData
-// (unvollendetes Verb → vollendeter Partner "pf", plus optionale Notiz).
+// Zeigt ein Verb und fragt nach dem Aspektpartner. Datenbasis (7.11.): aspectData
+// (unvollendetes Verb → vollendeter Partner "pf", plus optionale Notiz) und alle
+// Verbkarten der Vokabeln mit beiden Aspekten („просить / попросить“, MERGED_CARDS);
+// die deutsche Bedeutung kommt dann von der Karte. Neue Paarkarten landen so von selbst hier.
+// Ausgenommen: Bewegungsverb-Paare (идти / ходить …), beide Teile unvollendet – die übt das Werkzeug Bewegungsverben.
+const MOTION_INDET = ['ходить', 'ездить', 'бегать', 'летать', 'плавать', 'носить', 'водить', 'возить', 'лазить', 'таскать', 'ползать', 'катать', 'гонять', 'бродить'];
+let aspectPairsCache = null;
+function aspectPairs() {
+  if (aspectPairsCache) return aspectPairsCache;
+  const out = {};
+  Object.keys(aspectData).forEach(k => { const d = aspectData[k]; if (d.pf) out[k] = { pf: d.pf, de: d.de, note: d.note || '' }; });
+  WORTART_GROUPS['Verben'].forEach(cat => getAllWordsOfCat(cat).forEach(w => {
+    const teile = MERGED_CARDS[w.ru];
+    if (!teile || teile.length !== 2 || out[teile[0]] || MOTION_INDET.includes(teile[1])) return;
+    out[teile[0]] = { pf: teile[1], de: [].concat(w.de).join(', '), note: '' };
+  }));
+  return (aspectPairsCache = out);
+}
 // Zustand: Aspektpaare
 const aspectState = {
   dir: 'fwd',
@@ -19065,10 +19083,11 @@ function setAspectMode(mode) {
 function renderAspectList() {
   const tbody = document.getElementById('aspect-list-body');
   tbody.innerHTML = '';
-  Object.keys(aspectData).filter(k => aspectData[k].pf)
+  const P = aspectPairs();
+  Object.keys(P)
     .sort((a, b) => a.localeCompare(b, 'ru'))
     .forEach(ipf => {
-      const d = aspectData[ipf];
+      const d = P[ipf];
       const tr = document.createElement('tr');
       tr.innerHTML = '<td class="td-ru" lang="ru">' + ipf + '</td><td class="td-ru" lang="ru">' + d.pf + '</td><td class="td-de">' + d.de + '</td>';
       tbody.appendChild(tr);
@@ -19091,9 +19110,9 @@ function openAspect() {
   showGrammarPanel('aspect');
 }
 function restartAspect() {
-  const keys = Object.keys(aspectData).filter(k => aspectData[k].pf);
-  const ipf = progressNext('aspect:' + aspectState.dir, keys, aspectState.current ? aspectState.current.ipf : null);
-  const d = aspectData[ipf];
+  const P = aspectPairs();
+  const ipf = progressNext('aspect:' + aspectState.dir, Object.keys(P), aspectState.current ? aspectState.current.ipf : null);
+  const d = P[ipf];
   // fwd: gegeben ipf, gesucht pf. back: gegeben pf, gesucht ipf.
   const given = aspectState.dir === 'fwd' ? ipf : d.pf;
   const answer = aspectState.dir === 'fwd' ? d.pf : ipf;
