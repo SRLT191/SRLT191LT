@@ -2391,7 +2391,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleMotionInfo()" title="Wie funktionieren die Bewegungsverben?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-motion" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" data-view="motion-quiz-view" onclick="closeGtMore(); restartMotionQuiz()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" data-view="motion-quiz-view" onclick="closeGtMore(); restartMotionQuiz()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button><button class="gt-more-item" data-view="motion-prefix-view" onclick="closeGtMore(); restartMotionPrefix()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="motion-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <p><strong>Worum es geht:</strong> Für Bewegungen wie gehen, fahren, laufen, fliegen, schwimmen, tragen, führen und transportieren gibt es im Russischen je zwei Verben. Welches man nimmt, hängt davon ab, ob die Bewegung einmalig in eine Richtung läuft oder sich wiederholt. Diesen Unterschied kennt das Deutsche nicht.</p>
@@ -2407,12 +2407,13 @@
 <p>• einmalig: сейчас, в этот момент.</p>
 <p><strong>Zu Fuß oder mit Fahrzeug</strong> muss man immer unterscheiden: in der Stadt oft zu Fuß (идти/ходить), in eine andere Stadt immer mit Fahrzeug (ехать/ездить) – auch wenn man im Deutschen „gehen“ sagt.</p>
 <p><strong>Vergangenheit:</strong> Die einmaligen Verben sind oft unregelmäßig (идти → шёл, шла, шли; нести → нёс, несла), die wiederholten regelmäßig (ходил, носил).</p>
+<p><strong>Vorsilben:</strong> Mit einer Vorsilbe wird aus dem Paar ein normales Aspektpaar (приходить / прийти, приезжать / приехать). Die Vorsilbe gibt die Richtung an: <span lang="ru">при-</span> ankommen, <span lang="ru">у-</span> weggehen, <span lang="ru">в-</span> hinein, <span lang="ru">вы-</span> hinaus, <span lang="ru">пере-</span> hinüber oder umziehen, <span lang="ru">про-</span> vorbei. Der Modus <em>Vorsilben</em> übt das mit Sätzen (Tasten 1–4).</p>
 <p><strong>Bedienung:</strong> <em>Partner</em> – zum Verb den Partner bilden, Richtung oben wählbar. <em>Wahl</em> – im Satz das passende Verb antippen: Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Anhören</em> liest den Satz vor – vor der Antwort mit einer Pause an der Lücke, danach vollständig; im ⋯-Menü mischt <em>Neue Runde</em> die Wahl-Sätze neu. <em>Liste</em> – alle 11 Paare im Überblick. Alle Formen der 22 Verben (Präsens, Futur, Vergangenheit, Imperativ) übst du im Werkzeug <em>Konjugieren</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
 <button class="mode-btn active" id="motion-mode-btn-pair" onclick="setMotionMode('pair')">Partner</button>
-<button class="mode-btn" id="motion-mode-btn-quiz" onclick="setMotionMode('quiz')">Wahl</button>
+<button class="mode-btn" id="motion-mode-btn-quiz" onclick="setMotionMode('quiz')">Wahl</button><button class="mode-btn" id="motion-mode-btn-prefix" onclick="setMotionMode('prefix')">Vorsilben</button>
 <button class="mode-btn" id="motion-mode-btn-list" onclick="setMotionMode('list')">Liste</button>
 </div>
 </div>
@@ -2443,6 +2444,15 @@
 <button class="tool-btn" onclick="gtChoiceNext(MOTION_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="motion-q-result" role="status"></div>
 <div class="conj-result" id="motion-q-score"></div>
+</div>
+<div id="motion-prefix-view" style="display:none">
+<div class="gt-task"><div class="case-question" id="motion-p-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakMotionPrefix()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
+<div class="case-options case-options-2" id="motion-p-opts"></div>
+<div class="conj-actions gt-actions">
+<button class="tool-btn" onclick="gtChoiceReveal(MOTION_PREFIX_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen</button>
+<button class="tool-btn" onclick="gtChoiceNext(MOTION_PREFIX_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
+<div aria-live="polite" class="conj-result" id="motion-p-result" role="status"></div>
+<div class="conj-result" id="motion-p-score"></div>
 </div>
 <div id="motion-list-view" style="display:none">
 <table class="vocab-table"><thead><tr><th>Einmalig</th><th>Wiederholt</th><th>Deutsch</th></tr></thead>
@@ -8136,7 +8146,7 @@ function grammarToolSources() {
   const aspN = Object.keys(aspectPairs()).length;
   return {
     conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
-    motion: [['motion:fwd', 'motion:back', 'motion:quiz'], motionPairKeys().length * 2 + MOTION_QUIZ.length],
+    motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
     transform: [['transform'], buildTransformItems().length], rektion: [['rektion'], rektionTotal()],
     noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun')],
     numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal()],
@@ -8841,7 +8851,7 @@ const TOOL_REVEALS = {
   'overlay-decline': () => revealDeclensionTable(),
   'overlay-noun': () => revealNounTable(),
   'overlay-pronoun': () => revealPronounTable(),
-  'overlay-motion': () => { if (motionState.mode === 'pair') revealMotionPair(); else if (motionState.mode === 'quiz') gtChoiceReveal(MOTION_CHOICE); else return false; },
+  'overlay-motion': () => { if (motionState.mode === 'pair') revealMotionPair(); else if (motionState.mode === 'quiz') gtChoiceReveal(MOTION_CHOICE); else if (motionState.mode === 'prefix') gtChoiceReveal(MOTION_PREFIX_CHOICE); else return false; },
   'overlay-aspect': () => revealAspect(),
   'overlay-transform': () => revealTransform(),
   'overlay-numnoun': () => revealNumNoun(),
@@ -17305,7 +17315,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-sentencebuild', sbLearnedCount(all) + ' von ' + SB_ITEMS.length + ' gelernt');
   // Wortgruppen: Adj+Subst 6 Fälle × 2 Zahlen, Begleiter 6 Fälle, Präposition 7 × 2, Zahl 3 Genera
   set('gtp-wordgroup', learned('wordgroup', 12 + 6 + 14 + 3));
-  set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz'], motionPairKeys().length * 2 + MOTION_QUIZ.length));
+  set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length));
   set('gtp-transform', learned('transform', buildTransformItems().length));
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length * 2));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
@@ -17417,17 +17427,23 @@ function keyListeningSpace(e) {
   return false;
 }
 // Bewegungsverben „Wahl“ (8.11.): 1 = erste, 2 = zweite Antwort (solange noch nicht geantwortet)
+// Vorsilben: 1–4 wählen eine der vier Formen (dort zeigt nur der Knopf die Lösung, Taste 3 wählt)
 function keyMotionChoice(e) {
-  if ((e.key !== '1' && e.key !== '2') || e.ctrlKey || e.metaKey || e.altKey) return false;
-  if (appView !== 'grammar' || document.querySelector('.overlay.open') || motionState.mode !== 'quiz' || MOTION_CHOICE.answered) return false;
-  const view = document.getElementById('motion-quiz-view');
+  if (!/^[1-4]$/.test(e.key) || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open')) return false;
+  const prefix = motionState.mode === 'prefix', c = prefix ? MOTION_PREFIX_CHOICE : MOTION_CHOICE;
+  if ((motionState.mode !== 'quiz' && !prefix) || c.answered) return false;
+  const view = document.getElementById(prefix ? 'motion-prefix-view' : 'motion-quiz-view');
   if (!view || !view.getClientRects().length || view.classList.contains('gt-done')) return false;
   const tag = ((e.target && e.target.tagName) || '').toLowerCase();
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
-  const it = MOTION_CHOICE.item(); if (!it) return false;
-  e.preventDefault(); answerMotionQuiz(e.key === '1' ? it.a : it.b);
+  const it = c.item(); if (!it) return false;
+  const opts = prefix ? it.opts : [it.a, it.b], f = opts[+e.key - 1];
+  if (!f) return false;
+  e.preventDefault(); gtChoose(c, f);
   return true;
 }
+
 function keyGtRate(e) {
   // Nach „Lösung zeigen“ in der Grammatik: 1 = gewusst, 2 = nicht gewusst (auch im Feld mit der Lösung)
   if ((e.key !== '1' && e.key !== '2') || e.ctrlKey || e.metaKey || e.altKey) return false;
@@ -24249,6 +24265,20 @@ const MOTION_QUIZ = [
   { ru: "Он ___ очки.",                   de: "Er trägt eine Brille.",              a: "несёт",    b: "носит",   correct: "носит",    why: "Kleidung tragen – immer носить" },
   { ru: "Отец хорошо ___ машину.",        de: "Vater fährt gut Auto.",              a: "ведёт",    b: "водит",   correct: "водит",    why: "Fähigkeit – immer indeterminiert" },
   { ru: "Он ___ детей в школу.",          de: "Er bringt die Kinder gerade zur Schule.", a: "ведёт", b: "водит",  correct: "ведёт",    why: "einmalig, gerade jetzt" },
+  { ru: "Этот грузовик сейчас ___ хлеб в магазин.", de: "Dieser Lastwagen bringt gerade Brot zum Laden.", a: "везёт", b: "возит", correct: "везёт", why: "сейчас – gerade jetzt, mit Ziel" },
+  { ru: "Отец каждое утро ___ детей в школу на машине.", de: "Vater fährt die Kinder jeden Morgen mit dem Auto zur Schule.", a: "везёт", b: "возит", correct: "возит", why: "каждое утро – wiederholt" },
+  { ru: "Смотри, кошка ___ на дерево!", de: "Schau, die Katze klettert auf den Baum!", a: "лезет", b: "лазит", correct: "лезет", why: "gerade jetzt, ein Ziel" },
+  { ru: "Мальчик любит ___ по деревьям.", de: "Der Junge klettert gern auf Bäume.", a: "лезть", b: "лазить", correct: "лазить", why: "allgemein, ohne bestimmte Richtung" },
+  { ru: "Он ___ тяжёлый чемодан к поезду.", de: "Er schleppt den schweren Koffer zum Zug.", a: "тащит", b: "таскает", correct: "тащит", why: "einmalig, mit Ziel" },
+  { ru: "Каждый день она ___ сумки с продуктами домой.", de: "Jeden Tag schleppt sie die Einkaufstaschen nach Hause.", a: "тащит", b: "таскает", correct: "таскает", why: "каждый день – wiederholt" },
+  { ru: "Черепаха медленно ___ к воде.", de: "Die Schildkröte kriecht langsam zum Wasser.", a: "ползёт", b: "ползает", correct: "ползёт", why: "ein Ziel, gerade jetzt" },
+  { ru: "Ребёнку год, он уже хорошо ___.", de: "Das Kind ist ein Jahr alt und krabbelt schon gut.", a: "ползёт", b: "ползает", correct: "ползает", why: "Fähigkeit – immer die wiederholte Form" },
+  { ru: "Вчера я ___ в кино.", de: "Gestern war ich im Kino.", a: "шёл", b: "ходил", correct: "ходил", why: "hin und zurück (Vergangenheit)" },
+  { ru: "Когда я ___ домой, я встретил друга.", de: "Als ich nach Hause ging, traf ich einen Freund.", a: "шёл", b: "ходил", correct: "шёл", why: "unterwegs in eine Richtung (Vergangenheit)" },
+  { ru: "Летом мы ___ на море.", de: "Im Sommer sind wir ans Meer gefahren.", a: "ехали", b: "ездили", correct: "ездили", why: "Reise hin und zurück (Vergangenheit)" },
+  { ru: "Мы ___ два часа и наконец увидели город.", de: "Wir fuhren zwei Stunden und sahen endlich die Stadt.", a: "ехали", b: "ездили", correct: "ехали", why: "unterwegs in eine Richtung (Vergangenheit)" },
+  { ru: "В прошлом году она ___ в Москву.", de: "Letztes Jahr ist sie nach Moskau geflogen.", a: "летела", b: "летала", correct: "летала", why: "Reise hin und zurück (Vergangenheit)" },
+  { ru: "Когда самолёт ___ над морем, начался шторм.", de: "Als das Flugzeug über das Meer flog, begann ein Sturm.", a: "летел", b: "летал", correct: "летел", why: "unterwegs, Hintergrund (Vergangenheit)" },
 ];
 
 function toggleMotionInfo() {
@@ -24260,13 +24290,74 @@ function openMotion() {
   motionState.done = 0; motionState.correct = 0;
   restartMotionPair();
   restartMotionQuiz();
+  restartMotionPrefix();
   setMotionMode('pair');
   showGrammarPanel('motion');
 }
 
+// ── Vorsilben (8.11.) ───────────────────────────────────────────
+// Satz mit Lücke, vier Formen mit gleichem Stamm; nach der Antwort die Bedeutung der Vorsilbe.
+const MOTION_PREFIX_MEANING = { 'при-': 'при- = ankommen', 'у-': 'у- = weggehen, wegfahren', 'в-': 'в- = hinein', 'вы-': 'вы- = hinaus', 'пере-': 'пере- = hinüber, umziehen', 'про-': 'про- = vorbei' };
+const MOTION_PREFIX = [
+  { ru: "Он ___ домой в шесть часов.", de: "Er kam um sechs nach Hause.", opts: ["пришёл", "ушёл", "вошёл", "вышел"], correct: "пришёл", pre: "при-" },
+  { ru: "Утром отец ___ на работу в восемь.", de: "Morgens ging Vater um acht zur Arbeit.", opts: ["ушёл", "пришёл", "перешёл", "прошёл"], correct: "ушёл", pre: "у-" },
+  { ru: "Она ___ в комнату и включила свет.", de: "Sie kam ins Zimmer und machte das Licht an.", opts: ["вошла", "вышла", "ушла", "прошла"], correct: "вошла", pre: "в-" },
+  { ru: "Мы ___ из дома в семь.", de: "Wir verließen das Haus um sieben.", opts: ["вышли", "вошли", "пришли", "перешли"], correct: "вышли", pre: "вы-" },
+  { ru: "Дети ___ улицу на зелёный свет.", de: "Die Kinder überquerten die Straße bei Grün.", opts: ["перешли", "прошли", "вышли", "ушли"], correct: "перешли", pre: "пере-" },
+  { ru: "Мы ___ мимо музея.", de: "Wir gingen am Museum vorbei.", opts: ["прошли", "перешли", "вошли", "пришли"], correct: "прошли", pre: "про-" },
+  { ru: "Бабушка ___ к нам в субботу.", de: "Die Oma kam am Samstag zu uns.", opts: ["приехала", "уехала", "переехала", "проехала"], correct: "приехала", pre: "при-" },
+  { ru: "В прошлом году мы ___ в новую квартиру.", de: "Letztes Jahr sind wir in eine neue Wohnung umgezogen.", opts: ["переехали", "приехали", "уехали", "проехали"], correct: "переехали", pre: "пере-" },
+  { ru: "Гости ___ поздно ночью, и мы легли спать.", de: "Die Gäste fuhren spät in der Nacht weg, und wir gingen schlafen.", opts: ["уехали", "приехали", "переехали", "проехали"], correct: "уехали", pre: "у-" },
+  { ru: "Почтальон ___ к нам каждое утро.", de: "Der Briefträger kommt jeden Morgen zu uns.", opts: ["приходит", "уходит", "проходит", "переходит"], correct: "приходит", pre: "при-" },
+];
+function restartMotionPrefix() { startMotionPrefixRound(shuffleInPlace(MOTION_PREFIX.slice())); }
+function startMotionPrefixRound(queue) {
+  // Antworten je Runde mischen (in den Daten steht die richtige vorne)
+  motionState.pQueue = queue.map(it => Object.assign({}, it, { opts: shuffleInPlace(it.opts.slice()) }));
+  motionState.pIndex = 0; motionState.pCorrect = 0; motionState.pFehler = [];
+  renderMotionPrefix();
+}
+function repeatMotionPrefixErrors() { if (motionState.pFehler.length) startMotionPrefixRound(shuffleInPlace(motionState.pFehler.slice())); }
+function renderMotionPrefix() {
+  gtChoiceReset(MOTION_PREFIX_CHOICE);
+  const qEl = document.getElementById('motion-p-q'), optEl = document.getElementById('motion-p-opts');
+  document.getElementById('motion-p-result').textContent = '';
+  const fertig = motionState.pIndex >= motionState.pQueue.length;
+  gtSetDone('motion-prefix-view', fertig);
+  if (fertig) {
+    qEl.innerHTML = gtRoundEndHtml(motionState.pCorrect, motionState.pQueue.length, motionState.pFehler.map(x => ({ satz: '<span lang="ru">' + htmlEsc(x.ru).replace('___', '<b>' + htmlEsc(x.correct) + '</b>') + '</span>' })), 'motion-p', 'repeatMotionPrefixErrors()', 'restartMotionPrefix()');
+    optEl.innerHTML = ''; document.getElementById('motion-p-score').textContent = '';
+    return;
+  }
+  const it = motionState.pQueue[motionState.pIndex];
+  qEl.innerHTML = '<span class="case-sentence" lang="ru">' + it.ru + '</span>' + it.de;
+  optEl.innerHTML = it.opts.map((f, i) =>
+    `<button class="case-opt" type="button" data-k="${f}" lang="ru" aria-keyshortcuts="${i + 1}" onclick="gtChoose(MOTION_PREFIX_CHOICE, '${f}')">${f}<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">${i + 1}</kbd></button>`).join('');
+  motionPrefixScore();
+}
+function motionPrefixScore() {
+  document.getElementById('motion-p-score').textContent = (motionState.pIndex + 1) + ' / ' + motionState.pQueue.length + ' · ' + motionState.pCorrect + ' richtig';
+}
+function speakMotionPrefix() {
+  const it = motionState.pQueue && motionState.pQueue[motionState.pIndex]; if (!it) return;
+  speak(it.ru.replace('___', MOTION_PREFIX_CHOICE.answered ? it.correct : '…'));
+}
+const MOTION_PREFIX_CHOICE = {
+  panel: 'overlay-motion', opts: 'motion-p-opts', result: 'motion-p-result',
+  active: () => motionState.mode === 'prefix',
+  item: () => motionState.pQueue[motionState.pIndex], right: it => it.correct,
+  srs: it => ['motion:prefix', it.ru],
+  text: (it, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + it.correct + ': ' + MOTION_PREFIX_MEANING[it.pre],
+  onAnswer: (it, ok) => { if (ok) motionState.pCorrect++; motionPrefixScore(); },
+  advance: () => { motionState.pIndex++; renderMotionPrefix(); },
+  fehler: it => motionState.pFehler.push(it),
+  unfehler: it => gtDropFehler(motionState.pFehler, it),
+};
+GT_CHOICES.push(MOTION_PREFIX_CHOICE);
+
 function setMotionMode(mode) {
   motionState.mode = mode;
-  ['pair', 'quiz', 'list'].forEach(m => {
+  ['pair', 'quiz', 'prefix', 'list'].forEach(m => {
     const btn = document.getElementById('motion-mode-btn-' + m);
     if (btn) btn.classList.toggle('active', mode === m);
     const view = document.getElementById('motion-' + m + '-view');
@@ -24351,6 +24442,7 @@ function openMotionPairFor(pair) {
   motionState.current = null;
   restartMotionPair(pair);
   restartMotionQuiz();
+  restartMotionPrefix();
   setMotionMode('pair');
   showGrammarPanel('motion');
 }
