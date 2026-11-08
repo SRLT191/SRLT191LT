@@ -636,7 +636,7 @@
   .gt-end-actions .tool-btn { font-size: 13.5px; padding: 8px 14px; color: var(--c-text-primary); }
   .gt-end-actions .gt-primary { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); font-weight: 600; }
   .gt-end-actions .gt-primary:hover { opacity: .92; background: var(--c-accent); }
-  .gt-done .conj-row, .gt-done .gt-actions, .gt-done .case-options { display: none; }
+  .gt-done .conj-row, .gt-done .gt-actions, .gt-done .case-options, .gt-done .gt-task-tools { display: none; }
   .gt-task .conj-de-hint { font-size: 15px; color: var(--c-text-muted); padding-top: 2px; }
   .gt-task .conj-de-hint b { font-size: 26px; line-height: 1.25; margin-right: 4px; color: var(--c-text-primary); }
   .gt-icon-btn { padding: 6px 9px; font-size: 15px; }
@@ -663,6 +663,9 @@
   .conj-stem-wrap { display: flex; align-items: center; flex: 1; min-width: 0; gap: 2px; }
   .conj-stem { font-family: var(--font-ru, inherit); font-size: 1.15em; color: var(--c-text-muted); white-space: nowrap; }
   .conj-stem-wrap .conj-input { flex: 1; min-width: 0; }
+  .motion-list-forms { display: block; font-size: 12.5px; color: var(--c-text-muted); margin-top: 2px; }
+  @media (max-width: 800px) { #motion-list-view .vocab-table { width: 100%; table-layout: fixed; } #motion-list-view .vocab-table td, #motion-list-view .vocab-table th { white-space: normal; overflow-wrap: anywhere; } }
+  .case-opt .motion-opt-kbd { margin-left: 8px; vertical-align: middle; }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
   .gt-rate .tool-btn { min-height: 40px; }
@@ -683,6 +686,7 @@
     .gt-task { flex-wrap: wrap; }
     .gt-task .conj-de-hint b { font-size: 22px; }
     .gt-task .case-question { padding: 8px 44px 10px; }
+    .gt-task .case-question:has(.case-sentence) { padding: 46px 4px 10px; }   /* Satz in voller Breite, Lautsprecher darüber */
     .gt-actions .gt-primary { flex-basis: 100%; }
   }
   .grammar-panel-progress { font-size: 12px; font-weight: 600; color: var(--c-accent-strong); white-space: nowrap; margin-left: 10px; }
@@ -15716,7 +15720,7 @@ function gtRoundEndHtml(richtig, n, fehler, id, wiederholen, neu) {
   const neuBtn = primary => '<button class="tool-btn' + (primary ? ' gt-primary' : '') + '" onclick="' + neu + '" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button>';
   return '<span class="case-prep">Runde fertig</span>' + richtig + ' von ' + n + ' richtig'
     + (fehler.length
-      ? '<ul class="gt-fehler" aria-label="Fehler dieser Runde">' + fehler.map(f => '<li>' + f.frage + ': <b>' + f.loesung + '</b></li>').join('') + '</ul>'
+      ? '<ul class="gt-fehler" aria-label="Fehler dieser Runde">' + fehler.map(f => '<li>' + (f.satz || f.frage + ': <b>' + f.loesung + '</b>') + '</li>').join('') + '</ul>'
         + '<span class="gt-end-actions"><button class="tool-btn gt-primary" id="' + id + '-repeat-btn" onclick="' + wiederholen + '" type="button"><i class="ti ti-repeat"></i> Fehler wiederholen (' + fehler.length + ')</button>' + neuBtn(false) + '</span>'
       : '<span class="case-hint">Keine Fehler.</span><span class="gt-end-actions">' + neuBtn(true) + '</span>');
 }
@@ -17412,6 +17416,18 @@ function keyListeningSpace(e) {
   }
   return false;
 }
+// Bewegungsverben „Wahl“ (8.11.): 1 = erste, 2 = zweite Antwort (solange noch nicht geantwortet)
+function keyMotionChoice(e) {
+  if ((e.key !== '1' && e.key !== '2') || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open') || motionState.mode !== 'quiz' || MOTION_CHOICE.answered) return false;
+  const view = document.getElementById('motion-quiz-view');
+  if (!view || !view.getClientRects().length || view.classList.contains('gt-done')) return false;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
+  const it = MOTION_CHOICE.item(); if (!it) return false;
+  e.preventDefault(); answerMotionQuiz(e.key === '1' ? it.a : it.b);
+  return true;
+}
 function keyGtRate(e) {
   // Nach „Lösung zeigen“ in der Grammatik: 1 = gewusst, 2 = nicht gewusst (auch im Feld mit der Lösung)
   if ((e.key !== '1' && e.key !== '2') || e.ctrlKey || e.metaKey || e.altKey) return false;
@@ -17500,7 +17516,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyListeningSpace(e) || keyGtRate(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -24222,12 +24238,12 @@ const MOTION_QUIZ = [
   { ru: "Сейчас я ___ в школу.",          de: "Ich gehe gerade zur Schule.",        a: "иду",      b: "хожу",    correct: "иду",      why: "сейчас – einmalige Bewegung, gerade jetzt" },
   { ru: "Каждый день я ___ в школу.",     de: "Jeden Tag gehe ich zur Schule.",     a: "иду",      b: "хожу",    correct: "хожу",     why: "каждый день – wiederholte Bewegung" },
   { ru: "Летом мы часто ___ на море.",    de: "Im Sommer fahren wir oft ans Meer.", a: "едем",     b: "ездим",   correct: "ездим",    why: "часто – wiederholt, mit Rückweg" },
-  { ru: "Смотри, автобус ___ !",          de: "Schau, der Bus kommt!",              a: "идёт",     b: "ходит",   correct: "идёт",     why: "gerade jetzt sichtbar unterwegs" },
+  { ru: "Смотри, автобус ___!",          de: "Schau, der Bus kommt!",              a: "идёт",     b: "ходит",   correct: "идёт",     why: "gerade jetzt sichtbar unterwegs" },
   { ru: "Он ___ по утрам в парке.",       de: "Er joggt morgens im Park.",          a: "бежит",    b: "бегает",  correct: "бегает",   why: "по утрам – Gewohnheit" },
   { ru: "Он ___ к автобусу.",             de: "Er rennt zum Bus.",                  a: "бежит",    b: "бегает",  correct: "бежит",    why: "ein Ziel, gerade jetzt" },
   { ru: "Осенью птицы ___ на юг.",        de: "Im Herbst ziehen die Vögel nach Süden.", a: "летят", b: "летают", correct: "летят",   why: "gerichtete Bewegung mit Ziel" },
   { ru: "Дети любят ___ на самолёте.",    de: "Kinder fliegen gern mit dem Flugzeug.", a: "лететь", b: "летать", correct: "летать",  why: "allgemeine Aussage, keine konkrete Fahrt" },
-  { ru: "Она хорошо ___ .",               de: "Sie kann gut schwimmen.",            a: "плывёт",   b: "плавает", correct: "плавает",  why: "Fähigkeit – immer indeterminiert" },
+  { ru: "Она хорошо ___.",               de: "Sie kann gut schwimmen.",            a: "плывёт",   b: "плавает", correct: "плавает",  why: "Fähigkeit – immer indeterminiert" },
   { ru: "Лодка ___ к берегу.",            de: "Das Boot fährt zum Ufer.",           a: "плывёт",   b: "плавает", correct: "плывёт",   why: "ein Ziel, gerade jetzt" },
   { ru: "Он ___ чемодан на вокзал.",      de: "Er trägt den Koffer zum Bahnhof.",   a: "несёт",    b: "носит",   correct: "несёт",    why: "einmalig, mit Ziel" },
   { ru: "Он ___ очки.",                   de: "Er trägt eine Brille.",              a: "несёт",    b: "носит",   correct: "носит",    why: "Kleidung tragen – immer носить" },
@@ -24347,7 +24363,9 @@ function renderMotionList() {
     const d = motionData[pair];
     const tr = document.createElement('tr');
     const de = d.de + (d.note ? '<span class="motion-list-note">' + d.note + '</span>' : '');
-    tr.innerHTML = '<td class="td-ru" lang="ru">' + d.det.inf + '</td><td class="td-ru" lang="ru">' + d.indet.inf +
+    // Formen (8.11.): я · он · Vergangenheit männlich
+    const formen = side => '<span class="motion-list-forms">' + [side.present['я'], side.present['он / она / оно'], side.past['он']].join(' · ') + '</span>';
+    tr.innerHTML = '<td class="td-ru" lang="ru">' + d.det.inf + formen(d.det) + '</td><td class="td-ru" lang="ru">' + d.indet.inf + formen(d.indet) +
       '</td><td class="td-de">' + de + '</td>';
     tbody.appendChild(tr);
   });
@@ -24378,15 +24396,15 @@ function renderMotionQuestion() {
   const fertig = motionState.qIndex >= motionState.queue.length;
   gtSetDone('motion-quiz-view', fertig);
   if (fertig) {
-    qEl.innerHTML = gtRoundEndHtml(motionState.qCorrect, motionState.queue.length, (motionState.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.ru) + '</span>', loesung: '<span lang="ru">' + htmlEsc(x.correct) + '</span>' })), 'motion', 'repeatMotionErrors()', 'restartMotionQuiz()');
+    qEl.innerHTML = gtRoundEndHtml(motionState.qCorrect, motionState.queue.length, (motionState.fehler || []).map(x => ({ satz: '<span lang="ru">' + htmlEsc(x.ru).replace('___', '<b>' + htmlEsc(x.correct) + '</b>') + '</span>' })), 'motion', 'repeatMotionErrors()', 'restartMotionQuiz()');
     optEl.innerHTML = '';
     document.getElementById('motion-q-score').textContent = '';
     return;
   }
   const item = motionState.queue[motionState.qIndex];
   qEl.innerHTML = '<span class="case-sentence" lang="ru">' + item.ru + '</span>' + item.de;
-  optEl.innerHTML = [item.a, item.b].map(f =>
-    `<button class="case-opt" type="button" data-k="${f}" lang="ru" onclick="answerMotionQuiz('${f}')">${f}</button>`).join('');
+  optEl.innerHTML = [item.a, item.b].map((f, i) =>
+    `<button class="case-opt" type="button" data-k="${f}" lang="ru" aria-keyshortcuts="${i + 1}" onclick="answerMotionQuiz('${f}')">${f}<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">${i + 1}</kbd></button>`).join('');
   document.getElementById('motion-q-score').textContent =
     (motionState.qIndex + 1) + ' / ' + motionState.queue.length + ' · ' + motionState.qCorrect + ' richtig';
 }
