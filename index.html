@@ -667,6 +667,15 @@
   @media (max-width: 800px) { #motion-list-view .vocab-table { width: 100%; table-layout: fixed; } #motion-list-view .vocab-table td, #motion-list-view .vocab-table th { white-space: normal; overflow-wrap: anywhere; } }
   .case-opt .motion-opt-kbd { margin-left: 8px; vertical-align: middle; }
   .tf-tipp { display: block; margin-top: 4px; }
+  #rektion-opts { display: block; }
+  .rk-group { margin-bottom: 8px; }
+  .rk-group-label { display: block; font-size: 12px; color: var(--c-text-muted); margin: 0 0 4px 2px; text-align: left; }
+  .rk-group-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .rk-group-opts.rk-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 480px) { .rk-group-opts.rk-4 { grid-template-columns: repeat(2, 1fr); } .rk-group-opts { grid-template-columns: repeat(2, 1fr); } }
+  .rk-list-head th { text-align: left; padding-top: 14px; color: var(--c-accent-strong); }
+  .rk-list-n { color: var(--c-text-muted); font-weight: 400; margin-left: 6px; }
+  @media (max-width: 800px) { .rk-list { width: 100%; table-layout: fixed; } .rk-list td, .rk-list th { white-space: normal; overflow-wrap: anywhere; } .rk-list th:nth-child(4), .rk-list td:nth-child(4) { display: none; } }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
   .gt-rate .tool-btn { min-height: 40px; }
@@ -686,8 +695,8 @@
     .gt-settings.open .gt-settings-toggle .gt-chev { transform: rotate(180deg); }
     .gt-task { flex-wrap: wrap; }
     .gt-task .conj-de-hint b { font-size: 22px; }
-    .gt-task .case-question { padding: 8px 44px 10px; }
-    .gt-task .case-question:has(.case-sentence) { padding: 46px 4px 10px; }   /* Satz in voller Breite, Lautsprecher darüber */
+    .gt-task .case-question { padding: 46px 4px 10px; }   /* Aufgabe in voller Breite, Lautsprecher darüber (8.11.) */
+    #rektion-q .case-prep.rk-pair { font-size: 24px; }
     .gt-actions .gt-primary { flex-basis: 100%; }
   }
   .grammar-panel-progress { font-size: 12px; font-weight: 600; color: var(--c-accent-strong); white-space: nowrap; margin-left: 10px; }
@@ -1605,6 +1614,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleRektionInfo()" title="Welchen Fall verlangt ein Verb?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-rektion" title="Mindestens einmal richtig beantwortet"></span>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" data-view="rektion-practice-view" onclick="closeGtMore(); restartRektion()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button></div></div>
 </div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="rektion-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
@@ -1621,19 +1631,23 @@
 <div class="tense-switcher">
 <button class="mode-btn active" id="rektion-mode-choose" onclick="setRektionMode('choose')">Fall wählen</button>
 <button class="mode-btn" id="rektion-mode-form" onclick="setRektionMode('form')">Form bilden</button>
+<button class="mode-btn" id="rektion-mode-list" onclick="setRektionMode('list')">Liste</button>
 </div>
 </div>
 <div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+<div id="rektion-practice-view">
 <div class="gt-task"><div class="case-question" id="rektion-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakRektion()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="rektion-opts"></div>
 <div class="conj-row" id="rektion-input-row" style="grid-template-columns: 1fr; display:none">
-<input aria-label="Wortgruppe" autocomplete="off" class="conj-input" id="rektion-input" onkeydown="if(event.key==='Enter') checkRektion()" placeholder="Verb + Form eingeben…" type="text"/>
+<input aria-label="Wortgruppe" autocomplete="off" class="conj-input" id="rektion-input" onkeydown="if(event.key==='Enter') checkRektion()" placeholder="Präposition + Form eingeben…" type="text"/>
 </div>
 <div class="conj-actions gt-actions">
 <button class="tool-btn gt-primary" id="rektion-check-btn" onclick="checkRektion()" style="display:none"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealRektion()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
 <button class="tool-btn" onclick="nextRektion()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="rektion-result" role="status"></div>
 <div class="conj-result" id="rektion-score"></div>
+</div>
+<div id="rektion-list-view" style="display:none"><table class="vocab-table rk-list"><thead><tr><th>Verb</th><th>Deutsch</th><th>Beispiel</th><th>Vergleich</th></tr></thead><tbody id="rektion-list-body"></tbody></table></div>
 </div>
 </div>
 
@@ -15790,7 +15804,7 @@ function gtCheck(c) {
   st.answered = true;
   st.lastCorrect = ok;
   const andere = alle.filter(a => a !== treffer);
-  const auch = andere.length ? ' (auch: ' + andere.join(', ') + ')' : '';
+  const auch = andere.length && !c.ohneAuch ? ' (auch: ' + andere.join(', ') + ')' : '';
   document.getElementById(c.p + '-result').innerHTML = (ok
     ? 'Richtig' + (res.typo ? gramTypoNote(treffer) : '') + auch + ' — nochmal „Prüfen“ für ' + (c.weiter || 'die nächste Aufgabe')
     : 'Richtig wäre: ' + partialFeedbackHtml(val, alle[0]) + auch) + (c.extra ? c.extra(t, ok) : '');
@@ -17557,7 +17571,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -18855,7 +18869,7 @@ const TOOL_SETTINGS = [
   ['pfHintVisible', ...tsProp(() => pronFormState, 'hintVisible'), TS_BOOL],
   ['afScope', ...tsProp(() => adjFormState, 'scope'), tsOneOf('all', 'short', 'comp', 'sup')],
   ['afHintVisible', ...tsProp(() => adjFormState, 'hintVisible'), TS_BOOL],
-  ['rkMode', ...tsProp(() => rektionState, 'mode'), tsOneOf('choose', 'form')],
+  ['rkMode', ...tsProp(() => rektionState, 'mode'), tsOneOf('choose', 'form', 'list')],
   ['rkHintVisible', ...tsProp(() => rektionState, 'hintVisible'), TS_BOOL],
   ['gdScope', ...tsProp(() => genderState, 'scope'), tsOneOf('all', 'easy', 'hard')],
   ['transformHintVisible', ...tsProp(() => transformState, 'hintVisible'), TS_BOOL],
@@ -23437,7 +23451,8 @@ const rkVerbId = x => x.id || x.v;
 const rkOpt = k => RK_OPTIONS.find(o => o.k === k);
 const RK_KASUS_NAME = { 'Akk.': 'Akkusativ', 'Gen.': 'Genitiv', 'Dat.': 'Dativ', 'Instr.': 'Instrumental', 'Präp.': 'Präpositiv' };
 const rektionState = {
-  mode: 'choose',      // choose | form
+  mode: 'choose',      // choose | form | list
+  queue: [], index: 0, rCorrect: 0, fehler: [], bewertet: -1,   // Runde (8.11.)
   hintVisible: true,
   current: null,
   done: 0,
@@ -23455,17 +23470,31 @@ function rektionItems(mode) {
     if (!d) return;
     const o = rkOpt(x.r);
     const form = d.sg[o.kasus];
-    const answer = x.v + ' ' + (o.prep ? o.prep + ' ' : '') + form;
-    out.push({ id: 'f:' + rkVerbId(x) + ':' + n, verb: x, noun: n, answer });
+    const obj = (o.prep ? o.prep + ' ' : '') + form;
+    out.push({ id: 'f:' + rkVerbId(x) + ':' + n, verb: x, noun: n, answer: x.v + ' ' + obj, obj });
   }));
   return out;
 }
 function rektionTotal() { return rektionItems('choose').length + rektionItems('form').length; }
 // Erklärung nach dem Antworten: Fall + Vergleich mit dem Deutschen
-function rektionExplain(x) {
-  const o = rkOpt(x.r);
+// Beispiel (8.11.): Wortgruppe aus dem ersten Substantiv mit Formtabelle, sonst das hinterlegte Beispiel
+function rektionExample(x) {
+  const o = rkOpt(x.r), n = (x.n || []).find(w => nounDeclensionData[w] && nounHas(w, 'sg'));
+  return n ? x.v + ' ' + (o.prep ? o.prep + ' ' : '') + nounDeclensionData[n].sg[o.kasus] : (x.bsp || '');
+}
+function rektionExplain(x, mitBeispiel) {
+  const o = rkOpt(x.r), bsp = mitBeispiel ? rektionExample(x) : x.bsp;
   return '<b>' + x.v + '</b> + ' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus]
-    + ' · Deutsch: ' + x.dt + (x.bsp ? ' · Beispiel: ' + x.bsp : '');
+    + ' · Deutsch: ' + x.dt + (bsp ? ' · Beispiel: <span lang="ru">' + bsp + '</span>' : '');
+}
+// Liste (8.11.): alle Verben nach Fall bzw. Präposition + Fall
+function renderRektionList() {
+  const body = document.getElementById('rektion-list-body'); if (!body) return;
+  body.innerHTML = RK_OPTIONS.map(o => {
+    const vs = RK_VERBS.filter(x => x.r === o.k); if (!vs.length) return '';
+    return '<tr class="rk-list-head"><th colspan="4">' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus] + ' <span class="rk-list-n">' + vs.length + '</span></th></tr>'
+      + vs.map(x => '<tr><td class="td-ru" lang="ru">' + x.v + '</td><td class="td-de">' + x.de + '</td><td class="td-ru" lang="ru">' + rektionExample(x) + '</td><td class="td-de">' + x.dt + '</td></tr>').join('');
+  }).join('');
 }
 function toggleRektionInfo() {
   const el = document.getElementById('rektion-info-panel');
@@ -23475,7 +23504,7 @@ function applyRektionHint() {
   const btn = document.getElementById('rektion-hint-toggle');
   setGtToggle(btn, rektionState.hintVisible);
   // Einstellungen gibt es nur für „Form bilden“ (Hilfe = verlangter Fall)
-  document.getElementById('rektion-settings').style.display = rektionState.mode === 'form' ? '' : 'none';
+  document.getElementById('rektion-settings').style.display = rektionState.mode === 'form' ? '' : 'none';   // auch in der Liste aus
   const el = document.getElementById('rektion-hint');
   if (el) el.style.visibility = rektionState.hintVisible ? '' : 'hidden';
 }
@@ -23486,10 +23515,13 @@ function toggleRektionHint() {
 }
 function setRektionMode(m) {
   rektionState.mode = m;
-  ['choose', 'form'].forEach(x => {
+  ['choose', 'form', 'list'].forEach(x => {
     const b = document.getElementById('rektion-mode-' + x);
     if (b) b.classList.toggle('active', x === m);
   });
+  document.getElementById('rektion-practice-view').style.display = m === 'list' ? 'none' : '';
+  document.getElementById('rektion-list-view').style.display = m === 'list' ? '' : 'none';
+  if (m === 'list') { renderRektionList(); applyRektionHint(); saveToolSettings(); return; }
   document.getElementById('rektion-opts').style.display = m === 'choose' ? '' : 'none';
   document.getElementById('rektion-input-row').style.display = m === 'form' ? '' : 'none';
   document.getElementById('rektion-check-btn').style.display = m === 'form' ? '' : 'none';
@@ -23502,47 +23534,99 @@ function openRektion() {
   setRektionMode(rektionState.mode);
   showGrammarPanel('rektion');
 }
+// Runde (8.11.): 15 Aufgaben – fällige, zuletzt falsche und neue zuerst; am Ende Fehlerliste
+const REKTION_ROUND = 15;
 function restartRektion() {
+  const st = rektionState, pool = rektionItems(st.mode);
+  const srs = loadGrammarSrs().rektion || {}, life = loadLifetime().g.rektion || {}, now = Date.now();
+  const gruppe = t => { const e = life[t.id], x = srs[t.id];
+    if (e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= now) return 0; if (x && !srsDone(x)) return 1; if (!x) return 2; return 3; };
+  const g = [[], [], [], []];
+  shuffleInPlace(pool.slice()).forEach(t => g[gruppe(t)].push(t));
+  g[3].sort((a, b) => ((srs[a.id] || {}).lastSeen || 0) - ((srs[b.id] || {}).lastSeen || 0));
+  startRektionRound(shuffleInPlace([].concat(...g).slice(0, REKTION_ROUND)));
+}
+function startRektionRound(queue) {
   const st = rektionState;
-  const pool = rektionItems(st.mode);
-  const prev = st.current ? st.current.id : null;
-  const id = progressNext('rektion', pool.map(x => x.id), prev);
-  st.current = pool.find(x => x.id === id) || pool[Math.floor(Math.random() * pool.length)];
+  st.queue = queue; st.index = 0; st.rCorrect = 0; st.fehler = []; st.bewertet = -1;
+  renderRektionTask();
+}
+function repeatRektionErrors() { if (rektionState.fehler.length) startRektionRound(shuffleInPlace(rektionState.fehler.slice())); }
+function rektionNoteResult(t, ok) {
+  const st = rektionState;
+  if (st.bewertet === st.index) return;
+  st.bewertet = st.index;
+  if (ok !== true) st.fehler.push(t);
+}
+function rektionAdvance() {
+  const st = rektionState;
+  if (st.current && !st.answered && st.index < st.queue.length) rektionNoteResult(st.current, null);   // übersprungen
+  st.index++;
+  renderRektionTask();
+}
+function rektionScoreText() {
+  const st = rektionState;
+  return st.index < st.queue.length ? (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.rCorrect + ' richtig' : '';
+}
+function renderRektionTask() {
+  const st = rektionState;
   st.answered = false; st.lastCorrect = false; st.lastInput = '';
   gtChoiceReset(RK_CHOICE);
-  const t = st.current, x = t.verb;
-  const q = document.getElementById('rektion-q');
+  const q = document.getElementById('rektion-q'), t = st.queue[st.index];
+  st.current = t || null;
+  gtSetDone('rektion-practice-view', !t);
+  document.getElementById('rektion-result').textContent = '';
+  if (!t) {
+    q.innerHTML = gtRoundEndHtml(st.rCorrect, st.queue.length, st.fehler.map(f => ({ satz: f.noun
+      ? '<span lang="ru">' + htmlEsc(f.verb.v) + ' <b>' + htmlEsc(f.obj) + '</b></span>'
+      : '<span lang="ru">' + htmlEsc(f.verb.v) + '</span> + <b>' + htmlEsc(rkOpt(f.verb.r).label) + '</b>' + (rektionExample(f.verb) ? ' · <span lang="ru">' + htmlEsc(rektionExample(f.verb)) + '</span>' : '') })),
+      'rektion', 'repeatRektionErrors()', 'restartRektion()');
+    document.getElementById('rektion-opts').innerHTML = '';
+    document.getElementById('rektion-score').textContent = '';
+    return;
+  }
+  const x = t.verb;
   if (st.mode === 'choose') {
     q.innerHTML = '<span class="case-prep" lang="ru">' + x.v + '</span><span>' + x.de + '</span>'
       + '<span class="case-hint">Welcher Fall folgt?</span>';
-    document.getElementById('rektion-opts').innerHTML = RK_OPTIONS.map(o =>
-      '<button class="case-opt" type="button" data-k="' + o.k + '" onclick="answerRektion(\'' + o.k + '\')">' + o.label + '</button>').join('');
+    // reine Fälle oben, Präposition + Fall darunter (8.11.); Tasten 1–9, 0
+    const taste = i => i < 9 ? String(i + 1) : i === 9 ? '0' : '';
+    const knopf = (o, i) => '<button class="case-opt" type="button" data-k="' + o.k + '"' + (taste(i) ? ' aria-keyshortcuts="' + taste(i) + '"' : '') + ' onclick="answerRektion(\'' + o.k + '\')">' + o.label
+      + (taste(i) ? '<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">' + taste(i) + '</kbd>' : '') + '</button>';
+    const faelle = RK_OPTIONS.filter(o => !o.prep), praep = RK_OPTIONS.filter(o => o.prep);
+    document.getElementById('rektion-opts').innerHTML =
+      '<div class="rk-group"><span class="rk-group-label">Fall</span><div class="rk-group-opts rk-4">' + faelle.map((o, i) => knopf(o, i)).join('') + '</div></div>'
+      + '<div class="rk-group"><span class="rk-group-label">Präposition + Fall</span><div class="rk-group-opts">' + praep.map((o, i) => knopf(o, i + faelle.length)).join('') + '</div></div>';
   } else {
+    // Verb steht da, gesucht ist nur die Ergänzung (8.11.); die ganze Wortgruppe zählt auch
     const o = rkOpt(x.r);
     const nde = (nounDeclensionData[t.noun] || {}).de || '';
-    q.innerHTML = '<span class="case-prep" lang="ru">' + x.v + ' + ' + t.noun + '</span><span>' + x.de + ' · ' + nde + '</span>'
-      + '<span class="case-hint">Verb + passende Form (Singular)</span>'
+    q.innerHTML = '<span class="case-prep rk-pair" lang="ru">' + x.v + ' + ' + t.noun + '</span><span>' + x.de + ' · ' + nde + '</span>'
+      + '<span class="case-hint"><span lang="ru">' + x.v + '</span> ___ – passende Form (Singular)</span>'
       + '<span class="case-hint" id="rektion-hint">verlangt: ' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus] + '</span>';
     const input = document.getElementById('rektion-input');
     input.value = ''; input.className = 'conj-input'; clearPartialFeedback(input);
+    input.placeholder = (o.prep ? 'Präposition + ' : '') + 'Form nach ' + x.v;
   }
   applyRektionHint();
-  document.getElementById('rektion-result').textContent = '';
-  document.getElementById('rektion-score').textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
+  document.getElementById('rektion-score').textContent = rektionScoreText();
 }
 // Fall wählen: Klick auf eine Option
 const RK_CHOICE = {
   panel: 'overlay-rektion', opts: 'rektion-opts', result: 'rektion-result',
   active: () => rektionState.mode === 'choose',
   item: () => rektionState.current, right: t => t.verb.r, srs: t => ['rektion', t.id],
-  text: (t, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + rektionExplain(t.verb),
+  text: (t, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + rektionExplain(t.verb, true),
   onAnswer: (t, ok) => {
     const st = rektionState;
-    st.done++; if (ok) st.correct++;
+    st.done++; if (ok) { st.correct++; st.rCorrect++; }
     st.answered = true; st.lastCorrect = ok;
-    document.getElementById('rektion-score').textContent = st.correct + ' von ' + st.done + ' richtig';
+    rektionNoteResult(t, ok);
+    document.getElementById('rektion-score').textContent = rektionScoreText();
   },
-  advance: () => restartRektion(),
+  advance: () => rektionAdvance(),
+  fehler: t => rektionNoteResult(t, null),
+  unfehler: t => gtDropFehler(rektionState.fehler, t),
 };
 GT_CHOICES.push(RK_CHOICE);
 function answerRektion(k) { if (rektionState.mode === 'choose') gtChoose(RK_CHOICE, k); }
@@ -23550,12 +23634,18 @@ function answerRektion(k) { if (rektionState.mode === 'choose') gtChoose(RK_CHOI
 // „Form bilden“ läuft über den Aufgabenmotor, „Fall wählen“ über die Knöpfe
 const REKTION_DRILL = {
   p: 'rektion', st: rektionState, task: () => rektionState.current,
-  srs: () => 'rektion', id: t => t.id, restart: () => restartRektion(),
+  srs: () => 'rektion', id: t => t.id, restart: () => rektionAdvance(),
+  answers: t => [t.obj, t.answer], ohneAuch: true,   // ganze Wortgruppe zählt auch, wird aber nicht als Alternative genannt
   extra: t => '<br><span class="case-hint">' + rektionExplain(t.verb) + '</span>',
+  after: (t, ok) => rektionNoteResult(t, ok),
+  score: () => rektionScoreText(),
+  rated: (t, ok) => { if (ok) { gtDropFehler(rektionState.fehler, t); rektionState.rCorrect++; document.getElementById('rektion-score').textContent = rektionScoreText(); } },
 };
 function checkRektion() {
   if (rektionState.mode === 'choose') { if (RK_CHOICE.answered) gtChoiceNext(RK_CHOICE); return; }
+  const st = rektionState, vorher = st.answered;
   gtCheck(REKTION_DRILL);
+  if (!vorher && st.answered && st.lastCorrect) { st.rCorrect++; document.getElementById('rektion-score').textContent = rektionScoreText(); }
 }
 function revealRektion() {
   if (rektionState.mode === 'form') gtReveal(REKTION_DRILL);
@@ -23566,6 +23656,19 @@ function speakRektion() {
   const st = rektionState, t = st.current;
   if (!t) return;
   speak(st.mode === 'form' && st.answered ? t.answer : t.verb.v);
+}
+// Fall wählen: Tasten 1–9, 0 (vor der Antwort; „Lösung zeigen“ dort nur per Knopf)
+function keyRektionChoice(e) {
+  if (!/^[0-9]$/.test(e.key) || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open') || rektionState.mode !== 'choose' || RK_CHOICE.answered) return false;
+  const view = document.getElementById('rektion-practice-view');
+  if (!view || !view.getClientRects().length || view.classList.contains('gt-done') || !rektionState.current) return false;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
+  const btn = document.querySelector('#rektion-opts .case-opt[aria-keyshortcuts="' + e.key + '"]');
+  if (!btn) return false;
+  e.preventDefault(); answerRektion(btn.dataset.k);
+  return true;
 }
 
 // ── Zahl + Substantiv ───────────────────────────────────────────

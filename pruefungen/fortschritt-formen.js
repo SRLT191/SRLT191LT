@@ -24,7 +24,7 @@ const { chromium } = require('playwright');
       ['Aspektpaare', () => { openAspect(); setAspectMode('practice'); setAspectDir('fwd'); }, () => drill(ASPECT_DRILL), 'aspect:fwd'],
       ['Bewegungsverben Partner', () => { openMotion(); setMotionMode('pair'); setMotionDir('fwd'); }, () => drill(MOTION_DRILL), 'motion:fwd'],
       ['Bewegungsverben Wahl', () => setMotionMode('quiz'), () => choice(MOTION_CHOICE), 'motion:quiz'],
-      ['Umformen', () => openTransform(), () => drill(TRANSFORM_DRILL), 'transform'],
+      ['Umformen', () => { setTransformScope('past'); openTransform(); }, () => drill(TRANSFORM_DRILL), 'transform'],
       ['Rektion Fall wählen', () => { openRektion(); setRektionMode('choose'); }, () => choice(RK_CHOICE), 'rektion'],
       ['Rektion Form bilden', () => setRektionMode('form'), () => drill(REKTION_DRILL), 'rektion'],
       ['Substantive Singular', () => { openNounDecline(); setNounNumber('sg'); }, () => { fill(); checkNounTable(); }, 'noun'],
