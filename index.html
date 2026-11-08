@@ -666,6 +666,7 @@
   .motion-list-forms { display: block; font-size: 12.5px; color: var(--c-text-muted); margin-top: 2px; }
   @media (max-width: 800px) { #motion-list-view .vocab-table { width: 100%; table-layout: fixed; } #motion-list-view .vocab-table td, #motion-list-view .vocab-table th { white-space: normal; overflow-wrap: anywhere; } }
   .case-opt .motion-opt-kbd { margin-left: 8px; vertical-align: middle; }
+  .tf-tipp { display: block; margin-top: 4px; }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
   .gt-rate .tool-btn { min-height: 40px; }
@@ -2477,8 +2478,11 @@
 <p>• <strong>Futur (unvollendet):</strong> буду, будешь … + Infinitiv: я буду делать – ich werde machen.</p>
 <p>• <strong>Imperativ:</strong> die du-Befehlsform: говорить → говори!</p>
 <p>• <strong>vollendet (Futur):</strong> der vollendete Partner mit Präsensendungen – сделаю heißt schon „ich werde (fertig) machen“.</p>
+<p>• <strong>vollendet (Vergangenheit):</strong> der vollendete Partner in der Vergangenheit – он сказал, она написала.</p>
+<p><strong>Gezählt</strong> wird die Vergangenheit je Verb einmal (он, она und они folgen derselben Regel; in einer Runde kommt je Verb eine davon). Das Futur mit буду ist bei allen Verben gleich gebaut: übbar, aber es zählt nicht und kommt bei <em>Alle</em> höchstens zweimal pro Runde.</p>
 <p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em> und <em>Aspekt</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
 <p>Eine Runde hat 20 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
+<p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
 <p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 20 neue Aufgaben und setzt den Zähler zurück.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
@@ -8147,7 +8151,7 @@ function grammarToolSources() {
   return {
     conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
     motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
-    transform: [['transform'], buildTransformItems().length], rektion: [['rektion'], rektionTotal()],
+    transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal()],
     noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun')],
     numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal()],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
@@ -8606,6 +8610,27 @@ const scores = loadScores();
     if (ch) { const u = [...new Set(o)]; o.length = 0; o.push(...u); }
     return ch;
   });
+})();
+// Einmalig (8.11.): Umformen – Vergangenheit je Verb statt je Person („он + делать:Vergangenheit“ → „past:делать“),
+// Futur unter eigenen Schlüssel „transform:future“ (zählt nicht mehr)
+(function migrateTransformIds() {
+  const n = v => { const x = Number(v); return Number.isFinite(x) && x >= 0 ? x : 0; };
+  const srs = (a, b) => ({ correct: n(a.correct) + n(b.correct), wrong: n(a.wrong) + n(b.wrong), box: Math.max(n(a.box), n(b.box)), lastSeen: Math.max(n(a.lastSeen), n(b.lastSeen)) });
+  const life = (a, b) => ({ c: n(a.c) + n(b.c), w: n(a.w) + n(b.w), mb: Math.max(n(a.mb), n(b.mb)),
+    l: n(a.l) && n(b.l) ? Math.min(n(a.l), n(b.l)) : (n(a.l) || n(b.l)), d: Math.max(n(a.d), n(b.d)), dd: Math.max(n(a.dd), n(b.dd)), lr: Math.max(n(a.lr), n(b.lr)), z: Math.max(n(a.z), n(b.z)), dw: Math.max(n(a.dw), n(b.dw)) });
+  const fix = (o, fn) => {
+    const m = o && o.transform; if (!m || typeof m !== 'object') return false;
+    let ch = false;
+    Object.keys(m).forEach(id => {
+      const e = m[id]; if (!e || typeof e !== 'object') return;
+      const past = id.match(/^(?:он|она|они) \+ (.+):Vergangenheit$/);
+      if (past) { const u = 'past:' + past[1]; m[u] = m[u] ? fn(m[u], e) : e; delete m[id]; ch = true; }
+      else if (/:Futur \(unvollendet\)$/.test(id)) { o['transform:future'] = o['transform:future'] || {}; o['transform:future'][id] = e; delete m[id]; ch = true; }
+    });
+    return ch;
+  };
+  try { const o = JSON.parse(localStorage.getItem('vokabeltrainer-grammar-srs') || 'null'); if (o && fix(o, srs)) localStorage.setItem('vokabeltrainer-grammar-srs', JSON.stringify(o)); } catch (e) {}
+  try { const o = JSON.parse(localStorage.getItem(LIFETIME_KEY) || 'null'); if (o && o.g && fix(o.g, life)) localStorage.setItem(LIFETIME_KEY, JSON.stringify(o)); } catch (e) {}
 })();
 // Richtung wechseln: den Übungsstand der anderen Richtung einsetzen
 function switchScoresDir(dir) {
@@ -17316,7 +17341,7 @@ function updateGrammarTileProgress(store, sink) {
   // Wortgruppen: Adj+Subst 6 Fälle × 2 Zahlen, Begleiter 6 Fälle, Präposition 7 × 2, Zahl 3 Genera
   set('gtp-wordgroup', learned('wordgroup', 12 + 6 + 14 + 3));
   set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length));
-  set('gtp-transform', learned('transform', buildTransformItems().length));
+  set('gtp-transform', learned('transform', transformTotal()));
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length * 2));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
   set('gtp-numnoun', learned('numnoun', numNounNouns().length * 3));
@@ -24564,16 +24589,16 @@ function buildTransformItems() {
     // Präsens → Vergangenheit
     PAST_PERSONS.forEach(([pron, key]) => {
       if (d.past[key]) {
-        items.push({ kind: 'past', from: pres, prompt: pron + ' + ' + inf, task: 'Vergangenheit', answer: d.past[key], de: d.de });
+        items.push({ kind: 'past', from: pres, fromPron: 'он', inf, pkey: key, prompt: pron + ' + ' + inf, task: 'Vergangenheit', answer: d.past[key], de: d.de });
       }
     });
     // Präsens → Futur (unvollendet, буду-Form)
     if (d.future && d.future['я']) {
-      items.push({ kind: 'future', from: d.nonPast['я'], prompt: 'я + ' + inf, task: 'Futur (unvollendet)', answer: d.future['я'], de: d.de });
+      items.push({ kind: 'future', from: d.nonPast['я'], fromPron: 'я', inf, pkey: 'я', prompt: 'я + ' + inf, task: 'Futur (unvollendet)', answer: d.future['я'], de: d.de });
     }
     // Präsens → Imperativ
     if (d.imperative && d.imperative['ты']) {
-      items.push({ kind: 'imperative', from: pres, prompt: 'ты + ' + inf, task: 'Imperativ', answer: d.imperative['ты'], de: d.de });
+      items.push({ kind: 'imperative', from: pres, fromPron: 'он', inf, pkey: 'ты', prompt: 'ты + ' + inf, task: 'Imperativ', answer: d.imperative['ты'], de: d.de });
     }
     // unvollendet → vollendet (einfaches Futur)
     const pf = aspectData[inf];
@@ -24582,9 +24607,14 @@ function buildTransformItems() {
         if (d.nonPast[p] && pf.nonPast[p]) {
           // Ausgangsform ist die Wörterbuchform des unvollendeten Verbs —
           // die Person steht im Hinweis darunter, nicht in der Vorgabe.
-          items.push({ kind: 'aspect', from: inf, prompt: p + ' + ' + pf.pf,
+          items.push({ kind: 'aspect', from: inf, inf, pkey: p, prompt: p + ' + ' + pf.pf,
             task: 'vollendet (Futur)', answer: pf.nonPast[p], de: d.de });
         }
+      });
+      // vollendete Vergangenheit (8.11.): он сказал, она написала
+      if (pf.past) PAST_PERSONS.forEach(([pron, key]) => {
+        if (pf.past[key]) items.push({ kind: 'aspect', from: inf, inf, pkey: key, prompt: pron + ' + ' + pf.pf,
+          task: 'vollendet (Vergangenheit)', answer: pf.past[key], de: d.de });
       });
     }
   });
@@ -24611,6 +24641,15 @@ function openTransform() {
 
 const TRANSFORM_ROUND = 20;
 function transformId(t) { return t.prompt + ':' + t.task; }
+// Lernstand (8.11.): Vergangenheit zählt je Verb einmal (он/она/они ist dieselbe Regel), das Futur
+// (буду + Infinitiv) steht unter eigenem Schlüssel und zählt nicht
+function transformUnitId(t) {
+  if (t.kind === 'past') return 'past:' + t.inf;
+  if (t.task === 'vollendet (Vergangenheit)') return 'apast:' + t.inf;
+  return transformId(t);
+}
+function transformSrsKey(t) { return t.kind === 'future' ? 'transform:future' : 'transform'; }
+function transformTotal() { return new Set(buildTransformItems().filter(t => t.kind !== 'future').map(transformUnitId)).size; }
 function shuffleInPlace(a) {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
@@ -24619,10 +24658,10 @@ function shuffleInPlace(a) {
 // aber noch nie richtig)  3. neue  4. die am längsten nicht geübten.
 // Innerhalb einer Gruppe zufällig, die fertige Runde wird noch einmal gemischt.
 function transformRoundPick(pool, now) {
-  const srs = loadGrammarSrs().transform || {}, life = loadLifetime().g.transform || {};
+  const alle = loadGrammarSrs(), lifeAlle = loadLifetime().g;
   const t0 = now || Date.now();
   const gruppe = t => {
-    const id = transformId(t), e = life[id], s = srs[id];
+    const id = transformUnitId(t), k = transformSrsKey(t), e = (lifeAlle[k] || {})[id], s = (alle[k] || {})[id];
     if (e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= t0) return 0;
     if (s && !srsDone(s)) return 1;
     if (!s) return 2;
@@ -24630,12 +24669,24 @@ function transformRoundPick(pool, now) {
   };
   const g = [[], [], [], []];
   shuffleInPlace(pool.slice()).forEach(t => g[gruppe(t)].push(t));
-  g[3].sort((a, b) => ((srs[transformId(a)] || {}).lastSeen || 0) - ((srs[transformId(b)] || {}).lastSeen || 0));
-  return shuffleInPlace([].concat(...g).slice(0, TRANSFORM_ROUND));
+  const zuletzt = t => ((alle[transformSrsKey(t)] || {})[transformUnitId(t)] || {}).lastSeen || 0;
+  g[3].sort((a, b) => zuletzt(a) - zuletzt(b));
+  // bei „Alle“ höchstens zwei Futur-Aufgaben je Runde (буду + Infinitiv ist immer gleich gebaut)
+  const runde = []; let futur = 0;
+  for (const t of [].concat(...g)) {
+    if (runde.length >= TRANSFORM_ROUND) break;
+    if (t.kind === 'future' && transformState.scope === 'all') { if (futur >= 2) continue; futur++; }
+    runde.push(t);
+  }
+  return shuffleInPlace(runde);
 }
 function transformPool() {
   const pool = buildTransformItems();
-  return transformState.scope === 'all' ? pool : pool.filter(i => i.kind === transformState.scope);
+  const auswahl = transformState.scope === 'all' ? pool : pool.filter(i => i.kind === transformState.scope);
+  // je Einheit eine Aufgabe (Vergangenheit: zufällig он, она oder они)
+  const je = {};
+  shuffleInPlace(auswahl.slice()).forEach(t => { const u = transformUnitId(t); if (!je[u]) je[u] = t; });
+  return Object.values(je);
 }
 function startTransformRound(queue) {
   transformState.queue = queue;
@@ -24660,8 +24711,9 @@ function transformNoteResult(t, ok) {
   if (ok !== true) st.fehler.push(t);
 }
 // gesuchte Form als Lücke: „они ___“, beim Imperativ „(ты) ___!“
+function transformPerson(item) { const p = item.prompt.split(' + ')[0]; return p === 'он / она / оно' ? 'он' : p; }
 function transformGapHtml(item, fill) {
-  const person = item.prompt.split(' + ')[0];
+  const person = transformPerson(item);
   const luecke = fill
     ? '<span class="tf-blank tf-filled ' + fill.cls + '">' + htmlEsc(fill.text) + '</span>'
     : '<span class="tf-blank"><span class="sr-only">Lücke</span><span aria-hidden="true">___</span></span>';
@@ -24670,7 +24722,7 @@ function transformGapHtml(item, fill) {
     : '<span class="tf-person">' + person + '</span> ' + luecke;
 }
 function transformPlaceholder(item) {
-  return item.task + ' für ' + item.prompt.split(' + ')[0];
+  return item.task + ' für ' + transformPerson(item);
 }
 
 function renderTransform() {
@@ -24687,7 +24739,8 @@ function renderTransform() {
   if (!item) {
     const st = transformState;
     document.getElementById('transform-q').innerHTML = gtRoundEndHtml(st.correct, st.queue.length,
-      st.fehler.map(t => ({ frage: '<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + htmlEsc(t.task) + ', ' + htmlEsc(t.prompt.split(' + ')[0]), loesung: '<span lang="ru">' + htmlEsc(t.answer) + '</span>' })),
+      st.fehler.map(t => ({ satz: '<span lang="ru">' + (t.fromPron ? t.fromPron + ' ' : '') + htmlEsc(t.from) + '</span> → <span lang="ru">'
+        + (t.kind === 'imperative' ? '(ты) <b>' + htmlEsc(t.answer) + '</b>!' : transformPerson(t) + ' <b>' + htmlEsc(t.answer) + '</b>') + '</span>' })),
       'transform', 'repeatTransformErrors()', 'restartTransform()');
     document.getElementById('transform-score').textContent = '';
     input.disabled = true;
@@ -24699,7 +24752,7 @@ function renderTransform() {
   // vollendeten Partner, deshalb lässt er sich ausblenden.
   const ziel = item.prompt.split(' + ')[1];
   document.getElementById('transform-q').innerHTML =
-    '<span class="tf-from"><span lang="ru">' + htmlEsc(item.from) + '</span> · ' + htmlEsc(item.de) + '</span>'
+    '<span class="tf-from"><span lang="ru">' + (item.fromPron ? item.fromPron + ' ' : '') + htmlEsc(item.from) + '</span> · ' + htmlEsc(item.de) + '</span>'
     + '<span class="tf-task">→ ' + htmlEsc(item.task) + '</span>'
     + '<span class="case-prep tf-gap" id="transform-gap" lang="ru">' + transformGapHtml(item) + '</span>'
     + (transformState.hintVisible ? '<span class="case-hint">von <span lang="ru">' + htmlEsc(ziel) + '</span></span>' : '');
@@ -24711,7 +24764,7 @@ function renderTransform() {
 // Umformen arbeitet eine feste Runde ab (queue/index) und zählt selbst mit.
 const TRANSFORM_DRILL = {
   p: 'transform', st: transformState, task: () => transformState.queue[transformState.index],
-  srs: () => 'transform', id: transformId,
+  srs: transformSrsKey, id: transformUnitId,
   restart: () => {
     if (transformState.index >= transformState.queue.length) return;
     const t = transformState.queue[transformState.index];
@@ -24726,7 +24779,33 @@ const TRANSFORM_DRILL = {
   },
   score: st => (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.correct + ' richtig',
   rated: (t, ok) => { if (ok) gtDropFehler(transformState.fehler, t); },
+  extra: (t, ok) => { const tipp = ok ? '' : transformTipp(t, document.getElementById('transform-input').value); return tipp ? '<span class="case-hint tf-tipp">Tipp: ' + tipp + '</span>' : ''; },
 };
+// typische Fehler erkennen (8.11.): Endung der Vergangenheit, -ся, -те beim Imperativ, буду-Form, Aspekt verwechselt
+function transformTipp(t, eingabe) {
+  const n = x => normalizeYo(String(x || '').trim().toLowerCase().replace(/\s+/g, ' '));
+  const v = n(eingabe), a = n(t.answer);
+  if (!v || v === a) return '';
+  const ipf = conjugationData[t.inf] || {};
+  if (t.kind === 'aspect') {
+    const unv = t.task === 'vollendet (Vergangenheit)' ? (ipf.past || {})[t.pkey] : (ipf.nonPast || {})[t.pkey];
+    if (unv && v === n(unv)) return 'Das ist die unvollendete Form – gesucht ist der vollendete Partner.';
+  }
+  if (/(ся|сь)$/.test(a) && !/(ся|сь)$/.test(v)) return 'rückbezügliches Verb: -ся / -сь nicht vergessen.';
+  if (t.kind === 'past' || t.task === 'vollendet (Vergangenheit)') {
+    const stamm = x => x.replace(/(л|ла|ло|ли)(ся|сь)?$/, '');
+    if (/(л|ла|ло|ли)(ся|сь)?$/.test(v) && stamm(v) === stamm(a)) return 'Endung der Vergangenheit: он -л, она -ла, они -ли.';
+  }
+  if (t.kind === 'imperative') {
+    if (v === a + 'те' || v === a.replace(/(ся|сь)$/, '') + 'тесь') return 'gesucht ist die ты-Form, ohne -те.';
+    if (v.slice(0, -1) === a.slice(0, -1) && /[йи]$/.test(v) && /[йи]$/.test(a)) return 'nach Vokal endet der Imperativ meist auf -й, nach Konsonant auf -и.';
+  }
+  if (t.kind === 'future') {
+    if (!/^буд/.test(v)) return 'unvollendetes Futur = буду, будешь … + Infinitiv.';
+    if (v.split(' ')[1] === a.split(' ')[1]) return 'Form von быть passend zur Person: я буду, ты будешь, он будет …';
+  }
+  return '';
+}
 function checkTransform() { gtCheck(TRANSFORM_DRILL); }
 
 function revealTransform() { gtReveal(TRANSFORM_DRILL); }
