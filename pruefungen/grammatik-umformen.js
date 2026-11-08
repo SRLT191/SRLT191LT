@@ -17,7 +17,7 @@ const { chromium } = require('playwright');
     return { from: q.querySelector('.tf-from [lang="ru"]').textContent, task: q.querySelector('.tf-task').textContent, gap: sichtbar(q.querySelector('.tf-gap')).replace(/\s+/g, ' ').trim(),
       ph: document.getElementById('transform-input').placeholder, t, big: parseFloat(getComputedStyle(q.querySelector('.tf-gap')).fontSize), klein: parseFloat(getComputedStyle(q.querySelector('.tf-from')).fontSize) }; });
   const person = a.t.prompt.split(' + ')[0];
-  ok('1 gesuchte Form groß als Lücke („они ___“), Ausgangsform klein darüber', a.gap === person + ' ___' && a.from === a.t.from && a.big > 2 * a.klein && a.task === '→ Vergangenheit', JSON.stringify(a));
+  ok('1 gesuchte Form groß als Lücke („они ___“), Ausgangsform mit Person klein darüber', a.gap === person + ' ___' && a.from === (a.t.fromPron ? a.t.fromPron + ' ' : '') + a.t.from && a.big > 2 * a.klein && a.task === '→ Vergangenheit', JSON.stringify(a));
   ok('2 Platzhalter nennt die Aufgabe', a.ph === 'Vergangenheit für ' + person, a.ph);
   const imp = await p.evaluate(() => { setTransformScope('imperative'); const q = transformState.queue;
     return { alle: q.every(t => t.kind === 'imperative'), gap: sichtbar(document.querySelector('#transform-q .tf-gap')).replace(/\s+/g, ' ').trim(), n: q.length,
@@ -39,13 +39,13 @@ const { chromium } = require('playwright');
     const pool = transformPool(), L = loadLifetime(), now = Date.now(), srs = loadGrammarSrs();
     L.g.transform = L.g.transform || {}; srs.transform = srs.transform || {};
     // 30 sicher gelernte (nicht fällig), 5 fällig, 5 zuletzt falsch
-    pool.slice(0, 30).forEach(t => { srs.transform[transformId(t)] = { correct: 2, wrong: 0, box: 2, lastSeen: now }; L.g.transform[transformId(t)] = { c: 2, w: 0, l: now, z: now, d: 2, dd: now }; });
+    pool.slice(0, 30).forEach(t => { srs.transform[transformUnitId(t)] = { correct: 2, wrong: 0, box: 2, lastSeen: now }; L.g.transform[transformUnitId(t)] = { c: 2, w: 0, l: now, z: now, d: 2, dd: now }; });
     const faellig = pool.slice(30, 35), falsch = pool.slice(35, 40);
-    faellig.forEach(t => { srs.transform[transformId(t)] = { correct: 1, wrong: 0, box: 1, lastSeen: now - 5 * 864e5 }; L.g.transform[transformId(t)] = { c: 1, w: 0, l: now, z: now, d: 1, dd: now - 5 * 864e5 }; });
-    falsch.forEach(t => { srs.transform[transformId(t)] = { correct: 0, wrong: 1, box: 0, lastSeen: now }; });
+    faellig.forEach(t => { srs.transform[transformUnitId(t)] = { correct: 1, wrong: 0, box: 1, lastSeen: now - 5 * 864e5 }; L.g.transform[transformUnitId(t)] = { c: 1, w: 0, l: now, z: now, d: 1, dd: now - 5 * 864e5 }; });
+    falsch.forEach(t => { srs.transform[transformUnitId(t)] = { correct: 0, wrong: 1, box: 0, lastSeen: now }; });
     saveLifetime(); saveGrammarSrs();
-    const ids = transformRoundPick(pool).map(transformId), has = l => l.every(t => ids.includes(transformId(t)));
-    const sicher = pool.slice(0, 30).filter(t => ids.includes(transformId(t))).length;
+    const ids = transformRoundPick(pool).map(transformUnitId), has = l => l.every(t => ids.includes(transformUnitId(t)));
+    const sicher = pool.slice(0, 30).filter(t => ids.includes(transformUnitId(t))).length;
     return { faellig: has(faellig), falsch: has(falsch), sicher, n: ids.length };
   });
   ok('5 Runde: fällige und zuletzt falsche kommen zuerst dran, gelernte erst danach', r.faellig && r.falsch && r.sicher === 0 && r.n === 20, JSON.stringify(r));
@@ -72,7 +72,7 @@ const { chromium } = require('playwright');
     return { li, n: transformState.fehler.length, richtig: transformState.correct, btn: (document.getElementById('transform-repeat-btn') || {}).textContent,
       eingabe: getComputedStyle(document.querySelector('#overlay-transform .conj-row')).display };
   });
-  ok('6 Rundenende: Fehlerliste mit Lösung (falsch, aufgedeckt, übersprungen)', ende.n === 3 && ende.li.length === 3 && ende.li[0].endsWith(': ' + t0.answer) && ende.richtig === 17 && /Fehler wiederholen \(3\)/.test(ende.btn) && ende.eingabe === 'none', JSON.stringify(ende));
+  ok('6 Rundenende: Fehlerliste mit Lösung (falsch, aufgedeckt, übersprungen)', ende.n === 3 && ende.li.length === 3 && ende.li[0].endsWith(' ' + t0.answer) && ende.li[0].includes(' → ') && ende.richtig === 17 && /Fehler wiederholen \(3\)/.test(ende.btn) && ende.eingabe === 'none', JSON.stringify(ende));
   const wdh = await p.evaluate(() => { document.getElementById('transform-repeat-btn').click(); return { n: transformState.queue.length, idx: transformState.index, gap: !!document.querySelector('#transform-q .tf-gap'), fehler: transformState.fehler.length }; });
   ok('6 „Fehler wiederholen“ startet eine Runde nur mit den Fehlern', wdh.n === 3 && wdh.idx === 0 && wdh.gap && wdh.fehler === 0, JSON.stringify(wdh));
 
