@@ -25,12 +25,12 @@ const { chromium } = require('playwright');
     erste: q('#home-erste-sicher'), verlauf: !!document.querySelector('#home-stufen .home-verlauf'), nums: [...document.querySelectorAll('#home-weeknums span')].map(x => x.textContent).join(','),
     vorwoche: q('#home-vorwoche'), best: q('#home-best'), ueben: q('#home-lv-ueben').trim() }; });
   ok('Weiterlernen nennt Kategorie und offene Wörter, nicht die Gesamtzahl der Fälligen', /^Weiterlernen ?· Reisen · \d+ offen$/.test(r.go) && !/insgesamt/.test(r.plan), r.go + ' | ' + r.plan);
-  ok('Tagesziel überschritten: „2,4 × Tagesziel ✓“', /^1200 2,4 × Tagesziel ✓$/.test(r.heute), r.heute);
+  ok('Tagesziel überschritten: „2,4 × Tagesziel ✓“', /^1\.200 2,4 × Tagesziel ✓$/.test(r.heute), r.heute);
   ok('ab doppeltem Ziel: höheres Ziel 1000 · 2000 · 5000 wählbar', r.up === '1000,2000,5000', r.up);
   ok('noch kein Wort sicher: „Erste sichere Wörter frühestens am …“ statt flacher Linie', /^Erste sichere Wörter frühestens am \S+ \d+\.\d+\.$/.test(r.erste.trim()) && !r.verlauf, r.erste);
-  ok('Woche: Zahl je Tag unter den Balken', r.nums.split(',').length === 7 && r.nums.endsWith('400,300,1200'), r.nums);
+  ok('Woche: Zahl je Tag unter den Balken', r.nums.split(',').length === 7 && r.nums.endsWith('400,300,1.200'), r.nums);
   ok('Woche: Vergleich zur Vorwoche', /^\+443 % zur Vorwoche \(350\)$/.test(r.vorwoche.trim()), r.vorwoche);
-  ok('Bestwerte: bester Tag und längste Serie', /Bester Tag: heute \(1200\) · längste Serie: 3 Tage/.test(r.best), r.best);
+  ok('Bestwerte: bester Tag und längste Serie', /Bester Tag: heute \(1\.200\) · längste Serie: 3 Tage/.test(r.best), r.best);
   ok('Stufenkarte: Knopf „Wörter bis A1 üben“', r.ueben === 'Wörter bis A1 üben', r.ueben);
   const k = await p.evaluate(() => { document.querySelector('#home-goal-up button').click(); const z = dayGoal; setDayGoal(500); return z; });
   ok('Klick auf höheres Ziel setzt es', k === 1000, String(k));

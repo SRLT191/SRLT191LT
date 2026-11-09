@@ -36,8 +36,8 @@ const { chromium } = require('playwright');
   ok('frühestens sicher: 2 ab Mo. 2.11. · 1 ab Di. 10.11.', /frühestens sicher: 2 ab Mo\.? 2\.11\. · 1 ab Di\.? 10\.11\./.test(r.title) && /2 Wörter heute aufstiegsbereit/.test(r.title), r.title);
   ok('Gesamtzeile nennt aufstiegsbereit und Termine', /2 heute aufstiegsbereit · frühestens sicher: 2 ab/.test(r.text), r.text);
   ok('Verlauf: 12 Wochen, heute 3 sicher, vor 1 und 2 Wochen 2, davor 1 (sicher seit 3, 20 und 100 Tagen)', /29\.10\. 3$/.test(r.verlauf) && /22\.10\. 2,/.test(r.verlauf) && /15\.10\. 2,/.test(r.verlauf) && /8\.10\. 1,/.test(r.verlauf) && r.verlauf.split(',').length === 12 && r.vn === '3', r.verlauf);
-  ok('Grammatik-Karte: sechs Bereiche + Σ, Stand aus dem Gesamtstand', r.gZeilen.length === 7 && /^Verben 2 \/ \d+ ↑1$/.test(r.gZeilen[0]) && /^Präpositionen 1 \/ \d+ $/.test(r.gZeilen[4]) && /^Σ 3 \/ \d+ ↑1$/.test(r.gZeilen[6]), r.gZeilen.join(' | '));
-  ok('Grammatik-Gesamtzeile', /Grammatikaufgaben · 1 sicher · 2 in Wiederholung · \d+ noch nicht geübt · 1 heute aufstiegsbereit/.test(r.gText), r.gText);
+  ok('Grammatik-Karte: sechs Bereiche + Σ, Stand aus dem Gesamtstand', r.gZeilen.length === 7 && /^Verben 2 \/ [\d.]+ ↑1$/.test(r.gZeilen[0]) && /^Präpositionen 1 \/ [\d.]+ $/.test(r.gZeilen[4]) && /^Σ 3 \/ [\d.]+ ↑1$/.test(r.gZeilen[6]), r.gZeilen.join(' | '));
+  ok('Grammatik-Gesamtzeile', /Grammatikaufgaben · 1 sicher · 2 in Wiederholung · [\d.]+ noch nicht geübt · 1 heute aufstiegsbereit/.test(r.gText), r.gText);
   // PC: Klick öffnet weiterhin die Stufenübersicht
   const pc = await p.evaluate(() => { document.querySelector('#home-stufen .home-lvr').click(); const o = document.getElementById('overlay-levels'); const offen = !!o && o.classList.contains('open'); if (o) o.classList.remove('open'); return { offen, det: [...document.querySelectorAll('.home-lv-det')].filter(x => !x.hidden).length }; });
   ok('PC: Klick auf eine Zeile öffnet die Stufenübersicht, klappt nichts auf', pc.offen && pc.det === 0, JSON.stringify(pc));
