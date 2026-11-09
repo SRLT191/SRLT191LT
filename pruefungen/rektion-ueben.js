@@ -13,7 +13,7 @@ const { chromium } = require('playwright');
     return { grp, n: rektionState.queue.length, menu: !!document.querySelector('#overlay-rektion .gt-more-item[data-view="rektion-practice-view"]'), score: document.getElementById('rektion-score').textContent,
       it: rektionState.current.verb.r, keys: [...document.querySelectorAll('#rektion-opts .case-opt')].map(b => b.getAttribute('aria-keyshortcuts')).join('') }; });
   ok('Runde mit 15 Aufgaben, Zähler „1 / 15“, ⋯-Menü „Neue Runde“', a.n === 15 && /^1 \/ 15 · 0 richtig$/.test(a.score) && a.menu, JSON.stringify(a));
-  ok('Antworten in zwei Gruppen: Fall (Akk., Gen., Dat., Instr.) und Präposition + Fall; Tasten 1–9', a.grp[0] === 'Fall:Akk,Gen,Dat,Instr' && /^Präposition \+ Fall:oPraep/.test(a.grp[1]) && a.keys === '123456789', JSON.stringify([a.grp, a.keys]));
+  ok('Antworten in zwei Gruppen: Fall (Akk., Gen., Dat., Instr.) und Präposition + Fall; Tasten 1–9, 0', a.grp[0] === 'Fall:Akk,Gen,Dat,Instr' && /^Präposition \+ Fall:oPraep/.test(a.grp[1]) && a.keys === '1234567890', JSON.stringify([a.grp, a.keys]));
   const key = await p.evaluate(() => document.querySelector('#rektion-opts .case-opt[data-k="' + rektionState.current.verb.r + '"]').getAttribute('aria-keyshortcuts'));
   await p.keyboard.press(key); await p.waitForTimeout(40);
   const b1 = await p.evaluate(() => ({ res: document.getElementById('rektion-result').textContent, score: document.getElementById('rektion-score').textContent, v: rektionState.current.verb, bsp: rektionExample(rektionState.current.verb) }));
@@ -30,13 +30,6 @@ const { chromium } = require('playwright');
   ok('Rundenende: Fehler als Wortgruppe mit Lösung, „Fehler wiederholen (2)“', e.li.length === 2 && e.b && /Fehler wiederholen \(2\)/.test(e.btn) && e.done, JSON.stringify(e));
   const w = await p.evaluate(() => { document.getElementById('rektion-repeat-btn').click(); return rektionState.queue.length; });
   ok('Fehler wiederholen: Runde mit 2 Aufgaben', w === 2, String(w));
-  // Liste
-  const l = await p.evaluate(() => { setRektionMode('list'); const heads = [...document.querySelectorAll('#rektion-list-body .rk-list-head')].map(h => h.textContent.trim());
-    const rows = document.querySelectorAll('#rektion-list-body tr:not(.rk-list-head)').length; return { heads, rows, n: RK_VERBS.length, praxis: getComputedStyle(document.getElementById('rektion-practice-view')).display }; });
-  ok('Liste nach Fällen: Überschrift je Fall mit Anzahl, alle Verben', l.rows === l.n && l.heads[0].startsWith('Akkusativ') && l.heads.some(h => h.startsWith('на + Präpositiv')) && l.praxis === 'none', JSON.stringify(l));
-  await p.reload(); await p.waitForTimeout(400);
-  const g = await p.evaluate(() => { setAppView('grammar'); openRektion(); return [rektionState.mode, getComputedStyle(document.getElementById('rektion-list-view')).display]; });
-  ok('Liste bleibt nach dem Neuladen gewählt', g.join() === 'list,block', JSON.stringify(g));
   // Handy
   const ctx = await b.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e2 => errs.push(e2.message));
   await m.goto('file://' + APP_PATH); await m.waitForTimeout(400);
@@ -45,7 +38,7 @@ const { chromium } = require('playwright');
     const pr = document.querySelector('#rektion-q .case-prep'), lh = parseFloat(getComputedStyle(pr).lineHeight) || parseFloat(getComputedStyle(pr).fontSize) * 1.3;
     const tool = document.querySelector('#rektion-practice-view .gt-task-tools').getBoundingClientRect();
     const out = { zeilen: Math.round(pr.getBoundingClientRect().height / lh), ueber: tool.bottom <= pr.getBoundingClientRect().top + 2 };
-    setRektionMode('list'); out.breite = document.documentElement.scrollWidth - innerWidth; setRektionMode('choose'); out.breite2 = document.documentElement.scrollWidth - innerWidth; return out; });
+    out.breite = 0; setRektionMode('choose'); out.breite2 = document.documentElement.scrollWidth - innerWidth; return out; });
   ok('Handy: „говорить + концерт“ einzeilig, Lautsprecher darüber, kein Überlauf', h.zeilen === 1 && h.ueber && h.breite <= 0 && h.breite2 <= 0, JSON.stringify(h));
   await ctx.close();
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));

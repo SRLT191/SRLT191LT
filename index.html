@@ -697,9 +697,22 @@
   .rk-group-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .rk-group-opts.rk-4 { grid-template-columns: repeat(4, 1fr); }
   @media (max-width: 480px) { .rk-group-opts.rk-4 { grid-template-columns: repeat(2, 1fr); } .rk-group-opts { grid-template-columns: repeat(2, 1fr); } }
-  .rk-list-head th { text-align: left; padding-top: 14px; color: var(--c-accent-strong); }
-  .rk-list-n { color: var(--c-text-muted); font-weight: 400; margin-left: 6px; }
-  @media (max-width: 800px) { .rk-list { width: 100%; table-layout: fixed; } .rk-list td, .rk-list th { white-space: normal; overflow-wrap: anywhere; } .rk-list th:nth-child(4), .rk-list td:nth-child(4) { display: none; } }
+  .rkl-group { margin-bottom: 18px; }
+  .rkl-head { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 2px solid var(--c-accent-strong); margin-bottom: 4px; }
+  .rkl-title { font-size: 16px; font-weight: 700; color: var(--c-accent-strong); }
+  .rkl-n { color: var(--c-text-muted); font-size: 13px; }
+  .rkl-ueben { margin-left: auto; padding: 4px 10px; min-height: 30px; }
+  .rkl-row { display: grid; grid-template-columns: 150px 170px 1fr 1.3fr 22px; gap: 4px 14px; align-items: baseline; padding: 7px 2px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
+  .rkl-v { font-weight: 700; font-family: var(--font-ru, inherit); font-size: 15px; }
+  .rkl-bsp { font-family: var(--font-ru, inherit); }
+  .rkl-de, .rkl-vgl { color: var(--c-text-muted); }
+  .rkl-anders { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-warn, #e8a33d); color: var(--c-warn, #e8a33d); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .rkl-st.ok { color: var(--c-st5); }
+  @media (max-width: 800px) {   /* Handy: je Verb ein Block statt Spalten */
+    .rkl-row { grid-template-columns: 1fr auto; gap: 2px 8px; }
+    .rkl-v { grid-column: 1; } .rkl-st { grid-column: 2; grid-row: 1; }
+    .rkl-de, .rkl-bsp, .rkl-vgl { grid-column: 1 / -1; }
+  }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
   .gt-rate .tool-btn { min-height: 40px; }
@@ -1647,15 +1660,16 @@
 <p>• <strong>Akkusativ statt Dativ:</strong> благодарить (jemandem danken – благодарю маму), поздравлять (gratulieren).</p>
 <p>• <strong>Instrumental:</strong> Verben auf -ся des Beschäftigens und Fühlens – заниматься, интересоваться, гордиться – sowie пользоваться (benutzen), руководить (leiten), становиться (werden) und работать (arbeiten als): работаю врачом.</p>
 <p>• <strong>Genitiv:</strong> бояться (Angst haben vor), желать (wünschen), касаться (berühren, betreffen).</p>
-<p>• <strong>Mit Präposition:</strong> думать/говорить о + Präpositiv (denken an, sprechen über), надеяться/жаловаться на + Akkusativ (hoffen auf, sich beschweren über), смеяться над + Instrumental (lachen über), играть в + Akk. (Spiel) bzw. на + Präp. (Instrument).</p>
+<p>• <strong>Mit Präposition:</strong> думать/говорить/мечтать о + Präpositiv (denken an, sprechen über, träumen von), надеяться/жаловаться/сердиться на + Akkusativ (hoffen auf, sich beschweren über, böse sein auf), смеяться над + Instrumental (lachen über), играть в + Akk. (Spiel) bzw. на + Präp. (Instrument), зависеть/отказываться от + Genitiv (abhängen von, verzichten auf), готовиться/привыкать к + Dativ (sich vorbereiten auf, sich gewöhnen an), участвовать в + Präpositiv (teilnehmen an), болеть/голосовать/бороться за + Akkusativ (die Daumen drücken, stimmen, kämpfen für), состоять из + Genitiv (bestehen aus), жениться на + Präpositiv (heiraten, vom Mann gesagt).</p>
 <p><strong>Sonderfall ждать</strong> (warten auf): ohne Präposition, mit Akkusativ bei bestimmten Personen oder Dingen (жду маму), mit Genitiv bei Abstraktem (жду ответа). Darum fehlt es hier in der Übung.</p>
-<p><strong>Bedienung:</strong> <em>Fall wählen</em> – zum Verb den Fall bzw. Präposition + Fall antippen; danach erscheint der Vergleich mit dem Deutschen. Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Form bilden</em> – Verb und Substantiv zur Wortgruppe verbinden (звонить + мама → звонить маме); das Verb bleibt im Infinitiv. <em>Hilfe</em> (unter Einstellungen) zeigt dort den verlangten Fall.</p>
+<p><strong>Bedienung:</strong> <em>Fall wählen</em> – zum Verb den Fall bzw. Präposition + Fall antippen; danach erscheint der Vergleich mit dem Deutschen. Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit den Tasten 1–9 und 0 wählst du direkt eine Antwort (dann zeigt nur der Knopf die Lösung). <em>Form bilden</em> – das Verb ist vorgegeben, du tippst nur die Ergänzung (звонить ___ → маме); die ganze Wortgruppe zählt auch. <em>Hilfe</em> (unter Einstellungen) zeigt dort den verlangten Fall. Beide Modi laufen in Runden zu 15 Aufgaben; am Ende stehen die Fehler mit „Fehler wiederholen“.</p>
+<p><strong>Liste:</strong> öffnet ein Fenster mit allen Verben nach Fall bzw. Präposition + Fall, mit Beispiel und Vergleich zum Deutschen. <em>≠ Deutsch</em> markiert die Verben, deren Rektion anders ist als im Deutschen (Schalter „nur ≠ Deutsch“); ein Häkchen zeigt, was bei „Fall wählen“ schon richtig war; <em>üben</em> startet eine Runde nur mit dieser Gruppe.</p>
 </div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
 <button class="mode-btn active" id="rektion-mode-choose" onclick="setRektionMode('choose')">Fall wählen</button>
 <button class="mode-btn" id="rektion-mode-form" onclick="setRektionMode('form')">Form bilden</button>
-<button class="mode-btn" id="rektion-mode-list" onclick="setRektionMode('list')">Liste</button>
+<button class="mode-btn" id="rektion-mode-list" onclick="openRektionList()" title="Alle Verben nach Fall (eigenes Fenster)"><i class="ti ti-list"></i> Liste</button>
 </div>
 </div>
 <div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
@@ -1671,7 +1685,7 @@
 <div aria-live="polite" class="conj-result" id="rektion-result" role="status"></div>
 <div class="conj-result" id="rektion-score"></div>
 </div>
-<div id="rektion-list-view" style="display:none"><table class="vocab-table rk-list"><thead><tr><th>Verb</th><th>Deutsch</th><th>Beispiel</th><th>Vergleich</th></tr></thead><tbody id="rektion-list-body"></tbody></table></div>
+
 </div>
 </div>
 
@@ -3167,6 +3181,18 @@
 </div>
 
 <!-- Auswahlliste der Formtabellen (Verben, Adjektive, Substantive, Pronomen) -->
+<div class="overlay" id="overlay-rektionlist">
+  <div class="overlay-box overlay-box-wide">
+    <div class="overlay-header">
+      <span class="overlay-title"><i class="ti ti-list"></i> Rektion · alle Verben nach Fall</span>
+      <button class="overlay-close" onclick="closeOverlay('overlay-rektionlist')" aria-label="Schließen">×</button>
+    </div>
+    <div class="overlay-body">
+      <div class="list-toolbar"><button class="tool-btn" id="rektion-list-anders" aria-pressed="false" onclick="toggleRektionListAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-list-check"></i> <span>nur ≠ Deutsch</span></button></div>
+      <div id="rektion-list-body" class="rkl"></div>
+    </div>
+  </div>
+</div>
 <div class="overlay" id="overlay-formpicker">
   <div class="overlay-box overlay-box-wide">
     <div class="overlay-header">
@@ -23496,6 +23522,11 @@ const RK_OPTIONS = [
   { k: 'naPraep',  label: 'на + Präp.',    prep: 'на',  kasus: 'Präp.' },
   { k: 'vAkk',     label: 'в + Akk.',      prep: 'в',   kasus: 'Akk.' },
   { k: 'nadInstr', label: 'над + Instr.',  prep: 'над', kasus: 'Instr.' },
+  { k: 'otGen',    label: 'от + Gen.',     prep: 'от',  kasus: 'Gen.' },
+  { k: 'kDat',     label: 'к + Dat.',      prep: 'к',   kasus: 'Dat.' },
+  { k: 'vPraep',   label: 'в + Präp.',     prep: 'в',   kasus: 'Präp.' },
+  { k: 'zaAkk',    label: 'за + Akk.',     prep: 'за',  kasus: 'Akk.' },
+  { k: 'izGen',    label: 'из + Gen.',     prep: 'из',  kasus: 'Gen.' },
 ];
 const RK_VERBS = [
   // Dativ
@@ -23543,6 +23574,19 @@ const RK_VERBS = [
   { v: 'смеяться',    de: 'lachen (über)',               r: 'nadInstr', dt: 'lachen über (über + Akk.) – Russisch над + Instr.', n: ['брат', 'вопрос'] },
   { v: 'играть',      de: 'spielen (ein Spiel)',         r: 'vAkk',     dt: 'ein Spiel spielen (Akk.) – Russisch в + Akk.', n: [], bsp: 'играть в футбол, в шахматы', id: 'играть:в' },
   { v: 'играть',      de: 'spielen (ein Instrument)',    r: 'naPraep',  dt: 'ein Instrument spielen (Akk.) – Russisch на + Präp.', n: [], bsp: 'играть на гитаре, на пианино', id: 'играть:на' },
+  // neue Präpositionen und weitere Verben (9.11.)
+  { v: 'зависеть',     de: 'abhängen (von)',                    r: 'otGen',  dt: 'abhängen von (von + Dat.) – Russisch от + Gen.', n: ['погода', 'мама', 'брат'] },
+  { v: 'отказываться', de: 'verzichten (auf)',                  r: 'otGen',  dt: 'verzichten auf (auf + Akk.) – Russisch от + Gen.', n: ['хлеб', 'обед', 'билет'] },
+  { v: 'готовиться',   de: 'sich vorbereiten (auf)',            r: 'kDat',   dt: 'sich vorbereiten auf (auf + Akk.) – Russisch к + Dat.', n: ['урок', 'праздник', 'концерт'] },
+  { v: 'привыкать',    de: 'sich gewöhnen (an)',                r: 'kDat',   dt: 'sich gewöhnen an (an + Akk.) – Russisch к + Dat.', n: ['город', 'погода', 'жизнь'] },
+  { v: 'участвовать',  de: 'teilnehmen (an)',                   r: 'vPraep', dt: 'teilnehmen an (an + Dat.) – Russisch в + Präp.', n: ['концерт', 'праздник'] },
+  { v: 'болеть', id: 'болеть за', de: 'die Daumen drücken (für)', r: 'zaAkk', dt: 'die Daumen drücken für (für + Akk.) – wie im Deutschen', n: ['брат', 'друг', 'страна'] },
+  { v: 'голосовать',   de: 'stimmen (für)',                     r: 'zaAkk',  dt: 'stimmen für (für + Akk.) – wie im Deutschen', n: ['сосед', 'друг'] },
+  { v: 'бороться', id: 'бороться за', de: 'kämpfen (für)',      r: 'zaAkk',  dt: 'kämpfen für (für + Akk.) – wie im Deutschen', n: ['жизнь', 'страна', 'любовь'] },
+  { v: 'состоять',     de: 'bestehen (aus)',                    r: 'izGen',  dt: 'bestehen aus (aus + Dat.) – Russisch из + Gen.', n: [], bsp: 'Квартира состоит из трёх комнат.' },
+  { v: 'мечтать',      de: 'träumen (von)',                     r: 'oPraep', dt: 'träumen von (von + Dat.) – Russisch о + Präp.', n: ['дом', 'машина', 'квартира'] },
+  { v: 'сердиться',    de: 'sich ärgern (über), böse sein (auf)', r: 'naAkk', dt: 'böse sein auf (auf + Akk.) – wie im Deutschen', n: ['брат', 'сосед', 'друг'] },
+  { v: 'жениться',     de: 'heiraten (vom Mann gesagt)',        r: 'naPraep', dt: 'jemanden heiraten (Akk.) – Russisch на + Präp.', n: ['сестра'] },
 ];
 const rkVerbId = x => x.id || x.v;
 const rkOpt = k => RK_OPTIONS.find(o => o.k === k);
@@ -23576,7 +23620,8 @@ function rektionTotal() { return rektionItems('choose').length + rektionItems('f
 // Erklärung nach dem Antworten: Fall + Vergleich mit dem Deutschen
 // Beispiel (8.11.): Wortgruppe aus dem ersten Substantiv mit Formtabelle, sonst das hinterlegte Beispiel
 function rektionExample(x) {
-  const o = rkOpt(x.r), n = (x.n || []).find(w => nounDeclensionData[w] && nounHas(w, 'sg'));
+  const o = rkOpt(x.r), moegl = (x.n || []).filter(w => nounDeclensionData[w] && nounHas(w, 'sg'));
+  const n = moegl.length ? moegl[Math.max(0, RK_VERBS.indexOf(x)) % moegl.length] : null;   // je Verb ein anderes Substantiv
   return n ? x.v + ' ' + (o.prep ? o.prep + ' ' : '') + nounDeclensionData[n].sg[o.kasus] : (x.bsp || '');
 }
 function rektionExplain(x, mitBeispiel) {
@@ -23584,14 +23629,36 @@ function rektionExplain(x, mitBeispiel) {
   return '<b>' + x.v + '</b> + ' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus]
     + ' · Deutsch: ' + x.dt + (bsp ? ' · Beispiel: <span lang="ru">' + bsp + '</span>' : '');
 }
-// Liste (8.11.): alle Verben nach Fall bzw. Präposition + Fall
+// Rektion anders als im Deutschen? (aus dem Vergleichstext)
+function rkAnders(x) { return /anders als im Deutschen|Russisch/.test(x.dt); }
+function rkVergleichKurz(x) { return x.dt.replace(/ – (wie im Deutschen|anders als im Deutschen)$/, ''); }
+// Liste (9.11.): eigenes Fenster, alle Verben nach Fall bzw. Präposition + Fall; „≠ Deutsch“, Stand, Gruppe üben
+let rkListNurAnders = false;
+function openRektionList() { renderRektionList(); document.getElementById('overlay-rektionlist').classList.add('open'); }
+function toggleRektionListAnders() { rkListNurAnders = !rkListNurAnders; renderRektionList(); }
 function renderRektionList() {
   const body = document.getElementById('rektion-list-body'); if (!body) return;
+  const srs = loadGrammarSrs().rektion || {};
+  const btn = document.getElementById('rektion-list-anders');
+  if (btn) { btn.setAttribute('aria-pressed', rkListNurAnders ? 'true' : 'false'); btn.classList.toggle('active', rkListNurAnders); }
   body.innerHTML = RK_OPTIONS.map(o => {
-    const vs = RK_VERBS.filter(x => x.r === o.k); if (!vs.length) return '';
-    return '<tr class="rk-list-head"><th colspan="4">' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus] + ' <span class="rk-list-n">' + vs.length + '</span></th></tr>'
-      + vs.map(x => '<tr><td class="td-ru" lang="ru">' + x.v + '</td><td class="td-de">' + x.de + '</td><td class="td-ru" lang="ru">' + rektionExample(x) + '</td><td class="td-de">' + x.dt + '</td></tr>').join('');
+    const alle = RK_VERBS.filter(x => x.r === o.k), vs = alle.filter(x => !rkListNurAnders || rkAnders(x)); if (!vs.length) return '';
+    return '<section class="rkl-group"><div class="rkl-head"><span class="rkl-title">' + (o.prep ? '<span lang="ru">' + o.prep + '</span> + ' : '') + RK_KASUS_NAME[o.kasus] + '</span><span class="rkl-n">' + vs.length + '</span>'
+      + '<button class="tool-btn rkl-ueben" type="button" onclick="practiceRektionGroup(\'' + o.k + '\')" title="Runde nur mit diesen Verben"><i class="ti ti-player-play"></i> üben</button></div>'
+      + vs.map(x => { const ok = srsDone(srs['w:' + rkVerbId(x)]);
+        return '<div class="rkl-row"><span class="rkl-v" lang="ru">' + x.v + '</span><span class="rkl-de">' + x.de + '</span><span class="rkl-bsp" lang="ru">' + rektionExample(x) + '</span>'
+          + '<span class="rkl-vgl">' + (rkAnders(x) ? '<span class="rkl-anders" title="Rektion anders als im Deutschen">≠ Deutsch</span>' : '') + rkVergleichKurz(x) + '</span>'
+          + '<span class="rkl-st' + (ok ? ' ok' : '') + '" title="' + (ok ? 'bei „Fall wählen“ schon richtig' : 'noch nicht richtig') + '">' + (ok ? '<i class="ti ti-check"></i>' : '') + '</span></div>'; }).join('')
+      + '</section>';
   }).join('');
+}
+// Gruppe üben: Runde „Form bilden“ nur mit diesen Verben (ohne Substantive: „Fall wählen“)
+function practiceRektionGroup(k) {
+  closeOverlay('overlay-rektionlist');
+  const form = rektionItems('form').filter(t => t.verb.r === k);
+  setRektionMode(form.length ? 'form' : 'choose');
+  const pool = form.length ? form : rektionItems('choose').filter(t => t.verb.r === k);
+  startRektionRound(shuffleInPlace(pool.slice()).slice(0, REKTION_ROUND));
 }
 function toggleRektionInfo() {
   const el = document.getElementById('rektion-info-panel');
@@ -23612,13 +23679,11 @@ function toggleRektionHint() {
 }
 function setRektionMode(m) {
   rektionState.mode = m;
-  ['choose', 'form', 'list'].forEach(x => {
+  ['choose', 'form'].forEach(x => {
     const b = document.getElementById('rektion-mode-' + x);
     if (b) b.classList.toggle('active', x === m);
   });
-  document.getElementById('rektion-practice-view').style.display = m === 'list' ? 'none' : '';
-  document.getElementById('rektion-list-view').style.display = m === 'list' ? '' : 'none';
-  if (m === 'list') { renderRektionList(); applyRektionHint(); saveToolSettings(); return; }
+  if (m === 'list') m = rektionState.mode = 'choose';   // Liste ist seit 9.11. ein eigenes Fenster
   document.getElementById('rektion-opts').style.display = m === 'choose' ? '' : 'none';
   document.getElementById('rektion-input-row').style.display = m === 'form' ? '' : 'none';
   document.getElementById('rektion-check-btn').style.display = m === 'form' ? '' : 'none';
