@@ -1,0 +1,55 @@
+const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
+// Rektion (8.11.): Runden mit Fehlerliste und ⋯-Menü, Antworten in zwei Gruppen (Fall / Präposition + Fall),
+// Tasten 1–9, Beispiel nach der Antwort, „Form bilden“ nur mit Ergänzung, Liste nach Fällen,
+// am Handy Lautsprecher über der Aufgabe
+const { chromium } = require('playwright');
+(async () => {
+  const b = await chromium.launch(); const R = []; const errs = [];
+  const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
+  const p = await b.newPage({ viewport: { width: 1400, height: 900 } }); p.on('pageerror', e => errs.push(e.message));
+  await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
+  const a = await p.evaluate(() => { setAppView('grammar'); openRektion(); setRektionMode('choose');
+    const grp = [...document.querySelectorAll('#rektion-opts .rk-group')].map(g => g.querySelector('.rk-group-label').textContent + ':' + [...g.querySelectorAll('.case-opt')].map(b => b.dataset.k).join(','));
+    return { grp, n: rektionState.queue.length, menu: !!document.querySelector('#overlay-rektion .gt-more-item[data-view="rektion-practice-view"]'), score: document.getElementById('rektion-score').textContent,
+      it: rektionState.current.verb.r, keys: [...document.querySelectorAll('#rektion-opts .case-opt')].map(b => b.getAttribute('aria-keyshortcuts')).join('') }; });
+  ok('Runde mit 15 Aufgaben, Zähler „1 / 15“, ⋯-Menü „Neue Runde“', a.n === 15 && /^1 \/ 15 · 0 richtig$/.test(a.score) && a.menu, JSON.stringify(a));
+  ok('Antworten in zwei Gruppen: Fall (Akk., Gen., Dat., Instr.) und Präposition + Fall; Tasten 1–9', a.grp[0] === 'Fall:Akk,Gen,Dat,Instr' && /^Präposition \+ Fall:oPraep/.test(a.grp[1]) && a.keys === '123456789', JSON.stringify([a.grp, a.keys]));
+  const key = await p.evaluate(() => document.querySelector('#rektion-opts .case-opt[data-k="' + rektionState.current.verb.r + '"]').getAttribute('aria-keyshortcuts'));
+  await p.keyboard.press(key); await p.waitForTimeout(40);
+  const b1 = await p.evaluate(() => ({ res: document.getElementById('rektion-result').textContent, score: document.getElementById('rektion-score').textContent, v: rektionState.current.verb, bsp: rektionExample(rektionState.current.verb) }));
+  ok('Taste wählt die Antwort; Rückmeldung mit Beispiel-Wortgruppe', /^Richtig — /.test(b1.res) && b1.bsp && b1.res.includes('Beispiel: ' + b1.bsp) && /1 richtig$/.test(b1.score), JSON.stringify(b1));
+  // Form bilden: nur Ergänzung
+  const f = await p.evaluate(() => { setRektionMode('form'); const t = rektionState.current; const input = document.getElementById('rektion-input');
+    const ph = input.placeholder; input.value = t.obj; checkRektion(); const res = document.getElementById('rektion-result').textContent, sc = document.getElementById('rektion-score').textContent;
+    checkRektion(); const t2 = rektionState.current; input.value = t2.answer; checkRektion(); const res2 = document.getElementById('rektion-result').textContent;
+    return { ph, res, sc, res2, obj: t.obj, hint: document.querySelector('#rektion-q .case-hint').textContent }; });
+  ok('Form bilden: Ergänzung genügt („' + f.obj + '“), ganze Wortgruppe auch richtig, kein „auch:“', /^Richtig — /.test(f.res) && !/auch:/.test(f.res) && /^Richtig/.test(f.res2) && /1 richtig$/.test(f.sc) && / ___ – /.test(f.hint) && /Form nach /.test(f.ph), JSON.stringify(f));
+  // Rundenende
+  const e = await p.evaluate(() => { const st = rektionState; st.fehler = [st.queue[0], st.queue[1]]; st.index = st.queue.length; renderRektionTask();
+    return { li: [...document.querySelectorAll('#rektion-q .gt-fehler li')].map(x => x.textContent), b: !!document.querySelector('#rektion-q .gt-fehler li b'), btn: (document.getElementById('rektion-repeat-btn') || {}).textContent, done: document.getElementById('rektion-practice-view').classList.contains('gt-done') }; });
+  ok('Rundenende: Fehler als Wortgruppe mit Lösung, „Fehler wiederholen (2)“', e.li.length === 2 && e.b && /Fehler wiederholen \(2\)/.test(e.btn) && e.done, JSON.stringify(e));
+  const w = await p.evaluate(() => { document.getElementById('rektion-repeat-btn').click(); return rektionState.queue.length; });
+  ok('Fehler wiederholen: Runde mit 2 Aufgaben', w === 2, String(w));
+  // Liste
+  const l = await p.evaluate(() => { setRektionMode('list'); const heads = [...document.querySelectorAll('#rektion-list-body .rk-list-head')].map(h => h.textContent.trim());
+    const rows = document.querySelectorAll('#rektion-list-body tr:not(.rk-list-head)').length; return { heads, rows, n: RK_VERBS.length, praxis: getComputedStyle(document.getElementById('rektion-practice-view')).display }; });
+  ok('Liste nach Fällen: Überschrift je Fall mit Anzahl, alle Verben', l.rows === l.n && l.heads[0].startsWith('Akkusativ') && l.heads.some(h => h.startsWith('на + Präpositiv')) && l.praxis === 'none', JSON.stringify(l));
+  await p.reload(); await p.waitForTimeout(400);
+  const g = await p.evaluate(() => { setAppView('grammar'); openRektion(); return [rektionState.mode, getComputedStyle(document.getElementById('rektion-list-view')).display]; });
+  ok('Liste bleibt nach dem Neuladen gewählt', g.join() === 'list,block', JSON.stringify(g));
+  // Handy
+  const ctx = await b.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e2 => errs.push(e2.message));
+  await m.goto('file://' + APP_PATH); await m.waitForTimeout(400);
+  const h = await m.evaluate(() => { setAppView('grammar'); openRektion(); setRektionMode('form');
+    const it = rektionItems('form').find(x => x.verb.v === 'говорить' && x.noun === 'концерт'); rektionState.queue[rektionState.index] = it; renderRektionTask();
+    const pr = document.querySelector('#rektion-q .case-prep'), lh = parseFloat(getComputedStyle(pr).lineHeight) || parseFloat(getComputedStyle(pr).fontSize) * 1.3;
+    const tool = document.querySelector('#rektion-practice-view .gt-task-tools').getBoundingClientRect();
+    const out = { zeilen: Math.round(pr.getBoundingClientRect().height / lh), ueber: tool.bottom <= pr.getBoundingClientRect().top + 2 };
+    setRektionMode('list'); out.breite = document.documentElement.scrollWidth - innerWidth; setRektionMode('choose'); out.breite2 = document.documentElement.scrollWidth - innerWidth; return out; });
+  ok('Handy: „говорить + концерт“ einzeilig, Lautsprecher darüber, kein Überlauf', h.zeilen === 1 && h.ueber && h.breite <= 0 && h.breite2 <= 0, JSON.stringify(h));
+  await ctx.close();
+  ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
+  R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
+  console.log('\n' + R.filter(x => x[0] === 'OK ').length + ' von ' + R.length + ' bestanden');
+  await b.close();
+})();
