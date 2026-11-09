@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     go: document.querySelector('.home-go').textContent.replace(/\s+/g, ' ').trim(), plan: document.getElementById('home-plan').textContent,
     fc: document.getElementById('home-forecast').getAttribute('aria-label'), fcBars: document.querySelectorAll('#home-forecast .home-fc-bars > div').length,
     morgen: document.querySelectorAll('#home-forecast .home-fc-bars > div')[1].title,
-    st: document.querySelector('.home-due-st-t').textContent, stSegs: [...document.querySelectorAll('.home-due-st span')].map(x => x.className).join(),
+    st: [...document.querySelectorAll('.home-due-st-t .home-due-st-i')].map(x => x.title + ': ' + x.querySelector('b').textContent).join(' · '), stSegs: [...document.querySelectorAll('.home-due-st span')].map(x => x.className).join(),
     week: document.getElementById('home-weeksum').textContent, wTip: [...document.querySelectorAll('.home-week div')].map(x => x.title),
     gew: document.getElementById('home-gewinn').textContent.trim(), pick: [...document.querySelectorAll('.home-goal-pick button')].map(x => x.textContent).join(),
   }));
