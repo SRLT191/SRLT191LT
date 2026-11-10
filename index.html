@@ -969,6 +969,31 @@
   .case-question { text-align: center; padding: 18px 12px 14px; font-size: 15px; color: var(--c-text-tertiary); }
   .case-question .case-prep { display: block; font-size: 30px; font-weight: 600; color: var(--c-text-primary); margin-bottom: 6px; }
   .case-question .case-hint { display: block; font-size: 13px; margin-top: 4px; }
+  .case-question .case-satz { display: block; font-size: 19px; color: var(--c-text-primary); font-family: var(--font-ru, inherit); }
+  .case-question .case-satz-de { display: block; font-size: 13.5px; margin: 2px 0 12px; }
+  .case-question .case-satz + .case-satz-de + .case-prep { font-size: 24px; }
+  .case-pl { font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--c-border-light); color: var(--c-text-muted); vertical-align: middle; }
+  #case-result .case-tipp { display: block; margin-top: 4px; color: var(--c-warn, #e8a33d); }
+  #case-result .case-erkl { display: block; margin-top: 6px; font-size: 13.5px; opacity: 0.9; }
+  #case-result .case-satz-voll { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; font-size: 16px; font-family: var(--font-ru, inherit); }
+  #overlay-casedrill .gt-more-menu { min-width: 280px; }
+  .gt-more-item.gt-toggle::after { content: ''; margin-left: auto; }
+  .gt-more-group { padding: 6px 10px 8px; border-top: 1px solid var(--c-border); }
+  .gt-more-label { display: block; font-size: 11.5px; color: var(--c-text-muted); margin-bottom: 4px; }
+  .gt-more-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .gt-more-chips .mode-btn { padding: 4px 9px; min-height: 30px; font-size: 12.5px; }
+  .gt-more-group + .gt-more-item { border-top: 1px solid var(--c-border); border-radius: 0 0 7px 7px; }
+  .ppl-row { display: grid; grid-template-columns: 110px 150px 1fr 34px 22px; gap: 4px 14px; align-items: center; padding: 6px 2px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
+  .ppl-p { font-weight: 700; font-family: var(--font-ru, inherit); font-size: 15px; }
+  .ppl-bsp { font-family: var(--font-ru, inherit); }
+  .ppl-de { color: var(--c-text-muted); }
+  .ppl-row .gt-icon-btn { width: 32px; height: 32px; min-height: 32px; }
+  .ppl-wechsel { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-accent-strong); color: var(--c-accent-strong); font-size: 11px; font-weight: 600; vertical-align: middle; }
+  @media (max-width: 640px) {
+    .ppl-row { grid-template-columns: 1fr auto auto; gap: 2px 8px; }
+    .ppl-de, .ppl-bsp { grid-column: 1 / -1; }
+    .ppl-p { grid-column: 1; } .ppl-row .gt-icon-btn { grid-column: 2; grid-row: 1; } .ppl-row .rkl-st { grid-column: 3; grid-row: 1; }
+  }
   .case-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
   .case-options-2 { grid-template-columns: repeat(2, 1fr); }
   .gender-options { grid-template-columns: repeat(4, 1fr); }
@@ -2411,23 +2436,26 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleCaseInfo()" title="Übersicht aller Präpositionen und ihrer Kasus"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-case" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); restartCaseDrill()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); restartCaseDrill()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button><button class="gt-more-item" onclick="closeGtMore(); openPrepList()" role="menuitem" type="button"><i class="ti ti-list"></i> <span>Übersicht nach Fall</span></button>
+<div class="gt-more-group" role="group" aria-label="Bereich"><span class="gt-more-label">Bereich</span><span class="gt-more-chips">
+<button class="mode-btn active" id="case-scope-btn-all" onclick="setCaseScope('all')" type="button">Alle</button><button class="mode-btn" id="case-scope-btn-single" onclick="setCaseScope('single')" type="button">Ohne Wechsel</button><button class="mode-btn" id="case-scope-btn-dual" onclick="setCaseScope('dual')" type="button">Nur Wechsel</button></span></div>
+<div class="gt-more-group" id="case-kasus-group" role="group" aria-label="Fall"><span class="gt-more-label">Fall</span><span class="gt-more-chips" id="case-kasus-chips">
+<button class="mode-btn active" data-v="all" onclick="setCaseKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Gen." onclick="setCaseKasus('Gen.')" type="button">Gen.</button><button class="mode-btn" data-v="Dat." onclick="setCaseKasus('Dat.')" type="button">Dat.</button><button class="mode-btn" data-v="Akk." onclick="setCaseKasus('Akk.')" type="button">Akk.</button><button class="mode-btn" data-v="Instr." onclick="setCaseKasus('Instr.')" type="button">Instr.</button><button class="mode-btn" data-v="Präp." onclick="setCaseKasus('Präp.')" type="button">Präp.</button></span></div>
+<button aria-pressed="true" class="gt-more-item gt-toggle" id="case-hint-toggle" onclick="toggleCaseHint()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Kasus-Hinweis</span></button><button aria-pressed="false" class="gt-more-item gt-toggle" id="case-plural-toggle" onclick="toggleCasePlural()" role="menuitemcheckbox" type="button"><i class="ti ti-stack-2"></i> <span>Auch Plural</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="case-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <p><strong>Worum es geht:</strong> Jede Präposition verlangt einen bestimmten Fall für das folgende Wort. Hier übst du, welcher Fall zu welcher Präposition gehört.</p>
 <p><strong>Präpositionen mit zwei Fällen:</strong> Dann entscheidet die Bedeutung. Bei в, на, за, под gilt: Richtung (wohin?) → Akkusativ, Ort (wo?) → Präpositiv (в, на) bzw. Instrumental (за, под). Beispiel: в школу (in die Schule) – в школе (in der Schule). с heißt mit Instrumental „mit“, mit Genitiv „von, seit“.</p>
 <p>Die Übersicht zeigt alle Präpositionen nach Fall geordnet:</p>
 <table class="conj-info-table" id="case-info-table"></table>
-<p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Form bilden</em> – Präposition und Substantiv zur Wortgruppe verbinden. Im ⋯-Menü mischt <em>Neue Runde</em> alle Präpositionen neu und setzt den Zähler zurück. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
+<p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen oder Taste 1–5 bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
+<p><em>Form bilden</em> – Setze Präposition und Substantiv in die Lücke des Satzes (Мы идём ___ → в школу). Es kommen nur Substantive dran, die inhaltlich passen; Sonderfälle wie об ответе, со станции, в лесу oder belebte Akkusative (про брата) sind gezielt dabei. Nach der Antwort stehen Regel, Endung und der ganze Satz zum Anhören; bei typischen Fehlern gibt es einen Tipp. <em>Lösung zeigen</em> (Taste 3) deckt auf, danach bewertest du selbst. Eine Runde hat 15 Aufgaben.</p>
+<p><strong>⋯-Menü:</strong> <em>Neue Runde</em>, <em>Übersicht nach Fall</em> (alle Präpositionen mit Beispiel, je Fall eine Runde zum Üben), <em>Bereich</em> (alle, ohne oder nur Wechselpräpositionen), <em>Fall</em> (nur Präpositionen eines Falls), <em>Kasus-Hinweis</em> ein/aus und <em>Auch Plural</em> (в магазинах, к друзьям). Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="conj-toolbar gt-modes"><div class="tense-switcher">
 <button class="mode-btn active" id="case-mode-btn-abstract" onclick="setCaseMode('abstract')">Fall wählen</button>
 <button class="mode-btn" id="case-mode-btn-word" onclick="setCaseMode('word')">Form bilden</button>
-</div></div><div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
-<button class="mode-btn active" id="case-scope-btn-all" onclick="setCaseScope('all')">Alle</button>
-<button class="mode-btn" id="case-scope-btn-single" onclick="setCaseScope('single')">Ohne Wechsel</button>
-<button class="mode-btn" id="case-scope-btn-dual" onclick="setCaseScope('dual')">Nur Wechsel</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle" id="case-hint-toggle" onclick="toggleCaseHint()" style="display:none"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+</div></div>
 <div class="gt-task"><div class="case-question" id="case-question"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseDrill()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="case-options"></div>
 <div class="conj-row" id="case-input-row" style="grid-template-columns: 1fr; display:none;">
@@ -2435,7 +2463,7 @@
 
 </div>
 <div class="conj-actions gt-actions" id="case-choice-actions">
-<button class="tool-btn" onclick="gtChoiceReveal(CASE_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
+<button class="tool-btn" onclick="gtChoiceReveal(CASE_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen</button>
 <button class="tool-btn" onclick="gtChoiceNext(CASE_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div class="conj-actions gt-actions" id="case-input-actions" style="display:none">
 <button class="tool-btn gt-primary" onclick="checkCaseWord()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealCaseWord()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
@@ -3199,6 +3227,17 @@
     <div class="overlay-body">
       <div class="list-toolbar"><button class="tool-btn" id="rektion-list-anders" aria-pressed="false" onclick="toggleRektionListAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-list-check"></i> <span>nur ≠ Deutsch</span></button></div>
       <div id="rektion-list-body" class="rkl"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay-preplist">
+  <div class="overlay-box overlay-box-wide">
+    <div class="overlay-header">
+      <span class="overlay-title"><i class="ti ti-list"></i> Präpositionen · nach Fall</span>
+      <button class="overlay-close" onclick="closeOverlay('overlay-preplist')" aria-label="Schließen">×</button>
+    </div>
+    <div class="overlay-body">
+      <div id="prep-list-body" class="rkl"></div>
     </div>
   </div>
 </div>
@@ -8276,7 +8315,7 @@ function grammarToolSources() {
     numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal()],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
-    casedrill: [['case', 'case:word'], PREP_CASES.length * 2], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
+    casedrill: [['case', 'case:word'], PREP_CASES.length + caseWordCount()], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
     sentencebuild: [Object.keys(loadLifetime().g || {}).filter(k => k.startsWith('sb:')), SB_ITEMS.length],
   };
 }
@@ -17488,7 +17527,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-wordgroup', learned('wordgroup', 12 + 6 + 14 + 3));
   set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length));
   set('gtp-transform', learned('transform', transformTotal()));
-  set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length * 2));
+  set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length + caseWordCount()));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
   set('gtp-numnoun', learned('numnoun', numNounNouns().length * 3));
   set('gtp-caseform', learned('caseform', caseFormTotal('noun')));
@@ -17703,7 +17742,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -18980,6 +19019,8 @@ const TOOL_SETTINGS = [
   ['caseScope', ...tsProp(() => caseState, 'scope'), tsOneOf('all', 'single', 'dual')],
   ['caseMode', ...tsProp(() => caseState, 'mode'), tsOneOf('abstract', 'word')],
   ['caseHintVisible', ...tsProp(() => caseState, 'hintVisible'), TS_BOOL],
+  ['caseKasus', ...tsProp(() => caseState, 'kasus'), tsOneOf('all', 'Gen.', 'Dat.', 'Akk.', 'Instr.', 'Präp.')],
+  ['casePlural', ...tsProp(() => caseState, 'plural'), TS_BOOL],
   ['wgDifficulty', ...tsProp(() => wgState, 'difficulty'), tsOneOf('all', 'easy')],
   ['wgAnswerMode', ...tsProp(() => wgState, 'answerMode'), tsOneOf('type', 'click')],
   ['wgType', ...tsProp(() => wgState, 'type'), TS_STR],
@@ -19060,6 +19101,7 @@ function loadToolSettings() {
   mark('case-scope-btn-all', caseState.scope === 'all');
   mark('case-scope-btn-single', caseState.scope === 'single');
   mark('case-scope-btn-dual', caseState.scope === 'dual');
+  applyCaseMenu();
   ['blocks','gap','free'].forEach(x => mark('sb-help-' + x, sbState.help === x));
   ['noun', 'adj'].forEach(t => { markCaseFormButtons(t); applyCaseFormHint(t); });
   applyPronFormHint();
@@ -22471,8 +22513,9 @@ function speakTransform() {
   if (item) speak(transformState.answered ? item.answer : item.from);
 }
 function speakCaseDrill() {
-  if (caseState.mode === 'word' && caseState.wordCurrent)
-    speak(caseState.wordCurrent.answer);
+  // vor der Antwort nur Präposition und Grundform, danach der ganze Satz
+  const t = caseState.mode === 'word' && caseState.wordCurrent;
+  if (t) speak(caseState.wordAnswered ? caseWordSatz(t) : t.prep + ' ' + t.nounNom);
   else {
     const item = caseState.queue[caseState.index];
     if (item) speak(item.prep);
@@ -23841,6 +23884,19 @@ function speakRektion() {
   speak(st.mode === 'form' && st.answered ? t.answer : t.verb.v);
 }
 // Fall wählen: Tasten 1–9, 0 (vor der Antwort; „Lösung zeigen“ dort nur per Knopf)
+// Fall wählen im Kasus-Drill: Tasten 1–5
+function keyCaseChoice(e) {
+  if (!/^[1-5]$/.test(e.key) || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open') || caseState.mode !== 'abstract' || CASE_CHOICE.answered) return false;
+  const p = document.getElementById('overlay-casedrill');
+  if (!p || !p.getClientRects().length || p.classList.contains('gt-done')) return false;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
+  const btn = document.querySelector('#case-options .case-opt[aria-keyshortcuts="' + e.key + '"]');
+  if (!btn) return false;
+  e.preventDefault(); answerCaseDrill(btn.dataset.k);
+  return true;
+}
 function keyRektionChoice(e) {
   if (!/^[0-9]$/.test(e.key) || e.ctrlKey || e.metaKey || e.altKey) return false;
   if (appView !== 'grammar' || document.querySelector('.overlay.open') || rektionState.mode !== 'choose' || RK_CHOICE.answered) return false;
@@ -24209,7 +24265,75 @@ const PREP_CASES = [
   { prep: "между",       de: "zwischen",        hint: "",                  kasus: "Instr." },
   { prep: "о",           de: "über",            hint: "",                  kasus: "Präp." },
   { prep: "при",         de: "bei",             hint: "",                  kasus: "Präp." },
+  // ergänzt (10.11.)
+  { prep: "про",         de: "über",            hint: "(umgangssprachlich)", kasus: "Akk." },
+  { prep: "из-под",      de: "unter … hervor",  hint: "",                  kasus: "Gen." },
+  { prep: "позади",      de: "hinter",          hint: "",                  kasus: "Gen." },
+  { prep: "посреди",     de: "mitten in/auf",   hint: "",                  kasus: "Gen." },
+  { prep: "вне",         de: "außerhalb",       hint: "",                  kasus: "Gen." },
+  { prep: "навстречу",   de: "entgegen",        hint: "",                  kasus: "Dat." },
 ];
+// „Form bilden“: Mini-Sätze je Präposition und Fall, dazu nur Substantive, die
+// inhaltlich passen (10.11.). pl: auch im Plural sinnvoll; only: 'pl' = nur Plural;
+// pde: eigene deutsche Bedeutung für diesen Satz. Ohne Eintrag (вследствие,
+// согласно, вопреки) kommt die Präposition nur in „Fall wählen“ dran.
+const CASE_P_PERS = ['брат', 'сестра', 'друг', 'мама', 'отец', 'сын', 'дочь', 'сосед', 'врач', 'мать'];
+const PREP_SATZ = {
+  'в:Akk.':  [{ ru: 'Мы идём ___.', de: 'Wir gehen ___.', n: ['школа', 'магазин', 'парк', 'музей', 'сад', 'лес', 'город', 'церковь', 'комната', 'кухня'] }],
+  'в:Präp.': [{ ru: 'Мы были ___.', de: 'Wir waren ___.', pl: true, n: ['школа', 'магазин', 'парк', 'музей', 'сад', 'лес', 'город', 'церковь', 'комната', 'кухня'] }],
+  'на:Akk.': [{ ru: 'Я кладу ключ ___.', de: 'Ich lege den Schlüssel ___.', n: ['стол', 'стул', 'диван', 'кровать', 'кресло'] },
+              { ru: 'Мы идём ___.', de: 'Wir gehen ___.', n: ['вокзал', 'концерт', 'урок', 'обед', 'станция', 'улица', 'площадь', 'праздник'] }],
+  'на:Präp.': [{ ru: 'Книга лежит ___.', de: 'Das Buch liegt ___.', n: ['стол', 'стул', 'диван', 'кровать', 'кресло'] },
+               { ru: 'Мы встретились ___.', de: 'Wir haben uns ___ getroffen.', n: ['мост', 'улица', 'площадь', 'станция', 'вокзал', 'концерт', 'урок', 'праздник'] }],
+  'за:Akk.': [{ ru: 'Мы садимся ___.', de: 'Wir setzen uns ___.', n: ['стол'] },
+              { ru: 'Солнце зашло ___.', de: 'Die Sonne ging ___ unter.', pl: true, n: ['гора', 'лес', 'дом', 'здание'] }],
+  'за:Instr.': [{ ru: 'Машина стоит ___.', de: 'Das Auto steht ___.', pl: true, n: ['дом', 'здание', 'магазин', 'вокзал', 'школа', 'церковь', 'сад', 'парк'] }],
+  'под:Akk.': [{ ru: 'Кошка залезла ___.', de: 'Die Katze kroch ___.', n: ['стол', 'стул', 'диван', 'кровать', 'кресло', 'машина'] }],
+  'под:Instr.': [{ ru: 'Кошка спит ___.', de: 'Die Katze schläft ___.', n: ['стол', 'стул', 'диван', 'кровать', 'кресло', 'машина'] }],
+  'с:Instr.': [{ ru: 'Я гуляю ___.', de: 'Ich gehe ___ spazieren.', pl: true, n: ['брат', 'сестра', 'друг', 'мама', 'отец', 'сын', 'дочь', 'мать', 'сосед', 'ребёнок'] }],
+  'с:Gen.':  [{ ru: 'Он вернулся ___.', de: 'Er kam ___ zurück.', n: ['урок', 'концерт', 'вокзал', 'станция', 'обед', 'улица'] }],
+  'у:Gen.':  [{ ru: 'Я был ___.', de: 'Ich war ___.', pl: true, n: ['врач', 'брат', 'сестра', 'друг', 'мама', 'отец', 'сосед', 'мать', 'дочь'] }],
+  'из:Gen.': [{ ru: 'Мы вернулись ___.', de: 'Wir kamen ___ zurück.', n: ['школа', 'магазин', 'парк', 'музей', 'лес', 'сад', 'город', 'церковь'] }],
+  'от:Gen.': [{ ru: 'Я получил письмо ___.', de: 'Ich habe einen Brief ___ bekommen.', pl: true, n: CASE_P_PERS }],
+  'для:Gen.': [{ ru: 'Это подарок ___.', de: 'Das ist ein Geschenk ___.', pl: true, n: [...CASE_P_PERS, 'семья'] }],
+  'без:Gen.': [{ ru: 'Он ушёл ___.', de: 'Er ging ___ weg.', n: ['шапка', 'сумка', 'ключ', 'телефон', 'билет'] }],
+  'до:Gen.': [{ ru: 'Мы дошли ___.', de: 'Wir gingen ___.', n: ['вокзал', 'станция', 'мост', 'река', 'школа', 'магазин', 'парк', 'лес'] }],
+  'после:Gen.': [{ ru: 'Мы встретимся ___.', de: 'Wir treffen uns ___.', pl: true, n: ['урок', 'обед', 'концерт', 'праздник'] }],
+  'кроме:Gen.': [{ ru: 'Все пришли, ___.', de: 'Alle sind gekommen, ___.', pl: true, n: ['брат', 'сестра', 'друг', 'сосед', 'врач', 'отец', 'мама'] }],
+  'вместо:Gen.': [{ ru: 'Он пришёл ___.', de: 'Er kam ___.', n: ['брат', 'сестра', 'друг', 'отец', 'мама', 'сосед', 'врач'] }],
+  'вокруг:Gen.': [{ ru: 'Дети бегают ___.', de: 'Die Kinder laufen ___ herum.', n: ['дом', 'стол', 'озеро', 'здание', 'церковь'] }],
+  'вдоль:Gen.': [{ ru: 'Мы идём ___.', de: 'Wir gehen ___ entlang.', n: ['река', 'дорога', 'улица', 'озеро', 'море', 'лес'] }],
+  'напротив:Gen.': [{ ru: 'Мы живём ___.', de: 'Wir wohnen ___.', n: ['школа', 'магазин', 'парк', 'музей', 'вокзал', 'церковь', 'станция'] }],
+  'среди:Gen.': [{ ru: 'Дом стоит ___.', de: 'Das Haus steht ___.', n: ['лес', 'поле', 'сад', 'парк'] }],
+  'ради:Gen.': [{ ru: 'Он сделал это ___.', de: 'Er tat es ___.', n: ['мама', 'семья', 'сын', 'дочь', 'брат', 'сестра', 'друг', 'любовь'] }],
+  'насчёт:Gen.': [{ ru: 'Я звоню ___.', de: 'Ich rufe ___ an.', n: ['билет', 'квартира', 'урок', 'концерт', 'машина'] }],
+  'из-за:Gen.': [{ ru: 'Он опоздал ___.', de: 'Er kam ___ zu spät.', n: ['поезд', 'погода', 'брат', 'сестра', 'друг', 'сосед'] }],
+  'против:Gen.': [{ ru: 'Мы играем ___.', de: 'Wir spielen ___.', n: ['брат', 'сестра', 'друг', 'сосед', 'отец'] }],
+  'около:Gen.': [{ ru: 'Мы ждём ___.', de: 'Wir warten ___.', n: ['школа', 'магазин', 'вокзал', 'станция', 'музей', 'церковь', 'дом', 'мост', 'парк'] }],
+  'мимо:Gen.': [{ ru: 'Мы прошли ___.', de: 'Wir gingen ___ vorbei.', n: ['школа', 'магазин', 'музей', 'вокзал', 'церковь', 'парк', 'дом', 'здание', 'станция'] }],
+  'возле:Gen.': [{ ru: 'Он живёт ___.', de: 'Er wohnt ___.', n: ['школа', 'парк', 'вокзал', 'станция', 'озеро', 'река', 'лес', 'море'] }],
+  'поперёк:Gen.': [{ ru: 'Дерево лежит ___.', de: 'Ein Baum liegt ___.', n: ['дорога', 'улица', 'река'] }],
+  'внутри:Gen.': [{ ru: '___ было тепло.', de: '___ war es warm.', n: ['здание', 'дом', 'машина', 'комната', 'квартира', 'церковь', 'музей'] }],
+  'к:Dat.': [{ ru: 'Я иду ___.', de: 'Ich gehe ___.', pl: true, n: ['врач', 'брат', 'сестра', 'друг', 'мама', 'отец', 'сосед', 'мать', 'дочь'] }],
+  'по:Dat.': [{ ru: 'Мы гуляем ___.', de: 'Wir spazieren ___.', pl: true, n: ['парк', 'улица', 'город', 'лес', 'сад', 'поле', 'площадь', 'дорога', 'мост'] }],
+  'благодаря:Dat.': [{ ru: 'Я сдал экзамен ___.', de: 'Ich habe die Prüfung ___ bestanden.', n: ['брат', 'сестра', 'друг', 'мама', 'отец', 'сосед'] }],
+  'через:Akk.': [{ ru: 'Мы идём ___.', de: 'Wir gehen ___.', n: ['парк', 'лес', 'улица', 'мост', 'площадь', 'поле', 'дорога', 'сад', 'река'] },
+                 { ru: 'Я вернусь ___.', de: 'Ich komme ___ zurück.', pde: 'in', n: ['час', 'неделя', 'год', 'день'] }],
+  'сквозь:Akk.': [{ ru: 'Свет проходит ___.', de: 'Das Licht geht ___ hindurch.', n: ['окно', 'вода', 'лес'] }],
+  'перед:Instr.': [{ ru: 'Мы встретились ___.', de: 'Wir haben uns ___ getroffen.', n: ['школа', 'магазин', 'музей', 'вокзал', 'церковь', 'дом', 'здание', 'станция'] },
+                   { ru: 'Я позвоню ___.', de: 'Ich rufe ___ an.', n: ['урок', 'обед', 'концерт'] }],
+  'над:Instr.': [{ ru: 'Лампа висит ___.', de: 'Die Lampe hängt ___.', n: ['стол', 'диван', 'кровать', 'кресло', 'дверь', 'зеркало', 'окно'] }],
+  'между:Instr.': [{ ru: 'Дети играют ___.', de: 'Die Kinder spielen ___.', only: 'pl', n: ['дом', 'машина', 'здание'] }],
+  'о:Präp.': [{ ru: 'Мы говорим ___.', de: 'Wir sprechen ___.', n: ['брат', 'сестра', 'друг', 'мама', 'отец', 'погода', 'город', 'школа', 'урок', 'концерт', 'ответ', 'озеро'] }],
+  'при:Präp.': [{ ru: 'Не говори это ___.', de: 'Sag das nicht ___.', pde: 'in Gegenwart von', pl: true, n: ['мама', 'отец', 'ребёнок', 'брат', 'сестра', 'сосед', 'мать', 'дочь'] }],
+  'про:Akk.': [{ ru: 'Расскажи ___!', de: 'Erzähl ___!', n: ['брат', 'сестра', 'друг', 'город', 'школа', 'концерт', 'праздник', 'семья'] }],
+  'из-под:Gen.': [{ ru: 'Кошка вылезла ___.', de: 'Die Katze kroch ___ hervor.', n: ['стол', 'стул', 'диван', 'кровать', 'кресло', 'машина'] }],
+  'позади:Gen.': [{ ru: 'Сад находится ___.', de: 'Der Garten liegt ___.', n: ['дом', 'здание', 'школа', 'церковь', 'магазин'] }],
+  'посреди:Gen.': [{ ru: 'Машина остановилась ___.', de: 'Das Auto hielt ___ an.', n: ['дорога', 'улица', 'мост', 'площадь', 'поле'] }],
+  'вне:Gen.': [{ ru: 'Он работает ___.', de: 'Er arbeitet ___.', n: ['дом', 'город'] }],
+  'навстречу:Dat.': [{ ru: 'Мы пошли ___.', de: 'Wir gingen ___ entgegen.', n: ['брат', 'сестра', 'друг', 'мама', 'отец', 'сосед'] }],
+};
+function casePrepId(p) { return p.prep + ':' + p.kasus; }
 // Zustand: Kasus-Drill
 const caseState = {
   scope: 'all',
@@ -24220,9 +24344,13 @@ const caseState = {
   correct: 0,
   answered: 0,
   fehler: [],
+  kasus: 'all',      // nur Präpositionen mit diesem Fall (10.11.)
+  plural: false,     // „Form bilden“ auch im Plural
   wordCurrent: null,
-  wordDone: 0,
+  wordQueue: [],
+  wordIndex: 0,
   wordCorrect: 0,
+  wordFehler: [],
   wordAnswered: false,
 };
 function toggleCaseHint() {
@@ -24247,7 +24375,8 @@ function setCaseMode(mode) {
   document.getElementById('case-input-row').style.display = abstractUI ? 'none' : '';
   document.getElementById('case-input-actions').style.display = abstractUI ? 'none' : '';
   document.getElementById('case-choice-actions').style.display = abstractUI ? '' : 'none';
-  document.getElementById('case-hint-toggle').style.display = abstractUI ? 'none' : '';
+  ['case-hint-toggle', 'case-plural-toggle', 'case-kasus-group'].forEach(id => { document.getElementById(id).style.display = abstractUI ? 'none' : ''; });
+  applyCaseMenu();
   restartCaseDrill();
 }
 
@@ -24270,6 +24399,22 @@ function openCaseDrill() {
   showGrammarPanel('casedrill');
 }
 
+// Menü an den Zustand angleichen (Fall-Auswahl, Plural)
+function applyCaseMenu() {
+  markCaseSwitcher(document.getElementById('case-kasus-chips'), caseState.kasus);
+  const pl = document.getElementById('case-plural-toggle');
+  if (pl) { pl.classList.toggle('gt-on', caseState.plural); pl.setAttribute('aria-pressed', caseState.plural ? 'true' : 'false'); }
+}
+function setCaseKasus(k) {
+  caseState.kasus = k;
+  saveToolSettings(); applyCaseMenu();
+  restartCaseDrill();
+}
+function toggleCasePlural() {
+  caseState.plural = !caseState.plural;
+  saveToolSettings(); applyCaseMenu();
+  if (caseState.mode === 'word') restartCaseDrill();
+}
 function setCaseScope(scope) {
   caseState.scope = scope;
   saveToolSettings();
@@ -24281,9 +24426,11 @@ function setCaseScope(scope) {
 
 // Liefert die aktive Präpositionsmenge je nach Scope.
 function caseScopePool() {
-  if (caseState.scope === 'dual') return PREP_CASES.filter(p => p.dual);
-  if (caseState.scope === 'single') return PREP_CASES.filter(p => !p.dual);
-  return PREP_CASES;
+  let pool = PREP_CASES;
+  if (caseState.scope === 'dual') pool = pool.filter(p => p.dual);
+  if (caseState.scope === 'single') pool = pool.filter(p => !p.dual);
+  if (caseState.kasus !== 'all' && caseState.mode === 'word') pool = pool.filter(p => p.kasus === caseState.kasus);
+  return pool;
 }
 
 function restartCaseDrill() {
@@ -24322,8 +24469,8 @@ function renderCaseQuestion() {
   const item = caseState.queue[caseState.index];
   qEl.innerHTML = '<span class="case-prep" lang="ru">' + item.prep + '</span>' + item.de +
     (item.hint ? '<span class="case-hint">' + item.hint + '</span>' : '');
-  optEl.innerHTML = CASE_LABELS.map(k =>
-    `<button class="case-opt" type="button" data-k="${k}" onclick="answerCaseDrill('${k}')">${k}</button>`).join('');
+  optEl.innerHTML = CASE_LABELS.map((k, i) =>
+    `<button class="case-opt" type="button" data-k="${k}" aria-keyshortcuts="${i + 1}" onclick="answerCaseDrill('${k}')">${k}<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">${i + 1}</kbd></button>`).join('');
   document.getElementById('case-score').textContent =
     (caseState.index + 1) + ' / ' + caseState.queue.length + ' · ' + caseState.correct + ' richtig';
 }
@@ -24361,94 +24508,241 @@ function caseRuleExplanation(item) {
   return txt;
 }
 
+// ── Kasus-Drill: Übersicht aller Präpositionen nach Fall (eigenes Fenster) ──
+function prepListExample(p) {
+  const satz = (PREP_SATZ[casePrepId(p)] || [])[0];
+  if (!satz) return null;
+  return caseWordTask(p, satz, satz.n[0], satz.only === 'pl' ? 'pl' : 'sg');
+}
+function openPrepList() { renderPrepList(); document.getElementById('overlay-preplist').classList.add('open'); }
+function renderPrepList() {
+  const body = document.getElementById('prep-list-body'); if (!body) return;
+  const srs = loadGrammarSrs()['case:word'] || {}, srsA = loadGrammarSrs().case || {};
+  body.innerHTML = CASE_LABELS.map(k => {
+    const ps = PREP_CASES.filter(p => p.kasus === k); if (!ps.length) return '';
+    return '<section class="rkl-group"><div class="rkl-head"><span class="rkl-title">' + CASE_KASUS_NAME[k] + '</span><span class="rkl-n">' + ps.length + '</span>'
+      + '<button class="tool-btn rkl-ueben" type="button" onclick="practicePrepGroup(\'' + k + '\')" title="Runde „Form bilden“ nur mit diesem Fall"><i class="ti ti-player-play"></i> üben</button></div>'
+      + ps.map(p => {
+        const id = casePrepId(p), t = prepListExample(p), ok = srsDone(srs[id]) || srsDone(srsA[id]);
+        const satz = t ? caseWordSatz(t) : '';
+        return '<div class="ppl-row"><span class="ppl-p" lang="ru">' + p.prep + (p.dual ? '<span class="ppl-wechsel" title="Wechselpräposition: der Fall hängt von der Bedeutung ab">Wechsel</span>' : '') + '</span>'
+          + '<span class="ppl-de">' + htmlEsc(p.de) + (p.hint ? ' · ' + htmlEsc(p.hint) : '') + '</span>'
+          + '<span class="ppl-bsp" lang="ru">' + (t ? caseWordSatz(t, true) : '<span class="ppl-de">nur in „Fall wählen“</span>') + '</span>'
+          + (t ? '<button aria-label="Beispiel anhören" class="tool-btn gt-icon-btn" onclick="speak(' + htmlEsc(JSON.stringify(satz)) + ')" title="Anhören" type="button"><i class="ti ti-volume"></i></button>' : '<span></span>')
+          + '<span class="rkl-st' + (ok ? ' ok' : '') + '" title="' + (ok ? 'schon richtig' : 'noch nicht richtig') + '">' + (ok ? '<i class="ti ti-check"></i>' : '') + '</span></div>';
+      }).join('') + '</section>';
+  }).join('');
+}
+function practicePrepGroup(k) {
+  closeOverlay('overlay-preplist');
+  caseState.kasus = k; caseState.scope = 'all';
+  saveToolSettings();
+  ['all', 'single', 'dual'].forEach(x => document.getElementById('case-scope-btn-' + x).classList.toggle('active', x === 'all'));
+  setCaseMode('word');
+}
+
 // ── Kasus-Drill: Wort-Modus (Präposition + Substantiv → Form bilden) ──
 // Kombiniert eine Präposition mit einem zufälligen Substantiv und verlangt die
 // flektierte Gruppe (у стола, в школе). Die Form kommt aus nounDeclensionData.
 
-function caseWordNouns() {
-  return Object.keys(nounDeclensionData).filter(n => {
-    const sg = nounDeclensionData[n].sg;
-    return sg && sg['Nom.'] && sg['Nom.'] !== '—';
-  });
+const CASE_WORD_ROUND = 15;
+const CASE_KASUS_NAME = { 'Nom.': 'Nominativ', 'Gen.': 'Genitiv', 'Dat.': 'Dativ', 'Akk.': 'Akkusativ', 'Instr.': 'Instrumental', 'Präp.': 'Präpositiv' };
+// Präpositionen, die es auch in „Form bilden“ gibt (mit Satz und passenden Substantiven)
+function caseWordPool() { return caseScopePool().filter(p => PREP_SATZ[casePrepId(p)]); }
+function caseWordCount() { return PREP_CASES.filter(p => PREP_SATZ[casePrepId(p)]).length; }
+
+// Baut eine Aufgabe: Präposition + passendes Substantiv im verlangten Fall.
+// sonder: Besonderheiten der Form (об/во/со, Ortsform auf -у, belebter Akkusativ)
+function caseWordTask(item, satz, noun, number) {
+  const nd = nounDeclensionData[noun], kasus = item.kasus, forms = nd[number];
+  let nounForm = forms[kasus], lok = false;
+  if (kasus === 'Präp.' && number === 'sg') {
+    const f = applyLocative(item.prep, noun, 'sg', [nounForm])[0];
+    lok = f !== nounForm; nounForm = f;
+  }
+  const prepForm = wgPrepForm(item.prep, nounForm);
+  const sonder = [];
+  if (prepForm !== item.prep) sonder.push('prep');
+  if (lok) sonder.push('lok');
+  if (kasus === 'Akk.' && forms['Akk.'] !== forms['Nom.'] && forms['Akk.'] === forms['Gen.'] && isAnimate(nd, noun)) sonder.push('belebt');
+  return {
+    prep: item.prep, de: satz.pde || item.de, hint: item.hint, kasus, dual: item.dual, id: casePrepId(item),
+    noun, nounNom: forms['Nom.'], nounDe: nd.de, number, nounForm, prepForm, sonder,
+    answer: prepForm + ' ' + nounForm, satzRu: satz.ru, satzDe: satz.de,
+  };
+}
+// alle sinnvollen Kombinationen einer Präposition (je Satz und Substantiv)
+function caseWordOptions(item, plural) {
+  const out = [];
+  (PREP_SATZ[casePrepId(item)] || []).forEach(satz => satz.n.forEach(noun => {
+    if (satz.only !== 'pl' && nounHas(noun, 'sg')) out.push({ satz, noun, number: 'sg' });
+    if ((satz.only === 'pl' || (plural && satz.pl)) && nounHas(noun, 'pl')) out.push({ satz, noun, number: 'pl' });
+  }));
+  return out;
+}
+function caseWordPick(item, preferSonder, avoid) {
+  let opts = caseWordOptions(item, caseState.plural);
+  // Plural nicht öfter als etwa jedes dritte Mal
+  if (caseState.plural && opts.some(o => o.number === 'sg') && Math.random() < 0.65) opts = opts.filter(o => o.number === 'sg') ;
+  let tasks = opts.map(o => caseWordTask(item, o.satz, o.noun, o.number));
+  const ohne = tasks.filter(t => !avoid || t.noun !== avoid); if (ohne.length) tasks = ohne;
+  const sonder = tasks.filter(t => t.sonder.length);
+  if (preferSonder && sonder.length) tasks = sonder;
+  return tasks[Math.floor(Math.random() * tasks.length)];
 }
 
 function restartCaseWord() {
-  caseState.wordDone = 0; caseState.wordCorrect = 0;
-  nextCaseWord();
+  const pool = caseWordPool();
+  const queue = [];
+  if (pool.length) {
+    let reihe = [];
+    while (queue.length < CASE_WORD_ROUND) {
+      if (!reihe.length) reihe = shuffleInPlace(pool.slice());
+      const item = reihe.pop(), vorher = queue[queue.length - 1];
+      // Sonderfälle gezielt einstreuen: die ersten fünf bevorzugt, danach gemischt
+      queue.push(caseWordPick(item, queue.length < 5, vorher && vorher.noun));
+    }
+    // mindestens vier Sonderfälle (об, со, Ortsform, belebter Akkusativ), soweit es sie hier gibt
+    const sonder = shuffleInPlace(pool.flatMap(item => caseWordOptions(item, caseState.plural)
+      .map(o => caseWordTask(item, o.satz, o.noun, o.number)).filter(t => t.sonder.length)));
+    const schon = t => queue.some(x => x.id === t.id && x.noun === t.noun && x.number === t.number);
+    let n = queue.filter(t => t.sonder.length).length;
+    for (const t of sonder) {
+      if (n >= 4) break;
+      if (schon(t)) continue;
+      const frei = queue.map((x, i) => x.sonder.length ? -1 : i).filter(i => i >= 0);
+      if (!frei.length) break;
+      queue[frei[Math.floor(Math.random() * frei.length)]] = t; n++;
+    }
+  }
+  startCaseWordRound(shuffleInPlace(queue));
 }
-
+function startCaseWordRound(queue) {
+  caseState.wordQueue = queue;
+  caseState.wordIndex = 0;
+  caseState.wordCorrect = 0;
+  caseState.wordFehler = [];
+  nextCaseWordShow();
+}
+function repeatCaseWordErrors() { if (caseState.wordFehler.length) startCaseWordRound(shuffleInPlace(caseState.wordFehler.slice())); }
+function caseWordScore() {
+  const q = caseState.wordQueue || [];
+  document.getElementById('case-score').textContent = q.length && caseState.wordIndex < q.length
+    ? (caseState.wordIndex + 1) + ' / ' + q.length + ' · ' + caseState.wordCorrect + ' richtig' : '';
+}
+// Satz mit eingesetzter Lösung (Großschreibung am Satzanfang)
+function caseWordSatz(t, html) {
+  const a = html ? '<b>' + htmlEsc(t.answer) + '</b>' : t.answer;
+  let s = t.satzRu.replace('___', a);
+  if (t.satzRu.startsWith('___')) s = html ? '<b>' + htmlEsc(t.answer.charAt(0).toUpperCase() + t.answer.slice(1)) + '</b>' + t.satzRu.slice(3)
+    : t.answer.charAt(0).toUpperCase() + t.answer.slice(1) + t.satzRu.slice(3);
+  return s;
+}
 function nextCaseWord() {
+  if (caseState.wordCurrent) caseState.wordIndex++;   // auch beim Überspringen
+  nextCaseWordShow();
+}
+function nextCaseWordShow() {
   caseState.wordLastInput = '';
-  const pool = caseScopePool();
-  const item = pool[Math.floor(Math.random() * pool.length)];
-  const nouns = caseWordNouns();
-  const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  const nd = nounDeclensionData[noun];
-  const kasus = item.kasus;
-  // Akkusativ belebter Maskulina wie der Genitiv, Ortsform nach в/на, о→об usw.
-  let nounForm = nd.sg[kasus];
-  if (kasus === 'Akk.' && isAnimate(nd, noun) && nounGender(noun, nd) === 'm') nounForm = nd.sg['Gen.'];
-  if (kasus === 'Präp.') nounForm = applyLocative(item.prep, noun, 'sg', [nounForm])[0];
-  const prepForm = wgPrepForm(item.prep, nounForm);
-  caseState.wordCurrent = {
-    prep: item.prep, de: item.de, hint: item.hint, kasus, noun, dual: item.dual,
-    answer: prepForm + ' ' + nounForm,
-    nounDe: nd.de,
-  };
   caseState.wordAnswered = false;
+  const q = caseState.wordQueue || [];
   const input = document.getElementById('case-input');
   input.value = ''; input.className = 'conj-input'; input.disabled = false;
   clearPartialFeedback(input);
-  const hintText = item.hint ? item.hint + ' → ' + kasus : '→ ' + kasus;
+  document.getElementById('case-result').textContent = '';
+  const fertig = caseState.wordIndex >= q.length;
+  gtSetDone('overlay-casedrill', fertig);
+  if (fertig) {
+    caseState.wordCurrent = null;
+    document.getElementById('case-question').innerHTML = q.length
+      ? gtRoundEndHtml(caseState.wordCorrect, q.length, caseState.wordFehler.map(t => ({ satz: '<span lang="ru">' + caseWordSatz(t, true) + '</span>' })), 'caseword', 'repeatCaseWordErrors()', 'restartCaseWord()')
+      : '<span class="case-hint">Für diese Auswahl gibt es keine Aufgaben zum Bilden.</span>';
+    caseWordScore();
+    return;
+  }
+  const t = caseState.wordCurrent = q[caseState.wordIndex];
+  const pl = t.number === 'pl';
+  const hintText = (t.hint ? t.hint + ' → ' : '→ ') + t.kasus + (pl ? ' Plural' : '');
   const hint = '<span class="case-hint" id="case-word-hint"'
     + (caseState.hintVisible ? '' : ' style="visibility:hidden"') + '>' + hintText + '</span>';
   document.getElementById('case-question').innerHTML =
-    '<span class="case-prep" lang="ru">' + item.prep + ' + ' + noun + '</span>' + item.de + ' + ' + caseState.wordCurrent.nounDe + hint;
-  document.getElementById('case-result').textContent = '';
-  document.getElementById('case-score').textContent =
-    caseState.wordDone ? caseState.wordCorrect + ' von ' + caseState.wordDone + ' richtig' : '';
+    '<span class="case-satz" lang="ru">' + htmlEsc(t.satzRu) + '</span>'
+    + '<span class="case-satz-de">' + htmlEsc(t.satzDe) + '</span>'
+    + '<span class="case-prep" lang="ru">' + t.prep + ' + ' + t.nounNom + (pl ? ' <span class="case-pl">Pl.</span>' : '') + '</span>'
+    + t.de + ' + ' + htmlEsc(t.nounDe) + hint;
+  caseWordScore();
 }
 
+// Erklärung nach der Antwort: Regel, Endung, Besonderheit und der ganze Satz
+function caseWordErklaerung(t) {
+  const besonders = {
+    prep: t.prep === 'о' ? 'vor Vokal wird о zu <b>об</b>' : t.prep + ' wird vor der Konsonantengruppe zu <b>' + t.prepForm + '</b>',
+    lok: 'nach ' + t.prep + ' steht hier die Ortsform auf <b>-у</b> (sonst -е)',
+    belebt: 'belebt: Akkusativ wie der Genitiv',
+  };
+  return '<span class="case-erkl">' + caseRuleExplanation(t) + ' · <span lang="ru">' + t.nounNom + ' → ' + t.nounForm + '</span> ('
+    + CASE_KASUS_NAME[t.kasus] + ' ' + (t.number === 'pl' ? 'Plural' : 'Singular') + ')'
+    + t.sonder.map(k => ' · ' + besonders[k]).join('') + '</span>'
+    + '<span class="case-satz-voll"><span lang="ru">' + caseWordSatz(t, true) + '</span>'
+    + ' <button aria-label="Satz anhören" class="tool-btn gt-icon-btn" onclick="speak(caseWordSatz(caseState.wordCurrent))" title="Satz anhören" type="button"><i class="ti ti-volume"></i></button></span>';
+}
+// Tipp bei typischen Fehlern: Präposition nicht angepasst, Ortsform, belebter Akkusativ, falscher Fall/Zahl
+function caseWordTipp(val, t) {
+  const norm = x => (x || '').toLowerCase().replace(/ё/g, 'е').trim();
+  const teile = norm(val).split(' '), vp = teile[0], rest = teile.slice(1).join(' ');
+  const nd = nounDeclensionData[t.noun], forms = nd[t.number];
+  if (rest === norm(t.nounForm) && vp !== norm(t.prepForm))
+    return vp === norm(t.prep) && t.prepForm !== t.prep
+      ? (t.prep === 'о' ? 'Vor einem Vokal wird о zu об: ' : 'Vor dieser Konsonantengruppe heißt es ') + t.prepForm + ' ' + t.nounForm + '.'
+      : 'Die Form stimmt, nur die Präposition heißt ' + t.prepForm + '.';
+  const ks = Object.keys(forms).filter(c => c !== t.kasus && norm(forms[c]) === rest && norm(forms[c]) !== norm(t.nounForm)), k = ks[0];
+  if (t.sonder.includes('lok') && rest === norm(forms['Präp.'])) return 'Nach ' + t.prep + ' hat ' + t.nounNom + ' die Ortsform auf -у: ' + t.nounForm + '.';
+  if (k === 'Nom.' && t.sonder.includes('belebt')) return t.nounNom + ' ist belebt – der Akkusativ ist hier gleich dem Genitiv: ' + t.nounForm + '.';
+  if (k) return '„' + forms[k] + '“ ist der ' + ks.map(c => CASE_KASUS_NAME[c]).join(' oder ') + ' – nach ' + t.prep + ' steht der ' + CASE_KASUS_NAME[t.kasus] + '.';
+  const andere = nd[t.number === 'pl' ? 'sg' : 'pl'];
+  if (andere && norm(andere[t.kasus]) === rest) return 'Der Fall stimmt, gefragt ist aber der ' + (t.number === 'pl' ? 'Plural' : 'Singular') + '.';
+  return '';
+}
+
+function caseWordBewerten(t, ok) {
+  progressMark('case:word', t.id, ok);
+  if (ok) caseState.wordCorrect++; else caseState.wordFehler.push(t);
+  caseWordScore();
+}
 function checkCaseWord() {
-  if (!caseState.wordCurrent) return;
+  const t = caseState.wordCurrent;
+  if (!t) return;
   const input = document.getElementById('case-input');
   const val = input.value.trim().replace(/\s+/g, ' ');
-  if (caseState.wordAnswered && val === caseState.wordLastInput) { nextCaseWord(); return; }
+  if (caseState.wordAnswered && (caseState.wordLastOk || val === caseState.wordLastInput)) { nextCaseWord(); return; }
   if (!val) return;
   caseState.wordLastInput = val;
-  const res = gramMatch(val, caseState.wordCurrent.answer);
+  const res = gramMatch(val, t.answer);
   const ok = res.ok;
   input.className = 'conj-input ' + (ok ? 'correct' : 'wrong');
-  if (!caseState.wordAnswered) {
-    progressMark('case:word', caseState.wordCurrent.prep + ':' + caseState.wordCurrent.kasus, ok);
-    caseState.wordDone++;
-    if (ok) caseState.wordCorrect++;
-  }
-  caseState.wordAnswered = true;
-  document.getElementById('case-result').innerHTML = ok
-    ? 'Richtig' + (res.typo ? gramTypoNote(caseState.wordCurrent.answer) : '')
-    : 'Richtig wäre: ' + partialFeedbackHtml(val, caseState.wordCurrent.answer) +
-      ' <span style="opacity:0.8">— ' + caseRuleExplanation(caseState.wordCurrent) + '</span>';
-  document.getElementById('case-score').textContent = caseState.wordCorrect + ' von ' + caseState.wordDone + ' richtig';
+  if (!caseState.wordAnswered) caseWordBewerten(t, ok);
+  caseState.wordAnswered = true; caseState.wordLastOk = ok;
+  const tipp = ok ? '' : caseWordTipp(val, t);
+  document.getElementById('case-result').innerHTML = (ok
+    ? 'Richtig' + (res.typo ? gramTypoNote(t.answer) : '')
+    : 'Richtig wäre: ' + partialFeedbackHtml(val, t.answer) + (tipp ? '<span class="case-tipp">' + htmlEsc(tipp) + '</span>' : ''))
+    + caseWordErklaerung(t);
 }
 
 function revealCaseWord() {
-  if (!caseState.wordCurrent) return;
+  const t = caseState.wordCurrent;
+  if (!t) return;
   const input = document.getElementById('case-input');
-  input.value = caseState.wordCurrent.answer;
+  input.value = t.answer;
   input.className = 'conj-input revealed';
-  const neu = !caseState.wordAnswered, w = caseState.wordCurrent, id = w.prep + ':' + w.kasus;
-  caseState.wordAnswered = true;
-  caseState.wordLastInput = w.answer;
+  const neu = !caseState.wordAnswered;
+  caseState.wordAnswered = true; caseState.wordLastOk = false;
+  caseState.wordLastInput = t.answer;
   if (!neu) return;
-  progressSeen('case:word', id);
+  progressSeen('case:word', t.id);
   const res = document.getElementById('case-result');
-  res.innerHTML = '<span class="case-hint">' + caseRuleExplanation(w) + '</span>';
-  gtRateOffer(res, ok => {
-    progressMark('case:word', id, ok);
-    caseState.wordDone++; if (ok) caseState.wordCorrect++;
-    document.getElementById('case-score').textContent = caseState.wordCorrect + ' von ' + caseState.wordDone + ' richtig';
-  }, nextCaseWord);
+  res.innerHTML = caseWordErklaerung(t);
+  gtRateOffer(res, ok => caseWordBewerten(t, ok), nextCaseWord);
 }
 
 // ── Bewegungsverben (determiniert / indeterminiert) ─────────────
