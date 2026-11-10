@@ -15,7 +15,8 @@ const P = [['рассказывать', 'рассказать'], ['сообща�
     neu.forEach(([kl, ru, de, lv]) => { const w = kl.find(x => x.ru === ru), s = w && getWordSentence(w);
       if (!w || w.de.join('|') !== de || wordLevel(w) !== lv || w.tr !== ru.split(' / ').map(trLetters).join(' / ')) out.fehler.push(ru + ' Karte');
       if (!s || sentenceLevel(s.ru, ru.split(' / ')) !== lv) out.fehler.push(ru + ' Satz ' + (s && s.ru)); });
-    out.hinten = [kv[kv.length - 1].ru, wg[wg.length - 2].ru, wg[wg.length - 1].ru];
+    // seit 10.11. nach Stufe sortiert: die neuen Karten stehen in ihrer Kategorie
+    out.hinten = [kv.some(w => w.ru === 'передавать / передать') && 'передавать / передать', wg.some(w => w.ru === 'беспокоиться') && 'беспокоиться', wg.some(w => w.ru === 'нервничать') && 'нервничать'];
     P.forEach(([i, pf]) => { const n = i + ' / ' + pf, w = allVocabWords().find(x => x.ru === n);
       if (!w || !MERGED_CARDS[n] || !w.ruAlt.includes(pf) || w.tr !== trLetters(i) + ' / ' + trLetters(pf)) out.fehler.push(n); });
     out.n = [kv.length, wg.length];
@@ -23,7 +24,7 @@ const P = [['рассказывать', 'рассказать'], ['сообща�
   }, P);
   ok('neue Karten mit Übersetzung, Stufe und Beispielsatz', r.fehler.filter(x => !x.includes(' / ') || /Karte|Satz/.test(x)).length === 0, r.fehler.join(' | '));
   ok('zehn vollendete Verben auf ihren Karten (MERGED_CARDS, ruAlt, Umschrift)', r.fehler.length === 0, r.fehler.join(' | '));
-  ok('neue Karten hinten angehängt', r.hinten.join() === 'передавать / передать,беспокоиться,нервничать', r.hinten.join());
+  ok('neue Karten in ihrer Kategorie (nach Stufe sortiert)', r.hinten.join() === 'передавать / передать,беспокоиться,нервничать', r.hinten.join());
   ok('Kommunikationsverben 30, Wahrnehmung & Gefühle 30', r.n.join() === '30,30', r.n.join());
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));

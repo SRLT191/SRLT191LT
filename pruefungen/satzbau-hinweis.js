@@ -1,5 +1,5 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Satzbau (10.11.): Kasus-Hinweis („Hinweis: Objekt im Akk“) über den Schalter „Kasus-Hinweis“ ausblendbar, bleibt gemerkt
+// Satzbau (10.11.): Kasus-Hinweis („Hinweis: Objekt im Akk“) über den Schalter „Hilfe“ ausblendbar, bleibt gemerkt
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const R = []; const errs = [];
@@ -10,9 +10,9 @@ const { chromium } = require('playwright');
     for (let i = 0; i < 40 && !wgState.current.hint; i++) nextWordgroup(); updateGtSettingsSummary();
     return { hint: wgState.current.hint, text: [...document.querySelectorAll('.grammar-panel.open .case-hint')].map(x => x.textContent).join('|'), btn: document.getElementById('sb-hint-toggle').getAttribute('aria-pressed'), sum: document.querySelector('.grammar-panel.open .gt-settings-sum').textContent }; });
   const a = await zeige();
-  ok('Standard: Hinweis sichtbar, Schalter an', !!a.hint && a.text.includes('Hinweis: ' + a.hint) && a.btn === 'true' && /Kasus-Hinweis/.test(a.sum), JSON.stringify(a));
+  ok('Standard: Hinweis sichtbar, Schalter an', !!a.hint && a.text.includes('Hinweis: ' + a.hint) && a.btn === 'true' && /Hilfe an/.test(a.sum), JSON.stringify(a));
   const c = await p.evaluate(() => { toggleSbHint(); return { text: [...document.querySelectorAll('.grammar-panel.open .case-hint')].map(x => x.textContent).join('|'), btn: document.getElementById('sb-hint-toggle').getAttribute('aria-pressed'), sum: document.querySelector('.grammar-panel.open .gt-settings-sum').textContent }; });
-  ok('Schalter aus: Hinweis verschwindet sofort, Kurzfassung ohne „Kasus-Hinweis“', !/Hinweis:/.test(c.text) && c.btn === 'false' && !/Kasus-Hinweis/.test(c.sum), JSON.stringify(c));
+  ok('Schalter aus: Hinweis verschwindet sofort, Kurzfassung „Hilfe aus“', !/Hinweis:/.test(c.text) && c.btn === 'false' && /Hilfe aus/.test(c.sum), JSON.stringify(c));
   await p.reload(); await p.waitForTimeout(400);
   const d = await zeige();
   ok('bleibt nach dem Neuladen aus', d.btn === 'false' && !/Hinweis:/.test(d.text), JSON.stringify(d));

@@ -34,7 +34,8 @@ const { chromium } = require('playwright');
     out.s4 = (SENTENCE_PAIRS.find(p => p.ru === 'Сегодня непогода.') || {}).de;
     // 6 undefinierte Variablen
     const css = [...document.styleSheets].map(sh => { try { return [...sh.cssRules].map(r => r.cssText).join('\n'); } catch (e) { return ''; } }).join('\n');
-    const used = new Set((css.match(/var\((--[\w-]+)\)/g) || []).map(x => x.slice(4, -1)));
+    // auch Variablen mit Ersatzwert (var(--x, #fff)) – der Ersatz verdeckt sonst eine fehlende Definition
+    const used = new Set((css.match(/var\(--[\w-]+/g) || []).map(x => x.slice(4)));
     const st = getComputedStyle(document.documentElement);
     out.s6 = [...used].filter(v => !['--gt-p', '--p', '--sidebar-w', '--sub-p'].includes(v) && !st.getPropertyValue(v).trim());
     return out;

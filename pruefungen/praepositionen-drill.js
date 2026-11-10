@@ -1,7 +1,7 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
 // Präpositionen · Kasus-Drill (10.11.): Mini-Sätze mit passenden Substantiven, Sonderfälle,
 // Runden mit Fehlerliste, Erklärung + Satz, Tipps, Tasten 1–5, Übersicht im eigenen Fenster,
-// Bereich/Fall/Hinweis/Plural im ⋯-Menü; Erinnerung: вследствие/согласно/вопреки, sobald passende Substantive da sind
+// Bereich/Fall/Hilfe/Plural in den Einstellungen; Erinnerung: вследствие/согласно/вопреки, sobald passende Substantive da sind
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const R = []; const errs = [];
@@ -45,8 +45,8 @@ const { chromium } = require('playwright');
     // Hinweis
     toggleCaseHint(); out.hinweisAus = document.getElementById('case-word-hint').style.visibility === 'hidden' && JSON.parse(localStorage.getItem(Object.keys(localStorage).find(k => /tool/i.test(k)) || '{}') || '{}') !== null; toggleCaseHint();
     // Menü
-    out.menue = ['case-scope-btn-all', 'case-kasus-chips', 'case-hint-toggle', 'case-plural-toggle'].every(id => document.getElementById(id) && document.getElementById(id).closest('.gt-more-menu'));
-    out.keineEinst = !document.querySelector('#overlay-casedrill .gt-settings');
+    out.menue = ['case-scope-btn-all', 'case-kasus-chips', 'case-hint-toggle', 'case-plural-toggle'].every(id => document.getElementById(id) && document.getElementById(id).closest('.gt-settings-body'));
+    out.keineEinst = !document.querySelector('#overlay-casedrill .gt-more-menu #case-hint-toggle') && /Plural/.test(document.querySelector('#overlay-casedrill .gt-settings-sum').textContent) === caseState.plural;
     // Fall wählen: Tasten
     setCaseMode('abstract'); out.menueAbstrakt = document.getElementById('case-kasus-group').style.display === 'none';
     out.kbd = document.querySelectorAll('#case-options .case-opt kbd').length;
@@ -78,7 +78,7 @@ const { chromium } = require('playwright');
   ok('Rundenende mit Fehlerliste', r.ende.done && r.ende.fehler === 2 && r.ende.text, r.ende); ok('Fehler wiederholen', r.wiederholen);
   ok('Fall-Filter', r.dat && r.datChip); ok('Plural', r.plural, r.plTask);
   ok('Hinweis versteckbar', r.hinweisAus);
-  ok('Einstellungen im ⋯-Menü', r.menue && r.keineEinst); ok('Fall-Filter nur bei Form bilden', r.menueAbstrakt);
+  ok('Einstellungen in der Leiste „Einstellungen“ (11.11.: einheitlich)', r.menue && r.keineEinst); ok('Fall-Filter nur bei Form bilden', r.menueAbstrakt);
   ok('Tasten 1–5', r.kbd === 5 && r.taste, [r.kbd, r.taste]);
   ok('Übersicht im Fenster', r.liste.offen && r.liste.gruppen.join() === 'Genitiv,Dativ,Akkusativ,Instrumental,Präpositiv' && r.liste.zeilen === r.liste.n && r.liste.wechsel === 10 && r.liste.laut === r.liste.n - 3, r.liste);
   ok('Gruppe üben', r.gruppeUeben.zu && r.gruppeUeben.mode === 'word' && r.gruppeUeben.alle, r.gruppeUeben);

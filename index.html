@@ -60,6 +60,7 @@
     --c-text-secondary: #555;
     --c-text-tertiary: #6a6a66;
     --c-warm: #b06a10;
+    --c-warn: #8a5a00;      /* Warnhinweise (Tipps, „≠ Deutsch“, oft falsch) – ≥ 4,5 : 1 auf Weiß */
     --c-text-muted: #5f5f5b;
     --c-text-faint: #6a6a66;
     --c-text-dim: #777;
@@ -102,6 +103,7 @@
     --c-text-secondary: #b0b6be;
     --c-text-tertiary: #8a9099;
     --c-warm: #e0a24a;
+    --c-warn: #e8a33d;
     --c-text-muted: #8a919c;
     --c-text-faint: #8a919c;
     --c-text-dim: #b0b6be;
@@ -574,6 +576,8 @@
   .grammar-panel-header { gap: 8px; flex-wrap: wrap; }
   .gt-settings-row .tense-switcher { flex-wrap: wrap; }
   .grammar-panel-header .grammar-panel-progress { margin-left: auto; }
+  .gt-head-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .gt-head-right .grammar-panel-progress { margin-left: 0; }
   .gt-more { position: relative; }
   .gt-more-btn { border: 0.5px solid var(--c-border-input); background: var(--c-surface); color: var(--c-text-icon); border-radius: 8px; width: 32px; height: 30px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
   .gt-more-btn:hover, .gt-more-btn[aria-expanded="true"] { background: var(--c-surface-alt); }
@@ -651,7 +655,7 @@
   .gt-actions .gt-primary:hover { opacity: 0.92; background: var(--c-accent); }
   #aspect-list .vocab-table { width: 100%; table-layout: fixed; }
   #aspect-list .vocab-table td, #aspect-list .vocab-table th { white-space: normal; overflow-wrap: anywhere; }
-  .conj-class-chip { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1.6; font-family: var(--font-ui, inherit); padding: 0 8px; margin-left: 6px; border-radius: 999px; border: 1px solid var(--c-border); color: var(--c-text-muted); vertical-align: middle; white-space: nowrap; }
+  .conj-class-chip { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1.6; padding: 0 8px; margin-left: 6px; border-radius: 999px; border: 1px solid var(--c-border); color: var(--c-text-muted); vertical-align: middle; white-space: nowrap; }
   .conj-dots { display: inline-flex; gap: 4px; margin-left: 10px; vertical-align: middle; }
   .conj-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--c-text-muted); box-sizing: border-box; }
   .conj-dot.fertig { background: var(--c-accent-strong); border-color: var(--c-accent-strong); }
@@ -660,10 +664,10 @@
   .conj-after { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; margin-top: 8px; }
   .conj-after:empty { display: none; }
   .conj-example { display: flex; flex-direction: column; gap: 2px; text-align: left; }
-  .conj-example [lang="ru"] { font-family: var(--font-ru, inherit); font-size: 1.1em; }
+  .conj-example [lang="ru"] { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 1.1em; }
   .conj-example-de { color: var(--c-text-muted); font-size: .92em; }
   .conj-stem-wrap { display: flex; align-items: center; flex: 1; min-width: 0; gap: 2px; }
-  .conj-stem { font-family: var(--font-ru, inherit); font-size: 1.15em; color: var(--c-text-muted); white-space: nowrap; }
+  .conj-stem { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 1.15em; color: var(--c-text-muted); white-space: nowrap; }
   .conj-stem-wrap .conj-input { flex: 1; min-width: 0; }
   .motion-list-forms { display: block; font-size: 12.5px; color: var(--c-text-muted); margin-top: 2px; }
   @media (max-width: 800px) { #motion-list-view .vocab-table { width: 100%; table-layout: fixed; } #motion-list-view .vocab-table td, #motion-list-view .vocab-table th { white-space: normal; overflow-wrap: anywhere; } }
@@ -683,7 +687,7 @@
   .home-hard-g-row:hover b { text-decoration: underline; }
   .home-hard-g-row b { font-weight: 600; }
   .home-hard-g-row span { color: var(--c-text-muted); font-size: 12.5px; flex: 1; }
-  .home-hard-g-row small { color: var(--c-warn, #e8a33d); font-size: 11.5px; white-space: nowrap; }
+  .home-hard-g-row small { color: var(--c-warn); font-size: 11.5px; white-space: nowrap; }
   @media (max-width: 700px) {   /* Handy: Zahlen oben, Balken darunter in voller Breite */
     .home-lv .home-lvr { display: grid; grid-template-columns: auto 1fr auto auto; column-gap: 10px; row-gap: 4px; }
     .home-lv .home-lvr > b { grid-column: 1; grid-row: 1; width: auto; }
@@ -706,10 +710,10 @@
   .rkl-n { color: var(--c-text-muted); font-size: 13px; }
   .rkl-ueben { margin-left: auto; padding: 4px 10px; min-height: 30px; }
   .rkl-row { display: grid; grid-template-columns: 150px 170px 1fr 1.3fr 22px; gap: 4px 14px; align-items: baseline; padding: 7px 2px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
-  .rkl-v { font-weight: 700; font-family: var(--font-ru, inherit); font-size: 15px; }
-  .rkl-bsp { font-family: var(--font-ru, inherit); }
+  .rkl-v { font-weight: 700; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 15px; }
+  .rkl-bsp { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
   .rkl-de, .rkl-vgl { color: var(--c-text-muted); }
-  .rkl-anders { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-warn, #e8a33d); color: var(--c-warn, #e8a33d); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .rkl-anders { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-warn); color: var(--c-warn); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
   .rkl-st.ok { color: var(--c-st5); }
   @media (max-width: 800px) {   /* Handy: je Verb ein Block statt Spalten */
     .rkl-row { grid-template-columns: 1fr auto; gap: 2px 8px; }
@@ -971,23 +975,17 @@
   .case-question { text-align: center; padding: 18px 12px 14px; font-size: 15px; color: var(--c-text-tertiary); }
   .case-question .case-prep { display: block; font-size: 30px; font-weight: 600; color: var(--c-text-primary); margin-bottom: 6px; }
   .case-question .case-hint { display: block; font-size: 13px; margin-top: 4px; }
-  .case-question .case-satz { display: block; font-size: 19px; color: var(--c-text-primary); font-family: var(--font-ru, inherit); }
+  .case-question .case-satz { display: block; font-size: 19px; color: var(--c-text-primary); font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
   .case-question .case-satz-de { display: block; font-size: 13.5px; margin: 2px 0 12px; }
   .case-question .case-satz + .case-satz-de + .case-prep { font-size: 24px; }
   .case-pl { font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--c-border-light); color: var(--c-text-muted); vertical-align: middle; }
-  #case-result .case-tipp { display: block; margin-top: 4px; color: var(--c-warn, #e8a33d); }
+  #case-result .case-tipp { display: block; margin-top: 4px; color: var(--c-warn); }
   #case-result .case-erkl { display: block; margin-top: 6px; font-size: 13.5px; opacity: 0.9; }
-  #case-result .case-satz-voll { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; font-size: 16px; font-family: var(--font-ru, inherit); }
-  #overlay-casedrill .gt-more-menu { min-width: 280px; }
+  #case-result .case-satz-voll { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; font-size: 16px; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
   .gt-more-item.gt-toggle::after { content: ''; margin-left: auto; }
-  .gt-more-group { padding: 6px 10px 8px; border-top: 1px solid var(--c-border); }
-  .gt-more-label { display: block; font-size: 11.5px; color: var(--c-text-muted); margin-bottom: 4px; }
-  .gt-more-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-  .gt-more-chips .mode-btn { padding: 4px 9px; min-height: 30px; font-size: 12.5px; }
-  .gt-more-group + .gt-more-item { border-top: 1px solid var(--c-border); border-radius: 0 0 7px 7px; }
   .ppl-row { display: grid; grid-template-columns: 110px 150px 1fr 34px 22px; gap: 4px 14px; align-items: center; padding: 6px 2px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
-  .ppl-p { font-weight: 700; font-family: var(--font-ru, inherit); font-size: 15px; }
-  .ppl-bsp { font-family: var(--font-ru, inherit); }
+  .ppl-p { font-weight: 700; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 15px; }
+  .ppl-bsp { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
   .ppl-de { color: var(--c-text-muted); }
   .ppl-row .gt-icon-btn { width: 32px; height: 32px; min-height: 32px; }
   .ppl-wechsel { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-accent-strong); color: var(--c-accent-strong); font-size: 11px; font-weight: 600; vertical-align: middle; }
@@ -1780,6 +1778,7 @@
 <p>• durch einen <strong>Wechsel im Stamm</strong>: понимать → понять, покупать → купить;</p>
 <p>• durch ein <strong>ganz anderes Verb</strong> (suppletiv): говорить → сказать, брать → взять.</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Richtung – unvollendet → vollendet oder umgekehrt. <em>Liste</em> zeigt alle Paare im Überblick. Nach dem Prüfen erscheint, wo vorhanden, eine kurze Notiz zur Bildung des Paares.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
@@ -1819,7 +1818,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleConjInfo()" title="Wie funktioniert die Konjugation?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-conj" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item grammar-note-toggle" onclick="closeGtMore(); toggleGrammarNotes()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="gt-more-item" onclick="closeGtMore(); renderConjugationTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button><button class="gt-more-item" id="conj-sort-btn" onclick="cycleConjSortMode()" role="menuitem" title="Reihenfolge der Verben umschalten" type="button"><i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span></button><button aria-checked="false" class="gt-more-item" id="conj-scope-btn" onclick="toggleConjScope()" role="menuitemcheckbox" title="Auch Verben des Wortschatzes ohne Konjugationstabelle in der Liste zeigen" type="button"><i class="ti ti-list-check"></i> <span>Auch Verben ohne Tabelle</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); renderConjugationTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="conj-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <div id="conj-info-nonpast">
@@ -1902,7 +1901,7 @@
 <p><strong>Unregelmäßig</strong> – einfach lernen: есть → ешь!, пить → пей!, быть → будь!</p>
 <p><strong>видеть, хотеть, мочь:</strong> Sehen, wollen und können lassen sich nicht befehlen. Die Formen sind grammatisch bildbar, im Alltag aber praktisch nie zu hören.</p>
 </div>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em> und <em>Erklärung zur Form</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
 <button class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
@@ -1913,7 +1912,7 @@
 <button class="mode-btn" id="conj-tense-btn-future" onclick="setConjTense('future')" title="буду + Infinitiv – zum Üben, zählt nicht im Lernstand">Futur</button>
 <button class="mode-btn" id="conj-tense-btn-imperative" onclick="setConjTense('imperative')">Imperativ</button>
 <button class="mode-btn" id="conj-tense-btn-mixed" onclick="setConjMixed()" title="Jedes Verb in einer zufälligen, noch offenen Zeit (Präsens, Vergangenheit, Imperativ)">Gemischt</button>
-</div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button></div></div></div>
+</div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="tool-btn" id="conj-sort-btn" onclick="cycleConjSortMode()" title="Reihenfolge der Verben umschalten" type="button"><i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="ohne Tabelle" id="conj-scope-btn" onclick="toggleConjScope()" title="Auch Verben des Wortschatzes ohne Konjugationstabelle in der Liste zeigen" type="button"><i class="ti ti-list-check"></i> <span>Auch Verben ohne Tabelle</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="conj-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="conj-verb-btn" onclick="openVerbPicker()" title="Verb aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span id="conj-verb-btn-label">Verb wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="conj-verb-select" onchange="saveToolSettings(); renderConjugationTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('conj-verb-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -1939,7 +1938,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleDeclInfo()" title="Wie funktioniert die Adjektivdeklination?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-decl" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item grammar-note-toggle" onclick="closeGtMore(); toggleGrammarNotes()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="gt-more-item" onclick="closeGtMore(); renderDeclensionTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); renderDeclensionTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="decl-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <p><strong>Worum es geht:</strong> Ein Adjektiv passt seine Endung an sein Substantiv an – nach Geschlecht, Zahl und Fall: новый дом (ein neues Haus), в новом доме (in einem neuen Haus). Im Wörterbuch steht immer die männliche Einzahl (новый).</p>
@@ -1959,7 +1958,7 @@
 <p>• <strong>Die Mehrzahl kennt kein Geschlecht:</strong> новые gilt für alle drei.</p>
 <p>• <strong>Weiche Adjektive</strong> (z. B. синий) folgen demselben Muster, nur mit weichen Vokalen: и statt ы, е statt о, я statt а, ю statt у – синий, синего, синяя, синюю.</p>
 <p><strong>Schreibregeln:</strong> Nach г, к, х, ж, ш, щ, ч steht nie ы, sondern и (хороший, русские). Nach ж, ш, щ, ч, ц wird unbetontes о zu е (хорошее, хорошего).</p>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em> und <em>Erklärung zur Form</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button class="tool-btn" id="decl-sort-btn" onclick="cycleDeclSortMode()" title="Sortierung der Adjektivliste umschalten">
 <i class="ti ti-sort-ascending-2"></i> <span>Hart → Weich</span>
@@ -1968,7 +1967,7 @@
 <button class="mode-btn" id="decl-gender-btn-fem" onclick="setDeclGender('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="decl-gender-btn-neut" onclick="setDeclGender('neut')" title="sächlich">n</button>
 <button class="mode-btn" id="decl-gender-btn-plural" onclick="setDeclGender('plural')" title="Plural">Pl</button>
-</div></div></div></div>
+</div><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="decl-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="decl-adj-btn" onclick="openFormPicker('decl')" title="Adjektiv aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Adjektiv wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="decl-adj-select" onchange="saveToolSettings(); renderDeclensionTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('decl-adj-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -1993,7 +1992,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleNounInfo()" title="Wie funktioniert die Substantivdeklination?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-noun" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item grammar-note-toggle" onclick="closeGtMore(); toggleGrammarNotes()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="gt-more-item" onclick="closeGtMore(); renderNounTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); renderNounTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="noun-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <div id="noun-info-sg">
@@ -2023,7 +2022,7 @@
 <p><strong>Akkusativ:</strong> Im Plural gilt die Belebtheitsregel für alle Geschlechter: Lebewesen wie Genitiv (вижу студентов, вижу сестёр), Dinge wie Nominativ (вижу столы, вижу книги).</p>
 <p><strong>Schreibregel:</strong> Auch hier steht nach г, к, х, ж, ш, щ, ч и statt ы (книги).</p>
 </div>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em> und <em>Erklärung zur Form</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button class="tool-btn" id="noun-sort-btn" onclick="cycleNounSortMode()" title="Sortierung der Substantivliste umschalten">
 <i class="ti ti-sort-ascending-2"></i> <span>Nach Klasse</span>
@@ -2032,7 +2031,7 @@
 </button><div class="tense-switcher">
 <button class="mode-btn active" id="noun-num-btn-sg" onclick="setNounNumber('sg')">Singular</button>
 <button class="mode-btn" id="noun-num-btn-pl" onclick="setNounNumber('pl')">Plural</button>
-</div></div></div></div>
+</div><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="noun-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="noun-pick-btn" onclick="openFormPicker('noun')" title="Substantiv aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Substantiv wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="noun-select" onchange="saveToolSettings(); renderNounTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('noun-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2068,6 +2067,7 @@
 <p>• <strong>Präposition:</strong> Die Präposition bestimmt den Fall: в новом доме, с моим братом.</p>
 <p><strong>Lebewesen im Akkusativ</strong> sehen aus wie der Genitiv (нового студента), Dinge wie der Nominativ (новый дом).</p>
 <p><strong>Bedienung:</strong> Singular/Plural und Fall wählst du oben. <em>Nur einfache</em> beschränkt die Auswahl auf harte Adjektive und regelmäßige Substantive. Antworten kannst du frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Mit <em>Vorlesen</em> (Einstellungen) wird die Lösung nach dem Prüfen oder Aufdecken automatisch vorgelesen, bei <em>Bausteine</em> auch jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Der Lautsprecher bzw. Taste 4 spielt die Lösung erneut.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" id="wg-type-switcher" role="group" aria-label="Art" style="flex-wrap:wrap">
 <button class="mode-btn active" id="wg-type-adjnoun" onclick="setWgType('adjnoun')">Adj + Subst</button>
@@ -2179,6 +2179,7 @@
 <p><strong>Hilfen:</strong> Standardmäßig stehen die Wörter in Grundform über der Übersetzung. Unter <em>Hilfe</em> wählst du die Stufe: <em>Grundformen</em> (Standard), <em>Lücke</em> zeigt den fertigen Satz mit einem fehlenden Wort, <em>Nur Deutsch</em> nur die Übersetzung. <em>Anhören</em> liest den Satz erst nach dem Prüfen vor, damit er die Lösung nicht verrät.</p>
 <p>Mit <strong>Wort-Tipp</strong> (Taste 2) deckst du die Lösung Wort für Wort auf; im Bausteine-Modus wird der passende Baustein gleich gesetzt. <em>Lösung zeigen</em> (Taste 3) zeigt sofort den ganzen Satz. Danach sagst du selbst, ob du ihn wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit <em>Vorlesen</em> (Einstellungen) hörst du nach dem Prüfen oder Aufdecken automatisch den ganzen Satz, bei jedem Wort-Tipp das neue Wort und bei <em>Bausteine</em> jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Lautsprecher oder Taste 4: ganzer Satz, während der Wort-Tipps die schon aufgedeckten Wörter. Am Rundenende hat jeder Fehler einen Lautsprecher.</p>
 </details>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Satzart</span><div class="tense-switcher" id="sb-type-switcher" role="group" aria-label="Satzart" style="flex-wrap:wrap">
 <button class="mode-btn active" id="sb-type-sentence" onclick="setWgType('sentence')">Ganzer Satz</button>
@@ -2200,7 +2201,7 @@
 <button class="mode-btn active" id="sb-help-blocks" onclick="setSbHelp('blocks')" title="Alle Wörter in der Grundform vorgeben">Grundformen</button>
 <button class="mode-btn" id="sb-help-gap" onclick="setSbHelp('gap')" title="Fertiger Satz mit einer Lücke">Lücke</button>
 <button class="mode-btn" id="sb-help-free" onclick="setSbHelp('free')" title="Nur der deutsche Satz">Nur Deutsch</button>
-</div></span><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Kasus-Hinweis" id="sb-hint-toggle" onclick="toggleSbHint()" title="Hinweis zum Kasus unter dem Satz ein-/ausblenden (z. B. „Objekt im Akk“)"><i class="ti ti-eye"></i> <span>Kasus-Hinweis</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
+</div></span><button aria-pressed="true" class="tool-btn gt-toggle" id="sb-hint-toggle" onclick="toggleSbHint()" title="Hinweis zum Kasus unter dem Satz ein-/ausblenden (z. B. „Objekt im Akk“)"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
 
 <div id="sb-body"></div>
 </div>
@@ -2225,6 +2226,7 @@
 </table>
 <p><strong>Ausnahme 11 bis 14:</strong> Sie nehmen immer den Genitiv Plural, obwohl sie auf 1–4 enden: одиннадцать столов. Das gilt auch für 111–114 usw.</p>
 <p><strong>Bedienung:</strong> Zahl und Substantiv stehen da, du tippst das Substantiv in der passenden Form. Nach dem Prüfen steht die Regel in Klammern hinter der Lösung; ein zweites <em>Prüfen</em> führt weiter. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Lösung zeigen</em> (Taste 3) zeigt die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 
 <div class="gt-task"><div class="case-question" id="numnoun-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakNumNoun()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2255,6 +2257,7 @@
 <p>Die Endung hängt von der <strong>Deklinationsklasse</strong> ab (1. Klasse auf -а/-я, 2. Klasse auf Konsonant/-о/-е, 3. Klasse weiblich auf -ь). Die Klasse steht als Hilfe unter der Aufgabe und lässt sich ausblenden.</p>
 <p>Im <strong>Akkusativ</strong> richten sich belebte männliche Wörter (und im Plural alle Lebewesen) nach dem Genitiv (вижу врача), unbelebte nach dem Nominativ (вижу дом).</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Zahl (Singular, Plural oder beide) und bei Bedarf einen bestimmten Fall. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die gesuchte Form.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="cf-num-switcher">
 <button class="mode-btn active" id="cf-num-mixed" onclick="setCaseFormNumber('mixed', 'noun')">Beide</button>
@@ -2291,6 +2294,7 @@
 <p>Die Endung hängt von <strong>Geschlecht, Zahl und Fall</strong> ab – deshalb stehen sie in der Aufgabe. Der Adjektivtyp (hart, weich, endbetont, nach Zischlaut) steht als Hilfe darunter und lässt sich ausblenden.</p>
 <p>Im <strong>Akkusativ männlich und Plural</strong> sagt die Aufgabe, ob ein Ding oder ein Lebewesen gemeint ist: Dinge wie Nominativ (новый дом), Lebewesen wie Genitiv (нового студента).</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Zahl, das Geschlecht und bei Bedarf einen bestimmten Fall. Ein gewähltes Geschlecht gilt für den Singular. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="ca-gen-switcher">
 <button class="mode-btn active" id="ca-gen-all" onclick="setCaseFormGenus('all')">Alle</button>
@@ -2335,6 +2339,7 @@
 <p>• <strong>Possessiv:</strong> мой, твой, свой, наш, ваш nach Geschlecht und Fall: мой → weiblich, Genitiv = моей. Im Akkusativ männlich und Plural sagt die Aufgabe, ob ein Ding oder ein Lebewesen gemeint ist (мой дом, моего брата).</p>
 <p>• <strong>кто · весь:</strong> Fragewörter und себя in einen Fall setzen (кто → Dativ = кому, о + что = о чём, себя → Dativ = себе) sowie весь, этот, тот nach Geschlecht und Fall (весь → weiblich, Genitiv = всей).</p>
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> blendet die deutsche Entsprechung ein (к нему – zu ihm). <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die Lösung.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
 <button class="mode-btn active" id="pronform-scope-all" onclick="setPronFormScope('all')">Alle</button>
@@ -2372,6 +2377,7 @@
 <p><strong>Komparativ:</strong> Meist Stamm + -ее: интересный → интереснее, быстрый → быстрее. Bei г/к/х/ст im Stamm wechselt der Konsonant und es kommt -е: дорогой → дороже, лёгкий → легче, тихий → тише, чистый → чище. Einige sind unregelmäßig: хороший → лучше, плохой → хуже, большой → больше, маленький → меньше. Verglichen wird mit „чем“ oder dem Genitiv: Он старше, чем я = Он старше меня.</p>
 <p><strong>Superlativ:</strong> самый + Adjektiv, das sich wie ein Adjektiv mitverändert: самый новый дом, самая новая книга. Sonderformen: хороший → лучший (самый лучший), плохой → худший.</p>
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> zeigt die Regel zur Aufgabe. <em>Anhören</em> liest vor dem Prüfen die Grundform bzw. den Satz mit Lücke, danach die Lösung. Wo zwei Formen richtig sind (старше/старее, лучший/самый лучший), gilt jede.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" role="group" aria-label="Aufgabentyp">
 <button class="mode-btn active" id="adjform-scope-all" onclick="setAdjFormScope('all')">Alle</button>
@@ -2398,7 +2404,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="togglePronounInfo()" title="Wie deklinieren Personalpronomen?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-pronoun" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item grammar-note-toggle" onclick="closeGtMore(); toggleGrammarNotes()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="gt-more-item" onclick="closeGtMore(); renderPronounTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); renderPronounTable()" role="menuitem" type="button"><i class="ti ti-refresh"></i> <span>Leeren</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="pronoun-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <p><strong>Worum es geht:</strong> Auch ich, du, er … ändern ihre Form je nach Fall, wie im Deutschen ich/mich/mir. Die Formen sind unregelmäßig, aber so häufig, dass sie sich schnell einprägen.</p>
@@ -2406,7 +2412,7 @@
 <p><strong>Nach einer Präposition</strong> bekommt die 3. Person ein н- davor: его → у него, ей → к ней, им → с ним. In der Tabelle steht diese Variante in Klammern.</p>
 <p><strong>Aussprache:</strong> его spricht man [jewo] – das г klingt hier wie w.</p>
 <p><strong>Possessivpronomen</strong> (мой, твой, свой, наш, ваш) werden wie Adjektive dekliniert und richten sich nach ihrem Substantiv. Mit m / f / n / Pl wählst du die Spalte. его, её und их im Sinn von „sein, ihr“ verändern sich dagegen nie und bekommen auch kein н-: у его брата.</p>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Pronomen. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em> und <em>Erklärung zur Form</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Pronomen. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 <p><strong>Weitere Pronomen:</strong> In der Liste stehen auch die Fragewörter кто und что, das Reflexivpronomen себя (ohne Nominativ – es bezieht sich immer auf das Subjekt) sowie весь, этот und тот, die sich wie мой nach Geschlecht und Zahl richten (m / f / n / Pl).</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="pronoun-gender-switcher" style="display:none">
@@ -2414,7 +2420,7 @@
 <button class="mode-btn" id="pronoun-gender-fem" onclick="setPronounGender('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="pronoun-gender-neut" onclick="setPronounGender('neut')" title="sächlich">n</button>
 <button class="mode-btn" id="pronoun-gender-plural" onclick="setPronounGender('plural')" title="Plural">Pl</button>
-</div></div></div></div>
+</div><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="pronoun-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="pronoun-pick-btn" onclick="openFormPicker('pronoun')" title="Pronomen aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Pronomen wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="pronoun-select" onchange="renderPronounTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('pronoun-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2439,11 +2445,7 @@
 </span>
 <span class="grammar-panel-progress" id="gtp-case" title="Mindestens einmal richtig beantwortet"></span>
 <div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); restartCaseDrill()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button><button class="gt-more-item" onclick="closeGtMore(); openPrepList()" role="menuitem" type="button"><i class="ti ti-list"></i> <span>Übersicht nach Fall</span></button>
-<div class="gt-more-group" role="group" aria-label="Bereich"><span class="gt-more-label">Bereich</span><span class="gt-more-chips">
-<button class="mode-btn active" id="case-scope-btn-all" onclick="setCaseScope('all')" type="button">Alle</button><button class="mode-btn" id="case-scope-btn-single" onclick="setCaseScope('single')" type="button">Ohne Wechsel</button><button class="mode-btn" id="case-scope-btn-dual" onclick="setCaseScope('dual')" type="button">Nur Wechsel</button></span></div>
-<div class="gt-more-group" id="case-kasus-group" role="group" aria-label="Fall"><span class="gt-more-label">Fall</span><span class="gt-more-chips" id="case-kasus-chips">
-<button class="mode-btn active" data-v="all" onclick="setCaseKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Gen." onclick="setCaseKasus('Gen.')" type="button">Gen.</button><button class="mode-btn" data-v="Dat." onclick="setCaseKasus('Dat.')" type="button">Dat.</button><button class="mode-btn" data-v="Akk." onclick="setCaseKasus('Akk.')" type="button">Akk.</button><button class="mode-btn" data-v="Instr." onclick="setCaseKasus('Instr.')" type="button">Instr.</button><button class="mode-btn" data-v="Präp." onclick="setCaseKasus('Präp.')" type="button">Präp.</button></span></div>
-<button aria-pressed="true" class="gt-more-item gt-toggle" id="case-hint-toggle" onclick="toggleCaseHint()" role="menuitemcheckbox" type="button"><i class="ti ti-eye"></i> <span>Kasus-Hinweis</span></button><button aria-pressed="false" class="gt-more-item gt-toggle" id="case-plural-toggle" onclick="toggleCasePlural()" role="menuitemcheckbox" type="button"><i class="ti ti-stack-2"></i> <span>Auch Plural</span></button></div></div></div>
+</div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="case-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <p><strong>Worum es geht:</strong> Jede Präposition verlangt einen bestimmten Fall für das folgende Wort. Hier übst du, welcher Fall zu welcher Präposition gehört.</p>
@@ -2452,12 +2454,16 @@
 <table class="conj-info-table" id="case-info-table"></table>
 <p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen oder Taste 1–5 bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
 <p><em>Form bilden</em> – Setze Präposition und Substantiv in die Lücke des Satzes (Мы идём ___ → в школу). Es kommen nur Substantive dran, die inhaltlich passen; Sonderfälle wie об ответе, со станции, в лесу oder на мосту sind gezielt dabei. Nach der Antwort stehen Regel, Endung und der ganze Satz zum Anhören; bei typischen Fehlern gibt es einen Tipp. <em>Lösung zeigen</em> (Taste 3) deckt auf, danach bewertest du selbst. Eine Runde hat 15 Aufgaben.</p>
-<p><strong>⋯-Menü:</strong> <em>Neue Runde</em>, <em>Übersicht nach Fall</em> (alle Präpositionen mit Beispiel, je Fall eine Runde zum Üben), <em>Bereich</em> (alle, ohne oder nur Wechselpräpositionen), <em>Fall</em> (nur Präpositionen eines Falls), <em>Kasus-Hinweis</em> ein/aus und <em>Auch Plural</em> (в магазинах, к друзьям). Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
+<p><strong>⋯-Menü:</strong> <em>Neue Runde</em> und <em>Übersicht nach Fall</em> (alle Präpositionen mit Beispiel, je Fall eine Runde zum Üben). <strong>Einstellungen:</strong> <em>Bereich</em> (alle, ohne oder nur Wechselpräpositionen), bei „Form bilden“ außerdem <em>Fall</em> (nur Präpositionen eines Falls), <em>Hilfe</em> (Hinweis wie „Ort – wo? → Präp.“) und <em>Auch Plural</em> (в магазинах, к друзьям). Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="conj-toolbar gt-modes"><div class="tense-switcher">
 <button class="mode-btn active" id="case-mode-btn-abstract" onclick="setCaseMode('abstract')">Fall wählen</button>
 <button class="mode-btn" id="case-mode-btn-word" onclick="setCaseMode('word')">Form bilden</button>
-</div></div>
+</div></div><div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Bereich</span><div class="tense-switcher" role="group" aria-label="Bereich">
+<button class="mode-btn active" id="case-scope-btn-all" onclick="setCaseScope('all')" type="button">Alle</button><button class="mode-btn" id="case-scope-btn-single" onclick="setCaseScope('single')" type="button">Ohne Wechsel</button><button class="mode-btn" id="case-scope-btn-dual" onclick="setCaseScope('dual')" type="button">Nur Wechsel</button></div></span>
+<span class="gt-field" id="case-kasus-group"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="case-kasus-chips" role="group" aria-label="Fall">
+<button class="mode-btn active" data-v="all" onclick="setCaseKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Gen." onclick="setCaseKasus('Gen.')" title="Genitiv" type="button">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseKasus('Dat.')" title="Dativ" type="button">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseKasus('Akk.')" title="Akkusativ" type="button">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseKasus('Instr.')" title="Instrumental" type="button">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseKasus('Präp.')" title="Präpositiv" type="button">Präp</button></div></span>
+<button aria-pressed="true" class="tool-btn gt-toggle" id="case-hint-toggle" onclick="toggleCaseHint()" title="Hinweis „Ort – wo? → Präp.“ unter der Aufgabe ein-/ausblenden" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Plural" id="case-plural-toggle" onclick="toggleCasePlural()" title="Auch Pluralformen bilden (в магазинах, к друзьям)" type="button"><i class="ti ti-stack-2"></i> <span>Auch Plural</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="case-question"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseDrill()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="case-options"></div>
 <div class="conj-row" id="case-input-row" style="grid-template-columns: 1fr; display:none;">
@@ -2501,6 +2507,7 @@
 <p><strong>Vergangenheit:</strong> Die einmaligen Verben sind oft unregelmäßig (идти → шёл, шла, шли; нести → нёс, несла), die wiederholten regelmäßig (ходил, носил).</p>
 <p><strong>Vorsilben:</strong> Mit einer Vorsilbe wird aus dem Paar ein normales Aspektpaar (приходить / прийти, приезжать / приехать). Die Vorsilbe gibt die Richtung an: <span lang="ru">при-</span> ankommen, <span lang="ru">у-</span> weggehen, <span lang="ru">в-</span> hinein, <span lang="ru">вы-</span> hinaus, <span lang="ru">пере-</span> hinüber oder umziehen, <span lang="ru">про-</span> vorbei. Der Modus <em>Vorsilben</em> übt das mit Sätzen (Tasten 1–4).</p>
 <p><strong>Bedienung:</strong> <em>Partner</em> – zum Verb den Partner bilden, Richtung oben wählbar. <em>Wahl</em> – im Satz das passende Verb antippen: Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Anhören</em> liest den Satz vor – vor der Antwort mit einer Pause an der Lücke, danach vollständig; im ⋯-Menü mischt <em>Neue Runde</em> die Wahl-Sätze neu. <em>Liste</em> – alle 11 Paare im Überblick. Alle Formen der 22 Verben (Präsens, Futur, Vergangenheit, Imperativ) übst du im Werkzeug <em>Konjugieren</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
+<p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
@@ -3100,9 +3107,11 @@
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">→</kbd></span><div class="set-text"><strong>Nächstes Wort</strong><span>Überspringt die aktuelle Karte</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">←</kbd></span><div class="set-text"><strong>Auflösen</strong><span>Zählt als nicht gewusst (im Aufdecken-Modus: aufdecken)</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Leer</kbd></span><div class="set-text"><strong>Vorlesen</strong><span>Russisches Wort anhören, im Hörquiz erneut abspielen</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Lösung zeigen</strong><span>In allen Grammatik- und Hörwerkzeugen; im Hörquiz-Aufdecken liest 3 erneut vor</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Lösung zeigen</strong><span>In den Grammatik- und Hörwerkzeugen; nicht beim Auswählen mit Zifferntasten (Kasus-Drill „Fall wählen“, Rektion „Fall wählen“, Bewegungsverben „Vorsilben“) – dort per Knopf; im Hörquiz-Aufdecken liest 3 erneut vor</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Wort-Tipp</strong><span>Im Satzbau: deckt das nächste Wort der Lösung auf</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Antwort wählen</strong><span>Im Auswahl-Modus der Vokabeln die passende Option</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">–</kbd><kbd class="kbd">9</kbd></span><div class="set-text"><strong>Antwort wählen (Grammatik)</strong><span>Kasus-Drill „Fall wählen“ 1–5, Rektion „Fall wählen“ 1–9 und 0, Bewegungsverben „Wahl“ 1/2 und „Vorsilben“ 1–4 – die Zahl steht auf jedem Knopf</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Anhören</strong><span>In Wortgruppen und Satzbau: Lösung bzw. die schon aufgedeckten Wörter vorlesen, auch im Eingabefeld</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Gewusst / Nicht gewusst</strong><span>Im Aufdecken-Modus (Vokabeln und Hörquiz), nach dem Aufdecken; in der Grammatik nach „Lösung zeigen“ (1 zählt als richtig, 2 als falsch)</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Rückgängig</strong><span>Im Aufdecken-Modus der Vokabeln: nimmt die letzte Bewertung zurück, auch nach „Alles gelernt!“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Neu anfangen</strong><span>Im Aufdecken-Modus der Vokabeln bei „Alles gelernt!“: setzt den Fortschritt zurück</span></div></div>
@@ -4639,10 +4648,14 @@ const vocab = {
         {ru:"дышать", tr:"dyschat'", de:["atmen"]},
         {ru:"страдать", tr:"stradat'", de:["leiden"]},
         {ru:"тонуть", tr:"tonut'", de:["ertrinken","sinken"]},
+        {ru:"уставать / устать", tr:"ustawat' / ustat'", de:["müde werden"], ruAlt:["уставать", "устать", "уставать/устать"]},
+        {ru:"появляться / появиться", tr:"pojawljat'sja / pojawit'sja", de:["erscheinen"], ruAlt:["появляться", "появиться", "появляться/появиться"]},
+        {ru:"выглядеть", tr:"wygljadet'", de:["aussehen"]},
         {ru:"лечить", tr:"letschit'", de:["heilen","behandeln"]},
         {ru:"дрожать", tr:"droschat'", de:["zittern"]},
+        {ru:"переезжать / переехать", tr:"perejesschat' / perejechat'", de:["umziehen"], ruAlt:["переезжать", "переехать", "переезжать/переехать"]},
+        {ru:"исчезать / исчезнуть", tr:"istschesat' / istschesnut'", de:["verschwinden"], ruAlt:["исчезать", "исчезнуть", "исчезать/исчезнуть"]},
         {ru:"стареть", tr:"staret'", de:["altern"]},
-        {ru:"уставать / устать", tr:"ustawat' / ustat'", de:["müde werden"], ruAlt:["уставать", "устать", "уставать/устать"]},
         {ru:"выживать", tr:"wyschiwat'", de:["überleben"]},
         {ru:"кашлять", tr:"kaschljat'", de:["husten"]},
         {ru:"взрослеть", tr:"wsroslet'", de:["erwachsen werden"]},
@@ -4655,11 +4668,7 @@ const vocab = {
         {ru:"худеть", tr:"chudet'", de:["abnehmen"]},
         {ru:"толстеть", tr:"tolstet'", de:["zunehmen"]},
         {ru:"чихать", tr:"tschichat'", de:["niesen"]},
-        {ru:"краснеть", tr:"krasnet'", de:["erröten"]},
-        {ru:"появляться / появиться", tr:"pojawljat'sja / pojawit'sja", de:["erscheinen"], ruAlt:["появляться", "появиться", "появляться/появиться"]},
-        {ru:"выглядеть", tr:"wygljadet'", de:["aussehen"]},
-        {ru:"переезжать / переехать", tr:"perejesschat' / perejechat'", de:["umziehen"], ruAlt:["переезжать", "переехать", "переезжать/переехать"]},
-        {ru:"исчезать / исчезнуть", tr:"istschesat' / istschesnut'", de:["verschwinden"], ruAlt:["исчезать", "исчезнуть", "исчезать/исчезнуть"]}
+        {ru:"краснеть", tr:"krasnet'", de:["erröten"]}
       ]
     ],
     newBlock: [],
@@ -4677,6 +4686,7 @@ const vocab = {
         {ru:"сдавать", tr:"sdawat'", de:["abgeben","ablegen (Prüfung)"]},
         {ru:"отправлять", tr:"otprawljat'", de:["abschicken"]},
         {ru:"выполнять", tr:"wypolnjat'", de:["erledigen"]},
+        {ru:"организовывать / организовать", tr:"organisowywat' / organisowat'", de:["organisieren"], ruAlt:["организовывать", "организовать", "организовывать/организовать"]},
         {ru:"записывать", tr:"sapissywat'", de:["aufschreiben"]},
         {ru:"исследовать", tr:"issledowat'", de:["erforschen"]},
         {ru:"делить", tr:"delit'", de:["teilen"]},
@@ -4696,7 +4706,6 @@ const vocab = {
         {ru:"регистрироваться", tr:"registrirowat'sja", de:["sich anmelden"]},
         {ru:"совещаться", tr:"soweschtschat'sja", de:["sich beraten"]},
         {ru:"поручать", tr:"porutschat'", de:["beauftragen"]},
-        {ru:"организовывать / организовать", tr:"organisowywat' / organisowat'", de:["organisieren"], ruAlt:["организовывать", "организовать", "организовывать/организовать"]},
         {ru:"конспектировать", tr:"konspektirowat'", de:["mitschreiben"]}
       ]
     ],
@@ -4831,8 +4840,8 @@ const vocab = {
         {ru:"участвовать", tr:"utschastwowat'", de:["teilnehmen"]},
         {ru:"выступать / выступить", tr:"wystupat' / wystupit'", de:["auftreten"], ruAlt:["выступать", "выступить", "выступать/выступить"]},
         {ru:"петь / спеть", tr:"pet' / spet'", de:["singen"], ruAlt:["петь", "спеть", "петь/спеть"]},
-        {ru:"тренироваться", tr:"trenirowat'sja", de:["trainieren"]},
         {ru:"побеждать / победить", tr:"pobeschdat' / pobedit'", de:["siegen"], ruAlt:["побеждать", "победить", "побеждать/победить"]},
+        {ru:"тренироваться", tr:"trenirowat'sja", de:["trainieren"]},
         {ru:"выигрывать", tr:"wyigrywat'", de:["gewinnen"]},
         {ru:"проигрывать", tr:"proigrywat'", de:["verlieren"]},
         {ru:"кататься", tr:"katat'sja", de:["fahren"]},
@@ -4913,8 +4922,11 @@ const vocab = {
         {ru:"находить / найти", tr:"nachodit' / najti", de:["finden"], ruAlt:["находить", "найти", "находить/найти"]},
         {ru:"посылать / послать", tr:"possylat' / poslat'", de:["schicken"], ruAlt:["посылать", "послать", "посылать/послать"]},
         {ru:"прятаться", tr:"prjatat'sja", de:["sich verstecken"]},
-        {ru:"привыкать", tr:"priwykat'", de:["sich gewöhnen"]},
         {ru:"убирать / убрать", tr:"ubirat' / ubrat'", de:["aufräumen"], ruAlt:["убирать", "убрать", "убирать/убрать"]},
+        {ru:"курить", tr:"kurit'", de:["rauchen"]},
+        {ru:"висеть", tr:"wisset'", de:["hängen"]},
+        {ru:"бить", tr:"bit'", de:["schlagen"]},
+        {ru:"привыкать", tr:"priwykat'", de:["sich gewöhnen"]},
         {ru:"чистить / почистить", tr:"tschistit' / potschistit'", de:["putzen","reinigen"], ruAlt:["чистить", "почистить", "чистить/почистить"]},
         {ru:"выносить мусор", tr:"wynossit' mussor", de:["Müll rausbringen"]},
         {ru:"успевать", tr:"uspewat'", de:["rechtzeitig schaffen","es schaffen"]},
@@ -4925,10 +4937,7 @@ const vocab = {
         {ru:"запирать", tr:"sapirat'", de:["abschließen"]},
         {ru:"сушить", tr:"suschit'", de:["trocknen"]},
         {ru:"проветривать", tr:"prowetriwat'", de:["lüften"]},
-        {ru:"подметать", tr:"podmetat'", de:["fegen"]},
-        {ru:"курить", tr:"kurit'", de:["rauchen"]},
-        {ru:"висеть", tr:"wisset'", de:["hängen"]},
-        {ru:"бить", tr:"bit'", de:["schlagen"]}
+        {ru:"подметать", tr:"podmetat'", de:["fegen"]}
       ]
     ],
     newBlock: [],
@@ -5113,15 +5122,15 @@ const vocab = {
         {ru:"упоминать", tr:"upominat'", de:["erwähnen"]},
         {ru:"молчать", tr:"moltschat'", de:["schweigen"]},
         {ru:"болтать", tr:"boltat'", de:["plaudern"]},
+        {ru:"советовать / посоветовать", tr:"sowetowat' / possowetowat'", de:["raten"], ruAlt:["советовать", "посоветовать", "советовать/посоветовать"]},
+        {ru:"передавать / передать", tr:"peredawat' / peredat'", de:["ausrichten","übergeben"], ruAlt:["передавать", "передать", "передавать/передать"]},
         {ru:"разрешать", tr:"rasreschat'", de:["erlauben"]},
         {ru:"запрещать", tr:"sapreschtschat'", de:["verbieten"]},
-        {ru:"советовать / посоветовать", tr:"sowetowat' / possowetowat'", de:["raten"], ruAlt:["советовать", "посоветовать", "советовать/посоветовать"]},
         {ru:"шептать", tr:"scheptat'", de:["flüstern"]},
         {ru:"перебивать", tr:"perebiwat'", de:["unterbrechen"]},
         {ru:"описывать", tr:"opissywat'", de:["beschreiben"]},
         {ru:"убеждать", tr:"ubeschdat'", de:["überzeugen"]},
-        {ru:"замолкать", tr:"samolkat'", de:["verstummen"]},
-        {ru:"передавать / передать", tr:"peredawat' / peredat'", de:["ausrichten","übergeben"], ruAlt:["передавать", "передать", "передавать/передать"]}
+        {ru:"замолкать", tr:"samolkat'", de:["verstummen"]}
       ]
     ],
     newBlock: [],
@@ -5150,6 +5159,7 @@ const vocab = {
         {ru:"гордиться", tr:"gordit'sja", de:["stolz sein"]},
         {ru:"наслаждаться", tr:"naslaschdat'sja", de:["genießen"]},
         {ru:"наблюдать", tr:"nabljudat'", de:["beobachten"]},
+        {ru:"беспокоиться", tr:"bespokoit'sja", de:["sich Sorgen machen"]},
         {ru:"удивляться", tr:"udiwljat'sja", de:["sich wundern","staunen"]},
         {ru:"радоваться", tr:"radowat'sja", de:["sich freuen"]},
         {ru:"стыдиться", tr:"stydit'sja", de:["sich schämen"]},
@@ -5159,7 +5169,6 @@ const vocab = {
         {ru:"нюхать", tr:"njuchat'", de:["riechen"]},
         {ru:"грустить", tr:"grustit'", de:["traurig sein"]},
         {ru:"влюбляться", tr:"wljubljat'sja", de:["sich verlieben"]},
-        {ru:"беспокоиться", tr:"bespokoit'sja", de:["sich Sorgen machen"]},
         {ru:"нервничать", tr:"nerwnitschat'", de:["nervös sein"]}
       ]
     ],
@@ -9998,7 +10007,6 @@ const SENTENCE_OVERRIDES = {
   "направо":       [ { ru: 'Поверни ___.',                de: 'Bieg ___ ab.', isAI: true } ],
   "налево":        [ { ru: 'Иди ___.',                    de: 'Geh ___.', isAI: true } ],
   "впереди":       [ { ru: 'Дорога ___ длинная.',         de: 'Der Weg vor uns ist lang.', isAI: true } ],
-  "улыбаться":     [ { ru: 'Дети любят ___.',             de: 'Kinder mögen es zu ___.', isAI: true } ],
   "злиться":       [ { ru: 'Из-за мелочей он может ___.',                de: 'Wegen Kleinigkeiten kann er ___.', isAI: true } ],
   "скучать":       [ { ru: 'Дома они могут ___.',            de: 'Zu Hause können sie ___.', isAI: true } ],
   "ненавидеть":    [ { ru: 'Не надо ___ людей.',          de: 'Man soll Menschen nicht ___.', isAI: true } ],
@@ -10017,14 +10025,12 @@ const SENTENCE_OVERRIDES = {
   "страдать":      [ { ru: 'Никто не хочет ___.',         de: 'Niemand will ___.', isAI: true } ],
   "мёрзнуть":      [ { ru: 'Он начинает ___.',            de: 'Er beginnt zu ___.', isAI: true } ],
   "кашлять":       [ { ru: 'Он начинает ___.',            de: 'Er beginnt zu ___.', isAI: true } ],
-  "рождаться":     [ { ru: 'Дети могут ___ дома.',        de: 'Kinder können zu Hause ___.', isAI: true } ],
   "стареть":       [ { ru: 'Никто не хочет ___.',         de: 'Niemand will ___.', isAI: true } ],
   "дышать":        [ { ru: 'Трудно ___ здесь.',           de: 'Hier ist es schwer zu ___.', isAI: true } ],
   "расти":         [ { ru: 'Дети должны ___ здоровыми.',  de: 'Kinder sollen gesund aufwachsen.', isAI: true } ],
   "болеть":        [ { ru: 'Никто не хочет ___.',         de: 'Niemand will ___.', isAI: true } ],
   "лечить":        [ { ru: 'Врач умеет ___ людей.',       de: 'Der Arzt kann Menschen ___.', isAI: true } ],
   "спасать":       [ { ru: 'Надо ___ природу.',           de: 'Man muss die Natur ___.', isAI: true } ],
-  "умирать":       [ { ru: 'Цветы могут ___ без воды.',    de: 'Blumen können ohne Wasser ___.', isAI: true } ],
   "просить":       [ { ru: 'Не надо ___ денег.',          de: 'Man soll nicht um Geld ___.', isAI: true } ],
   "требовать":     [ { ru: 'Он любит ___ внимания.',      de: 'Er mag es, Aufmerksamkeit zu ___.', isAI: true } ],
   "разрешать":     [ { ru: 'Надо ___ детям играть.',      de: 'Man muss Kindern das Spielen ___.', isAI: true } ],
@@ -10226,7 +10232,6 @@ const SENTENCE_OVERRIDES = {
   "любить":     [ { ru: 'Он будет ___ лето.',                    de: 'Er wird den Sommer ___.', isAI: true } ],
   "делать":     [ { ru: 'Что ты будешь ___ сейчас?',             de: 'Was wirst du jetzt ___?', isAI: true } ],
   "видеть":     [ { ru: 'Я хочу ___ большой дом.',             de: 'Ich will ein großes Haus ___.', isAI: true } ],
-  "мочь":       [ { ru: 'Важно ___ помочь другу.',             de: 'Es ist wichtig, dem Freund helfen zu ___.', isAI: true } ],
   "читать":     [ { ru: 'Она любит ___ книги.',    de: 'Sie mag es, Bücher zu ___.', isAI: true } ],
   "писать":     [ { ru: 'Он будет ___ письмо другу.',           de: 'Er wird einem Freund einen Brief ___.', isAI: true } ],
   "покупать":   [ { ru: 'Она будет ___ хлеб каждое утро.',      de: 'Sie wird jeden Morgen Brot ___.', isAI: true } ],
@@ -13287,6 +13292,14 @@ const SENTENCE_PAIRS = [
   { ru: 'Когда приезжает поезд?', de: 'Wann kommt der Zug an?', targets: ['приезжать / приехать'] },
   { ru: 'Завтра мы уезжаем.', de: 'Morgen fahren wir weg.', targets: ['уезжать / уехать'] },
   { ru: 'Можно войти?', de: 'Darf ich hineingehen?', targets: ['входить / войти'] },
+  // Ersatz für holprige Sätze (Gesamtprüfung 10.11.)
+  { ru: 'Ты можешь мне помочь?', de: 'Kannst du mir helfen?', targets: ['мочь / смочь'] },
+  { ru: 'Попробуй этот суп!', de: 'Probier diese Suppe!', targets: ['пробовать / попробовать'] },
+  { ru: 'Где можно заплатить?', de: 'Wo kann man bezahlen?', targets: ['платить / заплатить'] },
+  { ru: 'Он обещал позвонить.', de: 'Er hat versprochen anzurufen.', targets: ['обещать / пообещать'] },
+  { ru: 'Она всегда улыбается.', de: 'Sie lächelt immer.', targets: ['улыбаться / улыбнуться'] },
+  { ru: 'Я родился в Москве.', de: 'Ich bin in Moskau geboren.', targets: ['рождаться / родиться'] },
+  { ru: 'Мой дедушка умер в прошлом году.', de: 'Mein Großvater ist letztes Jahr gestorben.', targets: ['умирать / умереть'] },
   { ru: 'Я выхожу из дома в восемь.', de: 'Ich gehe um acht aus dem Haus.', targets: ['выходить / выйти'] },
   { ru: 'Здесь нельзя переходить улицу.', de: 'Hier darf man die Straße nicht überqueren.', targets: ['переходить / перейти'] },
   { ru: 'Мы проходим мимо парка.', de: 'Wir gehen am Park vorbei.', targets: ['проходить / пройти'] },
@@ -13328,7 +13341,7 @@ const SENTENCE_PAIRS = [
   { ru: 'Это факт.', de: 'Das ist eine Tatsache.', targets: ['факт'] },
   { ru: 'Учёный получил грант.', de: 'Der Wissenschaftler hat Fördergeld bekommen.', targets: ['грант'] },
   { ru: 'Эта статья очень интересная.', de: 'Dieser Artikel ist sehr interessant.', targets: ['статья'] },
-  { ru: 'Электричество очень дорогое.', de: 'Die Elektrizität ist sehr teuer.', targets: ['электричество'] },
+  { ru: 'Электричество очень дорогое.', de: 'Elektrizität ist sehr teuer.', targets: ['электричество'] },
   { ru: 'Это большой прогресс.', de: 'Das ist ein großer Fortschritt.', targets: ['прогресс'] },
   { ru: 'Людям нужен кислород.', de: 'Menschen brauchen Sauerstoff.', targets: ['кислород'] },
   { ru: 'Организм человека сложный.', de: 'Der Organismus des Menschen ist komplex.', targets: ['организм'] },
@@ -14131,7 +14144,6 @@ const SENTENCE_PAIRS = [
   { ru: 'Нужно причёсываться перед зеркалом.', de: 'Man muss sich vor dem Spiegel kämmen.', targets: ['причёсываться'] },
   { ru: 'Вечером хочется отдыхать и гулять в парке.', de: 'Abends möchte man sich ausruhen und im Park spazieren gehen.', targets: ['отдыхать', 'гулять'] },
   { ru: 'Он любит знакомиться с людьми и приглашать гостей.', de: 'Er lernt gern Leute kennen und lädt gern Gäste ein.', targets: ['знакомиться', 'приглашать'] },
-  { ru: 'Нельзя обещать и не делать.', de: 'Man darf nicht versprechen und es nicht tun.', targets: ['обещать'] },
   { ru: 'Важно благодарить и извиняться.', de: 'Es ist wichtig, zu danken und sich zu entschuldigen.', targets: ['благодарить', 'извиняться'] },
   { ru: 'Можно бросать и ловить мяч.', de: 'Man kann den Ball werfen und fangen.', targets: ['бросать', 'ловить'] },
   { ru: 'Надо тянуть или толкать дверь.', de: 'Man muss die Tür ziehen oder schieben.', targets: ['тянуть', 'толкать'] },
@@ -14142,12 +14154,12 @@ const SENTENCE_PAIRS = [
   { ru: 'Надо резать хлеб острым ножом.', de: 'Man muss das Brot mit einem scharfen Messer schneiden.', targets: ['резать'] },
   { ru: 'Легко ломать, трудно чинить.', de: 'Kaputtmachen ist leicht, reparieren ist schwer.', targets: ['ломать', 'чинить'] },
   { ru: 'Нужно копать яму и вешать лампу.', de: 'Man muss eine Grube graben und die Lampe aufhängen.', targets: ['копать', 'вешать'] },
-  { ru: 'Надо платить и не тратить много.', de: 'Man muss bezahlen und nicht viel ausgeben.', targets: ['платить', 'тратить'] },
+  { ru: 'Надо платить и не тратить много.', de: 'Man muss bezahlen und nicht viel ausgeben.', targets: ['тратить'] },
   { ru: 'Приятно дарить подарки.', de: 'Es ist schön, Geschenke zu machen.', targets: ['дарить'] },
   { ru: 'Нужно зарабатывать, чтобы жить.', de: 'Man muss verdienen, um zu leben.', targets: ['зарабатывать'] },
   { ru: 'Это может стоить дорого.', de: 'Das kann viel kosten.', targets: ['стоить'] },
   { ru: 'Нужно включать и выключать свет.', de: 'Man muss das Licht einschalten und ausschalten.', targets: ['включать', 'выключать'] },
-  { ru: 'Хорошо уметь плавать и пробовать новое.', de: 'Es ist gut, schwimmen zu können und Neues auszuprobieren.', targets: ['уметь', 'пробовать'] },
+  { ru: 'Хорошо уметь плавать и пробовать новое.', de: 'Es ist gut, schwimmen zu können und Neues auszuprobieren.', targets: ['уметь'] },
   { ru: 'Трудно привыкать к новому месту.', de: 'Es ist schwer, sich an einen neuen Ort zu gewöhnen.', targets: ['привыкать'] },
   // Korrigierte Einzelsätze (Gesamtprüfung 18.10.2026): fertig gebeugt statt Lückenvorlage
   { ru: 'Бабушка знает молитву.', de: 'Die Großmutter kennt ein Gebet.', targets: ['молитва'] },
@@ -14646,7 +14658,7 @@ const GRAMMAR_PART_LEVEL = [
   ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'],
   ['#cf-case-switcher [data-v="Dat."]', 'A2'], ['#cf-case-switcher [data-v="Instr."]', 'A2'],
   ['#ca-case-switcher [data-v="Dat."]', 'A2'], ['#ca-case-switcher [data-v="Instr."]', 'A2'],
-  ['#pronform-scope-prep', 'A2'], ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'],
+  ['#pronform-scope-prep', 'A2'], ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#case-plural-toggle', 'A2'],
   ['#sb-type-dative', 'A2'], ['#sb-type-imperative', 'A2'],
 ];
 // Abzeichen an Chips, Titeln und höher liegenden Modi; über „Mein Niveau“ gedimmt
@@ -15965,6 +15977,51 @@ function gtSpeakFehler(btn) {
 }
 function gtSetDone(panelId, done) { const p = document.getElementById(panelId); if (p) p.classList.toggle('gt-done', done); }
 function gtAnswers(c, t) { return c.answers ? c.answers(t) : [t.answer]; }
+// ── Runden für Eingabe-Werkzeuge (Gesamtprüfung 10.11.) ──
+// 15 Aufgaben, dann Rundenende mit Fehlerliste; „Fehler wiederholen“ spielt genau diese Aufgaben noch einmal
+// (die restart-Funktion holt sie über gtRundeZwang). Rundenstand rs getrennt vom Lernstand.
+const GT_RUNDE = 15;
+const GT_RUNDEN = {};      // Kennung → { rs, restart, panel, q, score, zeile, zuletzt }
+function gtRundeRegistrieren(id, cfg) { GT_RUNDEN[id] = Object.assign(GT_RUNDEN[id] || { rs: { n: 0, richtig: 0, fehler: [], zwang: [], len: GT_RUNDE } }, cfg); return GT_RUNDEN[id]; }
+// am Anfang jeder restart-Funktion: beendete Runde zurücksetzen, ggf. die nächste Wiederholungsaufgabe liefern
+function gtRundeZwang(id) {
+  const R = GT_RUNDEN[id]; if (!R) return null;
+  const rs = R.rs;
+  if (rs.ende) { rs.ende = false; rs.n = 0; rs.richtig = 0; rs.fehler = []; rs.len = GT_RUNDE; gtSetDone(R.panel, false); }
+  const z = rs.zwang.length ? rs.zwang.shift() : null;
+  rs.gezwungen = !!z;
+  return z;
+}
+// Aufgabe abgeschlossen (beim Weitergehen): zählen; true = Runde fertig, Ende wird gezeigt
+function gtRundeWeiter(id, t, ok) {
+  const R = GT_RUNDEN[id]; if (!R || !t) return false;
+  const rs = R.rs;
+  rs.n++; if (ok) rs.richtig++; else rs.fehler.push(t);
+  if (rs.n < rs.len) return false;
+  rs.ende = true;
+  gtSetDone(R.panel, true);
+  document.getElementById(R.q).innerHTML = gtRoundEndHtml(rs.richtig, rs.n, rs.fehler.map(R.zeile), id, "gtRundeWiederholen('" + id + "')", "gtRundeNeu('" + id + "')");
+  const sc = document.getElementById(R.score); if (sc) sc.textContent = '';
+  const res = document.getElementById(R.score.replace(/-score$/, '-result')); if (res) res.textContent = '';
+  const note = document.getElementById(R.score.replace(/-score$/, '-note')); if (note) note.style.display = 'none';
+  return true;
+}
+function gtRundeNeu(id) { const R = GT_RUNDEN[id]; if (R) { R.rs.zwang = []; R.rs.ende = true; R.restart(); gtRundeAnzeige(id); } }
+function gtRundeWiederholen(id) {
+  const R = GT_RUNDEN[id]; if (!R || !R.rs.fehler.length) return;
+  const rs = R.rs, f = rs.fehler.slice();
+  rs.ende = false; rs.n = 0; rs.richtig = 0; rs.fehler = []; rs.len = f.length; rs.zwang = shuffleInPlace(f);
+  gtSetDone(R.panel, false);
+  R.restart(); gtRundeAnzeige(id);
+}
+// Zähler „3 / 15 · 2 richtig“
+function gtRundeAnzeige(id) {
+  const R = GT_RUNDEN[id]; if (!R || R.rs.ende) return;
+  const sc = document.getElementById(R.score);
+  if (sc) sc.textContent = (R.rs.n + 1) + ' / ' + R.rs.len + ' · ' + R.rs.richtig + ' richtig';
+}
+// Fehlerzeile: gegeben → Lösung (russisch, damit der Lautsprecher die Lösung liest)
+function gtRundeZeile(frage, loesung) { return { frage: '<span>' + frage + '</span>', loesung: '<span lang="ru">' + htmlEsc(loesung) + '</span>' }; }
 function gtScore(c) {
   const el = document.getElementById(c.p + '-score');
   if (el) el.textContent = c.score ? c.score(c.st) : c.st.correct + ' von ' + c.st.done + ' richtig';
@@ -15997,6 +16054,7 @@ function gtCheck(c) {
     st.done = (st.done || 0) + 1;
     if (ok) st.correct = (st.correct || 0) + 1;
     progressMark(c.srs(t), c.id(t), ok);
+    st.rOk = ok;
   }
   const erste = !st.answered;
   st.answered = true;
@@ -16018,7 +16076,7 @@ function gtReveal(c) {
   input.value = answer;
   input.className = 'conj-input revealed';
   const neu = !st.answered;
-  if (neu) progressSeen(c.srs(t), c.id(t));
+  if (neu) { progressSeen(c.srs(t), c.id(t)); st.rOk = false; }
   st.answered = true;
   st.lastCorrect = false;
   st.lastInput = answer;               // nächster Druck auf „Prüfen“ führt weiter
@@ -16028,7 +16086,7 @@ function gtReveal(c) {
   if (neu) gtRateOffer(c.p + '-result', ok => {
     st.done = (st.done || 0) + 1;
     if (ok) st.correct = (st.correct || 0) + 1;
-    st.lastCorrect = ok;
+    st.lastCorrect = ok; st.rOk = ok;
     progressMark(c.srs(t), c.id(t), ok);
     gtScore(c);
     if (c.rated) c.rated(t, ok);
@@ -16037,7 +16095,12 @@ function gtReveal(c) {
 function gtNext(c) {
   const t = c.task();
   if (t && !c.st.answered) progressSeen(c.srs(t), c.id(t));
+  if (c.runde && gtRundeWeiter(c.runde, t, c.st.answered && c.st.rOk)) return;
+  // Zufalls-Werkzeuge: nie zweimal hintereinander genau dieselbe Aufgabe
+  const vorher = c.zufall && t ? JSON.stringify(t) : null;
   c.restart();
+  for (let i = 0; vorher && i < 5 && JSON.stringify(c.task()) === vorher && !(c.runde && GT_RUNDEN[c.runde].rs.gezwungen); i++) c.restart();
+  if (c.runde) { gtRundeAnzeige(c.runde); c.st.rOk = undefined; }
 }
 
 // Vergleich für die Grammatikwerkzeuge: exakt, ё=е — und dieselbe
@@ -16891,7 +16954,9 @@ function dialogFocusables(box) {
       });
     } else if (!offen && war) {
       dialogStack.splice(dialogStack.indexOf(o), 1);
-      const op = o._opener; o._opener = null;
+      let op = o._opener; o._opener = null;
+      // aus dem ⋯-Menü geöffnet: der Menüeintrag ist jetzt versteckt – zurück zum ⋯-Knopf
+      if (op && !op.getClientRects().length && op.closest('.gt-more')) op = op.closest('.gt-more').querySelector('.gt-more-btn');
       const a = document.activeElement;
       if ((!a || a === document.body || o.contains(a)) && op && op.isConnected && op.getClientRects().length) op.focus({ preventScroll: true });
     }
@@ -17386,6 +17451,16 @@ function updateGtSettingsSummary(root) {
   });
 }
 // ⋯-Menü in der Kopfzeile; Einträge mit data-view nur, wenn diese Ansicht sichtbar ist
+// Kopf der Grammatik-Werkzeuge (10.11.): Fortschritt und ⋯ bleiben zusammen rechts – bricht der Kopf
+// am Handy um, rutschte das ⋯ sonst allein nach links und sein Menü aus dem Bild
+(function gtHeadRight() {
+  document.querySelectorAll('.grammar-panel-header').forEach(h => {
+    const pr = h.querySelector(':scope > .grammar-panel-progress'), m = h.querySelector(':scope > .gt-more');
+    if (!pr || !m) return;
+    const w = document.createElement('span'); w.className = 'gt-head-right';
+    pr.before(w); w.append(pr, m);
+  });
+})();
 function toggleGtMore(btn) {
   const box = btn.closest('.gt-more');
   const open = !box.classList.contains('open');
@@ -17406,6 +17481,8 @@ function closeGtMore() {
     b.classList.remove('open');
     const btn = b.querySelector('.gt-more-btn');
     if (btn) btn.setAttribute('aria-expanded', 'false');
+    // Fokus lag im Menü: zurück auf den ⋯-Knopf (sonst landet er im Nichts, auch nach einem Dialog)
+    if (btn && b.querySelector('.gt-more-menu').contains(document.activeElement)) btn.focus({ preventScroll: true });
   });
 }
 document.addEventListener('click', e => { if (!e.target.closest('.gt-more')) closeGtMore(); });
@@ -19340,7 +19417,7 @@ function rebuildConjVerbSelect() {
     const total = getAllVocabVerbs().length;
     const covered = Object.keys(conjugationData).length;
     const an = conjState.scope === 'all';
-    scopeBtn.setAttribute('aria-checked', an ? 'true' : 'false');
+    scopeBtn.setAttribute('aria-pressed', an ? 'true' : 'false');
     scopeBtn.classList.toggle('gt-on', an);
     scopeBtn.querySelector('span').textContent = 'Auch Verben ohne Tabelle' + (an ? ' (' + covered + ' von ' + total + ' mit Tabelle)' : '');
   }
@@ -19533,7 +19610,8 @@ function openAspect() {
 }
 function restartAspect() {
   const P = aspectPairs();
-  const ipf = progressNext('aspect:' + aspectState.dir, Object.keys(P), aspectState.current ? aspectState.current.ipf : null);
+  const z = gtRundeZwang('aspect');
+  const ipf = z && P[z.ipf] ? z.ipf : progressNext('aspect:' + aspectState.dir, Object.keys(P), aspectState.current ? aspectState.current.ipf : null);
   const d = P[ipf];
   // fwd: gegeben ipf, gesucht pf. back: gegeben pf, gesucht ipf.
   const given = aspectState.dir === 'fwd' ? ipf : d.pf;
@@ -19552,11 +19630,14 @@ function restartAspect() {
   document.getElementById('aspect-note').style.display = 'none';
   document.getElementById('aspect-score').textContent =
     aspectState.done ? aspectState.correct + ' von ' + aspectState.done + ' richtig' : '';
+  gtRundeAnzeige('aspect');
 }
 const ASPECT_DRILL = {
   p: 'aspect', st: aspectState, task: () => aspectState.current,
   srs: () => 'aspect:' + aspectState.dir, id: t => t.ipf,
   restart: () => restartAspect(), weiter: 'das nächste Paar',
+  runde: gtRundeRegistrieren('aspect', { restart: () => restartAspect(), panel: 'aspect-practice', q: 'aspect-q', score: 'aspect-score',
+    zeile: t => gtRundeZeile('<span lang="ru">' + htmlEsc(t.given) + '</span>', t.answer) }) && 'aspect',
   after: t => {
     // Bildungsart (8.11.) und erläuternde Notiz – erst nach der Antwort
     const noteEl = document.getElementById('aspect-note');
@@ -21686,7 +21767,7 @@ const WG_ADJ_FIT = {
   'тяжёлый': ['G', 'день неделя год время жизнь вопрос урок'],
   'холодный': ['EKW', 'дом квартира комната кухня море озеро река город страна ночь утро день вечер зеркало'],
   'горячий': ['E', ''],
-  'дорогой': ['POGVE', ''],
+  'дорогой': ['OGVE', ''],   // ohne Personen: дорогая дочь hieße „liebe“, nicht „teure“ Tochter
   'дешёвый': ['GVE', 'квартира магазин'],
   'интересный': ['PA', 'книга письмо словарь город музей парк место страна вечер день неделя год праздник'],
   'высокий': ['', 'гора дом мост школа музей стул стол дверь окно лампа'],
@@ -21775,8 +21856,9 @@ function wgFits(adj, noun) {
   return (!!f[0] && f[0].includes(WG_NOUN_CLASS[noun] || '#')) || (' ' + f[1] + ' ').includes(' ' + noun + ' ');
 }
 // Zieht ein passendes Paar; plural = Mehrzahl oder Zahl 2–4 (dann keine Stoffwörter)
-function wgPickAdjNoun(plural) {
-  const nouns = plural ? wgState.pairs.nouns.filter(n => !WG_MASS.has(n)) : wgState.pairs.nouns;
+function wgPickAdjNoun(plural, erlaubt) {
+  let nouns = plural ? wgState.pairs.nouns.filter(n => !WG_MASS.has(n)) : wgState.pairs.nouns;
+  if (erlaubt) { const e = nouns.filter(n => erlaubt.has(n)); if (e.length) nouns = e; }
   for (let i = 0; i < 60; i++) {
     const noun = wgRand(nouns);
     const adjs = wgState.pairs.adjs.filter(a => wgFits(a, noun));
@@ -22418,19 +22500,24 @@ const WG_BUILDERS = {
   np() {
     const det = wgState.type === 'detnoun' ? wgRand(Object.keys(WG_DETERMINERS)) : null;
     const mitAdj = wgState.type === 'adjnoun' || wgState.type === 'prepphrase';
-    const paar = mitAdj ? wgPickAdjNoun(!det && wgState.number === 'pl') : null;
-    const noun = paar ? paar.noun : wgRand(wgState.pairs.nouns);
-    const adj = paar ? paar.adj : null;
-    let prep = null;
-    let effKasus = wgState.caseScope === 'all' ? wgRand(WG_CASES) : wgState.caseScope;
+    let prep = null, erlaubt = null;
     if (wgState.type === 'prepphrase') {
-      // dk = der Fall, den die deutsche Präposition verlangt
-      prep = wgRand([
+      // dk = der Fall, den die deutsche Präposition verlangt. Substantive nur, wenn sie zur Präposition
+      // passen (dieselben Listen wie im Kasus-Drill, PREP_SATZ) – kein „в простом яйце“ (Gesamtprüfung 10.11.)
+      const passend = x => new Set((PREP_SATZ[x.p + ':' + x.k] || []).flatMap(t => t.n).filter(n => wgState.pairs.nouns.includes(n) && wgLocAllowed(x.p, n)));
+      const kand = [
         { p: 'в', k: 'Präp.', de: 'in', dk: 'Dat' }, { p: 'на', k: 'Präp.', de: 'auf', dk: 'Dat' },
         { p: 'с', k: 'Instr.', de: 'mit', dk: 'Dat' }, { p: 'у', k: 'Gen.', de: 'bei', dk: 'Dat' },
         { p: 'к', k: 'Dat.', de: 'zu', dk: 'Dat' },
         { p: 'о', k: 'Präp.', de: 'über', dk: 'Akk' }, { p: 'для', k: 'Gen.', de: 'für', dk: 'Akk' },
-      ].filter(x => wgLocAllowed(x.p, noun)));
+      ].map(x => Object.assign({ n: passend(x) }, x)).filter(x => x.n.size);
+      prep = wgRand(kand); erlaubt = prep.n;
+    }
+    const paar = mitAdj ? wgPickAdjNoun(!det && wgState.number === 'pl', erlaubt) : null;
+    const noun = paar ? paar.noun : wgRand(wgState.pairs.nouns);
+    const adj = paar ? paar.adj : null;
+    let effKasus = wgState.caseScope === 'all' ? wgRand(WG_CASES) : wgState.caseScope;
+    if (prep) {
       if (prep.p === 'на' && WG_LOC_DE[noun]) prep = Object.assign({}, prep, { de: WG_LOC_DE[noun] });
       effKasus = prep.k;
     }
@@ -22477,8 +22564,15 @@ function wgPrepForm(prep, following) {
 }
 
 // Erzeugt die nächste Aufgabe und zeigt sie an.
+const wgRundeId = () => wgState.tool === 'sentence' ? 'sb' : 'wg';
+['wg', 'sb'].forEach(k => gtRundeRegistrieren(k, { restart: () => restartWordgroup(), panel: k === 'sb' ? 'overlay-sentencebuild' : 'overlay-wordgroup',
+  q: k + '-q', score: k + '-score',
+  zeile: t => ({ satz: '<span lang="ru">' + htmlEsc(t.fullAnswer || t.answer) + '</span> – ' + String(t.promptDe || '').replace(/<[^>]+>/g, '') }) }));
 function restartWordgroup() {
   if (!wgState.pairs) wgState.pairs = buildWordgroupPairs();
+  const z = gtRundeZwang(wgRundeId());
+  if (z) wgState.current = z;
+  else {
   // Im Satzbau kommen Subjekt, Verb und Objekt aus SB_ITEMS, damit die Sätze
   // auch inhaltlich Sinn ergeben.
   const sb = (wgState.tool === 'sentence') ? sbPick(wgState.type) : null;
@@ -22511,6 +22605,7 @@ function restartWordgroup() {
     hint: task.hint, sbId, altAnswers, fullAnswer: task.answer, srsKey: task.srsKey || null,
     femAnswers, femSwap: task.femSwap || null,
   };
+  }
   applySbHelpLevel();
   wgState.answered = false; wgState.lastCorrect = false; wgState.lastInput = '';
   wgState.revealStep = 0; wgState.revealed = false;
@@ -22521,6 +22616,7 @@ function restartWordgroup() {
   if (stepBtn) stepBtn.style.display = (wgState.tool === 'sentence') ? '' : 'none';
   wgEl('result').textContent = '';
   wgEl('score').textContent = wgState.done ? wgState.correct + ' von ' + wgState.done + ' richtig' : '';
+  gtRundeAnzeige(wgRundeId());
 }
 
 // Wörter, die als Lücke nichts abfragen: Subjektpronomen, Präpositionen,
@@ -22737,6 +22833,7 @@ function checkWordgroup() {
       if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
       if (cur.sbId) progressMark(sbSrsKey(), cur.sbId, ok);
     }
+    wgState.rOk = ok && !hilfe;
   }
   const ersteAntwort = !wgState.answered;
   wgState.answered = true;
@@ -22787,12 +22884,12 @@ function revealWordgroup() {
 // Lösung ganz aufgedeckt (auf einmal oder Wort für Wort): Selbstbewertung; „Prüfen“ führt weiter
 function wgOfferRate() {
   const cur = wgState.current;
-  wgState.revealed = true;
+  wgState.revealed = true; wgState.rOk = false;
   if (cur.srsKey) progressSeen('wordgroup', cur.srsKey);
   if (cur.sbId) progressSeen(sbSrsKey(), cur.sbId);
   wgEl('result').textContent = '';
   gtRateOffer(wgEl('result'), ok => {
-    wgState.done++; if (ok) wgState.correct++;
+    wgState.done++; if (ok) wgState.correct++; wgState.rOk = ok;
     if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
     if (cur.sbId) progressMark(sbSrsKey(), cur.sbId, ok);
     wgEl('score').textContent = wgState.correct + ' von ' + wgState.done + ' richtig';
@@ -22854,6 +22951,7 @@ function renderWgStepwise() {
 
 function nextWordgroup() {
   if (wgState.current && wgState.current.sbId && !wgState.answered) progressSeen(sbSrsKey(), wgState.current.sbId);
+  if (gtRundeWeiter(wgRundeId(), wgState.current, wgState.answered && wgState.rOk)) return;
   restartWordgroup();
 }
 
@@ -23004,7 +23102,7 @@ function buildCaseFormTask(t) {
 }
 function restartCaseForm(t) {
   const c = cfT(t), st = c.s;
-  let task = null;
+  let task = gtRundeZwang(c.k);
   for (let i = 0; i < 20 && !task; i++) task = buildCaseFormTask(t);
   st.current = task;
   st.answered = false;
@@ -23023,12 +23121,16 @@ function restartCaseForm(t) {
   if (res) res.textContent = '';
   const score = document.getElementById(c.p + '-score');
   if (score) score.textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
+  gtRundeAnzeige(c.k);
 }
 // Substantive und Adjektive teilen sich Kasus bilden; t = 'noun' | 'adj'
 function cfDrill(t) {
   const c = cfT(t);
-  return { p: c.p, st: c.s, task: () => c.s.current, srs: () => c.srs, id: x => x.id, restart: () => restartCaseForm(t) };
+  gtRundeRegistrieren(c.k, { restart: () => restartCaseForm(t), panel: 'overlay-' + c.p, q: c.p + '-q', score: c.p + '-score',
+    zeile: x => gtRundeZeile('<span lang="ru">' + htmlEsc(x.word) + '</span> (' + x.frage + ')', x.answer) });
+  return { p: c.p, st: c.s, task: () => c.s.current, srs: () => c.srs, id: x => x.id, restart: () => restartCaseForm(t), zufall: true, runde: c.k };
 }
+['noun', 'adj'].forEach(t => cfDrill(t));   // Runden beider Werkzeuge gleich anmelden
 function checkCaseForm(t) { gtCheck(cfDrill(t)); }
 function revealCaseForm(t) { gtReveal(cfDrill(t)); }
 function nextCaseForm(t) { gtNext(cfDrill(t)); }
@@ -23205,7 +23307,7 @@ function openPronForm() {
 }
 function restartPronForm() {
   const st = pronFormState;
-  st.current = buildPronFormTask();
+  st.current = gtRundeZwang('pronform') || buildPronFormTask();
   st.answered = false;
   st.lastCorrect = false;
   st.lastInput = '';
@@ -23219,10 +23321,13 @@ function restartPronForm() {
   applyPronFormHint();
   document.getElementById('pronform-result').textContent = '';
   document.getElementById('pronform-score').textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
+  gtRundeAnzeige('pronform');
 }
 const PRONFORM_DRILL = {
   p: 'pronform', st: pronFormState, task: () => pronFormState.current,
-  srs: () => 'pronform', id: t => t.id, restart: () => restartPronForm(),
+  srs: () => 'pronform', id: t => t.id, restart: () => restartPronForm(), zufall: true,
+  runde: gtRundeRegistrieren('pronform', { restart: () => restartPronForm(), panel: 'overlay-pronform', q: 'pronform-q', score: 'pronform-score',
+    zeile: t => gtRundeZeile('<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + t.task, t.answer) }) && 'pronform',
 };
 function checkPronForm() { gtCheck(PRONFORM_DRILL); }
 function revealPronForm() { gtReveal(PRONFORM_DRILL); }
@@ -23441,7 +23546,7 @@ function openAdjForm() {
 }
 function restartAdjForm() {
   const st = adjFormState;
-  st.current = buildAdjFormTask();
+  st.current = gtRundeZwang('adjform') || buildAdjFormTask();
   st.answered = false;
   st.lastCorrect = false;
   st.lastInput = '';
@@ -23456,11 +23561,14 @@ function restartAdjForm() {
   applyAdjFormHint();
   document.getElementById('adjform-result').textContent = '';
   document.getElementById('adjform-score').textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
+  gtRundeAnzeige('adjform');
 }
 // Wo zwei Formen richtig sind (старше/старее, лучший/самый лучший), gilt jede
 const ADJFORM_DRILL = {
   p: 'adjform', st: adjFormState, task: () => adjFormState.current,
-  srs: () => 'adjform', id: t => t.id, answers: t => t.alts, restart: () => restartAdjForm(),
+  srs: () => 'adjform', id: t => t.id, answers: t => t.alts, restart: () => restartAdjForm(), zufall: true,
+  runde: gtRundeRegistrieren('adjform', { restart: () => restartAdjForm(), panel: 'overlay-adjform', q: 'adjform-q', score: 'adjform-score',
+    zeile: t => t.satz ? { satz: '<span lang="ru">' + htmlEsc(t.from).replace(/_{2,}|…/, '<b>' + htmlEsc(t.answer) + '</b>') + '</span>' } : gtRundeZeile('<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + t.task, t.answer) }) && 'adjform',
 };
 function checkAdjForm() { gtCheck(ADJFORM_DRILL); }
 function revealAdjForm() { gtReveal(ADJFORM_DRILL); }
@@ -23531,6 +23639,8 @@ function genderOf(ru) {
 }
 let genderPoolCache = null;
 const GENDER_ADJ_NOUN = /^[a-zäöüß]+(e|er|es|en) [A-ZÄÖÜ][a-zäöüß]+$/;
+// Substantive mit kleingeschriebener Übersetzung (десяток = „zehn Stück“), die trotzdem abgefragt werden
+const GENDER_INCLUDE = new Set(['десяток']);
 function genderPool() {
   if (genderPoolCache) return genderPoolCache;
   const seen = new Map();
@@ -23541,7 +23651,7 @@ function genderPool() {
       // Karten mit zwei Wörtern (паллета / поддон): jedes Wort einzeln abfragen
       (w.ru || '').split(' / ').forEach(ru => {
         // Substantiv = deutsche Übersetzung großgeschrieben oder „Adjektiv + Substantiv“ (alter Mann, offene Stelle)
-        if (!ru || seen.has(ru) || !/^[а-яё-]+$/.test(ru) || !(/^[A-ZÄÖÜ]/.test(de) || GENDER_ADJ_NOUN.test(de))) return;
+        if (!ru || seen.has(ru) || !/^[а-яё-]+$/.test(ru) || !(/^[A-ZÄÖÜ]/.test(de) || GENDER_ADJ_NOUN.test(de) || GENDER_INCLUDE.has(ru))) return;
         const info = genderOf(ru);
         if (info) seen.set(ru, Object.assign({ id: ru, ru, de: stripClarification(de) }, info));
       });
@@ -24024,7 +24134,8 @@ function openNumNoun() {
 function numNounNouns() { return Object.keys(nounDeclensionData).filter(n => nounHas(n, 'sg') && nounHas(n, 'pl')); }
 function restartNumNoun() {
   const nouns = numNounNouns();
-  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  const z = gtRundeZwang('numnoun');
+  const noun = z ? z.noun : nouns[Math.floor(Math.random() * nouns.length)];
   // Zahlen so ziehen, dass alle drei Regelfälle und die Teens-Ausnahme vorkommen
   const buckets = [
     () => [1, 21, 31][Math.floor(Math.random() * 3)],
@@ -24032,7 +24143,7 @@ function restartNumNoun() {
     () => [5, 6, 7, 8, 9, 10, 20, 25, 30, 0][Math.floor(Math.random() * 10)],
     () => [11, 12, 13, 14][Math.floor(Math.random() * 4)],
   ];
-  const n = buckets[Math.floor(Math.random() * buckets.length)]();
+  const n = z ? z.n : buckets[Math.floor(Math.random() * buckets.length)]();
   const [num, kasus, why] = numNounRequiredForm(n);
   // Zählform: пять человек (nicht людей)
   const nd = nounDeclensionData[noun], answer = num === 'pl' && kasus === 'Gen.' && nd.countGenPl ? nd.countGenPl : nd[num][kasus];
@@ -24051,13 +24162,16 @@ function restartNumNoun() {
   document.getElementById('numnoun-result').textContent = '';
   document.getElementById('numnoun-score').textContent =
     numNounState.done ? numNounState.correct + ' von ' + numNounState.done + ' richtig' : '';
+  gtRundeAnzeige('numnoun');
 }
 
 // Lernstand je Substantiv und Regelfall (Endziffer 1 / 2–4 / sonst)
 const NUMNOUN_DRILL = {
   p: 'numnoun', st: numNounState, task: () => numNounState.current,
   srs: () => 'numnoun', id: t => t.noun + ':' + t.why,
-  restart: () => restartNumNoun(),
+  restart: () => restartNumNoun(), zufall: true,
+  runde: gtRundeRegistrieren('numnoun', { restart: () => restartNumNoun(), panel: 'overlay-numnoun', q: 'numnoun-q', score: 'numnoun-score',
+    zeile: t => gtRundeZeile('<span lang="ru">' + t.n + ' + ' + htmlEsc(t.noun) + '</span>', t.n + ' ' + t.answer) }) && 'numnoun',
   extra: t => ' <span style="opacity:0.75">(' + t.why + ')</span>',
 };
 function checkNumNoun() { gtCheck(NUMNOUN_DRILL); }
@@ -24433,6 +24547,7 @@ function toggleCaseHint() {
   if (btn) {
     setGtToggle(btn, caseState.hintVisible);
   }
+  updateGtSettingsSummary();
 }
 
 function setCaseMode(mode) {
@@ -24448,6 +24563,7 @@ function setCaseMode(mode) {
   document.getElementById('case-choice-actions').style.display = abstractUI ? '' : 'none';
   ['case-hint-toggle', 'case-plural-toggle', 'case-kasus-group'].forEach(id => { document.getElementById(id).style.display = abstractUI ? 'none' : ''; });
   applyCaseMenu();
+  updateGtSettingsSummary();
   restartCaseDrill();
 }
 
@@ -24478,12 +24594,12 @@ function applyCaseMenu() {
 }
 function setCaseKasus(k) {
   caseState.kasus = k;
-  saveToolSettings(); applyCaseMenu();
+  saveToolSettings(); applyCaseMenu(); updateGtSettingsSummary();
   restartCaseDrill();
 }
 function toggleCasePlural() {
   caseState.plural = !caseState.plural;
-  saveToolSettings(); applyCaseMenu();
+  saveToolSettings(); applyCaseMenu(); updateGtSettingsSummary();
   if (caseState.mode === 'word') restartCaseDrill();
 }
 function setCaseScope(scope) {
@@ -24686,7 +24802,14 @@ function restartCaseWord() {
       queue[frei[Math.floor(Math.random() * frei.length)]] = t; n++;
     }
   }
-  startCaseWordRound(shuffleInPlace(queue));
+  shuffleInPlace(queue);
+  // nicht zweimal dieselbe Aufgabe direkt hintereinander
+  const gleich = (a, b) => a && b && a.id === b.id && a.noun === b.noun && a.number === b.number;
+  for (let i = 1; i < queue.length; i++) if (gleich(queue[i], queue[i - 1])) {
+    const j = queue.findIndex((x, k) => k !== i && !gleich(x, queue[i - 1]) && !gleich(x, queue[i + 1]) && !gleich(queue[i], queue[k - 1]) && !gleich(queue[i], queue[k + 1]));
+    if (j >= 0) [queue[i], queue[j]] = [queue[j], queue[i]];
+  }
+  startCaseWordRound(queue);
 }
 function startCaseWordRound(queue) {
   caseState.wordQueue = queue;
@@ -25061,6 +25184,8 @@ function motionPairKeys() {
 // Partner-Drill: gegeben ist eine Seite des Paares, gesucht die andere.
 function restartMotionPair(forcePair) {
   const keys = motionPairKeys();
+  const z = gtRundeZwang('motion-pair');
+  if (z && !forcePair) forcePair = z.pair;
   const pair = (forcePair && motionData[forcePair])
     ? forcePair
     : progressNext('motion:' + motionState.dir, keys, motionState.current ? motionState.current.pair : null);
@@ -25081,12 +25206,15 @@ function restartMotionPair(forcePair) {
   document.getElementById('motion-pair-note').style.display = 'none';
   document.getElementById('motion-pair-score').textContent =
     motionState.done ? motionState.correct + ' von ' + motionState.done + ' richtig' : '';
+  gtRundeAnzeige('motion-pair');
 }
 
 const MOTION_DRILL = {
   p: 'motion-pair', st: motionState, task: () => motionState.current,
   srs: () => 'motion:' + motionState.dir, id: t => t.pair,
   restart: () => restartMotionPair(), weiter: 'das nächste Paar',
+  runde: gtRundeRegistrieren('motion-pair', { restart: () => restartMotionPair(), panel: 'motion-pair-view', q: 'motion-pair-q', score: 'motion-pair-score',
+    zeile: t => gtRundeZeile('<span lang="ru">' + htmlEsc(t.given) + '</span>', t.answer) }) && 'motion-pair',
   after: () => showMotionPairNote(),
 };
 function checkMotionPair() { gtCheck(MOTION_DRILL); }

@@ -11,12 +11,13 @@ const { chromium } = require('playwright');
   const r = await p.evaluate(() => {
     setAppView('grammar'); openConjugate(); const out = {};
     const leiste = document.querySelector('#overlay-conjugate .gt-settings-row, .grammar-panel.open .gt-settings-row');
-    out.leiste = !leiste.querySelector('#conj-sort-btn') && !leiste.querySelector('#conj-scope-btn') && !!leiste.querySelector('#conj-class-toggle') && !!leiste.querySelector('#conj-endings-toggle');
+    // seit 11.11. stehen alle Einstellungen in der Leiste (einheitlich), im ⋯-Menü nur „Leeren“
+    out.leiste = !!leiste.querySelector('#conj-sort-btn') && !!leiste.querySelector('#conj-scope-btn') && !!leiste.querySelector('#conj-class-toggle') && !!leiste.querySelector('#conj-endings-toggle') && !!leiste.querySelector('.grammar-note-toggle');
     const menu = document.querySelector('.grammar-panel.open .gt-more-menu');
-    out.menu = !!menu.querySelector('#conj-sort-btn') && !!menu.querySelector('#conj-scope-btn');
+    out.menu = !menu.querySelector('#conj-sort-btn') && !menu.querySelector('#conj-scope-btn') && !menu.querySelector('.grammar-note-toggle') && /Leeren/.test(menu.textContent);
     out.sort = document.getElementById('conj-sort-btn').textContent.trim();
-    toggleConjScope(); const sc = document.getElementById('conj-scope-btn'); out.scope = [sc.getAttribute('aria-checked'), sc.classList.contains('gt-on'), sc.textContent.trim(), [...document.querySelectorAll('#conj-verb-select option')].length];
-    toggleConjScope(); out.scopeAus = [sc.getAttribute('aria-checked'), sc.textContent.trim(), [...document.querySelectorAll('#conj-verb-select option')].length];
+    toggleConjScope(); const sc = document.getElementById('conj-scope-btn'); out.scope = [sc.getAttribute('aria-pressed'), sc.classList.contains('gt-on'), sc.textContent.trim(), [...document.querySelectorAll('#conj-verb-select option')].length];
+    toggleConjScope(); out.scopeAus = [sc.getAttribute('aria-pressed'), sc.textContent.trim(), [...document.querySelectorAll('#conj-verb-select option')].length];
     // Muster
     document.getElementById('conj-verb-select').value = 'строить'; renderConjugationTable();
     out.chipAus = !document.querySelector('#conj-de-hint .conj-class-chip');
@@ -38,8 +39,8 @@ const { chromium } = require('playwright');
     out.stems = { хотеть: conjStem(Object.values(conjugationData['хотеть'].nonPast)), быть: conjStem(['буду', 'будешь', 'будет', 'будем', 'будете', 'будут']), zweiWort: conjStem(['буду жить', 'будешь жить']) };
     return out;
   });
-  ok('Leiste: nur Aspekt, Zeit, Muster, Nur Endungen; Reihenfolge und Umfang im ⋯-Menü', r.leiste && r.menu && r.sort === 'Reihenfolge: Regel → Sonderfall', JSON.stringify([r.leiste, r.menu, r.sort]));
-  ok('„Auch Verben ohne Tabelle“ als Haken im Menü, erweitert die Liste', r.scope[0] === 'true' && r.scope[1] && /mit Tabelle\)$/.test(r.scope[2]) && r.scope[3] > r.scopeAus[2] && r.scopeAus[0] === 'false' && r.scopeAus[1] === 'Auch Verben ohne Tabelle', JSON.stringify([r.scope, r.scopeAus]));
+  ok('Leiste: alle Einstellungen (auch Reihenfolge, Umfang, Erklärung zur Form); im ⋯-Menü nur Leeren', r.leiste && r.menu && r.sort === 'Reihenfolge: Regel → Sonderfall', JSON.stringify([r.leiste, r.menu, r.sort]));
+  ok('„Auch Verben ohne Tabelle“ als Schalter in der Leiste, erweitert die Liste', r.scope[0] === 'true' && r.scope[1] && /mit Tabelle\)$/.test(r.scope[2]) && r.scope[3] > r.scopeAus[2] && r.scopeAus[0] === 'false' && r.scopeAus[1] === 'Auch Verben ohne Tabelle', JSON.stringify([r.scope, r.scopeAus]));
   ok('Muster: aus = kein Abzeichen; an = „2. Konj.“ / „Sonderfall“; nicht in der Vergangenheit', r.chipAus && r.chip === '2. Konj.' && r.chipSonder === 'Sonderfall' && r.chipPast, JSON.stringify([r.chipAus, r.chip, r.chipSonder, r.chipPast]));
   ok('Nur Endungen: Stamm пиш vorgegeben, Endungen genügen, wird gespeichert', r.stamm.length === 6 && r.stamm.every(x => x === 'пиш') && /^6 \/ 6 richtig/.test(r.richtig) && r.srs && r.srs.correct === 1, JSON.stringify([r.stamm, r.richtig, r.srs]));
   ok('Aufdecken zeigt nur die Endung; falsche Endung wird erkannt', r.aufgedeckt[0] === 'у' && r.aufgedeckt[1] === 'пиш' && /^0 \/ 6 richtig/.test(r.falsch), JSON.stringify([r.aufgedeckt, r.falsch]));
