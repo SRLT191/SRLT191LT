@@ -1,0 +1,30 @@
+const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
+// Satzbau (10.11.): Kasus-Hinweis („Hinweis: Objekt im Akk“) über den Schalter „Kasus-Hinweis“ ausblendbar, bleibt gemerkt
+const { chromium } = require('playwright');
+(async () => {
+  const b = await chromium.launch(); const R = []; const errs = [];
+  const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
+  const p = await b.newPage({ viewport: { width: 1400, height: 900 } }); p.on('pageerror', e => errs.push(e.message));
+  await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
+  const zeige = () => p.evaluate(() => { setAppView('grammar'); openSentenceBuild(); setSbHelp('free');
+    for (let i = 0; i < 40 && !wgState.current.hint; i++) nextWordgroup(); updateGtSettingsSummary();
+    return { hint: wgState.current.hint, text: [...document.querySelectorAll('.grammar-panel.open .case-hint')].map(x => x.textContent).join('|'), btn: document.getElementById('sb-hint-toggle').getAttribute('aria-pressed'), sum: document.querySelector('.grammar-panel.open .gt-settings-sum').textContent }; });
+  const a = await zeige();
+  ok('Standard: Hinweis sichtbar, Schalter an', !!a.hint && a.text.includes('Hinweis: ' + a.hint) && a.btn === 'true' && /Kasus-Hinweis/.test(a.sum), JSON.stringify(a));
+  const c = await p.evaluate(() => { toggleSbHint(); return { text: [...document.querySelectorAll('.grammar-panel.open .case-hint')].map(x => x.textContent).join('|'), btn: document.getElementById('sb-hint-toggle').getAttribute('aria-pressed'), sum: document.querySelector('.grammar-panel.open .gt-settings-sum').textContent }; });
+  ok('Schalter aus: Hinweis verschwindet sofort, Kurzfassung ohne „Kasus-Hinweis“', !/Hinweis:/.test(c.text) && c.btn === 'false' && !/Kasus-Hinweis/.test(c.sum), JSON.stringify(c));
+  await p.reload(); await p.waitForTimeout(400);
+  const d = await zeige();
+  ok('bleibt nach dem Neuladen aus', d.btn === 'false' && !/Hinweis:/.test(d.text), JSON.stringify(d));
+  const w = await p.evaluate(() => { openWordgroup(); for (let i = 0; i < 40 && !wgState.current.hint; i++) nextWordgroup(); return !wgState.current.hint || /gesuchte Form/.test(document.querySelector('.grammar-panel.open .conj-q, .grammar-panel.open [id$="-q"]').textContent); });
+  ok('Wortgruppen unverändert („gesuchte Form“ bleibt)', w);
+  const ctx = await b.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e => errs.push(e.message));
+  await m.goto('file://' + APP_PATH); await m.waitForTimeout(400);
+  const h = await m.evaluate(() => { setAppView('grammar'); openSentenceBuild(); document.querySelector('.grammar-panel.open .gt-settings-toggle').click(); const r = document.getElementById('sb-hint-toggle').getBoundingClientRect(); return { sichtbar: r.width > 40 && r.height >= 30, ueber: document.documentElement.scrollWidth - innerWidth }; });
+  ok('Handy: Schalter in den Einstellungen erreichbar, kein Überlauf', h.sichtbar && h.ueber <= 0, JSON.stringify(h));
+  await ctx.close();
+  ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
+  R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
+  console.log('\n' + R.filter(x => x[0] === 'OK ').length + ' von ' + R.length + ' bestanden');
+  await b.close();
+})();
