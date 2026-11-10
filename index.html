@@ -2164,7 +2164,7 @@
 <button class="mode-btn active" id="sb-help-blocks" onclick="setSbHelp('blocks')" title="Alle Wörter in der Grundform vorgeben">Grundformen</button>
 <button class="mode-btn" id="sb-help-gap" onclick="setSbHelp('gap')" title="Fertiger Satz mit einer Lücke">Lücke</button>
 <button class="mode-btn" id="sb-help-free" onclick="setSbHelp('free')" title="Nur der deutsche Satz">Nur Deutsch</button>
-</div></span></div></div></div>
+</div></span><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Kasus-Hinweis" id="sb-hint-toggle" onclick="toggleSbHint()" title="Hinweis zum Kasus unter dem Satz ein-/ausblenden (z. B. „Objekt im Akk“)"><i class="ti ti-eye"></i> <span>Kasus-Hinweis</span></button></div></div></div>
 
 <div id="sb-body"></div>
 </div>
@@ -17274,7 +17274,7 @@ function syncGtToggles() {
     'noun-hint-toggle': () => nounState.hintVisible, 'case-hint-toggle': () => caseState.hintVisible,
     'cf-hint-toggle': () => caseFormState.hintVisible, 'ca-hint-toggle': () => caseAdjState.hintVisible,
     'pronform-hint-toggle': () => pronFormState.hintVisible, 'transform-hint-toggle': () => transformState.hintVisible,
-    'wg-hint-toggle': () => wgState.hintVisible, 'adjform-hint-toggle': () => adjFormState.hintVisible, 'rektion-hint-toggle': () => rektionState.hintVisible,
+    'wg-hint-toggle': () => wgState.hintVisible, 'sb-hint-toggle': () => wgState.sbHintVisible, 'adjform-hint-toggle': () => adjFormState.hintVisible, 'rektion-hint-toggle': () => rektionState.hintVisible,
   };
   Object.keys(st).forEach(id => { const b = document.getElementById(id); if (b) setGtToggle(b, st[id]()); });
 }
@@ -18979,6 +18979,7 @@ const TOOL_SETTINGS = [
   ['wgTense', ...tsProp(() => wgState, 'tense'), tsOneOf('present', 'past', 'future')],
   ['wgCaseScope', ...tsProp(() => wgState, 'caseScope'), TS_STR],
   ['wgHintVisible', ...tsProp(() => wgState, 'hintVisible'), TS_BOOL],
+  ['sbHintVisible', ...tsProp(() => wgState, 'sbHintVisible'), TS_BOOL],
   ['sbHelp', ...tsProp(() => sbState, 'help'), tsOneOf('blocks', 'gap', 'free')],
   ['pronounGender', () => pronounGender, v => { pronounGender = v; }, v => PRONOUN_GENDERS.includes(v)],
   ['cfNumber', ...tsProp(() => caseFormState, 'number'), tsOneOf('mixed', 'sg', 'pl')],
@@ -19058,6 +19059,8 @@ function loadToolSettings() {
   if (trBtn) {
     setGtToggle(trBtn, transformState.hintVisible);
   }
+  const sbBtn = document.getElementById('sb-hint-toggle');
+  if (sbBtn) setGtToggle(sbBtn, wgState.sbHintVisible);
   const wgBtn = document.getElementById('wg-hint-toggle');
   if (wgBtn) {
     setGtToggle(wgBtn, wgState.hintVisible);
@@ -21265,6 +21268,7 @@ function isAnimate(data, ru) {
 // Zustand: Wortgruppen/Satzbau
 const wgState = {
   number: 'sg',
+  sbHintVisible: true,   // Satzbau: Kasus-Hinweis unter dem Satz (10.11.)
   caseScope: 'all',
   current: null,
   done: 0,
@@ -21525,6 +21529,14 @@ function toggleWordgroupHint() {
     setGtToggle(btn, wgState.hintVisible);
   }
   renderWordgroupTask();
+}
+// Satzbau (10.11.): Kasus-Hinweis unter dem Satz ein-/ausblenden
+function toggleSbHint() {
+  wgState.sbHintVisible = !wgState.sbHintVisible;
+  saveToolSettings();
+  setGtToggle(document.getElementById('sb-hint-toggle'), wgState.sbHintVisible);
+  updateGtSettingsSummary();
+  if (wgState.tool === 'sentence' && wgState.current) renderWordgroupTask();
 }
 function toggleWordgroupInfo() {
   const p = document.getElementById('wordgroup-info-panel');
@@ -22495,7 +22507,7 @@ function renderWordgroupTask() {
   const zeigeTop = wgState.current.promptTop && (wgState.tool === 'sentence' || wgState.hintVisible);
   wgEl('q').innerHTML =
     (zeigeTop ? '<span class="case-prep" lang="ru">' + wgState.current.promptTop + '</span>' : '') + wgState.current.promptDe +
-    (wgState.current.hint ? '<span class="case-hint">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : 'gesuchte Form: ') + wgState.current.hint + '</span>' : '');
+    (wgState.current.hint && (wgState.tool !== 'sentence' || wgState.sbHintVisible) ? '<span class="case-hint">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : 'gesuchte Form: ') + wgState.current.hint + '</span>' : '');
   const inputRow = wgEl('input-row');
   const clickArea = wgEl('click-area');
   if (wgState.answerMode === 'click') {
