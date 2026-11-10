@@ -14,7 +14,9 @@ lauf() {
   [ "$name" = schmalansicht ] && ! echo "$out" | grep -q 'kein Überlauf' && grund="Überlauf"
   [ "$name" = dunkelansicht ] && echo "$out" | grep -qE '[1-9][0-9]* verschiedene Stellen' && grund="Kontrast"
   if [ -n "$grund" ]; then
-    echo "FEHLER  $name ($grund)"; echo "$out" | grep -E '^XX |\[ ?'"'" | head -5 | sed 's/^/        /'; fehler=1
+    echo "FEHLER  $name ($grund)"
+    # Zeilen mit dem Fund; bei reinem Exit-Code auch Zeilen mit typischen Fundwörtern (pruefen-knoepfe u. a.)
+    echo "$out" | grep -E '^XX |\[ ?'"'"'|ÄNDERT|BLEIBT|ERNEUT|ZÄHLT ALS RICHTIG|: \?|^\?\? |Werkzeuge ohne' | grep -v 'Werkzeuge ohne Prüfen-Prüfung: keine' | head -8 | sed 's/^/        /'; fehler=1
   else
     echo "ok      $name — $(echo "$out" | grep -E 'bestanden|kein Überlauf|verschiedene Stellen' | tail -1)"
   fi

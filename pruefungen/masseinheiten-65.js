@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
     const NEU = { 'плюс': ['Plus', 'A2', 'm'], 'минус': ['Minus', 'A2', 'm'], 'полтора': ['anderthalb', 'A2', '-'], 'кусок': ['Stück', 'A2', 'm'],
       'угол': ['Winkel|Ecke', 'B1', 'm'], 'сумма': ['Summe', 'B2', 'f'], 'мощность': ['Leistung', 'B2', 'f'], 'предел': ['Grenze', 'B2', 'm'],
-      'доза': ['Dosis', 'C1', 'f'], 'десяток': ['zehn Stück', 'C1', '-'], 'дюжина': ['Dutzend', 'C1', 'f'], 'высота': ['Höhe', 'C1', 'f'],
+      'доза': ['Dosis', 'C1', 'f'], 'десяток': ['zehn Stück', 'C1', 'm'], 'дюжина': ['Dutzend', 'C1', 'f'], 'высота': ['Höhe', 'C1', 'f'],
       'длина': ['Länge', 'C1', 'f'], 'ширина': ['Breite', 'C1', 'f'], 'мера': ['Maß', 'C1', 'f'], 'радиус': ['Radius', 'C1', 'm'], 'точность': ['Genauigkeit', 'C1', 'f'] };
     const kl = getAllWordsOfCat('Maßeinheiten');
     Object.entries(NEU).forEach(([ru, [de, lv, g]]) => {

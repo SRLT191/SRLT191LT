@@ -12,7 +12,8 @@ const { chromium } = require('playwright');
   const r = await p.evaluate(async () => {
     const out = { fehler: [] }, zl = getAllWordsOfCat('Zustand & Leben');
     const NEU = [['появляться / появиться', 'erscheinen', 'A2'], ['выглядеть', 'aussehen', 'A2'], ['переезжать / переехать', 'umziehen', 'B1'], ['исчезать / исчезнуть', 'verschwinden', 'B1']];
-    out.hinten = zl.slice(-4).map(w => w.ru).join(',') === NEU.map(x => x[0]).join(','); out.n = zl.length;
+    // seit 10.11. nach Stufe sortiert: die vier neuen Karten stehen in der Kategorie
+    out.hinten = NEU.every(x => zl.some(w => w.ru === x[0])); out.n = zl.length;
     NEU.forEach(([ru, de, lv]) => { const w = zl.find(x => x.ru === ru), s = w && getWordSentence(w);
       if (!w || w.de.join() !== de || wordLevel(w) !== lv || w.tr !== ru.split(' / ').map(trLetters).join(' / ')) out.fehler.push(ru);
       if (!s || sentenceLevel(s.ru, [ru]) !== lv) out.fehler.push(ru + ' Satz'); });
@@ -26,7 +27,7 @@ const { chromium } = require('playwright');
     openWordDetail(allVocabWords().find(x => x.ru === 'переезжать / переехать')); out.badge = (document.querySelector('#wd-sentence-ru .lvl-badge') || {}).textContent;
     return out;
   });
-  ok('Zustand & Leben 30, vier neue Karten hinten, mit Übersetzung, Stufe und Satz', r.n === 30 && r.hinten && r.fehler.length === 0, r.fehler.join(' | '));
+  ok('Zustand & Leben 30, vier neue Karten (nach Stufe sortiert), mit Übersetzung, Stufe und Satz', r.n === 30 && r.hinten && r.fehler.length === 0, r.fehler.join(' | '));
   ok('vollendete Verben auf ihren Karten (Stichprobe), стирать/сдавать/учить ohne Partner', r.fehlt.length === 0 && r.ohne.length === 0, JSON.stringify([r.fehlt, r.ohne]));
   ok('Lernstand übernommen (играть → играть / сыграть)', r.lern && r.lern.correct === 1 && !r.alt, JSON.stringify(r.lern));
   ok('DE → RU: jedes der beiden Verben gilt', r.antwort.join() === '1,1', r.antwort.join());

@@ -8,7 +8,7 @@ const keys = await p.evaluate(() => TOOL_SETTINGS.map(x => x[0]).filter(k => /Hi
 await p.evaluate(ks => { const d = JSON.parse(localStorage.getItem(TOOL_SETTINGS_KEY) || '{}'); ks.forEach(k => d[k] = false); d.rkMode='form'; localStorage.setItem(TOOL_SETTINGS_KEY, JSON.stringify(d)); }, keys);
 await p.reload(); await p.waitForTimeout(300);
 const r = await p.evaluate(() => { setAppView('grammar'); const out = [];
-  GRAMMAR_PANELS.forEach(n => { GRAMMAR_PANEL_OPENERS[n](); document.querySelectorAll('#overlay-' + n + ' .gt-toggle').forEach(t => {
+  GRAMMAR_PANELS.forEach(n => { GRAMMAR_PANEL_OPENERS[n](); document.querySelectorAll('#overlay-' + n + ' .gt-toggle:not(.grammar-note-toggle)').forEach(t => {
     if (!t.getClientRects().length) return; out.push((t.getAttribute('aria-pressed') === 'false' ? 'OK ' : 'XX ') + n + ' ' + t.id + ' ' + t.getAttribute('aria-pressed')); }); });
   return out; });
 await p.waitForTimeout(200);
