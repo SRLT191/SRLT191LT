@@ -630,7 +630,9 @@
   .tf-blank.tf-filled.ok { color: var(--c-success-text); }
   .tf-blank.tf-filled.bad { color: var(--c-error-text); }
   .gt-fehler { list-style: none; margin: 12px auto 4px; padding: 0; max-width: 460px; text-align: left; font-size: 14px; color: var(--c-text-primary); }
-  .gt-fehler li { padding: 5px 0; border-bottom: 1px solid var(--c-border-light); }
+  .gt-fehler li { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--c-border-light); }
+  .gt-fehler-t { flex: 1; }
+  .gt-fehler .gt-fehler-hoeren { flex-shrink: 0; width: 30px; height: 30px; min-height: 30px; }
   .gt-fehler b { color: var(--c-text-primary); }
   .gt-end-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
   .gt-end-actions .tool-btn { font-size: 13.5px; padding: 8px 14px; color: var(--c-text-primary); }
@@ -2065,7 +2067,7 @@
 <p>• <strong>Zahl + Adj + Subst:</strong> Nach 2–4 steht das Substantiv im Genitiv Singular, das Adjektiv im Genitiv Plural (два новых стола) – bei weiblichen Wörtern im Nominativ Plural (две новые книги).</p>
 <p>• <strong>Präposition:</strong> Die Präposition bestimmt den Fall: в новом доме, с моим братом.</p>
 <p><strong>Lebewesen im Akkusativ</strong> sehen aus wie der Genitiv (нового студента), Dinge wie der Nominativ (новый дом).</p>
-<p><strong>Bedienung:</strong> Singular/Plural und Fall wählst du oben. <em>Nur einfache</em> beschränkt die Auswahl auf harte Adjektive und regelmäßige Substantive. Antworten kannst du frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Mit <em>Vorlesen</em> (Einstellungen) wird die Lösung nach dem Prüfen oder Aufdecken automatisch vorgelesen; der Lautsprecher spielt sie jederzeit erneut.</p>
+<p><strong>Bedienung:</strong> Singular/Plural und Fall wählst du oben. <em>Nur einfache</em> beschränkt die Auswahl auf harte Adjektive und regelmäßige Substantive. Antworten kannst du frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Mit <em>Vorlesen</em> (Einstellungen) wird die Lösung nach dem Prüfen oder Aufdecken automatisch vorgelesen, bei <em>Bausteine</em> auch jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Der Lautsprecher bzw. Taste 4 spielt die Lösung erneut.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" id="wg-type-switcher" role="group" aria-label="Art" style="flex-wrap:wrap">
 <button class="mode-btn active" id="wg-type-adjnoun" onclick="setWgType('adjnoun')">Adj + Subst</button>
@@ -2081,7 +2083,7 @@
 </div></span><span class="gt-field"><span class="gt-field-label">Wörter</span><div class="tense-switcher" role="group" aria-label="Wörter">
 <button class="mode-btn active" id="wg-diff-all" onclick="setWgDifficulty('all')">Alle Wörter</button>
 <button class="mode-btn" id="wg-diff-easy" onclick="setWgDifficulty('easy')">Nur einfache</button>
-</div></span><button aria-pressed="true" class="tool-btn gt-toggle" id="wg-hint-toggle" onclick="toggleWordgroupHint()" title="Grundformen über der Übersetzung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="wg-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösung und Wort-Tipps automatisch vorlesen"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
+</div></span><button aria-pressed="true" class="tool-btn gt-toggle" id="wg-hint-toggle" onclick="toggleWordgroupHint()" title="Grundformen über der Übersetzung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="wg-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
 
 <div id="wg-body"></div>
 </div>
@@ -2175,7 +2177,7 @@
 <details class="sb-info-more"><summary>Bedienung</summary>
 <p><strong>Antworten:</strong> frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Die <strong>Wortstellung ist frei</strong>: Новую книгу я читаю zählt genauso wie Я читаю новую книгу, Сегодня он не работает genauso wie Он не работает сегодня. Die Satzglieder dürfen getauscht werden; не bleibt vor seinem Wort, Präpositionen und давай vor dem folgenden, bei Fragen steht das Fragewort vorn. Nur Fragen mit ли (Знаешь ли ты ответ?) haben eine feste Stellung. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen.</p>
 <p><strong>Hilfen:</strong> Standardmäßig stehen die Wörter in Grundform über der Übersetzung. Unter <em>Hilfe</em> wählst du die Stufe: <em>Grundformen</em> (Standard), <em>Lücke</em> zeigt den fertigen Satz mit einem fehlenden Wort, <em>Nur Deutsch</em> nur die Übersetzung. <em>Anhören</em> liest den Satz erst nach dem Prüfen vor, damit er die Lösung nicht verrät.</p>
-<p>Mit <strong>Wort-Tipp</strong> (Taste 2) deckst du die Lösung Wort für Wort auf; im Bausteine-Modus wird der passende Baustein gleich gesetzt. <em>Lösung zeigen</em> (Taste 3) zeigt sofort den ganzen Satz. Danach sagst du selbst, ob du ihn wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit <em>Vorlesen</em> (Einstellungen) hörst du nach dem Prüfen oder Aufdecken automatisch den ganzen Satz und bei jedem Wort-Tipp das neue Wort; der Schalter gilt auch für die Wortgruppen.</p>
+<p>Mit <strong>Wort-Tipp</strong> (Taste 2) deckst du die Lösung Wort für Wort auf; im Bausteine-Modus wird der passende Baustein gleich gesetzt. <em>Lösung zeigen</em> (Taste 3) zeigt sofort den ganzen Satz. Danach sagst du selbst, ob du ihn wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit <em>Vorlesen</em> (Einstellungen) hörst du nach dem Prüfen oder Aufdecken automatisch den ganzen Satz, bei jedem Wort-Tipp das neue Wort und bei <em>Bausteine</em> jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Lautsprecher oder Taste 4: ganzer Satz, während der Wort-Tipps die schon aufgedeckten Wörter. Am Rundenende hat jeder Fehler einen Lautsprecher.</p>
 </details>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Satzart</span><div class="tense-switcher" id="sb-type-switcher" role="group" aria-label="Satzart" style="flex-wrap:wrap">
@@ -2198,7 +2200,7 @@
 <button class="mode-btn active" id="sb-help-blocks" onclick="setSbHelp('blocks')" title="Alle Wörter in der Grundform vorgeben">Grundformen</button>
 <button class="mode-btn" id="sb-help-gap" onclick="setSbHelp('gap')" title="Fertiger Satz mit einer Lücke">Lücke</button>
 <button class="mode-btn" id="sb-help-free" onclick="setSbHelp('free')" title="Nur der deutsche Satz">Nur Deutsch</button>
-</div></span><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Kasus-Hinweis" id="sb-hint-toggle" onclick="toggleSbHint()" title="Hinweis zum Kasus unter dem Satz ein-/ausblenden (z. B. „Objekt im Akk“)"><i class="ti ti-eye"></i> <span>Kasus-Hinweis</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösung und Wort-Tipps automatisch vorlesen"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
+</div></span><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Kasus-Hinweis" id="sb-hint-toggle" onclick="toggleSbHint()" title="Hinweis zum Kasus unter dem Satz ein-/ausblenden (z. B. „Objekt im Akk“)"><i class="ti ti-eye"></i> <span>Kasus-Hinweis</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
 
 <div id="sb-body"></div>
 </div>
@@ -3021,6 +3023,14 @@
           <div class="set-text"><strong>Auto-Vorlesen</strong><span>Russisches Wort automatisch anhören – bei DE → RU nach der Antwort</span></div>
           <label class="toggle-switch" id="autoplay-toggle-wrap">
             <input type="checkbox" id="autoplay-toggle" checked onchange="toggleAutoplay()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="set-row" id="gramspeak-settings-item">
+          <i class="ti ti-volume" aria-hidden="true"></i>
+          <div class="set-text"><strong>Grammatik vorlesen</strong><span>Lösung in allen Grammatikwerkzeugen nach der Antwort automatisch anhören, im Satzbau auch Wort-Tipps und Bausteine</span></div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="gramspeak-toggle" checked onchange="if (this.checked !== wgState.autoSpeak) toggleWgAutoSpeak()">
             <span class="toggle-track"></span>
           </label>
         </div>
@@ -15889,6 +15899,7 @@ function gtChoose(c, choice) {
   if (c.onAnswer) c.onAnswer(it, ok);
   document.getElementById(c.result).innerHTML = c.text(it, ok)
     + (ok ? '' : '<br><span class="case-hint">Weiter mit Enter oder „Weiter“</span>');
+  gramAutoSpeak(c.panel);
   clearTimeout(c.timer);
   if (ok) c.timer = setTimeout(() => {
     const p = document.getElementById(c.panel);
@@ -15904,6 +15915,7 @@ function gtChoiceReveal(c) {
   const [key, id] = c.srs(it);
   progressSeen(key, id);
   document.getElementById(c.result).innerHTML = c.text(it, null);
+  gramAutoSpeak(c.panel);
   gtRateOffer(c.result, ok => {
     progressMark(key, id, ok);
     if (c.onAnswer) c.onAnswer(it, ok);
@@ -15940,15 +15952,29 @@ function gtRoundEndHtml(richtig, n, fehler, id, wiederholen, neu) {
   const neuBtn = primary => '<button class="tool-btn' + (primary ? ' gt-primary' : '') + '" onclick="' + neu + '" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button>';
   return '<span class="case-prep">Runde fertig</span>' + richtig + ' von ' + n + ' richtig'
     + (fehler.length
-      ? '<ul class="gt-fehler" aria-label="Fehler dieser Runde">' + fehler.map(f => '<li>' + (f.satz || f.frage + ': <b>' + f.loesung + '</b>') + '</li>').join('') + '</ul>'
+      ? '<ul class="gt-fehler" aria-label="Fehler dieser Runde">' + fehler.map(f => '<li' + (f.ru ? ' data-ru="' + htmlEsc(f.ru) + '"' : '') + '><span class="gt-fehler-t">' + (f.satz || f.frage + ': <b>' + f.loesung + '</b>') + '</span>'
+          + (AUDIO_SUPPORTED ? '<button aria-label="Anhören" class="tool-btn gt-icon-btn gt-fehler-hoeren" onclick="gtSpeakFehler(this)" title="Anhören" type="button"><i class="ti ti-volume"></i></button>' : '') + '</li>').join('') + '</ul>'
         + '<span class="gt-end-actions"><button class="tool-btn gt-primary" id="' + id + '-repeat-btn" onclick="' + wiederholen + '" type="button"><i class="ti ti-repeat"></i> Fehler wiederholen (' + fehler.length + ')</button>' + neuBtn(false) + '</span>'
       : '<span class="case-hint">Keine Fehler.</span><span class="gt-end-actions">' + neuBtn(true) + '</span>');
+}
+// Rundenende (10.11.): Fehler anhören – eigener Text (data-ru) oder der letzte russische Teil der Zeile
+function gtSpeakFehler(btn) {
+  const li = btn.closest('li'); if (!li) return;
+  const ru = li.dataset.ru || ([...li.querySelectorAll('[lang="ru"]')].pop() || {}).textContent;
+  if (ru) speak(ru);
 }
 function gtSetDone(panelId, done) { const p = document.getElementById(panelId); if (p) p.classList.toggle('gt-done', done); }
 function gtAnswers(c, t) { return c.answers ? c.answers(t) : [t.answer]; }
 function gtScore(c) {
   const el = document.getElementById(c.p + '-score');
   if (el) el.textContent = c.score ? c.score(c.st) : c.st.correct + ' von ' + c.st.done + ' richtig';
+}
+// Grammatik (10.11.): Lösung automatisch vorlesen – liest, was der Lautsprecher der Aufgabe liest
+function gramAutoSpeak(panel) {
+  if (!wgState.autoSpeak) return;
+  if (typeof panel === 'string') panel = document.getElementById(panel);
+  const btn = panel && [...panel.querySelectorAll('.gt-task-tools button[onclick*="speak"]')].find(b => !b.disabled && b.getClientRects().length);
+  if (btn) btn.click();
 }
 function gtCheck(c) {
   const st = c.st, t = c.task();
@@ -15972,6 +15998,7 @@ function gtCheck(c) {
     if (ok) st.correct = (st.correct || 0) + 1;
     progressMark(c.srs(t), c.id(t), ok);
   }
+  const erste = !st.answered;
   st.answered = true;
   st.lastCorrect = ok;
   const andere = alle.filter(a => a !== treffer);
@@ -15981,6 +16008,7 @@ function gtCheck(c) {
     : 'Richtig wäre: ' + partialFeedbackHtml(val, alle[0]) + auch) + (c.extra ? c.extra(t, ok) : '');
   gtScore(c);
   if (c.after) c.after(t, ok);
+  if (erste) gramAutoSpeak(input.closest('.grammar-panel'));
 }
 function gtReveal(c) {
   const st = c.st, t = c.task();
@@ -15996,6 +16024,7 @@ function gtReveal(c) {
   st.lastInput = answer;               // nächster Druck auf „Prüfen“ führt weiter
   if (c.extra) document.getElementById(c.p + '-result').innerHTML = c.extra(t, null);
   if (c.after) c.after(t, null);
+  if (neu) gramAutoSpeak(input.closest('.grammar-panel'));
   if (neu) gtRateOffer(c.p + '-result', ok => {
     st.done = (st.done || 0) + 1;
     if (ok) st.correct = (st.correct || 0) + 1;
@@ -16905,8 +16934,7 @@ document.addEventListener('keydown', e => {
   if (!AUDIO_SUPPORTED) {
     const btn = document.getElementById('speak-btn');
     if (btn) btn.classList.add('unsupported');
-    const item = document.getElementById('autoplay-settings-item');
-    if (item) item.style.display = 'none';
+    ['autoplay-settings-item', 'gramspeak-settings-item'].forEach(id => { const it = document.getElementById(id); if (it) it.style.display = 'none'; });
     ['voice-ru-row', 'voice-de-row'].forEach(id => { const r = document.getElementById(id); if (r) r.style.display = 'none'; });
     autoplayAudio = false;
     return;
@@ -17663,6 +17691,16 @@ function keyGtRate(e) {
   e.preventDefault(); gtRateAnswer(e.key === '1');
   return true;
 }
+// Taste 4 in Wortgruppen/Satzbau: Satz (bzw. aufgedeckte Wörter) anhören
+function keyWgSpeak(e) {
+  if (e.key !== '4' || e.ctrlKey || e.metaKey || e.altKey || appView !== 'grammar' || document.querySelector('.overlay.open')) return false;
+  const p = ['overlay-wordgroup', 'overlay-sentencebuild'].map(id => document.getElementById(id)).find(x => x && x.classList.contains('open') && x.getClientRects().length);
+  if (!p) return false;
+  const btn = p.querySelector('.gt-task-tools button[onclick*="speak"]');
+  if (!btn || btn.disabled) return false;
+  e.preventDefault(); btn.click();
+  return true;
+}
 function keyToolReveal(e) {
   // Taste 2 im Satzbau: Wort-Tipp (gleiche Regel wie Taste 3)
   if (e.key === '2' && appView === 'grammar' && !document.querySelector('.overlay.open')) {
@@ -17742,7 +17780,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyWgSpeak(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -21594,6 +21632,7 @@ function toggleSbHint() {
 }
 // Wortgruppen/Satzbau (10.11.): automatisches Vorlesen – ein Schalter für beide Werkzeuge
 function applyWgAutoSpeak() {
+  const cb = document.getElementById('gramspeak-toggle'); if (cb) cb.checked = wgState.autoSpeak;
   ['wg', 'sb'].forEach(p => {
     const b = document.getElementById(p + '-speak-toggle'); if (!b) return;
     b.classList.toggle('gt-on', wgState.autoSpeak);
@@ -21608,6 +21647,7 @@ function toggleWgAutoSpeak() {
   if (!wgState.autoSpeak && AUDIO_SUPPORTED) { try { speechSynthesis.cancel(); } catch (e) {} }
 }
 function wgAutoSpeak(text) { if (wgState.autoSpeak && text) speak(text); }
+// Lautsprecher in Wortgruppen/Satzbau: nach der Antwort ganzer Satz, während der Wort-Tipps die aufgedeckten Wörter
 function toggleWordgroupInfo() {
   const p = document.getElementById('wordgroup-info-panel');
   p.style.display = p.style.display === 'none' ? 'block' : 'none';
@@ -22525,7 +22565,9 @@ function speakGrammarSelect(selectId) {
   if (el && el.value) speak(el.value);
 }
 function speakAspect() {
-  if (aspectState.current) speak(aspectState.current.prompt || aspectState.current.ipf);
+  // vor der Antwort nur das gegebene Verb (las früher bei „vollendet → unvollendet“ die Lösung), danach das Paar
+  const c = aspectState.current;
+  if (c) speak(aspectState.answered ? c.given + ', ' + c.answer : c.given);
 }
 function speakTransform() {
   const item = transformState.queue[transformState.index];
@@ -22537,7 +22579,8 @@ function speakCaseDrill() {
   if (t) speak(caseState.wordAnswered ? caseWordSatz(t) : t.prep + ' ' + t.nounNom);
   else {
     const item = caseState.queue[caseState.index];
-    if (item) speak(item.prep);
+    const bsp = item && CASE_CHOICE.answered && prepListExample(item);
+    if (item) speak(bsp ? caseWordSatz(bsp) : item.prep);
   }
 }
 // Zahl als Wort, damit die Sprachausgabe 1 und 2 im richtigen Genus liest (одна книга, две книги)
@@ -22553,22 +22596,27 @@ function numWordRu(n, g) {
   return tens[Math.floor(n / 10)] + (n % 10 ? ' ' + unit(n % 10) : '');
 }
 function speakNumNoun() {
+  // vor der Antwort Zahl und Grundform (sonst wäre die Lösung zu hören), danach die Lösung
   const c = numNounState.current;
-  if (c) speak(numWordRu(c.n, nounGender(c.noun, nounDeclensionData[c.noun])) + ' ' + c.answer);
+  if (c) speak(numWordRu(c.n, nounGender(c.noun, nounDeclensionData[c.noun])) + ' ' + (numNounState.answered ? c.answer : c.noun));
 }
 
 // liest den gesuchten Satz vor (Hörhilfe)
 function speakWordgroup() {
-  if (wgState.current && wgState.answered) speak(wgState.current.fullAnswer || wgState.current.answer);
+  const c = wgState.current;
+  if (!c) return;
+  if (wgState.answered) speak(c.fullAnswer || c.answer);
+  else if (wgState.revealStep > 0) speak((c.tokens || []).slice(0, wgState.revealStep).join(' '));
 }
 function speakWordgroupAuto() { if (wgState.current) wgAutoSpeak(wgState.current.fullAnswer || wgState.current.answer); }
 // Lautsprecher erst freigeben, wenn die Lösung feststeht – sonst verrät er sie
 function wgSyncSpeak() {
   const b = wgEl('speak-btn');
   if (!b) return;
-  b.disabled = !wgState.answered;
-  const t = wgState.answered ? 'Russisch anhören' : 'Russisch anhören (erst nach dem Prüfen)';
-  b.title = wgState.answered ? 'Anhören' : 'Anhören – erst nach dem Prüfen';
+  const frei = wgState.answered || wgState.revealStep > 0;
+  b.disabled = !frei;
+  const t = wgState.answered ? 'Russisch anhören' : frei ? 'Aufgedeckte Wörter anhören' : 'Russisch anhören (erst nach dem Prüfen)';
+  b.title = (wgState.answered ? 'Anhören' : frei ? 'Aufgedeckte Wörter anhören' : 'Anhören – erst nach dem Prüfen') + ' (Taste 4)';
   b.setAttribute('aria-label', t);
 }
 
@@ -22631,7 +22679,7 @@ function renderWgClickBank() {
     const b = document.createElement('button');
     b.className = 'sentence-word-btn';
     b.textContent = wd;
-    b.onclick = () => { if (b.disabled) return; b.disabled = true; b.classList.add('placed'); wgState.assembled.push({ word: wd, btn: b }); renderWgAssembled(); };
+    b.onclick = () => { if (b.disabled) return; b.disabled = true; b.classList.add('placed'); wgState.assembled.push({ word: wd, btn: b }); renderWgAssembled(); wgAutoSpeak(wd); };
     bankEl.appendChild(b);
   });
 }
@@ -22758,15 +22806,17 @@ function revealWordgroupStep() {
   const toks = wgState.current.tokens || [];
   if (wgState.revealStep >= toks.length) return;
   wgState.revealStep++;
+  let gesprochen = false;   // Baustein-Klick liest das Wort schon vor
   if (wgState.answerMode === 'click') {
     const wort = toks[wgState.revealStep - 1];
     const btn = [...wgEl('word-bank').querySelectorAll('button')]
       .find(b => b.textContent === wort && !b.disabled);
-    if (btn) btn.click();
+    if (btn) { btn.click(); gesprochen = true; }
   }
   renderWgStepwise();
+  wgSyncSpeak();
   // Wort-Tipp vorlesen; beim letzten Wort den ganzen Satz
-  if (wgState.revealStep < toks.length) wgAutoSpeak(toks[wgState.revealStep - 1]);
+  if (wgState.revealStep < toks.length) { if (!gesprochen) wgAutoSpeak(toks[wgState.revealStep - 1]); }
   else if (!wgState.answered) speakWordgroupAuto();
   // alles aufgedeckt = Lösung gezeigt
   if (wgState.revealStep >= toks.length) {
@@ -23906,7 +23956,9 @@ function nextRektion() { if (rektionState.mode === 'choose') gtChoiceNext(RK_CHO
 function speakRektion() {
   const st = rektionState, t = st.current;
   if (!t) return;
-  speak(st.mode === 'form' && st.answered ? t.answer : t.verb.v);
+  // Form bilden: die Wortgruppe; Fall wählen: nach der Antwort ein Beispiel
+  if (st.mode === 'form') speak(st.answered ? t.answer : t.verb.v);
+  else speak(RK_CHOICE.answered && rektionExample(t.verb) || t.verb.v);
 }
 // Fall wählen: Tasten 1–9, 0 (vor der Antwort; „Lösung zeigen“ dort nur per Knopf)
 // Fall wählen im Kasus-Drill: Tasten 1–5
@@ -24480,7 +24532,7 @@ function renderCaseQuestion() {
   const fertig = caseState.index >= caseState.queue.length;
   gtSetDone('overlay-casedrill', fertig && caseState.mode === 'abstract');
   if (fertig) {
-    qEl.innerHTML = gtRoundEndHtml(caseState.correct, caseState.queue.length, (caseState.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.prep) + '</span>' + (x.hint ? ' (' + htmlEsc(x.hint) + ')' : ''), loesung: htmlEsc(x.kasus) })), 'case', 'repeatCaseErrors()', 'restartCaseDrill()');
+    qEl.innerHTML = gtRoundEndHtml(caseState.correct, caseState.queue.length, (caseState.fehler || []).map(x => { const bsp = prepListExample(x); return { frage: '<span lang="ru">' + htmlEsc(x.prep) + '</span>' + (x.hint ? ' (' + htmlEsc(x.hint) + ')' : ''), loesung: htmlEsc(x.kasus), ru: bsp ? caseWordSatz(bsp) : x.prep }; }), 'case', 'repeatCaseErrors()', 'restartCaseDrill()');
     optEl.innerHTML = '';
     document.getElementById('case-score').textContent = '';
     return;
@@ -24740,7 +24792,9 @@ function checkCaseWord() {
   const ok = res.ok;
   input.className = 'conj-input ' + (ok ? 'correct' : 'wrong');
   if (!caseState.wordAnswered) caseWordBewerten(t, ok);
+  const ersteAntwort = !caseState.wordAnswered;
   caseState.wordAnswered = true; caseState.wordLastOk = ok;
+  if (ersteAntwort) gramAutoSpeak('overlay-casedrill');
   const tipp = ok ? '' : caseWordTipp(val, t);
   document.getElementById('case-result').innerHTML = (ok
     ? 'Richtig' + (res.typo ? gramTypoNote(t.answer) : '')
@@ -24759,6 +24813,7 @@ function revealCaseWord() {
   caseState.wordLastInput = t.answer;
   if (!neu) return;
   progressSeen('case:word', t.id);
+  gramAutoSpeak('overlay-casedrill');
   const res = document.getElementById('case-result');
   res.innerHTML = caseWordErklaerung(t);
   gtRateOffer(res, ok => caseWordBewerten(t, ok), nextCaseWord);
@@ -25057,7 +25112,8 @@ function speakMotionQuiz() {
   speak(item.ru.replace('___', beantwortet ? item.correct : '…'));
 }
 function speakMotionPair() {
-  if (motionState.current) speak(motionState.current.given);
+  const c = motionState.current;
+  if (c) speak(motionState.answered ? c.given + ', ' + c.answer : c.given);
 }
 
 // Sprung aus einer Vokabelkarte: Panel öffnen und genau dieses Paar abfragen
