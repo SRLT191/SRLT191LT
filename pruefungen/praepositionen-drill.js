@@ -1,7 +1,7 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
 // Präpositionen · Kasus-Drill (10.11.): Mini-Sätze mit passenden Substantiven, Sonderfälle,
 // Runden mit Fehlerliste, Erklärung + Satz, Tipps, Tasten 1–5, Übersicht im eigenen Fenster,
-// Bereich/Fall/Hinweis/Plural im ⋯-Menü, 6 neue Präpositionen
+// Bereich/Fall/Hinweis/Plural im ⋯-Menü; Erinnerung: вследствие/согласно/вопреки, sobald passende Substantive da sind
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const R = []; const errs = [];
@@ -10,16 +10,16 @@ const { chromium } = require('playwright');
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   const r = await p.evaluate(() => {
     const out = {};
-    out.neu = ['про:Akk.', 'из-под:Gen.', 'позади:Gen.', 'посреди:Gen.', 'вне:Gen.', 'навстречу:Dat.'].filter(id => !PREP_CASES.some(x => casePrepId(x) === id));
+    out.erinnerung = Object.entries(CASE_SATZ_KANDIDATEN).filter(([id]) => !PREP_SATZ[id]).flatMap(([id, ns]) => ns.filter(n => nounDeclensionData[n]).map(n => id + ' ' + n));
     out.ohneSatz = PREP_CASES.filter(x => !PREP_SATZ[casePrepId(x)]).map(casePrepId);
     out.ids = new Set(PREP_CASES.map(casePrepId)).size === PREP_CASES.length;
     out.nomen = Object.values(PREP_SATZ).flat().flatMap(s => s.n).filter(n => !nounDeclensionData[n]);
     const f = (id, n, num) => { const x = PREP_CASES.find(y => casePrepId(y) === id); const s = PREP_SATZ[id].find(z => z.n.includes(n)); return caseWordTask(x, s, n, num || 'sg'); };
-    out.formen = [f('о:Präp.', 'ответ').answer, f('с:Gen.', 'станция').answer, f('в:Präp.', 'лес').answer, f('на:Präp.', 'мост').answer, f('про:Akk.', 'брат').answer, f('с:Instr.', 'дочь').answer, f('между:Instr.', 'дом', 'pl').answer, f('внутри:Gen.', 'дом').answer, f('к:Dat.', 'друг', 'pl').answer];
-    out.sonder = [f('о:Präp.', 'ответ').sonder, f('в:Präp.', 'лес').sonder, f('про:Akk.', 'брат').sonder, f('в:Akk.', 'школа').sonder];
+    out.formen = [f('о:Präp.', 'ответ').answer, f('с:Gen.', 'станция').answer, f('в:Präp.', 'лес').answer, f('на:Präp.', 'мост').answer, f('с:Instr.', 'дочь').answer, f('между:Instr.', 'дом', 'pl').answer, f('внутри:Gen.', 'дом').answer, f('к:Dat.', 'друг', 'pl').answer];
+    out.sonder = [f('о:Präp.', 'ответ').sonder, f('в:Präp.', 'лес').sonder, f('с:Gen.', 'станция').sonder, f('в:Akk.', 'школа').sonder];
     out.satz = caseWordSatz(f('внутри:Gen.', 'дом'));
     out.satzB = caseWordSatz(f('через:Akk.', 'час')); out.pde = f('через:Akk.', 'час').de;
-    out.tipp = [caseWordTipp('о ответе', f('о:Präp.', 'ответ')), caseWordTipp('в лесе', f('в:Präp.', 'лес')), caseWordTipp('про брат', f('про:Akk.', 'брат')), caseWordTipp('в школе', f('в:Akk.', 'школа')), caseWordTipp('к другу', f('к:Dat.', 'друг', 'pl')), caseWordTipp('к маме', f('к:Dat.', 'мама'))];
+    out.tipp = [caseWordTipp('о ответе', f('о:Präp.', 'ответ')), caseWordTipp('в лесе', f('в:Präp.', 'лес')), caseWordTipp('в школе', f('в:Akk.', 'школа')), caseWordTipp('к другу', f('к:Dat.', 'друг', 'pl')), caseWordTipp('к маме', f('к:Dat.', 'мама'))];
     // Runde
     setAppView('grammar'); openCaseDrill(); setCaseMode('word');
     const q = caseState.wordQueue; out.runde = q.length; out.sonderInRunde = q.filter(t => t.sonder.length).length;
@@ -63,14 +63,14 @@ const { chromium } = require('playwright');
     out.gesamt = grammarToolSources().casedrill[1];
     return out;
   });
-  ok('6 neue Präpositionen', !r.neu.length, r.neu);
+  ok('Erinnerung: passende Substantive für вследствие/согласно/вопреки sind jetzt da – Sätze vorschlagen', !r.erinnerung.length, r.erinnerung);
   ok('nur вследствие/согласно/вопреки ohne Satz', r.ohneSatz.join() === 'вследствие:Gen.,согласно:Dat.,вопреки:Dat.', r.ohneSatz);
   ok('IDs eindeutig', r.ids); ok('alle Substantive vorhanden', !r.nomen.length, r.nomen);
-  ok('Formen', r.formen.join('|') === 'об ответе|со станции|в лесу|на мосту|про брата|с дочерью|между домами|внутри дома|к друзьям', r.formen);
-  ok('Sonderfälle erkannt', JSON.stringify(r.sonder) === '[["prep"],["lok"],["belebt"],[]]', r.sonder);
+  ok('Formen', r.formen.join('|') === 'об ответе|со станции|в лесу|на мосту|с дочерью|между домами|внутри дома|к друзьям', r.formen);
+  ok('Sonderfälle erkannt', JSON.stringify(r.sonder) === '[["prep"],["lok"],["prep"],[]]', r.sonder);
   ok('Satz mit Großschreibung', r.satz === 'Внутри дома было тепло.', r.satz);
   ok('eigene Bedeutung через = in', r.satzB === 'Я вернусь через час.' && r.pde === 'in', [r.satzB, r.pde]);
-  ok('Tipps', /об/.test(r.tipp[0]) && /-у/.test(r.tipp[1]) && /belebt/.test(r.tipp[2]) && /Dativ oder Präpositiv.*Akkusativ/.test(r.tipp[3]) && /Plural/.test(r.tipp[4]) && r.tipp[5] === '', r.tipp);
+  ok('Tipps', /об/.test(r.tipp[0]) && /-у/.test(r.tipp[1]) && /Dativ oder Präpositiv.*Akkusativ/.test(r.tipp[2]) && /Plural/.test(r.tipp[3]) && r.tipp[4] === '', r.tipp);
   ok('Runde 15 mit Sonderfällen', r.runde === 15 && r.sonderInRunde >= 4, [r.runde, r.sonderInRunde]);
   ok('nur passende Substantive', r.passend); ok('Satz mit Lücke sichtbar', r.satzSichtbar, r.frage);
   ok('Erklärung + Satz nach Antwort', r.erkl); ok('Enter → nächste Aufgabe', r.weiter); ok('richtig gezählt', r.richtig);

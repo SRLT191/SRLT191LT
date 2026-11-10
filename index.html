@@ -2449,7 +2449,7 @@
 <p>Die Übersicht zeigt alle Präpositionen nach Fall geordnet:</p>
 <table class="conj-info-table" id="case-info-table"></table>
 <p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen oder Taste 1–5 bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
-<p><em>Form bilden</em> – Setze Präposition und Substantiv in die Lücke des Satzes (Мы идём ___ → в школу). Es kommen nur Substantive dran, die inhaltlich passen; Sonderfälle wie об ответе, со станции, в лесу oder belebte Akkusative (про брата) sind gezielt dabei. Nach der Antwort stehen Regel, Endung und der ganze Satz zum Anhören; bei typischen Fehlern gibt es einen Tipp. <em>Lösung zeigen</em> (Taste 3) deckt auf, danach bewertest du selbst. Eine Runde hat 15 Aufgaben.</p>
+<p><em>Form bilden</em> – Setze Präposition und Substantiv in die Lücke des Satzes (Мы идём ___ → в школу). Es kommen nur Substantive dran, die inhaltlich passen; Sonderfälle wie об ответе, со станции, в лесу oder на мосту sind gezielt dabei. Nach der Antwort stehen Regel, Endung und der ganze Satz zum Anhören; bei typischen Fehlern gibt es einen Tipp. <em>Lösung zeigen</em> (Taste 3) deckt auf, danach bewertest du selbst. Eine Runde hat 15 Aufgaben.</p>
 <p><strong>⋯-Menü:</strong> <em>Neue Runde</em>, <em>Übersicht nach Fall</em> (alle Präpositionen mit Beispiel, je Fall eine Runde zum Üben), <em>Bereich</em> (alle, ohne oder nur Wechselpräpositionen), <em>Fall</em> (nur Präpositionen eines Falls), <em>Kasus-Hinweis</em> ein/aus und <em>Auch Plural</em> (в магазинах, к друзьям). Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="conj-toolbar gt-modes"><div class="tense-switcher">
@@ -24265,18 +24265,18 @@ const PREP_CASES = [
   { prep: "между",       de: "zwischen",        hint: "",                  kasus: "Instr." },
   { prep: "о",           de: "über",            hint: "",                  kasus: "Präp." },
   { prep: "при",         de: "bei",             hint: "",                  kasus: "Präp." },
-  // ergänzt (10.11.)
-  { prep: "про",         de: "über",            hint: "(umgangssprachlich)", kasus: "Akk." },
-  { prep: "из-под",      de: "unter … hervor",  hint: "",                  kasus: "Gen." },
-  { prep: "позади",      de: "hinter",          hint: "",                  kasus: "Gen." },
-  { prep: "посреди",     de: "mitten in/auf",   hint: "",                  kasus: "Gen." },
-  { prep: "вне",         de: "außerhalb",       hint: "",                  kasus: "Gen." },
-  { prep: "навстречу",   de: "entgegen",        hint: "",                  kasus: "Dat." },
 ];
 // „Form bilden“: Mini-Sätze je Präposition und Fall, dazu nur Substantive, die
 // inhaltlich passen (10.11.). pl: auch im Plural sinnvoll; only: 'pl' = nur Plural;
 // pde: eigene deutsche Bedeutung für diesen Satz. Ohne Eintrag (вследствие,
-// согласно, вопреки) kommt die Präposition nur in „Fall wählen“ dran.
+// согласно, вопреки) kommt die Präposition nur in „Fall wählen“ dran – kommen
+// passende Substantive in die Deklinationstabellen (CASE_SATZ_KANDIDATEN), meldet
+// die Prüfung praepositionen-drill, dass Sätze dafür vorgeschlagen werden sollen.
+const CASE_SATZ_KANDIDATEN = {
+  'вследствие:Gen.': ['дождь', 'болезнь', 'авария', 'ошибка', 'снег', 'туман'],
+  'согласно:Dat.': ['правило', 'закон', 'план', 'расписание', 'договор', 'приказ'],
+  'вопреки:Dat.': ['совет', 'желание', 'ожидание', 'приказ', 'запрет', 'воля'],
+};
 const CASE_P_PERS = ['брат', 'сестра', 'друг', 'мама', 'отец', 'сын', 'дочь', 'сосед', 'врач', 'мать'];
 const PREP_SATZ = {
   'в:Akk.':  [{ ru: 'Мы идём ___.', de: 'Wir gehen ___.', n: ['школа', 'магазин', 'парк', 'музей', 'сад', 'лес', 'город', 'церковь', 'комната', 'кухня'] }],
@@ -24326,12 +24326,6 @@ const PREP_SATZ = {
   'между:Instr.': [{ ru: 'Дети играют ___.', de: 'Die Kinder spielen ___.', only: 'pl', n: ['дом', 'машина', 'здание'] }],
   'о:Präp.': [{ ru: 'Мы говорим ___.', de: 'Wir sprechen ___.', n: ['брат', 'сестра', 'друг', 'мама', 'отец', 'погода', 'город', 'школа', 'урок', 'концерт', 'ответ', 'озеро'] }],
   'при:Präp.': [{ ru: 'Не говори это ___.', de: 'Sag das nicht ___.', pde: 'in Gegenwart von', pl: true, n: ['мама', 'отец', 'ребёнок', 'брат', 'сестра', 'сосед', 'мать', 'дочь'] }],
-  'про:Akk.': [{ ru: 'Расскажи ___!', de: 'Erzähl ___!', n: ['брат', 'сестра', 'друг', 'город', 'школа', 'концерт', 'праздник', 'семья'] }],
-  'из-под:Gen.': [{ ru: 'Кошка вылезла ___.', de: 'Die Katze kroch ___ hervor.', n: ['стол', 'стул', 'диван', 'кровать', 'кресло', 'машина'] }],
-  'позади:Gen.': [{ ru: 'Сад находится ___.', de: 'Der Garten liegt ___.', n: ['дом', 'здание', 'школа', 'церковь', 'магазин'] }],
-  'посреди:Gen.': [{ ru: 'Машина остановилась ___.', de: 'Das Auto hielt ___ an.', n: ['дорога', 'улица', 'мост', 'площадь', 'поле'] }],
-  'вне:Gen.': [{ ru: 'Он работает ___.', de: 'Er arbeitet ___.', n: ['дом', 'город'] }],
-  'навстречу:Dat.': [{ ru: 'Мы пошли ___.', de: 'Wir gingen ___ entgegen.', n: ['брат', 'сестра', 'друг', 'мама', 'отец', 'сосед'] }],
 };
 function casePrepId(p) { return p.prep + ':' + p.kasus; }
 // Zustand: Kasus-Drill
