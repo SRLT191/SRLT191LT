@@ -55,14 +55,14 @@ const { chromium } = require('playwright');
       out.push({ name, ok: c.length === 1 && c[0][1] === true && c[0][0].startsWith(key) && hdr() === h0 + plus && day() === d0 + 1, info: JSON.stringify({ c, h0, h1: hdr() }) });
     }
     const all = loadGrammarSrs();
-    const tot = { conj: document.getElementById('gtp-conj').textContent, verbs: Object.keys(conjugationData).length, noun: document.getElementById('gtp-noun').textContent, nouns: Object.keys(nounDeclensionData).length, nounT: nounTotal(), case: document.getElementById('gtp-case').textContent, prep: PREP_CASES.length };
+    const tot = { conj: document.getElementById('gtp-conj').textContent, verbs: Object.keys(conjugationData).length, noun: document.getElementById('gtp-noun').textContent, nouns: Object.keys(nounDeclensionData).length, nounT: nounTotal(), case: document.getElementById('gtp-case').textContent, prep: PREP_CASES.length + caseWordCount() };
     // Auswahlliste der Verben zeigt den Stand der gewählten Zeit
     setConjTense('nonpast'); openFormPicker('conj'); const pill = z => { const tr = [...document.querySelectorAll('#formpicker-body tr')].find(t => t.textContent.includes('иметь')); return tr ? tr.textContent : ''; };
     const praesens = /erledigt/.test(pill()); closeOverlay('overlay-formpicker'); setConjTense('past'); openFormPicker('conj'); const vergangen = /erledigt/.test(pill()); closeOverlay('overlay-formpicker');
     return { out, tot, praesens, vergangen, alt: !!(all.conj && all.conj['иметь']) };
   });
   r.out.forEach(x => ok(x.name + ': richtige Antwort gespeichert, Kopfzeile +1, Tagesprotokoll +1', x.ok, x.ok ? '' : x.info));
-  ok('Gesamtzahlen: Konjugieren = Verben mit Tabelle × 3 (Futur zählt nicht), Substantive je vorhandener Zahl, Präpositionen × 2', r.tot.conj.endsWith('von ' + r.tot.verbs * 3 + ' gelernt') && r.tot.noun.endsWith('von ' + r.tot.nounT + ' gelernt') && r.tot.nounT === r.tot.nouns * 2 - 2 && r.tot.case.endsWith('von ' + r.tot.prep * 2 + ' gelernt'), JSON.stringify(r.tot));
+  ok('Gesamtzahlen: Konjugieren = Verben mit Tabelle × 3 (Futur zählt nicht), Substantive je vorhandener Zahl, Präpositionen (Form bilden nur mit Satz)', r.tot.conj.endsWith('von ' + r.tot.verbs * 3 + ' gelernt') && r.tot.noun.endsWith('von ' + r.tot.nounT + ' gelernt') && r.tot.nounT === r.tot.nouns * 2 - 2 && r.tot.case.endsWith('von ' + r.tot.prep + ' gelernt'), JSON.stringify(r.tot));
   ok('bisheriger Lernstand bleibt (gilt fürs Präsens); Verbliste zeigt den Stand der gewählten Zeit', r.alt && r.praesens && !r.vergangen, JSON.stringify([r.alt, r.praesens, r.vergangen]));
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
