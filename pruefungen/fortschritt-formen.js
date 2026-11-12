@@ -31,7 +31,7 @@ const { chromium } = require('playwright');
       ['Substantive Plural', () => setNounNumber('pl'), () => { fill(); checkNounTable(); }, 'noun:pl'],
       ['Kasus bilden Subst.', () => openCaseForm('noun'), () => drill(cfDrill('noun')), 'caseform'],
       ['Zahl + Substantiv', () => openNumNoun(), () => drill(NUMNOUN_DRILL), 'numnoun'],
-      ['Geschlecht', () => openGender(), () => choice(GENDER_CHOICE), 'gender'],
+      ['Geschlecht', () => { genderState.scope = 'soft'; openGender(); }, () => choice(GENDER_CHOICE), 'gender'],
       ['Adjektive deklinieren', () => openDecline(), () => { fill(); checkDeclensionTable(); }, 'decl'],
       ['Kasus bilden Adj.', () => openCaseAdj(), () => drill(cfDrill('adj')), 'caseadj'],
       ['Kurzform & Steigerung', () => openAdjForm(), () => drill(ADJFORM_DRILL), 'adjform'],
@@ -46,7 +46,7 @@ const { chromium } = require('playwright');
     setAppView('grammar'); const out = [];
     for (const [name, setup, answer, key] of T) {
       setup(); await wait(40);
-      const hdr = () => { const e = document.querySelector('.grammar-panel.open [id^="gtp-"]'); return e ? +e.textContent.split(' ')[0] : NaN; };
+      const hdr = () => { const e = document.querySelector('.grammar-panel.open [id^="gtp-"]'); const m = e && /(\d+) von/.exec(e.textContent); return m ? +m[1] : NaN; };
       const day = () => (loadDaylog()[dayKey()] || [0, 0])[1];
       const h0 = hdr(), d0 = day(), c0 = calls.length;
       answer(); await wait(20);

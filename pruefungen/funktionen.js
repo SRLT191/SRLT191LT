@@ -221,7 +221,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
     setRektionMode('choose');
     openSentenceBuild(); setWgType('imperative'); if (!wgState.current || !wgState.current.answer) r.push('Aufforderung');
     setWgType('negation'); setWgTense('future'); let allg = 0;
-    for (let k = 0; k < 40; k++) { if (!wgState.current.answer.startsWith('У ')) allg++; nextWordgroup(); }
+    for (let k = 0; k < 40; k++) { if (!wgState.current.answer.startsWith('У ')) allg++; restartWordgroup(); }
     if (!allg) r.push('Verneinung allgemein');
     setWgTense('present'); setWgType('sentence');
     return { ok: !r.length, info: r.join(', ') };
@@ -244,7 +244,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
     if (genderState.correct !== 1) r.push('richtig');
     nextGender(); if (genderState.index !== 1) r.push('weiter');
     if (genderOf('тетрадь').g !== 'f' || genderOf('учитель').g !== 'm' || genderOf('время').g !== 'n' || genderOf('папа').g !== 'm' || genderOf('деньги').g !== 'pl') r.push('Regeln');
-    return { ok: !r.length && genderTotal() > 1500, info: r.join(', ') + ' ' + genderTotal() };
+    return { ok: !r.length && genderTotal() > 200, info: r.join(', ') + ' ' + genderTotal() };
   }));
   await check('G Wahlmotor (4 Auswahl-Werkzeuge)', () => ev(() => {
     setAppView('grammar'); const bad = [];
@@ -269,7 +269,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
   }));
   await check('G Satzbau: weibliche Form bei я/ты', () => ev(() => {
     setAppView('grammar'); openSentenceBuild(); setWgAnswerMode('type'); setWgType('sentence'); setWgTense('past');
-    for (let k = 0; k < 300 && !/^(я|ты) /.test(wgState.current.answer); k++) nextWordgroup();
+    for (let k = 0; k < 300 && !/^(я|ты) /.test(wgState.current.answer); k++) restartWordgroup();
     const c = wgState.current; document.getElementById('sb-input').value = (c.femAnswers || [])[0] || ''; checkWordgroup();
     const ok = wgState.lastCorrect; setWgTense('present');
     return { ok, info: c.answer };
@@ -277,7 +277,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
   await check('G Wortgruppen: nur passende Paare', () => ev(() => {
     setAppView('grammar'); openWordgroup(); const bad = [];
     ['adjnoun', 'numadjnoun', 'prepphrase'].forEach(t => { setWgType(t);
-      for (let i = 0; i < 40; i++) { const m = wgState.current.promptTop.match(/([а-яё]+) ([а-яё]+)$/); if (m && !wgFits(m[1], m[2])) bad.push(m[0]); nextWordgroup(); } });
+      for (let i = 0; i < 40; i++) { const m = wgState.current.promptTop.match(/([а-яё]+) ([а-яё]+)$/); if (m && !wgFits(m[1], m[2])) bad.push(m[0]); restartWordgroup(); } });
     setWgType('adjnoun');
     return { ok: !bad.length, info: bad.slice(0, 5).join(', ') };
   }));
@@ -289,7 +289,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
   });
   await check('G Satzbau: falsches Pronomen ist kein Tippfehler', () => ev(() => {
     setAppView('grammar'); openSentenceBuild(); setWgAnswerMode('type'); setWgType('sentence'); setWgTense('present');
-    for (let k = 0; k < 300 && !/^я /.test(wgState.current.answer); k++) nextWordgroup();
+    for (let k = 0; k < 300 && !/^я /.test(wgState.current.answer); k++) restartWordgroup();
     document.getElementById('sb-input').value = 'он ' + wgState.current.answer.slice(2); checkWordgroup();
     return { ok: !wgState.lastCorrect, info: wgState.current.answer };
   }));

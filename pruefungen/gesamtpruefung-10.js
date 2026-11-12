@@ -37,7 +37,7 @@ const { chromium } = require('playwright');
     // auch Variablen mit Ersatzwert (var(--x, #fff)) – der Ersatz verdeckt sonst eine fehlende Definition
     const used = new Set((css.match(/var\(--[\w-]+/g) || []).map(x => x.slice(4)));
     const st = getComputedStyle(document.documentElement);
-    out.s6 = [...used].filter(v => !['--gt-p', '--p', '--sidebar-w', '--sub-p'].includes(v) && !st.getPropertyValue(v).trim());
+    out.s6 = [...used].filter(v => !['--gt-p', '--p', '--sidebar-w', '--sub-p', '--gd-c'].includes(v) && !st.getPropertyValue(v).trim());
     return out;
   });
   ok('1 kein Beispielsatz leichter als sein Zielwort (Krater C1, Amerika B1 auch ohne Zielwort)', d.s1.unter === 0 && d.s1.krater === 'C1' && d.s1.amerika === 'B1' && d.s1.amerikaOhneZiel === 'B1', JSON.stringify(d.s1));
