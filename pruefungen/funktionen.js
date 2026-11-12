@@ -178,7 +178,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
         const zu2 = document.getElementById('transform-info-panel').style.display === 'none';
         if (!offen || !zu2) r.push('Info ' + offen + '/' + zu2);
         openNounDecline();
-        const ins = [...document.querySelectorAll('#noun-grid input.conj-input')];
+        const ins = [...document.querySelectorAll('#noun-grid input.conj-input')].filter(i => !i.disabled);
         ins[0].focus(); ins[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
         if (document.activeElement !== ins[1]) r.push('Enter');
         openCaseForm('noun');
