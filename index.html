@@ -717,6 +717,22 @@
   .noun-gleich { font-size: 14px; color: var(--c-text-muted); text-align: left; }
   .noun-gleich b { color: var(--c-text-label); font-weight: 600; }
   .noun-gleich [lang="ru"] { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
+  /* Kasus bilden (12.11.): Abzeichen der gesuchten Form, Fragewörter, Rahmen am Feld */
+  .cf-form-chip { display: table; margin: 10px auto 2px; padding: 3px 14px; border-radius: 999px; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); font-weight: 700; font-size: 15px; letter-spacing: .02em; border: 1px solid var(--c-accent); }
+  .cf-frage { display: block; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; color: var(--c-text-muted); font-size: 14px; margin-top: 2px; }
+  .cf-dots { display: flex; justify-content: center; margin: 6px 0 0; }
+  .cf-eingabe { display: flex !important; align-items: center; gap: 10px; }
+  .cf-eingabe .conj-input { flex: 1; min-width: 0; }
+  .cf-rahmen { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 18px; color: var(--c-text-label); white-space: nowrap; }
+  .cf-rahmen:empty { display: none; }
+  .cf-nachher { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; margin-top: 8px; }
+  .cf-fall { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; color: var(--c-text-muted); }
+  .cf-fall .cf-jetzt { color: var(--c-text-primary); font-weight: 600; }
+  .gt-fehler-gruppen { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; margin: 6px 0 2px; font-size: 14px; color: var(--c-text-muted); }
+  .gt-fehler-gruppen b { color: var(--c-text-label); }
+  @media (min-width: 900px) {
+    #overlay-caseform .cf-eingabe, #overlay-caseadj .cf-eingabe, #overlay-caseform .gt-actions, #overlay-caseadj .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
+  }
   .gt-settings-sep { width: 1px; align-self: stretch; min-height: 24px; background: var(--c-border); margin: 0 4px; }
   /* Augen-Knöpfe: beim Überfahren/Fokus der Zeile deutlicher (12.11.) */
   .conj-row:hover .conj-reveal-one-btn, .conj-row:focus-within .conj-reveal-one-btn, .conj-reveal-one-btn:focus-visible { color: var(--c-text-muted); }
@@ -2350,19 +2366,19 @@
 <p><strong>Worum es geht:</strong> Ein Substantiv steht in der Grundform da, gesucht ist eine bestimmte Form davon – zum Beispiel книга im Dativ Plural (книгам) oder стол im Instrumental Singular (столом).</p>
 <p>Die Endung hängt von der <strong>Deklinationsklasse</strong> ab (1. Klasse auf -а/-я, 2. Klasse auf Konsonant/-о/-е, 3. Klasse weiblich auf -ь). Die Klasse steht als Hilfe unter der Aufgabe und lässt sich ausblenden.</p>
 <p>Im <strong>Akkusativ</strong> richten sich belebte männliche Wörter (und im Plural alle Lebewesen) nach dem Genitiv (вижу врача), unbelebte nach dem Nominativ (вижу дом).</p>
-<p><strong>Bedienung:</strong> Oben wählst du die Zahl (Singular, Plural oder beide) und bei Bedarf einen bestimmten Fall. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die gesuchte Form.</p>
+<p><strong>Bedienung:</strong> Oben wählst du die Zahl (Singular, Plural oder beide) und einen oder mehrere Fälle; „Nur regelmäßige“ lässt Sonderfälle weg. Vor dem Feld steht eine kurze Wendung (много ___, с ___ …), in die die Form passt. Eine Runde bringt zuerst fällige, dann zuletzt falsche und neue Formen. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die gesuchte Form.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="cf-num-switcher">
-<button class="mode-btn active" id="cf-num-mixed" onclick="setCaseFormNumber('mixed', 'noun')">Beide</button>
 <button class="mode-btn" id="cf-num-sg" onclick="setCaseFormNumber('sg', 'noun')">Singular</button>
 <button class="mode-btn" id="cf-num-pl" onclick="setCaseFormNumber('pl', 'noun')">Plural</button>
+<button class="mode-btn active" id="cf-num-mixed" onclick="setCaseFormNumber('mixed', 'noun')">Beide</button>
 </div><div class="tense-switcher" id="cf-case-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-v="all" onclick="setCaseFormCase('all', 'noun')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setCaseFormCase('Nom.', 'noun')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setCaseFormCase('Gen.', 'noun')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseFormCase('Dat.', 'noun')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseFormCase('Akk.', 'noun')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseFormCase('Instr.', 'noun')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseFormCase('Präp.', 'noun')" title="Präpositiv">Präp</button></div><button aria-pressed="true" class="tool-btn gt-toggle" id="cf-hint-toggle" onclick="toggleCaseFormHint('noun')" title="Hinweis zur Deklinationsklasse ein-/ausblenden">
 <i class="ti ti-eye"></i> <span>Hilfe</span>
-</button></div></div></div>
+</button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="cf-reg-toggle" onclick="toggleCaseFormReg()" title="Nur regelmäßige Wörter (ohne flüchtige Vokale, -мя, люди usw.)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="caseform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseForm('noun')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
-<div class="conj-row" style="grid-template-columns: 1fr;">
-<input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="caseform-input" onkeydown="if(event.key==='Enter') checkCaseForm('noun')" placeholder="Form eingeben…" type="text"/>
+<div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;"><span class="cf-rahmen" id="caseform-pre" lang="ru"></span>
+<input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="caseform-input" onkeydown="if(event.key==='Enter') checkCaseForm('noun')" placeholder="Form eingeben…" type="text"/><span class="cf-rahmen" id="caseform-post" lang="ru"></span>
 
 </div>
 <div class="conj-actions gt-actions">
@@ -2396,14 +2412,14 @@
 <button class="mode-btn" id="ca-gen-fem" onclick="setCaseFormGenus('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="ca-gen-neut" onclick="setCaseFormGenus('neut')" title="sächlich">n</button>
 </div><div class="tense-switcher" id="ca-num-switcher">
-<button class="mode-btn active" id="ca-num-mixed" onclick="setCaseFormNumber('mixed', 'adj')">Beide</button>
 <button class="mode-btn" id="ca-num-sg" onclick="setCaseFormNumber('sg', 'adj')">Singular</button>
 <button class="mode-btn" id="ca-num-pl" onclick="setCaseFormNumber('pl', 'adj')">Plural</button>
+<button class="mode-btn active" id="ca-num-mixed" onclick="setCaseFormNumber('mixed', 'adj')">Beide</button>
 </div><div class="tense-switcher" id="ca-case-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-v="all" onclick="setCaseFormCase('all', 'adj')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setCaseFormCase('Nom.', 'adj')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setCaseFormCase('Gen.', 'adj')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseFormCase('Dat.', 'adj')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseFormCase('Akk.', 'adj')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseFormCase('Instr.', 'adj')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseFormCase('Präp.', 'adj')" title="Präpositiv">Präp</button></div><button aria-pressed="true" class="tool-btn gt-toggle" id="ca-hint-toggle" onclick="toggleCaseFormHint('adj')" title="Hinweis zum Adjektivtyp ein-/ausblenden">
 <i class="ti ti-eye"></i> <span>Hilfe</span>
 </button></div></div></div>
 <div class="gt-task"><div class="case-question" id="caseadj-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseForm('adj')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
-<div class="conj-row" style="grid-template-columns: 1fr;">
+<div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;">
 <input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="caseadj-input" onkeydown="if(event.key==='Enter') checkCaseForm('adj')" placeholder="Form eingeben…" type="text"/>
 
 </div>
@@ -8436,7 +8452,7 @@ function grammarToolSources() {
     conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
     motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
     transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal()],
-    noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun')],
+    noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun'), cfZaehlt],
     numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal(), genderZaehlt],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
@@ -16072,9 +16088,15 @@ document.addEventListener('keydown', e => {
 // Rundenende der Werkzeuge mit Runden (Geschlecht, Kasus wählen, Bewegungsverben-Wahl, Umformen):
 // Ergebnis, Fehlerliste mit Lösung (falsch, aufgedeckt, übersprungen), „Fehler wiederholen“ und „Neue Runde“.
 //   fehler: [{ frage, loesung }] (schon als HTML), id: Präfix für den Wiederholen-Knopf
-function gtRoundEndHtml(richtig, n, fehler, id, wiederholen, neu) {
+// Fehler nach Gruppe zählen (12.11., Kasus bilden: „Gen. Pl.: 3 Fehler“)
+function gtFehlerGruppen(fehler, gruppe) {
+  const z = {}; fehler.forEach(f => { const g = gruppe(f); z[g] = (z[g] || 0) + 1; });
+  const e = Object.entries(z).sort((a, b) => b[1] - a[1]);
+  return e.length ? '<span class="gt-fehler-gruppen">' + e.map(([g, k]) => '<span class="gt-fg"><b>' + g + '</b>: ' + k + ' Fehler</span>').join('') + '</span>' : '';
+}
+function gtRoundEndHtml(richtig, n, fehler, id, wiederholen, neu, gruppen) {
   const neuBtn = primary => '<button class="tool-btn' + (primary ? ' gt-primary' : '') + '" onclick="' + neu + '" type="button"><i class="ti ti-arrows-shuffle"></i> Neue Runde</button>';
-  return '<span class="case-prep">Runde fertig</span>' + richtig + ' von ' + n + ' richtig'
+  return '<span class="case-prep">Runde fertig</span>' + richtig + ' von ' + n + ' richtig' + (gruppen || '')
     + (fehler.length
       ? '<ul class="gt-fehler" aria-label="Fehler dieser Runde">' + fehler.map(f => '<li' + (f.ru ? ' data-ru="' + htmlEsc(f.ru) + '"' : '') + '><span class="gt-fehler-t">' + (f.satz || f.frage + ': <b>' + f.loesung + '</b>') + '</span>'
           + (AUDIO_SUPPORTED ? '<button aria-label="Anhören" class="tool-btn gt-icon-btn gt-fehler-hoeren" onclick="gtSpeakFehler(this)" title="Anhören" type="button"><i class="ti ti-volume"></i></button>' : '') + '</li>').join('') + '</ul>'
@@ -16112,7 +16134,7 @@ function gtRundeWeiter(id, t, ok) {
   if (rs.n < rs.len) return false;
   rs.ende = true;
   gtSetDone(R.panel, true);
-  document.getElementById(R.q).innerHTML = gtRoundEndHtml(rs.richtig, rs.n, rs.fehler.map(R.zeile), id, "gtRundeWiederholen('" + id + "')", "gtRundeNeu('" + id + "')");
+  document.getElementById(R.q).innerHTML = gtRoundEndHtml(rs.richtig, rs.n, rs.fehler.map(R.zeile), id, "gtRundeWiederholen('" + id + "')", "gtRundeNeu('" + id + "')", R.gruppe ? gtFehlerGruppen(rs.fehler, R.gruppe) : '');
   const sc = document.getElementById(R.score); if (sc) sc.textContent = '';
   const res = document.getElementById(R.score.replace(/-score$/, '-result')); if (res) res.textContent = '';
   const note = document.getElementById(R.score.replace(/-score$/, '-note')); if (note) note.style.display = 'none';
@@ -17796,7 +17818,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length + caseWordCount()));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
   set('gtp-numnoun', learned('numnoun', numNounNouns().length * 3));
-  set('gtp-caseform', learned('caseform', caseFormTotal('noun')));
+  set('gtp-caseform', Object.entries(all.caseform || {}).filter(([id, e]) => cfZaehlt(id) && srsDone(e)).length + ' von ' + caseFormTotal('noun') + ' gelernt');
   set('gtp-caseadj', learned('caseadj', caseFormTotal('adj')));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
   set('gtp-adjform', learned('adjform', adjFormTotal()));
@@ -19315,10 +19337,11 @@ const TOOL_SETTINGS = [
   ['sbHelp', ...tsProp(() => sbState, 'help'), tsOneOf('blocks', 'gap', 'free')],
   ['pronounGender', () => pronounGender, v => { pronounGender = v; }, v => PRONOUN_GENDERS.includes(v)],
   ['cfNumber', ...tsProp(() => caseFormState, 'number'), tsOneOf('mixed', 'sg', 'pl')],
-  ['cfKasus', ...tsProp(() => caseFormState, 'kasus'), v => v === 'all' || CF_KASUS.includes(v)],
+  ['cfKasus', ...tsProp(() => caseFormState, 'kasus'), v => cfKasusOk(v)],
+  ['cfRegOnly', ...tsProp(() => caseFormState, 'regOnly'), TS_BOOL],
   ['cfHintVisible', ...tsProp(() => caseFormState, 'hintVisible'), TS_BOOL],
   ['caNumber', ...tsProp(() => caseAdjState, 'number'), tsOneOf('mixed', 'sg', 'pl')],
-  ['caKasus', ...tsProp(() => caseAdjState, 'kasus'), v => v === 'all' || CF_KASUS.includes(v)],
+  ['caKasus', ...tsProp(() => caseAdjState, 'kasus'), v => cfKasusOk(v)],
   ['caGenus', ...tsProp(() => caseAdjState, 'genus'), tsOneOf('all', 'masc', 'fem', 'neut')],
   ['caHintVisible', ...tsProp(() => caseAdjState, 'hintVisible'), TS_BOOL],
   ['pfScope', ...tsProp(() => pronFormState, 'scope'), tsOneOf('all', 'case', 'prep', 'poss', 'extra')],
@@ -21520,7 +21543,7 @@ function updateNounDots() {
   let n = 0, t = 0; const titel = [];
   el.innerHTML = nounNums().filter(num => nounHas(noun, num)).map(num => '<span class="noun-dot-gruppe">' +
     Object.keys(nounDeclensionData[noun][num]).filter(k => !(num === 'sg' && k === 'Nom.')).map(k => {
-      const fertig = srsDone(m[noun + '|' + num + '|' + k]); t++; if (fertig) n++;
+      const fertig = srsDone(m[noun + '|' + num + '|' + k]) || nounFormFertig(noun, num, k); t++; if (fertig) n++;
       titel.push((nounState.number === 'both' ? (num === 'sg' ? 'Sg. ' : 'Pl. ') : '') + k + (fertig ? ' ✓' : ' –'));
       return '<span class="conj-dot' + (fertig ? ' fertig' : '') + '"></span>';
     }).join('') + '</span>').join('');
@@ -23413,6 +23436,8 @@ const cfNewState = extra => Object.assign({
   lastCorrect: false,
   lastInput: '',
   hintVisible: true,   // Deklinationsklasse bzw. Adjektivtyp hinter der Aufgabe
+  regOnly: false,      // nur regelmäßige Wörter (Substantive, 12.11.)
+  queue: [],           // vorbereitete Runde nach Lernstand (Substantive, 12.11.)
 }, extra || {});
 const caseFormState = cfNewState();                    // Substantive
 const caseAdjState = cfNewState({ genus: 'all' });     // Adjektive: all | masc | fem | neut
@@ -23454,10 +23479,21 @@ function markCaseFormButtons(t) {
     const b = document.getElementById(c.k + '-gen-' + x);
     if (b) b.classList.toggle('active', x === c.s.genus);
   });
-  markCaseSwitcher(document.getElementById(c.k + '-case-switcher'), c.s.kasus);
+  const sw = document.getElementById(c.k + '-case-switcher');
+  if (sw) {
+    const liste = cfKasusListe(c.s);
+    sw.querySelectorAll('[data-v]').forEach(b => {
+      const an = b.dataset.v === 'all' ? c.s.kasus === 'all' : c.s.kasus !== 'all' && liste.includes(b.dataset.v);
+      b.classList.toggle('active', an); b.setAttribute('aria-pressed', an ? 'true' : 'false');
+      if (t !== 'adj' && b.dataset.v === 'Nom.') { b.disabled = c.s.number === 'sg'; b.title = b.disabled ? 'Nominativ Singular ist das Wort selbst' : 'Nominativ'; }
+    });
+  }
+  if (t !== 'adj') setGtToggle(document.getElementById('cf-reg-toggle'), c.s.regOnly);
 }
 function setCaseFormNumber(v, t) {
   cfT(t).s.number = v;
+  cfT(t).s.queue = [];
+  cfNomPruefen(t);
   markCaseFormButtons(t);
   saveToolSettings();
   restartCaseForm(t);
@@ -23468,11 +23504,36 @@ function setCaseFormGenus(v) {
   saveToolSettings();
   restartCaseForm('adj');
 }
+// mehrere Fälle wählbar (12.11.): Klick schaltet einen Fall dazu/weg, „Alle“ setzt zurück; gespeichert als „Gen.,Präp.“
+function cfKasusListe(st) { return st.kasus === 'all' ? CF_KASUS.slice() : st.kasus.split(',').filter(k => CF_KASUS.includes(k)); }
+const cfKasusOk = v => v === 'all' || (typeof v === 'string' && v.split(',').every(k => CF_KASUS.includes(k)));
 function setCaseFormCase(v, t) {
-  cfT(t).s.kasus = v;
+  const c = cfT(t), st = c.s;
+  if (v === 'all') st.kasus = 'all';
+  else {
+    const set = st.kasus === 'all' ? [] : cfKasusListe(st);
+    const neu = set.includes(v) ? set.filter(k => k !== v) : set.concat(v);
+    const geordnet = CF_KASUS.filter(k => neu.includes(k));
+    st.kasus = !geordnet.length || geordnet.length === CF_KASUS.length ? 'all' : geordnet.join(',');
+  }
+  cfNomPruefen(t);
+  st.queue = [];
   markCaseFormButtons(t);
   saveToolSettings();
   restartCaseForm(t);
+}
+// Substantive: Nominativ Singular ist das Wort selbst – mit „Singular“ ist „Nom“ gesperrt
+function cfNomPruefen(t) {
+  const st = cfT(t).s;
+  if (t !== 'adj' && st.number === 'sg' && st.kasus !== 'all' && cfKasusListe(st).includes('Nom.')) {
+    const rest = cfKasusListe(st).filter(k => k !== 'Nom.');
+    st.kasus = rest.length ? rest.join(',') : 'all';
+  }
+}
+function toggleCaseFormReg() {
+  caseFormState.regOnly = !caseFormState.regOnly; caseFormState.queue = [];
+  setGtToggle(document.getElementById('cf-reg-toggle'), caseFormState.regOnly);
+  saveToolSettings(); restartCaseForm('noun'); updateGtSettingsSummary();
 }
 function openCaseForm(t) {
   const c = cfT(t);
@@ -23486,19 +23547,84 @@ function openCaseAdj() { openCaseForm('adj'); }
 // Zahl aller möglichen Aufgaben für den Fortschritt in der Kopfzeile
 function caseFormTotal(t) {
   if (t === 'adj') return Object.keys(declensionData).length * (4 * 6 + 2);   // 4 Genera × 6 Fälle + belebter Akk. m/Pl
+  // ohne Nominativ Singular: der ist das vorgegebene Wort selbst (12.11.)
   return Object.values(nounDeclensionData).reduce((n, d) =>
-    n + ['sg', 'pl'].reduce((m, num) => m + Object.values(d[num] || {}).filter(f => f && f !== '—').length, 0), 0);
+    n + ['sg', 'pl'].reduce((m, num) => m + Object.entries(d[num] || {}).filter(([k, f]) => f && f !== '—' && !(num === 'sg' && k === 'Nom.') && f !== cfGrundform(d)).length, 0), 0);
+}
+// gezählt wird, was bei „Alle“ gefragt wird: nicht Nom. Sg. und keine Form gleich dem Wort (Akk. стол = стол)
+function cfGrundform(d) { return d['sg'] && d['sg']['Nom.'] !== '—' ? d['sg']['Nom.'] : (d['pl'] || {})['Nom.']; }
+function cfZaehlt(id) {
+  const m = /^n:(.+):(sg|pl):(.+)$/.exec(id); if (!m) return true;
+  const d = nounDeclensionData[m[1]]; if (!d) return false;
+  return !(m[2] === 'sg' && m[3] === 'Nom.') && (d[m[2]] || {})[m[3]] !== m[1];
+}
+// Mini-Kontext (12.11.): typische Wendung vor/nach dem Feld, nur mit Wörtern aus dem Wortschatz
+const CF_RAHMEN = {
+  'Nom.': { pl: ['Это', '.'] }, 'Gen.': { sg: ['нет', ''], pl: ['много', ''] }, 'Dat.': { sg: ['к', ''], pl: ['к', ''] },
+  'Akk.': { sg: ['Я вижу', '.'], pl: ['Я вижу', '.'] }, 'Instr.': { sg: ['с', ''], pl: ['с', ''] }, 'Präp.': { sg: ['Я думаю о', '.'], pl: ['Я думаю о', '.'] },
+};
+// Lautregeln: об vor Vokal (об окне), со vor с/з/ш/ж + Konsonant (со словарём)
+function cfRahmen(task) {
+  const r = (CF_RAHMEN[task.kasus] || {})[task.number]; if (!r) return null;
+  const f = String(task.answer).split(/\s*[\/|]\s*/)[0].toLowerCase();
+  let pre = r[0];
+  if (/(^| )о$/.test(pre) && /^[аоуэи]/.test(f)) pre = pre.replace(/о$/, 'об');
+  if (pre === 'с' && /^[сзшж][бвгджзйклмнпрстфхцчшщ]/.test(f)) pre = 'со';
+  return [pre, r[1]];
+}
+function cfRahmenText(task, form) { const r = cfRahmen(task); return r ? (r[0] + ' ' + form + r[1]).trim() : form; }
+// Aufgabe für ein Substantiv in Zahl und Fall
+function cfNounTask(noun, number, kasus) {
+  const d = nounDeclensionData[noun];
+  return {
+    word: noun, de: d.de, number, kasus,
+    answer: d[number][kasus],
+    frage: CF_KASUS_NAME[kasus] + ' ' + (number === 'pl' ? 'Plural' : 'Singular'),
+    zusatz: d.typeLabel || '',
+    id: 'n:' + noun + ':' + number + ':' + kasus,
+  };
+}
+// 5: Runde nach Lernstand – fällige, zuletzt falsche, neue, dann die am längsten nicht geübten
+function cfNounPool(st) {
+  const kas = cfKasusListe(st), nums = st.number === 'mixed' ? ['sg', 'pl'] : [st.number], pool = [];
+  Object.keys(nounDeclensionData).forEach(n => {
+    if (st.regOnly && isIrregularNoun(n)) return;
+    const d = nounDeclensionData[n];
+    nums.forEach(num => kas.forEach(k => {
+      const f = (d[num] || {})[k];
+      if (!f || f === '—' || (num === 'sg' && k === 'Nom.')) return;
+      if (kas.length > 1 && f === n) return;   // Form gleich der Grundform nur, wenn genau dieser Fall gewählt ist
+      pool.push([n, num, k]);
+    }));
+  });
+  return pool;
+}
+function cfNounRound(st) {
+  const pool = cfNounPool(st), srs = loadGrammarSrs().caseform || {}, life = loadLifetime().g.caseform || {}, now = Date.now();
+  const g = [[], [], [], []];
+  shuffleInPlace(pool.slice()).forEach(x => {
+    const id = 'n:' + x.join(':'), e = life[id], s = srs[id];
+    g[e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= now ? 0 : s && !srsDone(s) ? 1 : !s ? 2 : 3].push(x);
+  });
+  const zuletzt = x => (srs['n:' + x.join(':')] || {}).lastSeen || 0;
+  g[3].sort((a, b) => zuletzt(a) - zuletzt(b));
+  const runde = [];
+  for (const x of [].concat(...g)) { if (runde.length >= GT_RUNDE) break; if (!runde.some(y => y[0] === x[0])) runde.push(x); }
+  return shuffleInPlace(runde);
 }
 // zieht eine Aufgabe: Wort, Numerus, Kasus (bei Adjektiven auch Genus und Belebtheit)
 function buildCaseFormTask(t) {
   const c = cfT(t), st = c.s;
   const rand = arr => arr[Math.floor(Math.random() * arr.length)];
-  const kasus = st.kasus === 'all' ? rand(CF_KASUS) : st.kasus;
+  const kasus = rand(cfKasusListe(st));
   let number = st.number;
   if (number === 'mixed') number = Math.random() < 0.5 ? 'sg' : 'pl';
   const zahl = number === 'pl' ? 'Plural' : 'Singular';
 
   if (c === CF_TOOLS.noun) {
+    if (!st.queue.length) st.queue = cfNounRound(st);
+    const x = st.queue.shift();
+    if (x) return cfNounTask(...x);
     const nouns = Object.keys(nounDeclensionData).filter(n => {
       const d = nounDeclensionData[n][number];
       return d && d[kasus] && d[kasus] !== '—';
@@ -23552,10 +23678,23 @@ function restartCaseForm(t) {
   if (input) { input.value = ''; input.className = 'conj-input'; clearPartialFeedback(input); }
   const q = document.getElementById(c.p + '-q');
   if (q && task) {
+    // 1: gesuchte Form als deutliches Abzeichen, darunter die Fragewörter (12.11.)
+    const teile = [task.kasus, task.number === 'pl' ? 'Pl.' : 'Sg.'];
+    if (task.gk && task.number !== 'pl') teile.push(CF_GENUS_NAME[task.gk]);
+    if (/Lebewesen|Ding/.test(task.frage)) teile.push(task.frage.split(' · ').pop());
     q.innerHTML = '<span class="case-prep" lang="ru">' + task.word + '</span>' + task.de
-      + '<span class="case-hint">gesuchte Form: ' + task.frage + '</span>'
+      + '<span class="cf-form-chip" title="gesuchte Form: ' + task.frage + '">' + teile.join(' · ') + '</span>'
+      + (t !== 'adj' && NOUN_FRAGE[task.kasus] ? '<span class="cf-frage" lang="ru">' + NOUN_FRAGE[task.kasus] + '</span>' : '')
+      + (t !== 'adj' ? '<span class="conj-dots cf-dots" id="caseform-dots"></span>' : '')
       + (task.zusatz ? '<span class="case-hint" id="' + c.p + '-class">' + task.zusatz + '</span>' : '');
     applyCaseFormHint(t);
+    if (t !== 'adj') cfDots(task);
+  }
+  if (input && task) input.placeholder = task.frage + ' eingeben…';
+  if (t !== 'adj') {
+    const r = task ? cfRahmen(task) : null;
+    document.getElementById('caseform-pre').textContent = r ? r[0] : '';
+    document.getElementById('caseform-post').textContent = r ? r[1] : '';
   }
   const res = document.getElementById(c.p + '-result');
   if (res) res.textContent = '';
@@ -23567,8 +23706,11 @@ function restartCaseForm(t) {
 function cfDrill(t) {
   const c = cfT(t);
   gtRundeRegistrieren(c.k, { restart: () => restartCaseForm(t), panel: 'overlay-' + c.p, q: c.p + '-q', score: c.p + '-score',
-    zeile: x => gtRundeZeile('<span lang="ru">' + htmlEsc(x.word) + '</span> (' + x.frage + ')', x.answer) });
-  return { p: c.p, st: c.s, task: () => c.s.current, srs: () => c.srs, id: x => x.id, restart: () => restartCaseForm(t), zufall: true, runde: c.k };
+    zeile: x => t === 'adj' ? gtRundeZeile('<span lang="ru">' + htmlEsc(x.word) + '</span> (' + x.frage + ')', x.answer)
+      : Object.assign(gtRundeZeile('<span lang="ru">' + htmlEsc(x.word) + '</span> (' + x.frage + ')', x.answer), { ru: cfRahmenText(x, x.answer) }),
+    gruppe: x => x.kasus + ' ' + (x.number === 'pl' ? 'Pl.' : 'Sg.') });
+  return { p: c.p, st: c.s, task: () => c.s.current, srs: () => c.srs, id: x => x.id, restart: () => restartCaseForm(t), zufall: true, runde: c.k,
+    extra: t === 'adj' ? null : (x, ok) => cfNachher(x), after: t === 'adj' ? null : x => cfDots(x) };
 }
 ['noun', 'adj'].forEach(t => cfDrill(t));   // Runden beider Werkzeuge gleich anmelden
 function checkCaseForm(t) { gtCheck(cfDrill(t)); }
@@ -23576,8 +23718,37 @@ function revealCaseForm(t) { gtReveal(cfDrill(t)); }
 function nextCaseForm(t) { gtNext(cfDrill(t)); }
 function speakCaseForm(t) {
   const st = cfT(t).s;
-  // vorgelesen wird die gesuchte Form – erst nach dem Prüfen, sonst die Grundform
-  if (st.current) speak(st.answered ? st.current.answer : st.current.word);
+  // vorgelesen wird die gesuchte Form – erst nach dem Prüfen (bei Substantiven mit Rahmen: „много супов“), sonst die Grundform
+  if (!st.current) return;
+  const f = String(st.current.answer).split(/\s*[\/|]\s*/)[0];
+  speak(st.answered ? (t === 'adj' ? st.current.answer : cfRahmenText(st.current, f)) : st.current.word);
+}
+// 4: nach dem Prüfen der ganze Fall in beiden Zahlen und der Weg zur Tabelle
+function cfNachher(x) {
+  const d = nounDeclensionData[x.word]; if (!d) return '';
+  const formen = ['sg', 'pl'].filter(n => nounHas(x.word, n)).map(n => '<span lang="ru"' + (n === x.number ? ' class="cf-jetzt"' : '') + '>' + d[n][x.kasus] + '</span>').join(' · ');
+  return '<span class="cf-nachher"><span class="cf-fall">' + x.kasus + ' ' + formen + '</span>'
+    + '<button class="tool-btn" onclick="cfZurTabelle()" type="button"><i class="ti ti-table"></i> In Deklination öffnen</button></span>';
+}
+function cfZurTabelle() {
+  const x = caseFormState.current; if (!x) return;
+  openNounDecline();
+  const sel = document.getElementById('noun-select');
+  if (![...sel.options].some(o => o.value === x.word)) setNounNumber('both');
+  sel.value = x.word; saveToolSettings(); renderNounTable();
+}
+// 7: Punkte je Fall – gemeinsam mit der Deklination (dort „noun:fall“, hier „caseform“)
+function nounFormFertig(noun, num, k) {
+  const g = loadGrammarSrs();
+  return srsDone((g['noun:fall'] || {})[noun + '|' + num + '|' + k]) || srsDone((g.caseform || {})['n:' + noun + ':' + num + ':' + k]);
+}
+function cfDots(x) {
+  const el = document.getElementById('caseform-dots'); if (!el || !x || !nounDeclensionData[x.word]) return;
+  const ks = Object.keys(nounDeclensionData[x.word][x.number]).filter(k => !(x.number === 'sg' && k === 'Nom.'));
+  const fertig = ks.filter(k => nounFormFertig(x.word, x.number, k));
+  el.innerHTML = ks.map(k => '<span class="conj-dot' + (fertig.includes(k) ? ' fertig' : '') + (k === x.kasus ? ' jetzt' : '') + '"></span>').join('');
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', fertig.length + ' von ' + ks.length + ' Fällen sicher');
+  el.title = (x.number === 'pl' ? 'Plural: ' : 'Singular: ') + ks.map(k => k + (fertig.includes(k) ? ' ✓' : ' –')).join(' · ');
 }
 
 // ── Pronomen umformen ───────────────────────────────────────────
