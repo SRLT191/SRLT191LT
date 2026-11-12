@@ -731,7 +731,7 @@
   .gt-fehler-gruppen { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; margin: 6px 0 2px; font-size: 14px; color: var(--c-text-muted); }
   .gt-fehler-gruppen b { color: var(--c-text-label); }
   @media (min-width: 900px) {
-    #overlay-caseform .cf-eingabe, #overlay-caseadj .cf-eingabe, #overlay-caseform .gt-actions, #overlay-caseadj .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
+    #overlay-caseform .cf-eingabe, #overlay-caseadj .cf-eingabe, #overlay-numnoun .cf-eingabe, #overlay-caseform .gt-actions, #overlay-caseadj .gt-actions, #overlay-numnoun .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
   }
   .gt-settings-sep { width: 1px; align-self: stretch; min-height: 24px; background: var(--c-border); margin: 0 4px; }
   /* Augen-Knöpfe: beim Überfahren/Fokus der Zeile deutlicher (12.11.) */
@@ -2335,13 +2335,14 @@
 <tr><td>5–9, 0</td><td>Genitiv Plural</td><td>пять столов, ноль столов</td></tr>
 </table>
 <p><strong>Ausnahme 11 bis 14:</strong> Sie nehmen immer den Genitiv Plural, obwohl sie auf 1–4 enden: одиннадцать столов. Das gilt auch für 111–114 usw.</p>
-<p><strong>Bedienung:</strong> Zahl und Substantiv stehen da, du tippst das Substantiv in der passenden Form. Nach dem Prüfen steht die Regel in Klammern hinter der Lösung; ein zweites <em>Prüfen</em> führt weiter. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Lösung zeigen</em> (Taste 3) zeigt die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
+<p><strong>Bedienung:</strong> Das Substantiv steht oben, die Zahl vor dem Feld; du tippst das Substantiv in der passenden Form. Unter <em>Einstellungen</em> wählst du den Zahlbereich (bis 20, bis 100, große Zahlen wie 101, 112, 1021), einen oder mehrere Regelfälle und <em>Zahl ausschreiben</em>: dann tippst du die ganze Wendung in Worten (одна мать, две матери, двадцать один стол). <em>Hilfe</em> zeigt die Regel schon vor dem Antworten. Nach dem Prüfen steht die Regel in Klammern hinter der Lösung; ein zweites <em>Prüfen</em> führt weiter. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Lösung zeigen</em> (Taste 3) zeigt die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="nn-hint-toggle" onclick="toggleNumNounHint()" title="Regel vor dem Antworten zeigen" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><div class="tense-switcher" id="nn-range-switcher" role="group" aria-label="Zahlbereich"><button class="mode-btn active" data-sum="bis 20" data-v="20" onclick="setNumNounRange('20')" type="button">bis 20</button><button class="mode-btn" data-sum="bis 100" data-v="100" onclick="setNumNounRange('100')" type="button">bis 100</button><button class="mode-btn" data-sum="große Zahlen" data-v="gross" onclick="setNumNounRange('gross')" title="z. B. 101, 112, 1000, 1021" type="button">große Zahlen</button></div><div class="tense-switcher" id="nn-rule-switcher" role="group" aria-label="Regelfall"><button class="mode-btn active" data-v="all" onclick="setNumNounRule('all')" type="button">Alle</button><button class="mode-btn" data-v="r1" onclick="setNumNounRule('r1')" title="Endziffer 1 → Nom. Sg." type="button">1</button><button class="mode-btn" data-v="r24" onclick="setNumNounRule('r24')" title="Endziffer 2–4 → Gen. Sg." type="button">2–4</button><button class="mode-btn" data-v="r5" onclick="setNumNounRule('r5')" title="Endziffer 0, 5–9 → Gen. Pl." type="button">5–0</button><button class="mode-btn" data-v="r11" onclick="setNumNounRule('r11')" title="11–14 → Gen. Pl." type="button">11–14</button></div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="in Worten" id="nn-write-toggle" onclick="toggleNumNounWrite()" title="Ganze Wendung in Worten tippen (две матери) – übt один/одна/одно und два/две" type="button"><i class="ti ti-eye-off"></i> <span>Zahl ausschreiben</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="nn-reg-toggle" onclick="toggleNumNounReg()" title="Ohne Sonderfälle und Zählformen (пять человек)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="numnoun-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakNumNoun()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
-<div class="conj-row" style="grid-template-columns: 1fr;">
-<input autocomplete="off" class="conj-input" id="numnoun-input" onkeydown="if(event.key==='Enter') checkNumNoun()" placeholder="Substantivform eingeben…" type="text"/>
+<div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;"><span class="cf-rahmen" id="numnoun-pre" lang="ru"></span>
+<input aria-label="Form nach der Zahl" autocomplete="off" class="conj-input" id="numnoun-input" onkeydown="if(event.key==='Enter') checkNumNoun()" placeholder="Substantivform eingeben…" type="text"/>
 
 </div>
 <div class="conj-actions gt-actions">
@@ -8453,7 +8454,7 @@ function grammarToolSources() {
     motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
     transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal()],
     noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun'), cfZaehlt],
-    numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal(), genderZaehlt],
+    numnoun: [['numnoun'], numNounNouns().length * 4], gender: [['gender'], genderTotal(), genderZaehlt],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
     casedrill: [['case', 'case:word'], PREP_CASES.length + caseWordCount()], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
@@ -14780,7 +14781,7 @@ const GRAMMAR_TOOL_LEVEL = {
   pronoun: 'A1', pronform: 'A1', casedrill: 'A1', wordgroup: 'A2', sentencebuild: 'A1',
 };
 // nur Abzeichen, kein eigener Punkt im Stufenplan (Imperativ zählt dort schon über Konjugieren)
-const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2']];
+const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2'], ['#nn-write-toggle', 'A2']];
 const GRAMMAR_PART_LEVEL = [
   ['#conj-tense-btn-imperative', 'A2'], ['[onclick="setTransformScope(\'aspect\')"]', 'A2'],
   ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'],
@@ -17817,7 +17818,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-transform', learned('transform', transformTotal()));
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length + caseWordCount()));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
-  set('gtp-numnoun', learned('numnoun', numNounNouns().length * 3));
+  set('gtp-numnoun', learned('numnoun', numNounNouns().length * 4));   // 4 Regelfälle: 1 · 2–4 · 5–0 · 11–14 (12.11.)
   set('gtp-caseform', Object.entries(all.caseform || {}).filter(([id, e]) => cfZaehlt(id) && srsDone(e)).length + ' von ' + caseFormTotal('noun') + ' gelernt');
   set('gtp-caseadj', learned('caseadj', caseFormTotal('adj')));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
@@ -19336,6 +19337,11 @@ const TOOL_SETTINGS = [
   ['wgAutoSpeak', ...tsProp(() => wgState, 'autoSpeak'), TS_BOOL],
   ['sbHelp', ...tsProp(() => sbState, 'help'), tsOneOf('blocks', 'gap', 'free')],
   ['pronounGender', () => pronounGender, v => { pronounGender = v; }, v => PRONOUN_GENDERS.includes(v)],
+  ['nnHintVisible', ...tsProp(() => numNounState, 'hintVisible'), TS_BOOL],
+  ['nnRange', ...tsProp(() => numNounState, 'range'), tsOneOf('20', '100', 'gross')],
+  ['nnFaelle', ...tsProp(() => numNounState, 'faelle'), v => nnFaelleOk(v)],
+  ['nnSchreiben', ...tsProp(() => numNounState, 'schreiben'), TS_BOOL],
+  ['nnRegOnly', ...tsProp(() => numNounState, 'regOnly'), TS_BOOL],
   ['cfNumber', ...tsProp(() => caseFormState, 'number'), tsOneOf('mixed', 'sg', 'pl')],
   ['cfKasus', ...tsProp(() => caseFormState, 'kasus'), v => cfKasusOk(v)],
   ['cfRegOnly', ...tsProp(() => caseFormState, 'regOnly'), TS_BOOL],
@@ -23022,6 +23028,7 @@ function numWordRu(n, g) {
   const teens = ['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
   const tens = ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
   const unit = d => d === 1 ? eins[g] || eins.m : d === 2 ? zwei[g] || zwei.m : units[d];
+  if (n === 100) return 'сто';
   if (n < 0 || n > 99) return String(n);
   if (n < 10) return unit(n);
   if (n < 20) return teens[n - 10];
@@ -23030,7 +23037,7 @@ function numWordRu(n, g) {
 function speakNumNoun() {
   // vor der Antwort Zahl und Grundform (sonst wäre die Lösung zu hören), danach die Lösung
   const c = numNounState.current;
-  if (c) speak(numWordRu(c.n, nounGender(c.noun, nounDeclensionData[c.noun])) + ' ' + (numNounState.answered ? c.answer : c.noun));
+  if (c) speak(numNounState.answered && c.schreiben ? c.answer : nnZahlwort(c.n, c.noun) + ' ' + (numNounState.answered ? c.form : c.noun));
 }
 
 // liest den gesuchten Satz vor (Hörhilfe)
@@ -23599,17 +23606,20 @@ function cfNounPool(st) {
   });
   return pool;
 }
-function cfNounRound(st) {
-  const pool = cfNounPool(st), srs = loadGrammarSrs().caseform || {}, life = loadLifetime().g.caseform || {}, now = Date.now();
+function cfNounRound(st) { return gtLernstandRunde(cfNounPool(st), 'caseform', x => 'n:' + x.join(':'), x => x[0]); }
+// Runde nach Lernstand (12.11.): fällige, zuletzt falsche, neue, dann die am längsten nicht geübten;
+// jedes Wort (wortOf) höchstens einmal je Runde. Kasus bilden und Zahl + Substantiv.
+function gtLernstandRunde(pool, key, idOf, wortOf) {
+  const srs = loadGrammarSrs()[key] || {}, life = loadLifetime().g[key] || {}, now = Date.now();
   const g = [[], [], [], []];
   shuffleInPlace(pool.slice()).forEach(x => {
-    const id = 'n:' + x.join(':'), e = life[id], s = srs[id];
+    const id = idOf(x), e = life[id], s = srs[id];
     g[e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= now ? 0 : s && !srsDone(s) ? 1 : !s ? 2 : 3].push(x);
   });
-  const zuletzt = x => (srs['n:' + x.join(':')] || {}).lastSeen || 0;
+  const zuletzt = x => (srs[idOf(x)] || {}).lastSeen || 0;
   g[3].sort((a, b) => zuletzt(a) - zuletzt(b));
   const runde = [];
-  for (const x of [].concat(...g)) { if (runde.length >= GT_RUNDE) break; if (!runde.some(y => y[0] === x[0])) runde.push(x); }
+  for (const x of [].concat(...g)) { if (runde.length >= GT_RUNDE) break; if (!runde.some(y => wortOf(y) === wortOf(x))) runde.push(x); }
   return shuffleInPlace(runde);
 }
 // zieht eine Aufgabe: Wort, Numerus, Kasus (bei Adjektiven auch Genus und Belebtheit)
@@ -23730,12 +23740,12 @@ function cfNachher(x) {
   return '<span class="cf-nachher"><span class="cf-fall">' + x.kasus + ' ' + formen + '</span>'
     + '<button class="tool-btn" onclick="cfZurTabelle()" type="button"><i class="ti ti-table"></i> In Deklination öffnen</button></span>';
 }
-function cfZurTabelle() {
-  const x = caseFormState.current; if (!x) return;
+function cfZurTabelle(wort) {
+  const w = wort || (caseFormState.current || {}).word; if (!w) return;
   openNounDecline();
   const sel = document.getElementById('noun-select');
-  if (![...sel.options].some(o => o.value === x.word)) setNounNumber('both');
-  sel.value = x.word; saveToolSettings(); renderNounTable();
+  if (![...sel.options].some(o => o.value === w)) setNounNumber('both');
+  sel.value = w; saveToolSettings(); renderNounTable();
 }
 // 7: Punkte je Fall – gemeinsam mit der Deklination (dort „noun:fall“, hier „caseform“)
 function nounFormFertig(noun, num, k) {
@@ -24796,7 +24806,31 @@ const numNounState = {
   done: 0,
   correct: 0,
   answered: false,
+  hintVisible: true,     // Regel vor dem Antworten zeigen (12.11.)
+  range: '20',           // 20 | 100 | gross
+  faelle: 'all',         // all oder „r1,r24“ (r1 · r24 · r5 · r11)
+  schreiben: false,      // Zahl ausschreiben: ganze Wendung in Worten (A2)
+  regOnly: false,        // ohne Sonderfälle und Zählformen
+  queue: [],
 };
+// Regelfälle: Kennung, kurzer Name (Knopf, Punkte, Rundenende), Abzeichen
+const NN_RULES = [
+  ['r1', '1', 'Endziffer 1 → Nom. Sg.'], ['r24', '2–4', 'Endziffer 2–4 → Gen. Sg.'],
+  ['r5', '5–0', 'Endziffer 0, 5–9 → Gen. Pl.'], ['r11', '11–14', '11–14 → Gen. Pl.'],
+];
+function nnRule(n) { const t = n % 100, l = n % 10; return t >= 11 && t <= 14 ? 'r11' : l === 1 ? 'r1' : l >= 2 && l <= 4 ? 'r24' : 'r5'; }
+// Lernstand-Kennung wie bisher: Wort + Regeltext (bisheriger Lernstand bleibt gültig)
+const NN_WHY = { r1: 'Nominativ Singular (Endziffer 1)', r24: 'Genitiv Singular (Endziffer 2–4)', r5: 'Genitiv Plural (Endziffer 0, 5–9)', r11: 'Genitiv Plural (11–14 immer!)' };
+function nnFaelle() { return numNounState.faelle === 'all' ? NN_RULES.map(r => r[0]) : numNounState.faelle.split(',').filter(r => NN_WHY[r]); }
+const nnFaelleOk = v => v === 'all' || (typeof v === 'string' && v.split(',').every(r => NN_WHY[r]));
+// Zahlen je Bereich; „Zahl ausschreiben“ nur mit Zahlwörtern aus dem Wortschatz (1–24, 30–34, 100)
+const NN_GROSS = [101, 102, 105, 111, 112, 114, 121, 122, 125, 200, 201, 211, 213, 222, 300, 301, 500, 512, 1000, 1001, 1002, 1011, 1021, 1024, 1100];
+function nnZahlen() {
+  const bis = n => Array.from({ length: n }, (_, i) => i + 1);
+  if (numNounState.schreiben) return numNounState.range === '20' ? bis(20) : bis(24).concat([30, 31, 32, 33, 34, 100]);
+  return numNounState.range === 'gross' ? NN_GROSS : numNounState.range === '100' ? bis(100) : [0].concat(bis(20));
+}
+function nnZahlwort(n, noun) { return n === 100 ? 'сто' : numWordRu(n, nounGender(noun, nounDeclensionData[noun])); }
 
 function toggleNumNounInfo() {
   const panel = document.getElementById('numnoun-info-panel');
@@ -24806,53 +24840,123 @@ function toggleNumNounInfo() {
 function openNumNoun() {
   numNounState.done = 0;
   numNounState.correct = 0;
+  nnMarkButtons();
   restartNumNoun();
   showGrammarPanel('numnoun');
 }
+function nnMarkButtons() {
+  const st = numNounState, liste = nnFaelle();
+  document.querySelectorAll('#nn-range-switcher [data-v]').forEach(b => { b.classList.toggle('active', b.dataset.v === st.range); b.disabled = st.schreiben && b.dataset.v === 'gross'; });
+  document.querySelectorAll('#nn-rule-switcher [data-v]').forEach(b => {
+    const an = b.dataset.v === 'all' ? st.faelle === 'all' : st.faelle !== 'all' && liste.includes(b.dataset.v);
+    b.classList.toggle('active', an); b.setAttribute('aria-pressed', an ? 'true' : 'false');
+  });
+  setGtToggle(document.getElementById('nn-hint-toggle'), st.hintVisible);
+  setGtToggle(document.getElementById('nn-write-toggle'), st.schreiben);
+  setGtToggle(document.getElementById('nn-reg-toggle'), st.regOnly);
+}
+function nnNeu() { numNounState.queue = []; nnMarkButtons(); saveToolSettings(); restartNumNoun(); updateGtSettingsSummary(); }
+function setNumNounRange(v) { numNounState.range = v; nnNeu(); }
+function setNumNounRule(v) {
+  const st = numNounState;
+  if (v === 'all') st.faelle = 'all';
+  else {
+    const set = st.faelle === 'all' ? [] : nnFaelle(), neu = set.includes(v) ? set.filter(r => r !== v) : set.concat(v);
+    const geordnet = NN_RULES.map(r => r[0]).filter(r => neu.includes(r));
+    st.faelle = !geordnet.length || geordnet.length === NN_RULES.length ? 'all' : geordnet.join(',');
+  }
+  nnNeu();
+}
+function toggleNumNounHint() { numNounState.hintVisible = !numNounState.hintVisible; nnMarkButtons(); saveToolSettings(); const c = document.getElementById('numnoun-rule'); if (c) c.style.display = numNounState.hintVisible ? '' : 'none'; updateGtSettingsSummary(); }
+function toggleNumNounWrite() { numNounState.schreiben = !numNounState.schreiben; if (numNounState.schreiben && numNounState.range === 'gross') numNounState.range = '100'; nnNeu(); }
+function toggleNumNounReg() { numNounState.regOnly = !numNounState.regOnly; nnNeu(); }
 
 // Zahl + Substantiv braucht Singular und Plural (ohne любовь, деньги)
 function numNounNouns() { return Object.keys(nounDeclensionData).filter(n => nounHas(n, 'sg') && nounHas(n, 'pl')); }
-function restartNumNoun() {
-  const nouns = numNounNouns();
-  const z = gtRundeZwang('numnoun');
-  const noun = z ? z.noun : nouns[Math.floor(Math.random() * nouns.length)];
-  // Zahlen so ziehen, dass alle drei Regelfälle und die Teens-Ausnahme vorkommen
-  const buckets = [
-    () => [1, 21, 31][Math.floor(Math.random() * 3)],
-    () => { const b = [2, 3, 4, 22, 23, 24, 32][Math.floor(Math.random() * 7)]; return b; },
-    () => [5, 6, 7, 8, 9, 10, 20, 25, 30, 0][Math.floor(Math.random() * 10)],
-    () => [11, 12, 13, 14][Math.floor(Math.random() * 4)],
-  ];
-  const n = z ? z.n : buckets[Math.floor(Math.random() * buckets.length)]();
+// Runde nach Lernstand: Paare [Wort, Regelfall]; die Zahl wird passend zum Regelfall gezogen
+function nnRunde() {
+  const regeln = nnFaelle(), zahlen = nnZahlen();
+  const moeglich = regeln.filter(r => zahlen.some(n => nnRule(n) === r));
+  const pool = [];
+  numNounNouns().forEach(n => {
+    if (numNounState.regOnly && (isIrregularNoun(n) || nounDeclensionData[n].countGenPl)) return;
+    moeglich.forEach(r => pool.push([n, r]));
+  });
+  return gtLernstandRunde(pool, 'numnoun', x => x[0] + ':' + NN_WHY[x[1]], x => x[0]);
+}
+function nnTask(noun, n) {
   const [num, kasus, why] = numNounRequiredForm(n);
   // Zählform: пять человек (nicht людей)
-  const nd = nounDeclensionData[noun], answer = num === 'pl' && kasus === 'Gen.' && nd.countGenPl ? nd.countGenPl : nd[num][kasus];
-  numNounState.current = { n, noun, answer, why,
-    de: nounDeclensionData[noun].de };
-  numNounState.answered = false;
-  numNounState.lastInput = '';
+  const nd = nounDeclensionData[noun], zaehl = num === 'pl' && kasus === 'Gen.' && nd.countGenPl;
+  const form = zaehl ? nd.countGenPl : nd[num][kasus];
+  const wort = numNounState.schreiben ? nnZahlwort(n, noun) : '';
+  return { n, noun, form, answer: wort ? wort + ' ' + form : form, why, rule: nnRule(n), zaehl: !!zaehl, schreiben: !!wort, de: nd.de };
+}
+function restartNumNoun() {
+  const st = numNounState;
+  const z = gtRundeZwang('numnoun');
+  let task = z;
+  if (!task) {
+    if (!st.queue.length) st.queue = nnRunde();
+    const x = st.queue.shift(), zahlen = nnZahlen();
+    if (x) {
+      const passend = zahlen.filter(n => nnRule(n) === x[1]);
+      task = nnTask(x[0], passend[Math.floor(Math.random() * passend.length)]);
+    } else {
+      const nouns = numNounNouns();
+      task = nnTask(nouns[Math.floor(Math.random() * nouns.length)], zahlen[Math.floor(Math.random() * zahlen.length)]);
+    }
+  }
+  st.current = task;
+  st.answered = false;
+  st.lastInput = '';
   const input = document.getElementById('numnoun-input');
   input.value = '';
   input.className = 'conj-input';
   input.disabled = false;
+  input.placeholder = task.schreiben ? 'Zahl und Substantiv in Worten…' : 'Form nach ' + task.n + ' eingeben…';
   clearPartialFeedback(input);
+  const regel = NN_RULES.find(r => r[0] === task.rule);
   document.getElementById('numnoun-q').innerHTML =
-    '<span class="case-prep" lang="ru">' + n + ' + ' + noun + '</span>' + numNounState.current.de +
-    '<span class="case-hint">Welche Form des Substantivs steht nach dieser Zahl?</span>';
+    '<span class="case-prep" lang="ru">' + task.noun + '</span>' + task.de +
+    '<span class="cf-form-chip" id="numnoun-rule"' + (st.hintVisible ? '' : ' style="display:none"') + '>' + regel[2] + '</span>' +
+    '<span class="conj-dots cf-dots" id="numnoun-dots"></span>';
+  document.getElementById('numnoun-pre').textContent = task.n + (task.schreiben ? ' →' : '');
+  nnDots(task);
   document.getElementById('numnoun-result').textContent = '';
   document.getElementById('numnoun-score').textContent =
-    numNounState.done ? numNounState.correct + ' von ' + numNounState.done + ' richtig' : '';
+    st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
   gtRundeAnzeige('numnoun');
 }
+// Punkte je Wort: ein Punkt je Regelfall, der aktuelle markiert
+function nnDots(t) {
+  const el = document.getElementById('numnoun-dots'); if (!el || !t) return;
+  const m = loadGrammarSrs().numnoun || {}, fertig = NN_RULES.filter(r => srsDone(m[t.noun + ':' + NN_WHY[r[0]]]));
+  el.innerHTML = NN_RULES.map(r => '<span class="conj-dot' + (fertig.includes(r) ? ' fertig' : '') + (r[0] === t.rule ? ' jetzt' : '') + '"></span>').join('');
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', fertig.length + ' von 4 Regelfällen sicher');
+  el.title = NN_RULES.map(r => r[1] + (fertig.includes(r) ? ' ✓' : ' –')).join(' · ');
+}
+// nach dem Prüfen: Regel, alle drei Formen (1 · 2 · 5) und der Weg zur Tabelle
+function nnNachher(t) {
+  const d = nounDeclensionData[t.noun], fuenf = d.countGenPl || d.pl['Gen.'];
+  const formen = [[1, d.sg['Nom.'], 'r1'], [2, d.sg['Gen.'], 'r24'], [5, fuenf, 'r5']];
+  const jetzt = t.rule === 'r11' ? 'r5' : t.rule;
+  return ' <span style="opacity:0.75">(' + t.why + ')</span>'
+    + '<span class="cf-nachher"><span class="cf-fall">' + formen.map(([n, f, r]) => '<span lang="ru"' + (r === jetzt ? ' class="cf-jetzt"' : '') + '>' + n + ' ' + f + '</span>').join(' · ') + '</span>'
+    + (t.zaehl || d.countGenPl ? '<span class="cf-fall"><b>Zählform:</b> <span lang="ru">пять ' + d.countGenPl + '</span> (nicht ' + d.pl['Gen.'] + ')</span>' : '')
+    + '<button class="tool-btn" onclick="cfZurTabelle(\'' + t.noun + '\')" type="button"><i class="ti ti-table"></i> In Deklination öffnen</button></span>';
+}
 
-// Lernstand je Substantiv und Regelfall (Endziffer 1 / 2–4 / sonst)
+// Lernstand je Substantiv und Regelfall (Endziffer 1 / 2–4 / sonst / 11–14)
 const NUMNOUN_DRILL = {
   p: 'numnoun', st: numNounState, task: () => numNounState.current,
   srs: () => 'numnoun', id: t => t.noun + ':' + t.why,
   restart: () => restartNumNoun(), zufall: true,
   runde: gtRundeRegistrieren('numnoun', { restart: () => restartNumNoun(), panel: 'overlay-numnoun', q: 'numnoun-q', score: 'numnoun-score',
-    zeile: t => gtRundeZeile('<span lang="ru">' + t.n + ' + ' + htmlEsc(t.noun) + '</span>', t.n + ' ' + t.answer) }) && 'numnoun',
-  extra: t => ' <span style="opacity:0.75">(' + t.why + ')</span>',
+    zeile: t => gtRundeZeile('<span lang="ru">' + t.n + ' + ' + htmlEsc(t.noun) + '</span>', t.schreiben ? t.answer : t.n + ' ' + t.answer),
+    gruppe: t => (NN_RULES.find(r => r[0] === t.rule) || ['', '?'])[1] }) && 'numnoun',
+  extra: t => nnNachher(t),
+  after: t => nnDots(t),
 };
 function checkNumNoun() { gtCheck(NUMNOUN_DRILL); }
 
