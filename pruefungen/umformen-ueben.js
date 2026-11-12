@@ -29,7 +29,7 @@ const { chromium } = require('playwright');
     // Darstellung
     const t = transformState.queue[0];
     out.from = document.querySelector('#transform-q .tf-from [lang="ru"]').textContent; out.tFrom = t.fromPron + ' ' + t.from;
-    setTransformScope('aspect'); const a = transformState.queue.find(x => x.prompt.startsWith('он / она / оно')) || null;
+    setTransformScope('aspect'); const a = transformState.queue.find(x => x.prompt.startsWith('он / она / оно')) || items.find(x => x.kind === 'aspect' && x.prompt.startsWith('он / она / оно')) || null;   // nicht jede Runde enthält eine solche Aufgabe
     if (a) { transformState.queue[transformState.index] = a; renderTransform(); }
     out.gap = a ? document.querySelector('#transform-gap .tf-person').textContent : 'kein Beispiel'; out.ph = document.getElementById('transform-input').placeholder;
     out.apast = items.filter(x => x.task === 'vollendet (Vergangenheit)').slice(0, 3).map(x => x.prompt + ' = ' + x.answer);
