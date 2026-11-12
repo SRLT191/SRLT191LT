@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
   const r = await p.evaluate(fillSrc => {
     const fill = eval(fillSrc); const out = {};
     setAppView('grammar'); openConjugate(); updateGrammarTileProgress();
-    out.total = [document.getElementById('gtp-conj').textContent, Object.keys(conjugationData).length * 3, grammarToolSources().conjugate[1]];
+    out.total = [document.getElementById('gtp-conj').textContent, (Object.keys(conjugationData).length + conjPfVerben().length) * 3, grammarToolSources().conjugate[1]];
     // Futur: wird gespeichert, zählt aber nicht
     document.getElementById('conj-verb-select').value = 'строить'; setConjTense('future'); fill(); checkConjugationTable();
     out.futur = [!!(loadGrammarSrs()['conj:future'] || {})['строить'], document.getElementById('gtp-conj').textContent.split(' ')[0], document.getElementById('conj-tense-btn-future').title];
@@ -34,7 +34,7 @@ const { chromium } = require('playwright');
     setConjMixed();
     return out;
   }, fill.toString());
-  ok('Lernstand Konjugieren = Verben × 3 (Präsens, Vergangenheit, Imperativ)', r.total[0] === '0 von ' + r.total[1] + ' gelernt' && r.total[2] === r.total[1], JSON.stringify(r.total));
+  ok('Lernstand Konjugieren = (Verben + vollendete Tabellen) × 3 (Präsens, Vergangenheit, Imperativ)', r.total[0] === '0 von ' + r.total[1] + ' gelernt' && r.total[2] === r.total[1], JSON.stringify(r.total));
   ok('Futur wird gespeichert, zählt aber nicht; Knopf erklärt es', r.futur[0] && r.futur[1] === '0' && /zählt nicht im Lernstand/.test(r.futur[2]), JSON.stringify(r.futur));
   ok('Punkte je Zeit: drei leere, aktuelle markiert; nach dem Lösen Präsens gefüllt', r.dots0 === 'conj-dot jetzt|conj-dot|conj-dot' && r.dots1 === 'true,false,false', JSON.stringify([r.dots0, r.dots1]));
   ok('nach dem Lösen: „Tabelle anhören“ und Beispielsatz (vorher leer); auch nach dem Aufdecken', r.leer && /^Tabelle anhören\n.+\n.+/.test(r.after) && r.nachAufdecken, JSON.stringify([r.leer, r.after, r.nachAufdecken]));

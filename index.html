@@ -2688,7 +2688,7 @@
 <p>• <strong>Imperativ:</strong> die du-Befehlsform: говорить → говори!</p>
 <p>• <strong>vollendet (Futur):</strong> der vollendete Partner mit Präsensendungen – сделаю heißt schon „ich werde (fertig) machen“.</p>
 <p>• <strong>vollendet (Vergangenheit):</strong> der vollendete Partner in der Vergangenheit – он сказал, она написала.</p>
-<p><strong>Gezählt</strong> wird die Vergangenheit je Verb einmal (он, она und они folgen derselben Regel; in einer Runde kommt je Verb eine davon). Das Futur mit буду ist bei allen Verben gleich gebaut: übbar, aber es zählt nicht und kommt bei <em>Alle</em> höchstens zweimal pro Runde.</p>
+<p><strong>Gezählt</strong> wird die Vergangenheit je Form (он, она, они einzeln; in einer Runde kommt je Verb höchstens eine davon). Das Futur mit буду ist bei allen Verben gleich gebaut: übbar, aber es zählt nicht und kommt bei <em>Alle</em> höchstens zweimal pro Runde.</p>
 <p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em> und <em>Aspekt</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
 <p>Eine Runde hat 20 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
 <p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
@@ -8452,23 +8452,45 @@ function grammarToolSources() {
   return {
     conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
     motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
-    transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal()],
+    transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal(), null, rektionEinheit],
     noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun'), cfZaehlt],
-    numnoun: [['numnoun'], numNounNouns().length * 4], gender: [['gender'], genderTotal(), genderZaehlt],
-    decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
+    numnoun: [['numnoun'], numNounNouns().length * 3, nnZaehlt], gender: [['gender'], genderTotal(), genderZaehlt],
+    decline: [DECL_SRS_KEYS, Object.keys(declensionData).length * DECL_SRS_KEYS.length], caseadj: [['caseadj'], caseFormTotal('adj'), caZaehlt], adjform: [['adjform'], adjFormTotal()],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
-    casedrill: [['case', 'case:word'], PREP_CASES.length + caseWordCount()], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
+    casedrill: [['case', 'case:word'], PREP_CASES.length + caseWordCount()], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3, wgZaehlt],
     sentencebuild: [Object.keys(loadLifetime().g || {}).filter(k => k.startsWith('sb:')), SB_ITEMS.length],
   };
 }
 // Stand Grammatik (9.11.): Balken und Prozent als Durchschnitt der Werkzeuge – jedes Werkzeug zählt gleich viel,
 // sonst bestimmen die Werkzeuge mit Tausenden Einzelformen (Kasus bilden) das Bild; die Zahlen bleiben echte Anzahlen
-// Einträge eines Werkzeugs im Lernstand (s[2]: optionaler Filter, z. B. Geschlecht ohne Regelfälle)
+// Einträge eines Werkzeugs im Lernstand. s[2]: optionaler Filter (id, Eintrag), z. B. Geschlecht ohne Regelfälle;
+// s[3]: optionale Einheit (id → Einheit) – mehrere Aufgaben zählen als eine (Rektion „Form bilden“: je Verb), es gilt der beste Eintrag
 function srcEntries(s, g) {
   const out = []; if (!s) return out;
-  s[0].forEach(k => Object.entries(g[k] || {}).forEach(([id, e]) => { if (!s[2] || s[2](id)) out.push(e); }));
-  return out;
+  const je = {};
+  s[0].forEach(k => Object.entries(g[k] || {}).forEach(([id, e]) => {
+    if (s[2] && !s[2](id, e)) return;
+    if (!s[3]) { out.push(e); return; }
+    const u = s[3](id), alt = je[u];
+    if (!alt || ((e && e.d) || 0) > ((alt && alt.d) || 0) || (!(alt && alt.l) && e && e.l)) je[u] = e;
+  }));
+  return out.concat(Object.values(je));
 }
+// „X von Y gelernt“ eines Werkzeugs aus dem Übungsstand – mit Filter und Einheit der Quelle (12.11.)
+function srcGelernt(s, all) {
+  const units = new Set(); let n = 0;
+  s[0].forEach(k => Object.entries(all[k] || {}).forEach(([id, e]) => {
+    if (!srsDone(e) || (s[2] && !s[2](id, e))) return;
+    if (s[3]) units.add(s[3](id)); else n++;
+  }));
+  return (n + units.size) + ' von ' + s[1] + ' gelernt';
+}
+// Zählregeln (Prüfung 12.11.)
+function rektionEinheit(id) { if (!id.startsWith('f:')) return id; const v = RK_VERBS.map(rkVerbId).filter(v => id.startsWith('f:' + v + ':')).sort((a, b) => b.length - a.length)[0]; return v ? 'f:' + v : id; }
+function nnZaehlt(id) { return !id.endsWith(':' + NN_WHY.r1); }            // „1 стол → стол“ ist das Wort selbst
+function caZaehlt(id) { return !/^a:[^:]+:masc:(Nom\.|Akk\.)$/.test(id); }   // Nom. m und Akk. m (Ding) sind die Grundform
+// Wortgruppen: eine Kategorie gilt erst nach 3 richtigen Antworten mit verschiedenen Wörtern als gelernt
+function wgZaehlt(id, e) { return !!e && (Array.isArray(e.w) ? e.w.length : (e.correct != null ? e.correct : e.c) || 0) >= 3; }
 function homeToolAnteile(t, g, src, now) {
   const s = src[t]; if (!s || !s[1]) return null;
   const entries = srcEntries(s, g);
@@ -8829,7 +8851,7 @@ function lifetimeAsSrs() {
   const out = {};
   Object.entries(loadLifetime().g).forEach(([tool, m]) => {
     out[tool] = {};
-    Object.entries(m).forEach(([id, e]) => { out[tool][id] = { correct: e.l ? 1 : 0 }; });
+    Object.entries(m).forEach(([id, e]) => { out[tool][id] = { correct: e.l ? Math.max(1, e.c || 1) : 0 }; });
   });
   return out;
 }
@@ -17806,24 +17828,25 @@ function updateGrammarTileProgress(store, sink) {
     const n = keys.reduce((sum, k) => sum + Object.values(all[k] || {}).filter(srsDone).length, 0);
     return n + ' von ' + total + ' gelernt';
   };
+  const src = grammarToolSources();
   set('gtp-conj', learnedMulti(CONJ_SRS_KEYS, conjTotal()));
   const aspN = Object.keys(aspectPairs()).length;
   set('gtp-aspect-fwd', learnedMulti(['aspect:fwd', 'aspect:back'], aspN * 2));
   set('gtp-noun', learnedMulti(['noun', 'noun:pl'], nounTotal()));
-  set('gtp-decl', learned('decl', Object.keys(declensionData).length));
+  set('gtp-decl', srcGelernt(src.decline, all));
   set('gtp-sentencebuild', sbLearnedCount(all) + ' von ' + SB_ITEMS.length + ' gelernt');
   // Wortgruppen: Adj+Subst 6 Fälle × 2 Zahlen, Begleiter 6 Fälle, Präposition 7 × 2, Zahl 3 Genera
-  set('gtp-wordgroup', learned('wordgroup', 12 + 6 + 14 + 3));
+  set('gtp-wordgroup', srcGelernt(src.wordgroup, all));   // je Kategorie erst nach 3 verschiedenen richtigen Antworten
   set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length));
   set('gtp-transform', learned('transform', transformTotal()));
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length + caseWordCount()));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
-  set('gtp-numnoun', learned('numnoun', numNounNouns().length * 4));   // 4 Regelfälle: 1 · 2–4 · 5–0 · 11–14 (12.11.)
+  set('gtp-numnoun', srcGelernt(src.numnoun, all));   // 3 Regelfälle: 2–4 · 5–0 · 11–14; „1“ ist das Wort selbst und zählt nicht (12.11.)
   set('gtp-caseform', Object.entries(all.caseform || {}).filter(([id, e]) => cfZaehlt(id) && srsDone(e)).length + ' von ' + caseFormTotal('noun') + ' gelernt');
-  set('gtp-caseadj', learned('caseadj', caseFormTotal('adj')));
+  set('gtp-caseadj', srcGelernt(src.caseadj, all));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
   set('gtp-adjform', learned('adjform', adjFormTotal()));
-  set('gtp-rektion', learned('rektion', rektionTotal()));
+  set('gtp-rektion', srcGelernt(src.rektion, all));
   // Seitenleiste/Startseite: alle Nicht-Regelfälle; Kopf des Werkzeugs: gewählter Bereich
   set('gtp-gender', sink ? Object.entries(all.gender || {}).filter(([id, e]) => genderZaehlt(id) && srsDone(e)).length + ' von ' + genderTotal() + ' gelernt' : genderProgressText(all));
   // Seitenleiste: Fortschrittsstrich je Werkzeug (wie bei den Vokabelkategorien)
@@ -19977,14 +20000,14 @@ function checkConjugationTable() {
     const hilfe = gtTableHelped('#conj-grid');
     if (!hilfe) {
       conjState.done++; conjState.correct++;
-      progressMark(conjSrsKey(), document.getElementById('conj-verb-select').value, true);
-    } else { conjState.attempted = true; progressSeen(conjSrsKey(), document.getElementById('conj-verb-select').value); }
+      progressMark(conjSrsKey(), conjId(), true);
+    } else { conjState.attempted = true; progressSeen(conjSrsKey(), conjId()); }
     document.getElementById('conj-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Verb';
     showConjAfter();
   } else {
     // erste vollständige, aber fehlerhafte Prüfung als Versuch zählen
-    if (!conjState.attempted && filled === res.total) { conjState.attempted = true; conjState.done++; progressMark(conjSrsKey(), document.getElementById('conj-verb-select').value, false); }
+    if (!conjState.attempted && filled === res.total) { conjState.attempted = true; conjState.done++; progressMark(conjSrsKey(), conjId(), false); }
     conjState.allCorrect = false;
   }
   updateConjScore();
@@ -19992,7 +20015,7 @@ function checkConjugationTable() {
 // Stand je Zeit beim Verb (7.11.): Präsens, Vergangenheit, Imperativ – gefüllt = erledigt
 function updateConjDots() {
   const el = document.getElementById('conj-dots'); if (!el) return;
-  const inf = document.getElementById('conj-verb-select').value, all = loadGrammarSrs();
+  const inf = conjId(), all = loadGrammarSrs();
   el.innerHTML = CONJ_MIX_TENSES.map(([t, key, name]) => {
     const fertig = srsDone((all[key] || {})[inf]);
     return '<span class="conj-dot' + (fertig ? ' fertig' : '') + (!conjState.mixed && conjState.tense === t || conjState.mixed && conjState.tense === t ? ' jetzt' : '') + '" title="' + name + ': ' + (fertig ? 'erledigt' : 'offen') + '"></span>';
@@ -20013,13 +20036,18 @@ function updateConjScore() {
 // Lernstand je Form (5.11.): jede Zeit, Singular/Plural und jedes Geschlecht eines Pronomens zählt
 // eigens. Die Grundform behält den alten Schlüssel (bisheriger Lernstand gilt für Präsens, Singular, m).
 function conjSrsKey() { return conjState.tense === 'nonpast' ? 'conj' : 'conj:' + conjState.tense; }
+// vollendete Tabelle (прочитать): eigener Eintrag unter dem vollendeten Infinitiv (12.11.), nicht mehr der des unvollendeten Verbs
+function conjPfVerben() { return Object.keys(conjugationData).filter(v => aspectData[v] && aspectData[v].pf && aspectData[v].nonPast && !conjugationData[aspectData[v].pf]); }
+function conjId(inf) { const v = inf || document.getElementById('conj-verb-select').value, pf = aspectData[v]; return conjState.aspect === 'pf' && pf && pf.pf && pf.nonPast && !conjugationData[pf.pf] ? pf.pf : v; }
+const DECL_SRS_KEYS = ['decl', 'decl:fem', 'decl:neut', 'decl:plural'];   // je Geschlecht (12.11.); m behält den alten Schlüssel
+function declSrsKey() { return declState.gender === 'masc' ? 'decl' : 'decl:' + declState.gender; }
 function nounSrsKey() { return nounState.number === 'pl' ? 'noun:pl' : 'noun'; }   // bei „Beide“ nach dem Singular sortieren
 function pronounSrsKey(p) { const e = pronounEntry(p); return !e || e.kind !== 'gender' || pronounGender === 'masc' ? 'pronoun' : 'pronoun:' + pronounGender; }
 // Futur (буду + Infinitiv) ist bei allen Verben gleich gebaut: übbar, zählt aber nicht im Lernstand (7.11.)
 const CONJ_SRS_KEYS = ['conj', 'conj:past', 'conj:imperative'];
 const CONJ_MIX_TENSES = [['nonpast', 'conj', 'Präsens'], ['past', 'conj:past', 'Vergangenheit'], ['imperative', 'conj:imperative', 'Imperativ']];
 const PRONOUN_SRS_KEYS = ['pronoun', 'pronoun:fem', 'pronoun:neut', 'pronoun:plural'];
-function conjTotal() { return Object.keys(conjugationData).length * CONJ_SRS_KEYS.length; }
+function conjTotal() { return (Object.keys(conjugationData).length + conjPfVerben().length) * CONJ_SRS_KEYS.length; }
 function nounTotal() { return Object.keys(nounDeclensionData).reduce((n, k) => n + nounHas(k, 'sg') + nounHas(k, 'pl'), 0); }
 function pronounTotal() { return PRONOUN_GROUPS.reduce((n, g) => n + g[1]().reduce((m, p) => m + ((pronounEntry(p) || {}).kind === 'gender' ? 4 : 1), 0), 0); }
 function nextGrammarTableItem(selectId, render, toolKey) {
@@ -20041,7 +20069,7 @@ function nextPronounItem() { nextGrammarTableItem('pronoun-select', renderPronou
 // zufälliges aus dem Lernstand.
 function nextConjugationVerb() {
   const sel = document.getElementById('conj-verb-select');
-  if (!conjState.allCorrect && !conjState.attempted) progressSeen(conjSrsKey(), sel.value);
+  if (!conjState.allCorrect && !conjState.attempted) progressSeen(conjSrsKey(), conjId(sel.value));
   const opts = [...sel.options].map(o => o.value);
   if (!opts.length) return;
   const i = opts.indexOf(sel.value);
@@ -20075,7 +20103,7 @@ const FORM_PICKERS = {
   },
   decl: {
     titel: 'Adjektiv wählen', kurz: 'Adjektiv', icon: 'ti-abc', selectId: 'decl-adj-select', btnId: 'decl-adj-btn',
-    srsKey: 'decl', suchtext: 'Adjektiv oder Übersetzung suchen…',
+    get srsKey() { return declSrsKey(); }, suchtext: 'Adjektiv oder Übersetzung suchen…',
     spalten: ['Adjektiv', 'Deutsch', 'Typ'],
     liste: () => getSortedDeclAdjectives(),
     de: adj => (declensionData[adj] || {}).de || '',
@@ -20349,7 +20377,7 @@ function revealFormInput(input) {
 }
 
 function revealConjugationTable() {
-  const neu = !conjState.attempted && !conjState.allCorrect, verb = document.getElementById('conj-verb-select').value, key = conjSrsKey();
+  const neu = !conjState.attempted && !conjState.allCorrect, verb = conjId(), key = conjSrsKey();
   revealFormTable('conj-grid', 'conj-result');
   showConjAfter();
   if (neu) gtRateOffer('conj-result', ok => { conjState.attempted = true; conjState.done++; if (ok) conjState.correct++; progressMark(key, verb, ok); updateConjScore(); }, nextConjugationVerb);
@@ -21013,12 +21041,12 @@ function checkDeclensionTable() {
     const hilfe = gtTableHelped('#decl-grid');
     if (!hilfe) {
       declState.done++; declState.correct++;
-      progressMark('decl', document.getElementById('decl-adj-select').value, true);
-    } else { declState.attempted = true; progressSeen('decl', document.getElementById('decl-adj-select').value); }
+      progressMark(declSrsKey(), document.getElementById('decl-adj-select').value, true);
+    } else { declState.attempted = true; progressSeen(declSrsKey(), document.getElementById('decl-adj-select').value); }
     document.getElementById('decl-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Wort';
   } else {
-    if (!declState.attempted && filled === res.total) { declState.attempted = true; declState.done++; progressMark('decl', document.getElementById('decl-adj-select').value, false); }
+    if (!declState.attempted && filled === res.total) { declState.attempted = true; declState.done++; progressMark(declSrsKey(), document.getElementById('decl-adj-select').value, false); }
     declState.allCorrect = false;
   }
   updateDeclScore();
@@ -21027,16 +21055,16 @@ function checkDeclensionTable() {
 // springt zum nächsten Adjektiv in der Auswahlliste (Genus bleibt erhalten)
 function nextAdjInList() {
   const select = document.getElementById('decl-adj-select');
-  if (!declState.allCorrect && !declState.attempted) progressSeen('decl', select.value);
+  if (!declState.allCorrect && !declState.attempted) progressSeen(declSrsKey(), select.value);
   const opts = [...select.options].map(o => o.value);
-  select.value = progressNext('decl', opts, select.value);
+  select.value = progressNext(declSrsKey(), opts, select.value);
   renderDeclensionTable();
 }
 
 function revealDeclensionTable() {
-  const neu = !declState.attempted && !declState.allCorrect, adj = document.getElementById('decl-adj-select').value;
+  const neu = !declState.attempted && !declState.allCorrect, adj = document.getElementById('decl-adj-select').value, key = declSrsKey();
   revealFormTable('decl-grid', 'decl-result');
-  if (neu) gtRateOffer('decl-result', ok => { declState.attempted = true; declState.done++; if (ok) declState.correct++; progressMark('decl', adj, ok); updateDeclScore(); }, nextAdjInList);
+  if (neu) gtRateOffer('decl-result', ok => { declState.attempted = true; declState.done++; if (ok) declState.correct++; progressMark(key, adj, ok); updateDeclScore(); }, nextAdjInList);
 }
 function revealDeclensionRow(i) { revealFormRow('decl-input-', i); }
 
@@ -23176,7 +23204,7 @@ function checkWordgroup() {
       if (cur.sbId) progressSeen(sbSrsKey(), cur.sbId);
     } else {
       wgState.done++; if (ok) wgState.correct++;
-      if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
+      if (cur.srsKey) wgMark(cur, ok);
       if (cur.sbId) progressMark(sbSrsKey(), cur.sbId, ok);
     }
     wgState.rOk = ok && !hilfe;
@@ -23349,6 +23377,14 @@ function revealWordgroup() {
   wgSyncSpeak(); renderWgStepwise();
   if (neu) { wgOfferRate(); speakWordgroupAuto(); }
 }
+// Wortgruppen: richtige Antwort mit ihrem Wortlaut merken (höchstens 3 verschiedene) – Grundlage für „gelernt“
+function wgMark(cur, ok) {
+  progressMark('wordgroup', cur.srsKey, ok);
+  const e = (loadGrammarSrs().wordgroup || {})[cur.srsKey]; if (!e) return;
+  if (!Array.isArray(e.w)) e.w = [];
+  const a = cur.fullAnswer || cur.answer;
+  if (ok && a && !e.w.includes(a) && e.w.length < 3) { e.w.push(a); saveGrammarSrs(); }
+}
 // Lösung ganz aufgedeckt (auf einmal oder Wort für Wort): Selbstbewertung; „Prüfen“ führt weiter
 function wgOfferRate() {
   const cur = wgState.current;
@@ -23358,7 +23394,7 @@ function wgOfferRate() {
   wgEl('result').innerHTML = sbErklaerung((cur.fullAnswer || cur.answer).split(' '));
   gtRateOffer(wgEl('result'), ok => {
     wgState.done++; if (ok) wgState.correct++; wgState.rOk = ok;
-    if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
+    if (cur.srsKey) wgMark(cur, ok);
     if (cur.sbId) progressMark(sbSrsKey(), cur.sbId, ok);
     wgEl('score').textContent = wgState.correct + ' von ' + wgState.done + ' richtig';
   }, nextWordgroup);
@@ -23553,17 +23589,18 @@ function openCaseForm(t) {
 function openCaseAdj() { openCaseForm('adj'); }
 // Zahl aller möglichen Aufgaben für den Fortschritt in der Kopfzeile
 function caseFormTotal(t) {
-  if (t === 'adj') return Object.keys(declensionData).length * (4 * 6 + 2);   // 4 Genera × 6 Fälle + belebter Akk. m/Pl
+  if (t === 'adj') return Object.keys(declensionData).length * (4 * 6 + 2 - 2);   // 4 Genera × 6 Fälle + belebter Akk. m/Pl − Nom. m und Akk. m (Ding) = Grundform
   // ohne Nominativ Singular: der ist das vorgegebene Wort selbst (12.11.)
   return Object.values(nounDeclensionData).reduce((n, d) =>
-    n + ['sg', 'pl'].reduce((m, num) => m + Object.entries(d[num] || {}).filter(([k, f]) => f && f !== '—' && !(num === 'sg' && k === 'Nom.') && f !== cfGrundform(d)).length, 0), 0);
+    n + ['sg', 'pl'].reduce((m, num) => m + Object.entries(d[num] || {}).filter(([k, f]) => f && f !== '—' && !cfIstGrundform(d, num, k)).length, 0), 0);
 }
-// gezählt wird, was bei „Alle“ gefragt wird: nicht Nom. Sg. und keine Form gleich dem Wort (Akk. стол = стол)
-function cfGrundform(d) { return d['sg'] && d['sg']['Nom.'] !== '—' ? d['sg']['Nom.'] : (d['pl'] || {})['Nom.']; }
+// Nicht gefragt und nicht gezählt wird nur die Grundform selbst: Nom. Sg. (bei деньги: Nom. Pl.).
+// Formen, die ihr gleichen (Akk. стол, Gen. Pl. глаз), sind Stoff und zählen (Prüfung 12.11.)
+function cfIstGrundform(d, num, k) { return k === 'Nom.' && (num === 'sg' || !(d.sg && d.sg['Nom.'] && d.sg['Nom.'] !== '—')); }
 function cfZaehlt(id) {
   const m = /^n:(.+):(sg|pl):(.+)$/.exec(id); if (!m) return true;
   const d = nounDeclensionData[m[1]]; if (!d) return false;
-  return !(m[2] === 'sg' && m[3] === 'Nom.') && (d[m[2]] || {})[m[3]] !== m[1];
+  return !cfIstGrundform(d, m[2], m[3]);
 }
 // Mini-Kontext (12.11.): typische Wendung vor/nach dem Feld, nur mit Wörtern aus dem Wortschatz
 const CF_RAHMEN = {
@@ -23599,8 +23636,7 @@ function cfNounPool(st) {
     const d = nounDeclensionData[n];
     nums.forEach(num => kas.forEach(k => {
       const f = (d[num] || {})[k];
-      if (!f || f === '—' || (num === 'sg' && k === 'Nom.')) return;
-      if (kas.length > 1 && f === n) return;   // Form gleich der Grundform nur, wenn genau dieser Fall gewählt ist
+      if (!f || f === '—' || cfIstGrundform(d, num, k)) return;
       pool.push([n, num, k]);
     }));
   });
@@ -23666,7 +23702,8 @@ function buildCaseFormTask(t) {
     if (lebewesen) answer = d[gk]['Gen.'];
     belebt = lebewesen ? 'Lebewesen' : 'Ding';
   }
-  if (st.kasus === 'all' && answer === adj) return null;
+  // Grundform (Nom. m, Akk. m Ding) nur, wenn genau dieser Fall gewählt ist; молодой (f Gen.) = Grundform wird gefragt (12.11.)
+  if (cfKasusListe(st).length > 1 && gk === 'masc' && answer === adj && (kasus === 'Nom.' || kasus === 'Akk.')) return null;
   return {
     word: adj, de: d.de, number, kasus, gk,
     answer,
@@ -24542,7 +24579,8 @@ function rektionItems(mode) {
   }));
   return out;
 }
-function rektionTotal() { return rektionItems('choose').length + rektionItems('form').length; }
+// „Form bilden“ zählt je Verb einmal (12.11.) – die Beispiel-Substantive üben denselben Fall
+function rektionTotal() { return rektionItems('choose').length + new Set(rektionItems('form').map(x => rektionEinheit(x.id))).size; }
 // Erklärung nach dem Antworten: Fall + Vergleich mit dem Deutschen
 // Beispiel (8.11.): Wortgruppe aus dem ersten Substantiv mit Formtabelle, sonst das hinterlegte Beispiel
 function rektionExample(x) {
@@ -24931,10 +24969,11 @@ function restartNumNoun() {
 // Punkte je Wort: ein Punkt je Regelfall, der aktuelle markiert
 function nnDots(t) {
   const el = document.getElementById('numnoun-dots'); if (!el || !t) return;
-  const m = loadGrammarSrs().numnoun || {}, fertig = NN_RULES.filter(r => srsDone(m[t.noun + ':' + NN_WHY[r[0]]]));
-  el.innerHTML = NN_RULES.map(r => '<span class="conj-dot' + (fertig.includes(r) ? ' fertig' : '') + (r[0] === t.rule ? ' jetzt' : '') + '"></span>').join('');
-  el.setAttribute('role', 'img'); el.setAttribute('aria-label', fertig.length + ' von 4 Regelfällen sicher');
-  el.title = NN_RULES.map(r => r[1] + (fertig.includes(r) ? ' ✓' : ' –')).join(' · ');
+  // ohne Regelfall „1“: der zählt nicht (Antwort = das Wort selbst)
+  const regeln = NN_RULES.filter(r => r[0] !== 'r1'), m = loadGrammarSrs().numnoun || {}, fertig = regeln.filter(r => srsDone(m[t.noun + ':' + NN_WHY[r[0]]]));
+  el.innerHTML = regeln.map(r => '<span class="conj-dot' + (fertig.includes(r) ? ' fertig' : '') + (r[0] === t.rule ? ' jetzt' : '') + '"></span>').join('');
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', fertig.length + ' von ' + regeln.length + ' Regelfällen sicher');
+  el.title = regeln.map(r => r[1] + (fertig.includes(r) ? ' ✓' : ' –')).join(' · ');
 }
 // nach dem Prüfen: Regel, alle drei Formen (1 · 2 · 5) und der Weg zur Tabelle
 function nnNachher(t) {
@@ -26208,10 +26247,11 @@ function openTransform() {
 
 const TRANSFORM_ROUND = 20;
 function transformId(t) { return t.prompt + ':' + t.task; }
-// Lernstand (8.11.): Vergangenheit zählt je Verb einmal (он/она/они ist dieselbe Regel), das Futur
+// Lernstand: Vergangenheit zählt seit 12.11. je Form (vorher je Verb), das Futur
 // (буду + Infinitiv) steht unter eigenem Schlüssel und zählt nicht
 function transformUnitId(t) {
-  if (t.kind === 'past') return 'past:' + t.inf;
+  // Vergangenheit zählt je Form (12.11.): он behält die alte Kennung, она/они eigene
+  if (t.kind === 'past') return 'past:' + t.inf + (t.pkey === 'он' ? '' : ':' + t.pkey);
   if (t.task === 'vollendet (Vergangenheit)') return 'apast:' + t.inf;
   return transformId(t);
 }
@@ -26242,6 +26282,8 @@ function transformRoundPick(pool, now) {
   const runde = []; let futur = 0;
   for (const t of [].concat(...g)) {
     if (runde.length >= TRANSFORM_ROUND) break;
+    // Vergangenheit: je Verb höchstens eine Form je Runde (он/она/они zählen seit 12.11. einzeln)
+    if (t.kind === 'past' && runde.some(x => x.kind === 'past' && x.inf === t.inf)) continue;
     if (t.kind === 'future' && transformState.scope === 'all') { if (futur >= 2) continue; futur++; }
     runde.push(t);
   }
@@ -26250,7 +26292,7 @@ function transformRoundPick(pool, now) {
 function transformPool() {
   const pool = buildTransformItems();
   const auswahl = transformState.scope === 'all' ? pool : pool.filter(i => i.kind === transformState.scope);
-  // je Einheit eine Aufgabe (Vergangenheit: zufällig он, она oder они)
+  // je Einheit eine Aufgabe
   const je = {};
   shuffleInPlace(auswahl.slice()).forEach(t => { const u = transformUnitId(t); if (!je[u]) je[u] = t; });
   return Object.values(je);

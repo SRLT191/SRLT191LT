@@ -36,7 +36,7 @@ const NEU = ['человек', 'ребёнок', 'друг', 'сын', 'мужч
     // seit 12.11. kommen die Aufgaben aus der Runde nach Lernstand: Aufgabe gezielt vorgeben
     numNounState.queue = [['человек', 'r5']]; restartNumNoun(); out.fuenf = numNounState.current;
     out.wgOhne = buildWordgroupPairs().nouns.every(x => nounHas(x, 'sg') && nounHas(x, 'pl'));
-    out.cfDash = caseFormTotal('noun') === Object.entries(nounDeclensionData).reduce((s, [n, d]) => s + ['sg', 'pl'].reduce((m, k) => m + Object.entries(d[k]).filter(([kk, f]) => f !== '—' && !(k === 'sg' && kk === 'Nom.') && f !== n).length, 0), 0);   // ohne Nom. Sg. und Formen gleich dem Wort (12.11.)
+    out.cfDash = caseFormTotal('noun') === Object.entries(nounDeclensionData).reduce((s, [n, d]) => s + ['sg', 'pl'].reduce((m, k) => m + Object.entries(d[k]).filter(([kk, f]) => f !== '—' && !(kk === 'Nom.' && (k === 'sg' || d.sg['Nom.'] === '—'))).length, 0), 0);   // ohne die Grundform selbst (12.11.)
     return out;
   }, NEU);
   ok('16 neue Substantive mit allen Formen, Erklärung und Typ', r.fehlt.length === 0 && r.form.length === 0, JSON.stringify([r.fehlt, r.form]));

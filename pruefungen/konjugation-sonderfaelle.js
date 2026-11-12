@@ -23,7 +23,7 @@ const NEU = { 'звать': 'зову', 'танцевать': 'танцую', '�
     document.querySelectorAll('#conj-grid input[data-answer]').forEach(i => i.value = i.dataset.answer.split(/\s*[\/|]\s*/)[0]);
     checkConjugationTable(); out.past = (loadGrammarSrs()['conj:past'] || {})['расти'];
     out.zellen = [...document.querySelectorAll('#conj-grid input[data-answer]')].map(i => i.dataset.answer).join(' ');
-    updateGrammarTileProgress(); out.hdr = document.getElementById('gtp-conj').textContent; out.n = Object.keys(conjugationData).length;
+    updateGrammarTileProgress(); out.hdr = document.getElementById('gtp-conj').textContent; out.n = Object.keys(conjugationData).length; out.pf = conjPfVerben().length;
     out.umformen = buildTransformItems().filter(t => Object.keys(NEU).includes(t.prompt.split(' + ')[1])).length;
     return out;
   }, NEU);
@@ -31,7 +31,7 @@ const NEU = { 'звать': 'зову', 'танцевать': 'танцую', '�
   ok('alle stehen in den Vokabeln, Bedeutung wie auf der Karte', r.vok.length === 0 && r.de.length === 0, JSON.stringify([r.vok, r.de]));
   ok('jedes Verb bekommt eine Konjugationsklasse', r.klasse.length === 0, r.klasse.join(', '));
   ok('расти Vergangenheit: рос, росла, росло, росли – geübt und gespeichert', r.zellen === 'рос росла росло росли' && r.past && r.past.correct === 1, JSON.stringify([r.zellen, r.past]));
-  ok('Kopfzeile: ' + r.n + ' Verben × 3 Zeiten (ohne Futur); Umformen nutzt die neuen Verben', r.hdr === '1 von ' + r.n * 3 + ' gelernt' && r.n >= 158 && r.umformen > 0, JSON.stringify([r.hdr, r.umformen]));
+  ok('Kopfzeile: ' + r.n + ' Verben + ' + r.pf + ' vollendete Tabellen × 3 Zeiten (ohne Futur); Umformen nutzt die neuen Verben', r.hdr === '1 von ' + (r.n + r.pf) * 3 + ' gelernt' && r.n >= 158 && r.umformen > 0, JSON.stringify([r.hdr, r.umformen]));
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
   console.log('\n' + R.filter(x => x[0] === 'OK ').length + ' von ' + R.length + ' bestanden');
