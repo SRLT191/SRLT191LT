@@ -472,6 +472,12 @@
       mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); padding-bottom: 2px; }
     #grammar-nav::-webkit-scrollbar { display: none; }
     #grammar-nav .grammar-chip { flex-shrink: 0; }
+    /* Satzarten im Satzbau (12.11.): eine waagerecht scrollbare Zeile statt drei Zeilen */
+    #sb-type-switcher { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; max-width: 100%;
+      mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); }
+    #sb-type-switcher::-webkit-scrollbar { display: none; }
+    #sb-type-switcher .mode-btn { flex-shrink: 0; }
+    .gt-settings-body .gt-field:has(#sb-type-switcher) { min-width: 0; max-width: 100%; }
     /* Kopf (12.11.): Titel und ⋯ in einer Zeile, Fortschritt klein darunter */
     .grammar-panel > .grammar-panel-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; align-items: center; }
     .grammar-panel > .grammar-panel-header .overlay-title-group { grid-column: 1; grid-row: 1; min-width: 0; }
@@ -642,6 +648,7 @@
   .gt-task .case-question { padding: 10px 52px 12px; }
   .gt-task > .case-question + .gt-task-tools { position: absolute; top: 0; right: 0; padding-top: 0; }
   .gt-task .case-question .case-prep { color: var(--c-text-primary); }
+  .gt-task .case-question .case-prep.sb-de-gross { font-family: inherit; font-size: 22px; font-weight: 600; line-height: 1.35; }
   .gt-speak-inline { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; position: relative; top: -0.12em;
     margin-left: 0.35em; width: 34px; height: 34px; padding: 0; border-radius: 9px; border: 1px solid var(--c-border); background: var(--c-surface);
     color: var(--c-text-secondary); font: 400 17px/1 system-ui, sans-serif; cursor: pointer; text-decoration: none; }
@@ -1035,6 +1042,10 @@
   .gd-opt .gt-kbd { position: absolute; top: 6px; right: 8px; margin: 0; }
   .gd-wort .gd-end { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; font-weight: 700; }
   #gender-result .gd-bsp { display: block; margin-top: 4px; }
+  .sb-erkl { display: flex; flex-direction: column; gap: 2px; margin: 8px auto 0; max-width: 560px; text-align: left; font-size: 13.5px; font-weight: 400; color: var(--c-text-secondary); }
+  .sb-erkl > span { padding: 3px 8px; border-left: 3px solid var(--c-border); }
+  .sb-erkl b { color: var(--c-text-primary); }
+  .gt-task-result .case-tipp, [id$="-result"] > .case-tipp { display: block; margin-top: 4px; color: var(--c-warn); }
   .gd-grp-t { color: var(--gd-c); }
   .gdl-zusatz { font-weight: 400; font-size: 12.5px; color: var(--c-text-muted); }
   #gender-list-body .rkl-head { flex-wrap: wrap; row-gap: 4px; }
@@ -2169,6 +2180,12 @@
 <p><strong>Faustregel:</strong> в/на mit der Frage „wo?“ → Präpositiv, mit „wohin?“ → Akkusativ.</p>
 <p><strong>Vergangenheit:</strong> Das Verb richtet sich nach dem Geschlecht des Subjekts: он жил, она жила, они жили.</p>
 </div>
+<div class="sb-type-info" data-sbtype="place">
+<p class="sb-type-head">Ort / Richtung</p>
+<p><strong>Wo?</strong> в/на + Präpositiv. Im Präsens fällt „sein“ weg: Я в парк<b>е</b>. – Ich bin im Park. Manche Wörter haben nach в/на die Ortsform auf -у: в сад<b>у</b>, в лес<b>у</b>, на мост<b>у</b>.</p>
+<p><strong>Wohin?</strong> идти + в/на + Akkusativ: Я иду в парк. – Ich gehe in den Park. Weibliche Wörter auf -а/-я bekommen -у/-ю: в школ<b>у</b>, на улиц<b>у</b>.</p>
+<p><strong>в oder на?</strong> в für Räume und Gebäude (Schule, Geschäft, Park, Stadt), на für offene Flächen und Veranstaltungen (Straße, Platz, Bahnhof, Konzert, Unterricht).</p>
+</div>
 <div class="sb-type-info" data-sbtype="possession">
 <p class="sb-type-head">Besitz</p>
 <p><strong>Wann?</strong> Immer wenn Deutsch „haben“ im Sinn von besitzen sagt: <em>Ich habe ein Auto. Er hat eine Schwester.</em> Russisch sagt dafür „bei mir ist …“.</p>
@@ -2226,7 +2243,8 @@
 </div>
 <details class="sb-info-more"><summary>Bedienung</summary>
 <p><strong>Antworten:</strong> frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Die <strong>Wortstellung ist frei</strong>: Новую книгу я читаю zählt genauso wie Я читаю новую книгу, Сегодня он не работает genauso wie Он не работает сегодня. Die Satzglieder dürfen getauscht werden; не bleibt vor seinem Wort, Präpositionen und давай vor dem folgenden, bei Fragen steht das Fragewort vorn. Nur Fragen mit ли (Знаешь ли ты ответ?) haben eine feste Stellung. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen.</p>
-<p><strong>Hilfen:</strong> Standardmäßig stehen die Wörter in Grundform über der Übersetzung. Unter <em>Hilfe</em> wählst du die Stufe: <em>Grundformen</em> (Standard), <em>Lücke</em> zeigt den fertigen Satz mit einem fehlenden Wort, <em>Nur Deutsch</em> nur die Übersetzung. <em>Anhören</em> liest den Satz erst nach dem Prüfen vor, damit er die Lösung nicht verrät.</p>
+<p><strong>Hilfen:</strong> Standardmäßig stehen die Wörter in Grundform über der Übersetzung. Unter <em>Vorgabe</em> wählst du die Stufe: <em>Grundformen</em> (Standard), <em>Lücke</em> zeigt den fertigen Satz mit einem fehlenden Wort, <em>Nur Deutsch</em> nur die Übersetzung. <em>Anhören</em> liest den Satz erst nach dem Prüfen vor, damit er die Lösung nicht verrät.</p>
+<p><strong>Erklärung:</strong> Nach dem Prüfen oder Aufdecken steht unter der Lösung Wort für Wort, welche Form gebildet wurde und warum (парка ← парк: Genitiv – nach нет). Bei einer falschen Form desselben Wortes gibt es einen Tipp (falscher Fall, falsche Person, о statt об). <em>Hinweis</em> (Einstellungen): <em>Immer</em> unter dem Satz, <em>Nach Fehler</em> erst nach einer falschen Antwort, <em>Nie</em>. Die Satzart <em>Ort / Richtung</em> übt в/на + Präpositiv (wo?) gegen идти + в/на + Akkusativ (wohin?).</p>
 <p>Mit <strong>Wort-Tipp</strong> (Taste 2) deckst du die Lösung Wort für Wort auf; im Bausteine-Modus wird der passende Baustein gleich gesetzt. <em>Lösung zeigen</em> (Taste 3) zeigt sofort den ganzen Satz. Danach sagst du selbst, ob du ihn wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit <em>Vorlesen</em> (Einstellungen) hörst du nach dem Prüfen oder Aufdecken automatisch den ganzen Satz, bei jedem Wort-Tipp das neue Wort und bei <em>Bausteine</em> jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Lautsprecher oder Taste 4: ganzer Satz, während der Wort-Tipps die schon aufgedeckten Wörter. Am Rundenende hat jeder Fehler einen Lautsprecher.</p>
 </details>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
@@ -2240,6 +2258,7 @@
 <button class="mode-btn" id="sb-type-question" onclick="setWgType('question')">Frage</button>
 <button class="mode-btn" id="sb-type-modal" onclick="setWgType('modal')">Modalsatz</button>
 <button class="mode-btn" id="sb-type-imperative" onclick="setWgType('imperative')">Aufforderung</button>
+<button class="mode-btn" id="sb-type-place" onclick="setWgType('place')" title="wo? в/на + Präpositiv · wohin? в/на + Akkusativ">Ort / Richtung</button>
 </div></span></div><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher" id="sb-tense-switcher" role="group" aria-label="Zeit">
 <button class="mode-btn active" id="sb-tense-present" onclick="setWgTense('present')">Präsens</button>
 <button class="mode-btn" id="sb-tense-past" onclick="setWgTense('past')">Vergangenheit</button>
@@ -2247,11 +2266,14 @@
 </div></span><span class="gt-field"><span class="gt-field-label">Antwort</span><div class="tense-switcher" role="group" aria-label="Antwort">
 <button class="mode-btn active" id="sb-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
 <button class="mode-btn" id="sb-ansmode-click" onclick="setWgAnswerMode('click')"><i class="ti ti-hand-click"></i> Bausteine</button>
-</div></span><span class="gt-field"><span class="gt-field-label">Hilfe</span><div class="tense-switcher" role="group" aria-label="Hilfe">
+</div></span><span class="gt-field"><span class="gt-field-label">Vorgabe</span><div class="tense-switcher" role="group" aria-label="Vorgabe">
 <button class="mode-btn active" id="sb-help-blocks" onclick="setSbHelp('blocks')" title="Alle Wörter in der Grundform vorgeben">Grundformen</button>
 <button class="mode-btn" id="sb-help-gap" onclick="setSbHelp('gap')" title="Fertiger Satz mit einer Lücke">Lücke</button>
 <button class="mode-btn" id="sb-help-free" onclick="setSbHelp('free')" title="Nur der deutsche Satz">Nur Deutsch</button>
-</div></span><button aria-pressed="true" class="tool-btn gt-toggle" id="sb-hint-toggle" onclick="toggleSbHint()" title="Hinweis zum Kasus unter dem Satz ein-/ausblenden (z. B. „Objekt im Akk“)"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
+</div></span><span class="gt-field"><span class="gt-field-label">Hinweis</span><div class="tense-switcher" id="sb-hint-modes" role="group" aria-label="Hinweis zum Kasus (z. B. „Objekt im Akk“)">
+<button class="mode-btn active" data-v="immer" onclick="setSbHintMode('immer')" title="Hinweis immer unter dem Satz">Immer</button>
+<button class="mode-btn" data-sum="Hinweis nach Fehler" data-v="fehler" onclick="setSbHintMode('fehler')" title="Hinweis erst nach einer falschen Antwort">Nach Fehler</button>
+<button class="mode-btn" data-sum="ohne Hinweis" data-v="nie" onclick="setSbHintMode('nie')" title="Keinen Hinweis zeigen">Nie</button></div></span><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
 
 <div id="sb-body"></div>
 </div>
@@ -17484,7 +17506,7 @@ function syncGtToggles() {
     'noun-hint-toggle': () => nounState.hintVisible, 'case-hint-toggle': () => caseState.hintVisible,
     'cf-hint-toggle': () => caseFormState.hintVisible, 'ca-hint-toggle': () => caseAdjState.hintVisible,
     'pronform-hint-toggle': () => pronFormState.hintVisible, 'transform-hint-toggle': () => transformState.hintVisible,
-    'wg-hint-toggle': () => wgState.hintVisible, 'sb-hint-toggle': () => wgState.sbHintVisible, 'adjform-hint-toggle': () => adjFormState.hintVisible, 'rektion-hint-toggle': () => rektionState.hintVisible,
+    'wg-hint-toggle': () => wgState.hintVisible, 'adjform-hint-toggle': () => adjFormState.hintVisible, 'rektion-hint-toggle': () => rektionState.hintVisible,
   };
   Object.keys(st).forEach(id => { const b = document.getElementById(id); if (b) setGtToggle(b, st[id]()); });
 }
@@ -17507,7 +17529,7 @@ function updateGtSettingsSummary(root) {
       if (sw.offsetParent === null && sw.style.display === 'none') return;
       const a = sw.querySelector('.mode-btn.active');
       // „Alle“/„Beide“ sind die offenen Grundeinstellungen – sie stehen nicht in der Kurzfassung
-      if (a && !/^(Alle|Beide|Alle Wörter|Grundformen)$/.test(a.textContent.trim())) parts.push(a.textContent.trim());
+      if (a && !/^(Alle|Beide|Alle Wörter|Grundformen|Immer)$/.test(a.textContent.trim())) parts.push(a.dataset.sum || a.textContent.trim());
     });
     box.querySelectorAll('.gt-settings-body .gt-toggle').forEach(t => {
       if (t.style.display === 'none') return;
@@ -19262,6 +19284,7 @@ const TOOL_SETTINGS = [
   ['wgCaseScope', ...tsProp(() => wgState, 'caseScope'), TS_STR],
   ['wgHintVisible', ...tsProp(() => wgState, 'hintVisible'), TS_BOOL],
   ['sbHintVisible', ...tsProp(() => wgState, 'sbHintVisible'), TS_BOOL],
+  ['sbHintMode', ...tsProp(() => wgState, 'sbHintMode'), tsOneOf('immer', 'fehler', 'nie')],
   ['wgAutoSpeak', ...tsProp(() => wgState, 'autoSpeak'), TS_BOOL],
   ['sbHelp', ...tsProp(() => sbState, 'help'), tsOneOf('blocks', 'gap', 'free')],
   ['pronounGender', () => pronounGender, v => { pronounGender = v; }, v => PRONOUN_GENDERS.includes(v)],
@@ -19343,8 +19366,7 @@ function loadToolSettings() {
   if (trBtn) {
     setGtToggle(trBtn, transformState.hintVisible);
   }
-  const sbBtn = document.getElementById('sb-hint-toggle');
-  if (sbBtn) setGtToggle(sbBtn, wgState.sbHintVisible);
+  markCaseSwitcher(document.getElementById('sb-hint-modes'), sbHintModus());
   applyWgAutoSpeak();
   const wgBtn = document.getElementById('wg-hint-toggle');
   if (wgBtn) {
@@ -21557,7 +21579,8 @@ function isAnimate(data, ru) {
 // Zustand: Wortgruppen/Satzbau
 const wgState = {
   number: 'sg',
-  sbHintVisible: true,   // Satzbau: Kasus-Hinweis unter dem Satz (10.11.)
+  sbHintVisible: true,   // Satzbau: Kasus-Hinweis unter dem Satz (10.11.) – alt, seit 12.11. sbHintMode
+  sbHintMode: null,      // immer | fehler | nie (null = aus sbHintVisible abgeleitet)
   autoSpeak: true,       // Wortgruppen/Satzbau: Lösung und Wort-Tipps automatisch vorlesen (10.11.)
   caseScope: 'all',
   current: null,
@@ -21820,13 +21843,15 @@ function toggleWordgroupHint() {
   }
   renderWordgroupTask();
 }
-// Satzbau (10.11.): Kasus-Hinweis unter dem Satz ein-/ausblenden
-function toggleSbHint() {
-  wgState.sbHintVisible = !wgState.sbHintVisible;
+// Satzbau: Kasus-Hinweis immer, erst nach einer falschen Antwort oder nie (12.11.; vorher Schalter an/aus)
+function sbHintModus() { return wgState.sbHintMode || (wgState.sbHintVisible ? 'immer' : 'nie'); }
+function wgHintSichtbar() { return wgState.tool !== 'sentence' || sbHintModus() === 'immer'; }
+function setSbHintMode(m) {
+  wgState.sbHintMode = m; wgState.sbHintVisible = m !== 'nie';
   saveToolSettings();
-  setGtToggle(document.getElementById('sb-hint-toggle'), wgState.sbHintVisible);
+  markCaseSwitcher(document.getElementById('sb-hint-modes'), m);
   updateGtSettingsSummary();
-  if (wgState.tool === 'sentence' && wgState.current) renderWordgroupTask();
+  if (wgState.tool === 'sentence' && wgState.current && !wgState.answered) renderWordgroupTask();
 }
 // Wortgruppen/Satzbau (10.11.): automatisches Vorlesen – ein Schalter für beide Werkzeuge
 function applyWgAutoSpeak() {
@@ -22016,7 +22041,7 @@ function setWgNumber(num) {
 // und „Satzbau" (ganze Sätze). Beide teilen sich den Generator, haben aber
 // eigene Panels. wgState.tool entscheidet, auf welche Elemente geschrieben wird.
 const WG_PHRASE_TYPES = ['adjnoun','detnoun','numadjnoun','prepphrase'];
-const WG_SENTENCE_TYPES = ['sentence','prepsentence','possession','negation','dative','question','modal','imperative'];
+const WG_SENTENCE_TYPES = ['sentence','prepsentence','possession','negation','dative','question','modal','imperative','place'];
 function wgId(suffix) { return (wgState.tool === 'sentence' ? 'sb-' : 'wg-') + suffix; }
 function wgEl(suffix) { return document.getElementById(wgId(suffix)); }
 // Markierung setzen, falls das Bedienelement in diesem Panel existiert
@@ -22253,6 +22278,18 @@ const SB_ITEMS = [
   { type:"imperative", parts:"ты: давай + открывать / открыть + окно", ru:"Давай откроем окно", de:"Lass uns das Fenster aufmachen!", hint:"давай(те) + мы-Form des vollendeten Verbs" },
   { type:"imperative", parts:"ты: давай + говорить + по-русски", ru:"Давай говорить по-русски", de:"Lass uns Russisch sprechen!", hint:"давай(те) + Infinitiv des unvollendeten Verbs (andauernde Tätigkeit)" }
 ];
+// Satzart „Ort / Richtung“ (12.11.): wo? → в/на + Präpositiv (ohne Verb), wohin? → идти + в/на + Akkusativ
+const SB_ORTE = {
+  'школа': ['в', 'in der Schule', 'in die Schule'], 'магазин': ['в', 'im Geschäft', 'ins Geschäft'], 'парк': ['в', 'im Park', 'in den Park'],
+  'музей': ['в', 'im Museum', 'ins Museum'], 'сад': ['в', 'im Garten', 'in den Garten'], 'лес': ['в', 'im Wald', 'in den Wald'],
+  'город': ['в', 'in der Stadt', 'in die Stadt'], 'церковь': ['в', 'in der Kirche', 'in die Kirche'], 'комната': ['в', 'im Zimmer', 'ins Zimmer'],
+  'кухня': ['в', 'in der Küche', 'in die Küche'], 'вокзал': ['на', 'am Bahnhof', 'zum Bahnhof'], 'концерт': ['на', 'im Konzert', 'ins Konzert'],
+  'урок': ['на', 'im Unterricht', 'in den Unterricht'], 'станция': ['на', 'an der Station', 'zur Station'], 'площадь': ['на', 'auf dem Platz', 'auf den Platz'],
+  'улица': ['на', 'auf der Straße', 'auf die Straße'], 'мост': ['на', 'auf der Brücke', 'auf die Brücke'],
+};
+const SB_ORT_DE = { 'я': ['Ich', 'bin', 'gehe'], 'ты': ['Du', 'bist', 'gehst'], 'он': ['Er', 'ist', 'geht'], 'она': ['Sie', 'ist', 'geht'],
+  'мы': ['Wir', 'sind', 'gehen'], 'вы': ['Ihr', 'seid', 'geht'], 'они': ['Sie', 'sind', 'gehen'] };
+Object.keys(SB_ORTE).forEach(n => [false, true].forEach(wohin => SB_ITEMS.push({ type: 'place', noun: n, wohin })));
 // Hinweistext je Aufgabentyp an einer Stelle. Dynamische Texte bekommen den
 // Kontext der Aufgabe; ein Eintrag in SB_ITEMS kann mit „hint" überschreiben.
 const SB_HINTS = {
@@ -22269,6 +22306,7 @@ const SB_HINTS = {
   question:     () => 'Fragesatz — Fragewort zuerst',
   modal:        () => 'Modalausdruck + Infinitiv',
   imperative:   () => 'Imperativ: ты-Form, bei вы mit -те',
+  place:        c => c.wohin ? c.prep + ' + Akkusativ (wohin?)' : c.prep + ' + Präpositiv (wo?)',
 };
 function sbHint(type, ctx, sb) {
   if (sb && sb.hint) return sb.hint;
@@ -22522,6 +22560,25 @@ const WG_BUILDERS = {
       promptDe: past ? sb.dePast : sb.de,
       hint: sbHint('sentence', { zeit, kasus: verb.case.replace('.', '') }, sb),
       femSwap: sbFemSwap(subj, past, verbRu, verbForm),
+    };
+  },
+
+  // Ort / Richtung: „я в парке“ (wo?) gegen „я иду в парк“ (wohin?) – Subjekt wechselt zufällig
+  place(sb) {
+    const subj = wgRand(WG_SUBJECTS), [p, deWo, deWohin] = SB_ORTE[sb.noun];
+    const kasus = sb.wohin ? 'Akk.' : 'Präp.';
+    const toks = [nounDeclensionData[sb.noun].sg[kasus]];
+    if (!sb.wohin) applyLocative(p, sb.noun, 'sg', toks);
+    const prep = wgPrepForm(p, toks[0]);
+    const verb = sb.wohin ? conjugationData['идти'].nonPast[subj.key] : null;
+    const de = SB_ORT_DE[subj.ru];
+    return {
+      answer: [subj.ru, verb, prep, toks[0]].filter(Boolean).join(' '),
+      tokens: [subj.ru, verb, prep, toks[0]].filter(Boolean),
+      blocks: [subj.ru, verb, prep + ' ' + toks[0]].filter(Boolean),
+      promptTop: subj.ru + (sb.wohin ? ' + идти' : '') + ' + ' + p + ' + ' + sb.noun + (sb.wohin ? ' (wohin?)' : ' (wo?)'),
+      promptDe: de[0] + ' ' + (sb.wohin ? de[2] + ' ' + deWohin : de[1] + ' ' + deWo) + '.',
+      hint: sbHint('place', { wohin: sb.wohin, prep: p }, sb),
     };
   },
 
@@ -22838,9 +22895,12 @@ function renderWordgroupTask() {
   // In den Wortgruppen lassen sich die Grundformen ausblenden — dann steht nur
   // die deutsche Entsprechung da (im Satzbau machen das die Hilfestufen).
   const zeigeTop = wgState.current.promptTop && (wgState.tool === 'sentence' || wgState.hintVisible);
+  // Satzbau „Nur Deutsch“: der deutsche Satz ist die Aufgabe – groß, mit dem Lautsprecher daneben (12.11.)
+  const deGross = !zeigeTop && wgState.tool === 'sentence';
   wgEl('q').innerHTML =
-    (zeigeTop ? '<span class="case-prep" lang="ru">' + wgState.current.promptTop + '</span>' : '') + wgState.current.promptDe +
-    (wgState.current.hint && (wgState.tool !== 'sentence' || wgState.sbHintVisible) ? '<span class="case-hint">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : 'gesuchte Form: ') + wgState.current.hint + '</span>' : '');
+    (zeigeTop ? '<span class="case-prep" lang="ru">' + wgState.current.promptTop + '</span>' : '')
+    + (deGross ? '<span class="case-prep sb-de-gross">' + wgState.current.promptDe + '</span>' : wgState.current.promptDe) +
+    (wgState.current.hint && wgHintSichtbar() ? '<span class="case-hint">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : 'gesuchte Form: ') + wgState.current.hint + '</span>' : '');
   const inputRow = wgEl('input-row');
   const clickArea = wgEl('click-area');
   if (wgState.answerMode === 'click') {
@@ -22954,7 +23014,7 @@ function checkWordgroup() {
   }
   const ersteAntwort = !wgState.answered;
   wgState.answered = true;
-  wgSyncSpeak();
+  wgSyncSpeak(); renderWgStepwise();
   if (ersteAntwort) speakWordgroupAuto();
   if (wgState.answerMode === 'type') {
     wgEl('input').className = 'conj-input ' + (ok ? 'correct' : 'wrong');
@@ -22965,12 +23025,134 @@ function checkWordgroup() {
     : femTreffer ? ' (weibliche Form — auch richtig)'
     : ' (als Frau: ' + wgState.current.femSwap[1] + ')';
   const orderNote = (ok && !typo && !femTreffer && user !== target) ? ' (andere Wortstellung — auch richtig)' : femNote;
-  wgEl('result').innerHTML = ok
+  const voll = (wgState.current.fullAnswer || wgState.current.answer).split(' ');
+  const tipps = ok ? [] : sbTipps(val, voll);
+  wgEl('result').innerHTML = (ok
     ? 'Richtig' + typo + orderNote + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für die nächste Aufgabe'
-    : 'Richtig wäre: ' + wordgroupBreakdown(val, wgState.current.tokens);
+    : 'Richtig wäre: ' + wordgroupBreakdown(val, wgState.current.tokens) + tipps.map(t => '<span class="case-tipp">' + htmlEsc(t) + '</span>').join(''))
+    + sbErklaerung(voll) + (!ok && wgState.current.hint && wgState.tool === 'sentence' && sbHintModus() === 'fehler' ? '<span class="case-hint">Hinweis: ' + wgState.current.hint + '</span>' : '');
   wgEl('score').textContent = wgState.correct + ' von ' + wgState.done + ' richtig';
 }
 
+
+// ── Satzbau/Wortgruppen: Erklärung Wort für Wort und Tipps bei falschen Formen (12.11.) ──
+// Formverzeichnis: Form → [{ art: n|a|p|v, lemma, kasus, num, gen, person, zeit }] aus den Tabellen des Tools
+let sbFormIndex = null;
+function sbFormen() {
+  if (sbFormIndex) return sbFormIndex;
+  const M = new Map(), add = (f, x) => { if (!f || f === '—') return; f.split(/\s*[()]\s*|\s*,\s*/).filter(Boolean).forEach(g => { const k = normalizeToken(g); if (!M.has(k)) M.set(k, []); M.get(k).push(x); }); };
+  Object.entries(nounDeclensionData).forEach(([n, d]) => ['sg', 'pl'].forEach(num => Object.entries(d[num] || {}).forEach(([k, f]) => add(f, { art: 'n', lemma: n, kasus: k, num }))));
+  Object.entries(declensionData).forEach(([a, d]) => ['masc', 'fem', 'neut', 'plural'].forEach(g => Object.entries(d[g] || {}).forEach(([k, f]) => add(f, { art: 'a', lemma: a, kasus: k, num: g === 'plural' ? 'pl' : 'sg', gen: g }))));
+  Object.entries(pronounDeclensionData).forEach(([pr, d]) => Object.entries(d.forms || {}).forEach(([k, f]) => add(f, { art: 'p', lemma: pr, kasus: k })));
+  Object.entries(conjugationData).forEach(([v, d]) => {
+    Object.entries(d.nonPast || {}).forEach(([pe, f]) => add(f, { art: 'v', lemma: v, person: pe, zeit: d.nonPastLabel || 'Präsens' }));
+    Object.entries(d.past || {}).forEach(([pe, f]) => add(f, { art: 'v', lemma: v, person: pe, zeit: 'Vergangenheit' }));
+    Object.entries(d.imperative || {}).forEach(([pe, f]) => add(f, { art: 'v', lemma: v, person: pe, zeit: 'Imperativ' }));
+  });
+  return (sbFormIndex = M);
+}
+const SB_PREP_FORM = { 'во': 'в', 'со': 'с', 'об': 'о', 'обо': 'о', 'ко': 'к', 'изо': 'из', 'подо': 'под', 'надо': 'над', 'передо': 'перед' };
+function sbVerbKasus(lemma) {
+  if (WG_VERBS[lemma]) return WG_VERBS[lemma].case;
+  const rk = RK_VERBS.find(x => x.v === lemma);
+  const m = rk && /^(Gen|Dat|Akk|Instr)$/.exec(rk.r);
+  return m ? m[1] + '.' : null;
+}
+const SB_KASUS_DE = { 'Nom.': 'Nominativ', 'Gen.': 'Genitiv', 'Dat.': 'Dativ', 'Akk.': 'Akkusativ', 'Instr.': 'Instrumental', 'Präp.': 'Präpositiv' };
+const SB_PERSON_DE = { 'я': 'ich-Form', 'ты': 'du-Form', 'он / она / оно': 'er/sie-Form', 'мы': 'wir-Form', 'вы': 'ihr/Sie-Form', 'они': 'sie-Form (Plural)', 'он': 'männlich', 'она': 'weiblich', 'оно': 'sächlich' };
+// Analyse eines Satzes: je Wort die gewählte Form mit Grund (Kontext: Präposition, нет, у, Verb-Rektion, folgendes Substantiv)
+function sbAnalyse(tokens) {
+  const F = sbFormen(), toks = tokens.map(t => normalizeToken(t)), out = [];
+  let erwartet = null, grund = '', verb = null;
+  const praep = p => PREP_CASES.filter(x => x.prep === p);
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i], basis = SB_PREP_FORM[t] || t;
+    if (praep(basis).length) {
+      const ps = praep(basis); erwartet = ps.map(x => x.kasus);
+      grund = 'nach ' + t; out.push({ i, art: 'prep', prep: basis, form: t, ps }); continue;
+    }
+    if (t === 'нет' || (t === 'было' && toks[i - 1] === 'не') || (t === 'будет' && toks[i - 1] === 'не')) { erwartet = ['Gen.']; grund = 'nach ' + (t === 'нет' ? 'нет' : 'не ' + t); out.push({ i, art: 'neg' }); continue; }
+    const c = F.get(t) || [];
+    // nur ein gebeugtes Verb je Satz – sonst würde z. B. мою (meine) als „ich wasche“ gelesen
+    const v = !verb && c.find(x => x.art === 'v');
+    if (v && !c.some(x => x.art === 'n' && x.kasus === 'Nom.' && x.lemma === t)) {
+      verb = v.lemma; out.push({ i, art: 'v', form: tokens[i], x: v });
+      const k = sbVerbKasus(v.lemma); if (k && !erwartet) { erwartet = [k]; grund = v.lemma + ' verlangt den ' + SB_KASUS_DE[k]; }
+      continue;
+    }
+    // Substantiv/Pronomen/Adjektiv: erwarteten Fall bevorzugen
+    const nimm = arten => { const k = c.filter(x => arten.includes(x.art)); return (erwartet && k.find(x => erwartet.includes(x.kasus))) || k.find(x => x.kasus === 'Nom.') || k[0]; };
+    let n = nimm(['n', 'p']); const a = !n || c.some(x => x.art === 'a') ? nimm(['a']) : null;
+    if (a && (!n || c.indexOf(a) < c.indexOf(n) || n.lemma !== t)) {
+      // Adjektiv: richtet sich nach dem folgenden Substantiv
+      const folg = (F.get(toks[i + 1]) || []).filter(x => x.art === 'n');
+      let ax = a, nn = (erwartet && folg.find(x => erwartet.includes(x.kasus) && x.kasus === a.kasus)) || folg.find(x => x.kasus === a.kasus) || null;
+      // belebter Akkusativ: Adjektiv in Genitiv-Form, das Substantiv steht im Akkusativ (умного студента)
+      if (erwartet && erwartet.includes('Akk.') && a.kasus === 'Gen.' && folg.some(x => x.kasus === 'Akk.')) { ax = Object.assign({}, a, { kasus: 'Akk.', belebt: true }); nn = folg.find(x => x.kasus === 'Akk.'); }
+      out.push({ i, art: 'a', form: tokens[i], x: ax, nach: nn && nn.lemma, grund, erwartet });
+      continue;
+    }
+    if (n) {
+      const vorher = out.length ? out[out.length - 1] : null;
+      const ps = vorher && (vorher.art === 'prep' ? vorher.ps : vorher.art === 'a' && out[out.length - 2] && out[out.length - 2].art === 'prep' ? out[out.length - 2].ps : null);
+      // Ortsform auf -у nach в/на (в лесу, на мосту) – gleich lautend mit dem Dativ
+      const lok = ps && typeof NOUN_LOCATIVE !== 'undefined' && NOUN_LOCATIVE[n.lemma] && Object.values(NOUN_LOCATIVE[n.lemma]).includes(t);
+      if (lok) n = { art: 'n', lemma: n.lemma, kasus: 'Präp.', num: 'sg', lok: true };
+      const pe = ps && ps.find(x => x.kasus === n.kasus);
+      let g = grund;
+      if (pe) g = 'nach ' + pe.prep + (pe.dual ? ' (' + (pe.hint || pe.de) + ')' : '');
+      if (!g && i === 0 && n.kasus === 'Dat.') g = 'Person im Dativ';
+      if (!g && n.kasus === 'Nom.') g = 'Subjekt';
+      out.push({ i, art: n.art, form: tokens[i], x: n, grund: g, erwartet });
+      erwartet = null; grund = '';
+    }
+  }
+  return out;
+}
+// Zeilen der Erklärung: nur Wörter, deren Form sich gegenüber der Grundform ändert
+function sbErklaerung(tokens) {
+  const zeilen = [];
+  sbAnalyse(tokens).forEach(e => {
+    if (e.art === 'v') {
+      if (normalizeToken(e.form) === e.x.lemma) return;
+      zeilen.push('<b lang="ru">' + htmlEsc(e.form) + '</b> ← ' + htmlEsc(e.x.lemma) + ': ' + (e.x.zeit === 'Vergangenheit' ? 'Vergangenheit, ' + (SB_PERSON_DE[e.x.person] || e.x.person) : e.x.zeit + ', ' + (SB_PERSON_DE[e.x.person] || e.x.person)));
+    } else if (e.art === 'n' || e.art === 'p') {
+      // auch unveränderte Formen erklären, wenn sie nicht im Nominativ stehen (покупать → билет: Akkusativ = Nominativ)
+      const gleich = normalizeToken(e.form) === normalizeToken(e.x.lemma);
+      if (gleich && e.x.kasus === 'Nom.') return;
+      const nd = e.art === 'n' && nounDeclensionData[e.x.lemma], fs = nd && nd[e.x.num || 'sg'];
+      const belebt = fs && e.x.kasus === 'Akk.' && fs['Akk.'] === fs['Gen.'] && fs['Akk.'] !== fs['Nom.'];
+      zeilen.push('<b lang="ru">' + htmlEsc(e.form) + '</b>' + (gleich ? '' : ' ← ' + htmlEsc(e.x.lemma)) + ': ' + SB_KASUS_DE[e.x.kasus] + (e.x.num === 'pl' ? ' Plural' : '')
+        + (e.x.lok ? ' (Ortsform auf -у)' : belebt ? ' (belebt: wie der Genitiv)' : gleich ? ' (gleich dem Nominativ)' : '') + (e.grund ? ' – ' + htmlEsc(e.grund) : ''));
+    } else if (e.art === 'a') {
+      const gl = normalizeToken(e.form) === normalizeToken(e.x.lemma);
+      if (gl && e.x.kasus === 'Nom.') return;
+      zeilen.push('<b lang="ru">' + htmlEsc(e.form) + '</b> ← ' + htmlEsc(e.x.lemma) + ': ' + SB_KASUS_DE[e.x.kasus] + ' ' + ({ masc: 'männlich', fem: 'weiblich', neut: 'sächlich', plural: 'Plural' })[e.x.gen]
+        + (e.x.belebt ? ' (belebt: wie der Genitiv)' : '') + (e.nach ? ' – wie ' + htmlEsc(e.nach) : ''));
+    }
+  });
+  return zeilen.length ? '<span class="sb-erkl">' + zeilen.map(z => '<span>' + z + '</span>').join('') + '</span>' : '';
+}
+// Tipp: Wort der Eingabe ist eine andere Form desselben Wortes (falscher Fall, falsche Person) oder Präposition nicht angepasst
+function sbTipps(userVal, tokens) {
+  const F = sbFormen(), ana = sbAnalyse(tokens), user = userVal.trim().split(/\s+/).map(normalizeToken), tipps = [];
+  ana.forEach(e => {
+    if (!e.x) return;
+    const soll = normalizeToken(e.form); if (user.includes(soll)) return;
+    const u = user.find(w => (F.get(w) || []).some(x => x.lemma === e.x.lemma && x.art === e.x.art));
+    if (!u) return;
+    if (e.art === 'v') {
+      const ux = (F.get(u) || []).find(x => x.lemma === e.x.lemma);
+      tipps.push('„' + u + '“ ist die ' + (SB_PERSON_DE[ux.person] || ux.person) + ' – gesucht ist ' + e.form + ' (' + (SB_PERSON_DE[e.x.person] || e.x.person) + ').');
+    } else {
+      const ks = [...new Set((F.get(u) || []).filter(x => x.lemma === e.x.lemma).map(x => SB_KASUS_DE[x.kasus]))];
+      tipps.push('„' + u + '“ ist ' + (ks.length ? 'der ' + ks.join(' oder ') : 'eine andere Form') + ' – ' + (e.grund ? e.grund + ' steht der ' : 'gesucht ist der ') + SB_KASUS_DE[e.x.kasus] + ': ' + e.form + '.');
+    }
+  });
+  // Präposition nicht angepasst (в → во, с → со, о → об)
+  ana.filter(e => e.art === 'prep' && e.form !== e.prep && user.includes(e.prep) && !user.includes(e.form)).forEach(e => tipps.push('Hier heißt es ' + e.form + ' statt ' + e.prep + ' (' + (e.prep === 'о' ? 'vor Vokal' : 'vor Konsonantengruppe') + ').'));
+  return tipps.slice(0, 2);
+}
 // Vergleicht die Eingabe Wort für Wort mit den Ziel-Bausteinen und zeigt jeden
 // Baustein einzeln: korrekte grün, abweichende mit Teilrückmeldung (grüner
 // gemeinsamer Anfang + roter Rest). So ist erkennbar, welches Wort falsch war.
@@ -22995,7 +23177,7 @@ function revealWordgroup() {
   }
   const neu = !wgState.answered;
   wgState.answered = true;
-  wgSyncSpeak();
+  wgSyncSpeak(); renderWgStepwise();
   if (neu) { wgOfferRate(); speakWordgroupAuto(); }
 }
 // Lösung ganz aufgedeckt (auf einmal oder Wort für Wort): Selbstbewertung; „Prüfen“ führt weiter
@@ -23004,7 +23186,7 @@ function wgOfferRate() {
   wgState.revealed = true; wgState.rOk = false;
   if (cur.srsKey) progressSeen('wordgroup', cur.srsKey);
   if (cur.sbId) progressSeen(sbSrsKey(), cur.sbId);
-  wgEl('result').textContent = '';
+  wgEl('result').innerHTML = sbErklaerung((cur.fullAnswer || cur.answer).split(' '));
   gtRateOffer(wgEl('result'), ok => {
     wgState.done++; if (ok) wgState.correct++; wgState.rOk = ok;
     if (cur.srsKey) progressMark('wordgroup', cur.srsKey, ok);
@@ -23042,6 +23224,7 @@ function revealWordgroupStep() {
       input.value = wgState.current.answer;
       input.className = 'conj-input revealed';
     }
+    renderWgStepwise();
     if (neu) wgOfferRate();
   }
 }
@@ -23050,7 +23233,8 @@ function renderWgStepwise() {
   const el = wgEl('stepwise');
   if (!el) return;
   const toks = (wgState.current && wgState.current.tokens) || [];
-  if (!wgState.revealStep || !toks.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
+  // nach dem Aufdecken steht die Lösung im Eingabefeld – hier nicht noch einmal (12.11.)
+  if (!wgState.revealStep || !toks.length || (wgState.answered && wgState.answerMode !== 'click')) { el.style.display = 'none'; el.innerHTML = ''; return; }
   el.style.display = '';
   el.textContent = '';
   toks.forEach((t, i) => {
