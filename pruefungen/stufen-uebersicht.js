@@ -44,7 +44,7 @@ const { chromium } = require('playwright');
   });
   ok('3 Jedes Werkzeug eine Zeile mit Balken und einem Prozentwert', g.n === g.soll && g.alle && !g.doppelt, JSON.stringify(g));
   ok('3 Hinweis für Stufen ohne Werkzeuge', /^B1–C1: noch keine eigenen Grammatikwerkzeuge/.test(g.none), g.none);
-  const gw = await p.evaluate(() => { const L = loadLifetime(); L.g.gender = L.g.gender || {}; ['дом', 'мама', 'окно'].forEach(k => L.g.gender[k] = { c: 1, w: 0, mb: 1, l: Date.now(), z: Date.now(), d: 2, dd: Date.now() }); saveLifetime(); openLevelOverview();
+  const gw = await p.evaluate(() => { const L = loadLifetime(); L.g.gender = L.g.gender || {}; ['мебель', 'ночь', 'время'].forEach(k => L.g.gender[k] = { c: 1, w: 0, mb: 1, l: Date.now(), z: Date.now(), d: 2, dd: Date.now() }); saveLifetime(); openLevelOverview();
     const t = [...document.querySelectorAll('#level-overview-body .lvl-tool')].find(x => /Geschlecht/.test(x.textContent)); return { segs: t.querySelectorAll('.lvl-t span.s2').length, title: t.title }; });
   ok('3 Werkzeugbalken aus dem Gesamtstand', gw.segs === 1 && /Wiederholung 2: 3 · noch nicht geübt/.test(gw.title), JSON.stringify(gw));
 

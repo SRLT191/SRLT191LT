@@ -59,7 +59,7 @@ const { chromium } = require('playwright');
     out.saetze = ['мочь / смочь', 'пробовать / попробовать', 'платить / заплатить', 'обещать / пообещать', 'улыбаться / улыбнуться', 'рождаться / родиться', 'умирать / умереть'].map(k => (getWordSentence(findVocabEntry(k)) || {}).ru);
     out.alt = ['Важно мочь помочь другу.', 'Нельзя обещать и не делать.', 'Дети могут рождаться дома.'].filter(x => buildDictationPool().some(d => d.ru === x));
     // Einstellungen: ⋯-Menüs nur Aktionen
-    out.menue = [...document.querySelectorAll('.gt-more-menu .gt-more-item')].map(x => x.textContent.trim()).filter(t => !/^(Neue Runde|Leeren|Übersicht nach Fall)$/.test(t));
+    out.menue = [...document.querySelectorAll('.gt-more-menu .gt-more-item')].map(x => x.textContent.trim()).filter(t => !/^(Neue Runde|Leeren|Übersicht nach Fall|Liste der -ь-Wörter)$/.test(t));
     out.leiste = ['conj-sort-btn', 'conj-scope-btn', 'case-hint-toggle', 'case-plural-toggle', 'case-kasus-chips'].filter(id => !document.getElementById(id).closest('.gt-settings-body'));
     out.notes = ['overlay-conjugate', 'overlay-decline', 'overlay-noun', 'overlay-pronoun'].filter(id => !document.querySelector('#' + id + ' .gt-settings-body .grammar-note-toggle'));
     // Kopf

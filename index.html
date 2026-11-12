@@ -70,6 +70,7 @@
     --c-on-accent: #fff;
     --c-accent: #185FA5;
     --c-accent-strong: #0C447C;
+    --g-m: #1d5fbf; --g-f: #b3261e; --g-n: #1d7a3c; --g-pl: #5b636d;   /* Geschlecht: m blau, f rot, n grün, Pl. grau (≥ 4,5 : 1) */
     --c-accent-soft-bg: #E6F1FB;
     --c-accent-focus-ring: #B5D4F4;
     --c-success-bg: #EAF3DE;
@@ -113,6 +114,7 @@
     --c-on-accent: #0b1b2c;
     --c-accent: #4C9FE8;
     --c-accent-strong: #6FB2EE;
+    --g-m: #7fb0ff; --g-f: #ff8f86; --g-n: #74d394; --g-pl: #a9b0b8;
     --c-accent-soft-bg: #1d3550;
     --c-accent-focus-ring: #2c4f6e;
     --c-success-bg: #1f3018;
@@ -997,7 +999,24 @@
   .case-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
   .case-options-2 { grid-template-columns: repeat(2, 1fr); }
   .gender-options { grid-template-columns: repeat(4, 1fr); }
-  .gender-options .case-opt { font-size: 16px; font-weight: 500; }
+  .gender-options .case-opt { font-size: 16px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 1px; position: relative; border-top: 3px solid var(--gd-c, var(--c-border)); }
+  .gd-opt .gd-k { font-size: 18px; font-weight: 600; color: var(--gd-c); }
+  .gd-opt .gd-l { font-size: 11.5px; color: var(--c-text-muted); font-weight: 400; }
+  .gd-m { --gd-c: var(--g-m); } .gd-f { --gd-c: var(--g-f); } .gd-n { --gd-c: var(--g-n); } .gd-pl { --gd-c: var(--g-pl); }
+  #gender-q .gd-wort.gd-m, #gender-q .gd-wort.gd-f, #gender-q .gd-wort.gd-n, #gender-q .gd-wort.gd-pl { color: var(--gd-c); }
+  .gd-opt .gt-kbd { position: absolute; top: 6px; right: 8px; margin: 0; }
+  .gd-wort .gd-end { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; font-weight: 700; }
+  #gender-result .gd-bsp { display: block; margin-top: 4px; }
+  .gd-grp-t { color: var(--gd-c); }
+  .gdl-zusatz { font-weight: 400; font-size: 12.5px; color: var(--c-text-muted); }
+  #gender-list-body .rkl-head { flex-wrap: wrap; row-gap: 4px; }
+  #gender-list-body .rkl-title { flex: 1 1 160px; }
+  .gdl-hinweis { color: var(--c-text-muted); font-size: 13.5px; margin: 0 0 10px; }
+  .gdl-woerter { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 0 12px; }
+  .gdl-w { display: inline-flex; align-items: baseline; gap: 6px; padding: 5px 10px; min-height: 36px; border-radius: 8px; border: 1px solid var(--c-border-light); border-left: 3px solid var(--gd-c); background: var(--c-surface-alt); color: var(--c-text-primary); font: inherit; font-size: 14px; cursor: pointer; }
+  .gdl-w [lang="ru"] { font-weight: 600; }
+  .gdl-w .gdl-de { color: var(--c-text-muted); font-size: 12.5px; }
+  .gdl-w.ok .ti-check { color: var(--c-success-text); font-size: 13px; }
   .case-question .case-sentence { display: block; font-size: 19px; font-weight: 500; color: var(--c-text-primary); margin-bottom: 8px; line-height: 1.5; }
   .case-opt { border: 1px solid var(--c-border-light); background: var(--c-surface); border-radius: 9px; padding: 12px 6px; font-size: 14px; color: var(--c-text-primary); cursor: pointer; transition: all 0.15s; }
   .case-opt:hover { border-color: var(--c-accent); }
@@ -1730,7 +1749,7 @@
 <button aria-label="Erklärung anzeigen" class="conj-info-btn" onclick="toggleGenderInfo()" title="Woran erkennt man das Geschlecht?"><i class="ti ti-info-circle"></i></button>
 </span>
 <span class="grammar-panel-progress" id="gtp-gender" title="Mindestens einmal richtig beantwortet"></span>
-<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); restartGender()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button></div></div></div>
+<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu" role="menu"><button class="gt-more-item" onclick="closeGtMore(); openGenderList()" role="menuitem" type="button"><i class="ti ti-list"></i> <span>Liste der -ь-Wörter</span></button><button class="gt-more-item" onclick="closeGtMore(); restartGender()" role="menuitem" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button></div></div></div>
 <div class="overlay-body">
 <div class="conj-info-panel" id="gender-info-panel" style="display:none"><button aria-label="Erklärung schließen" class="gt-info-close" onclick="gtCloseInfo(this)" title="Erklärung schließen" type="button"><i class="ti ti-x"></i></button>
 <p><strong>Worum es geht:</strong> Jedes russische Substantiv ist männlich, weiblich oder sächlich – oder hat nur eine Mehrzahl. Das Geschlecht bestimmt die Endungen von Adjektiven, Pronomen und der Vergangenheit (новый дом, новая книга, новое окно; он был, она была). Meist verrät es die Endung.</p>
@@ -1745,17 +1764,20 @@
 <p><strong>Faustregeln für -ь:</strong> -тель und -арь → männlich (учитель, словарь); Monatsnamen → männlich (июнь, декабрь); -ость/-есть → weiblich (скорость); nach ж, ш, ч, щ → immer weiblich (ночь, вещь, мышь). Alle übrigen Wörter auf -ь muss man mit dem Geschlecht lernen (день m, дверь f).</p>
 <p><strong>Ausnahmen:</strong> Männliche Personen auf -а/-я sind männlich (папа, дедушка, дядя, мужчина). кофе ist männlich. Unveränderliche Fremdwörter sind meist sächlich (метро, кино, меню, такси). Ausnahmen innerhalb der Faustregeln: гость m, тесть m, метель f.</p>
 <p><strong>Nur Plural:</strong> Manche Wörter haben keine Einzahl: деньги, часы (Uhr), очки, брюки, ножницы, каникулы. Begleiter und Adjektive stehen dann immer im Plural: эти часы, новые часы.</p>
-<p><strong>Bedienung:</strong> Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Regel stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Eine Runde hat 20 Wörter; <em>Regelfälle</em> fragt nur Wörter ab, deren Endung eindeutig ist, <em>Schwierige</em> nur -ь, Ausnahmen und Plural-Wörter. Im ⋯-Menü startet <em>Neue Runde</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
+<p><strong>Bedienung:</strong> Antippen oder Taste 1–4 (m, f, n, Pl.) bewertet sofort und markiert die richtige Option. Danach steht das Wort in der Farbe seines Geschlechts (m blau, f rot, n grün, Pl. grau), die entscheidende Endung ist markiert, und darunter steht es mit Begleiter (моя мебель) zum Anhören. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Regel stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Eine Runde hat 15 Wörter.</p>
+<p><strong>Einstellungen:</strong> <em>Regelfälle</em> (Endung eindeutig), <em>-ь-Wörter</em>, <em>Ausnahmen</em> (männliche Personen auf -а/-я, кофе, Fremdwörter, -мя) und <em>nur Plural</em>. Regelfälle zählen nicht zum Fortschritt „gelernt“ – der Kopf zeigt den gewählten Bereich. <strong>⋯-Menü:</strong> <em>Liste der -ь-Wörter</em> (nach Faustregel geordnet, je Gruppe „üben“) und <em>Neue Runde</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" role="group" aria-label="Umfang">
 <button class="mode-btn active" id="gender-scope-all" onclick="setGenderScope('all')">Alle</button>
 <button class="mode-btn" id="gender-scope-easy" onclick="setGenderScope('easy')">Regelfälle</button>
-<button class="mode-btn" id="gender-scope-hard" onclick="setGenderScope('hard')">Schwierige</button>
+<button class="mode-btn" id="gender-scope-soft" onclick="setGenderScope('soft')" title="Wörter auf -ь: Faustregeln und Wörter zum Mitlernen">-ь-Wörter</button>
+<button class="mode-btn" id="gender-scope-exc" onclick="setGenderScope('exc')" title="Männliche Personen auf -а/-я, кофе, unveränderliche Fremdwörter, -мя">Ausnahmen</button>
+<button class="mode-btn" id="gender-scope-pl" onclick="setGenderScope('pl')" title="Wörter ohne Einzahl (деньги, часы, очки)">nur Plural</button>
 </div></div></div></div>
 <div class="gt-task"><div class="case-question" id="gender-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGender()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options gender-options" id="gender-opts"></div>
 <div class="conj-actions gt-actions">
-<button class="tool-btn" onclick="revealGender()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
+<button class="tool-btn" onclick="revealGender()"><i class="ti ti-eye"></i> Lösung zeigen</button>
 <button class="tool-btn" onclick="nextGender()">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div aria-live="polite" class="conj-result" id="gender-result" role="status"></div>
 <div class="conj-result" id="gender-score"></div>
@@ -3246,6 +3268,18 @@
     <div class="overlay-body">
       <div class="list-toolbar"><button class="tool-btn" id="rektion-list-anders" aria-pressed="false" onclick="toggleRektionListAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-list-check"></i> <span>nur ≠ Deutsch</span></button></div>
       <div id="rektion-list-body" class="rkl"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay-genderlist">
+  <div class="overlay-box overlay-box-wide">
+    <div class="overlay-header">
+      <span class="overlay-title"><i class="ti ti-list"></i> Geschlecht · Wörter auf -ь</span>
+      <button class="overlay-close" onclick="closeOverlay('overlay-genderlist')" aria-label="Schließen">×</button>
+    </div>
+    <div class="overlay-body">
+      <p class="gdl-hinweis">Wörter auf -ь können männlich oder weiblich sein. Erst die Faustregeln, dann die Wörter zum Mitlernen. Antippen liest das Wort mit Begleiter vor (мой день, моя ночь).</p>
+      <div id="gender-list-body" class="rkl"></div>
     </div>
   </div>
 </div>
@@ -8331,7 +8365,7 @@ function grammarToolSources() {
     motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
     transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal()],
     noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun')],
-    numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal()],
+    numnoun: [['numnoun'], numNounNouns().length * 3], gender: [['gender'], genderTotal(), genderZaehlt],
     decline: [['decl'], Object.keys(declensionData).length], caseadj: [['caseadj'], caseFormTotal('adj')], adjform: [['adjform'], adjFormTotal()],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
     casedrill: [['case', 'case:word'], PREP_CASES.length + caseWordCount()], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3],
@@ -8340,9 +8374,15 @@ function grammarToolSources() {
 }
 // Stand Grammatik (9.11.): Balken und Prozent als Durchschnitt der Werkzeuge – jedes Werkzeug zählt gleich viel,
 // sonst bestimmen die Werkzeuge mit Tausenden Einzelformen (Kasus bilden) das Bild; die Zahlen bleiben echte Anzahlen
+// Einträge eines Werkzeugs im Lernstand (s[2]: optionaler Filter, z. B. Geschlecht ohne Regelfälle)
+function srcEntries(s, g) {
+  const out = []; if (!s) return out;
+  s[0].forEach(k => Object.entries(g[k] || {}).forEach(([id, e]) => { if (!s[2] || s[2](id)) out.push(e); }));
+  return out;
+}
 function homeToolAnteile(t, g, src, now) {
   const s = src[t]; if (!s || !s[1]) return null;
-  const entries = []; s[0].forEach(k => Object.values(g[k] || {}).forEach(e => entries.push(e)));
+  const entries = srcEntries(s, g);
   const z = homeStufenZeile(t, s[1], entries, now);
   return z.stufen.map(n => Math.min(1, n / z.total));
 }
@@ -8351,7 +8391,7 @@ function homeGrammarRows(now) {
   const g = loadLifetime().g || {}, src = grammarToolSources();
   return Object.keys(GRAMMAR_CATS).map(c => {
     let total = 0; const entries = [];
-    GRAMMAR_CATS[c].forEach(t => { const s = src[t]; if (!s) return; total += s[1]; s[0].forEach(k => Object.values(g[k] || {}).forEach(e => entries.push(e))); });
+    GRAMMAR_CATS[c].forEach(t => { const s = src[t]; if (!s) return; total += s[1]; entries.push(...srcEntries(s, g)); });
     const z = homeStufenZeile(GRAMMAR_CAT_LABEL[c], total, entries, now);
     z.anteil = homeMittel(GRAMMAR_CATS[c].map(t => homeToolAnteile(t, g, src, now)));
     return z;
@@ -14715,7 +14755,7 @@ function chipName(tool) {
 // Gesamtstand je Grammatikwerkzeug als Stufenzeile (Wiederholungsstufen 1–5)
 function levelToolZeile(t, now) {
   const g = loadLifetime().g || {}, s = grammarToolSources()[t];
-  const entries = []; if (s) s[0].forEach(k => Object.values(g[k] || {}).forEach(e => entries.push(e)));
+  const entries = srcEntries(s, g);
   return homeStufenZeile(chipName(t), s ? s[1] : 0, entries, now);
 }
 // Zielstufe: „Mein Niveau“ oder die erste Stufe, in der weniger als 80 % der Wörter schon einmal gelernt sind (Gesamtstand)
@@ -17640,7 +17680,8 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-pronform', learned('pronform', pronFormTotal()));
   set('gtp-adjform', learned('adjform', adjFormTotal()));
   set('gtp-rektion', learned('rektion', rektionTotal()));
-  set('gtp-gender', learned('gender', genderTotal()));
+  // Seitenleiste/Startseite: alle Nicht-Regelfälle; Kopf des Werkzeugs: gewählter Bereich
+  set('gtp-gender', sink ? Object.entries(all.gender || {}).filter(([id, e]) => genderZaehlt(id) && srsDone(e)).length + ' von ' + genderTotal() + ' gelernt' : genderProgressText(all));
   // Seitenleiste: Fortschrittsstrich je Werkzeug (wie bei den Vokabelkategorien)
   if (!sink && !store) {
     const stand = {};
@@ -17857,7 +17898,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyWgSpeak(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyGenderChoice(e) || keyWgSpeak(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -19161,7 +19202,7 @@ const TOOL_SETTINGS = [
   ['afHintVisible', ...tsProp(() => adjFormState, 'hintVisible'), TS_BOOL],
   ['rkMode', ...tsProp(() => rektionState, 'mode'), tsOneOf('choose', 'form', 'list')],
   ['rkHintVisible', ...tsProp(() => rektionState, 'hintVisible'), TS_BOOL],
-  ['gdScope', ...tsProp(() => genderState, 'scope'), tsOneOf('all', 'easy', 'hard')],
+  ['gdScope', ...tsProp(() => genderState, 'scope'), tsOneOf('all', 'easy', 'soft', 'exc', 'pl')],
   ['transformHintVisible', ...tsProp(() => transformState, 'hintVisible'), TS_BOOL],
   ['transformScope', ...tsProp(() => transformState, 'scope'), tsOneOf('all', 'past', 'future', 'imperative', 'aspect')],
   ['grammarNotesVisible', () => grammarNotesVisible, v => { grammarNotesVisible = v; }, TS_BOOL],
@@ -23612,29 +23653,29 @@ const GENDER_MONTHS = new Set('январь февраль апрель июнь
 function genderOf(ru) {
   if (GENDER_EXCLUDE.has(ru)) return null;
   const inList = g => GENDER_LIST[g].includes(ru);
-  if (inList('pl')) return { g: 'pl', why: 'Nur Plural: Es gibt keine Einzahl – das Wort steht immer in der Mehrzahl.', hard: true };
+  if (inList('pl')) return { g: 'pl', why: 'Nur Plural: Es gibt keine Einzahl – das Wort steht immer in der Mehrzahl.', hard: true, typ: 'pl', end: /(ы|и)$/ };
   if (['папа', 'дедушка', 'дядя', 'мужчина', 'юноша'].includes(ru))
-    return { g: 'm', why: 'Männlich trotz -а/-я: Gemeint ist eine männliche Person.', hard: true };
-  if (ru === 'кофе') return { g: 'm', why: 'кофе ist eine Ausnahme: männlich, obwohl es auf -е endet und unveränderlich ist.', hard: true };
-  if (ru === 'пони') return { g: 'm', why: 'Unveränderliche Fremdwörter für Tiere sind männlich (пони, кенгуру, шимпанзе).', hard: true };
-  if (inList('n')) return { g: 'n', why: 'Unveränderliches Fremdwort auf -у/-ю/-и → sächlich.', hard: true };
-  if (/мя$/.test(ru)) return { g: 'n', why: 'Wörter auf -мя sind sächlich (время, имя, семя).', hard: true };
+    return { g: 'm', why: 'Männlich trotz -а/-я: Gemeint ist eine männliche Person.', hard: true, typ: 'exc', end: /[ая]$/ };
+  if (ru === 'кофе') return { g: 'm', why: 'кофе ist eine Ausnahme: männlich, obwohl es auf -е endet und unveränderlich ist.', hard: true, typ: 'exc', end: /е$/ };
+  if (ru === 'пони') return { g: 'm', why: 'Unveränderliche Fremdwörter für Tiere sind männlich (пони, кенгуру, шимпанзе).', hard: true, typ: 'exc', end: /и$/ };
+  if (inList('n')) return { g: 'n', why: 'Unveränderliches Fremdwort auf -у/-ю/-и → sächlich.', hard: true, typ: 'exc', end: /[уюиоеэ]$/ };
+  if (/мя$/.test(ru)) return { g: 'n', why: 'Wörter auf -мя sind sächlich (время, имя, семя).', hard: true, typ: 'exc', end: /мя$/ };
   if (/ь$/.test(ru)) {
-    if (ru === 'гость') return { g: 'm', why: 'гость ist männlich – Ausnahme zur Regel „-ость → weiblich“ (eine männliche Person).', hard: true };
-    if (ru === 'тесть') return { g: 'm', why: 'тесть ist männlich – Ausnahme zur Regel „-есть → weiblich“ (eine männliche Person: der Schwiegervater).', hard: true };
-    if (ru === 'метель') return { g: 'f', why: 'метель ist weiblich – Ausnahme zur Regel „-тель → männlich“.', hard: true };
-    if (/тель$/.test(ru)) return { g: 'm', why: '-ь, aber -тель → männlich (Personen und Geräte: учитель, выключатель).', hard: true };
-    if (/арь$/.test(ru)) return { g: 'm', why: '-ь, aber -арь → männlich (словарь, январь, пекарь).', hard: true };
-    if (/(ость|есть)$/.test(ru)) return { g: 'f', why: '-ь, aber -ость/-есть → weiblich (Eigenschaften: скорость, радость).', hard: true };
-    if (/[жшчщ]ь$/.test(ru)) return { g: 'f', why: '-ь nach ж, ш, ч, щ → immer weiblich (ночь, вещь, мышь).', hard: true };
-    if (GENDER_MONTHS.has(ru)) return { g: 'm', why: 'Monatsnamen sind männlich – auch die auf -ь.', hard: true };
-    if (inList('m')) return { g: 'm', why: '-ь ohne Faustregel: männlich – muss man mitlernen.', hard: true };
-    if (inList('f')) return { g: 'f', why: '-ь ohne Faustregel: weiblich – muss man mitlernen.', hard: true };
+    if (ru === 'гость') return { g: 'm', why: 'гость ist männlich – Ausnahme zur Regel „-ость → weiblich“ (eine männliche Person).', hard: true, typ: 'soft', grp: 'ausn-m', end: /ость$/ };
+    if (ru === 'тесть') return { g: 'm', why: 'тесть ist männlich – Ausnahme zur Regel „-есть → weiblich“ (eine männliche Person: der Schwiegervater).', hard: true, typ: 'soft', grp: 'ausn-m', end: /есть$/ };
+    if (ru === 'метель') return { g: 'f', why: 'метель ist weiblich – Ausnahme zur Regel „-тель → männlich“.', hard: true, typ: 'soft', grp: 'ausn-f', end: /тель$/ };
+    if (/тель$/.test(ru)) return { g: 'm', why: '-ь, aber -тель → männlich (Personen und Geräte: учитель, выключатель).', hard: true, typ: 'soft', grp: 'tel', end: /тель$/ };
+    if (/арь$/.test(ru)) return { g: 'm', why: '-ь, aber -арь → männlich (словарь, январь, пекарь).', hard: true, typ: 'soft', grp: 'ar', end: /арь$/ };
+    if (/(ость|есть)$/.test(ru)) return { g: 'f', why: '-ь, aber -ость/-есть → weiblich (Eigenschaften: скорость, радость).', hard: true, typ: 'soft', grp: 'ost', end: /(ость|есть)$/ };
+    if (/[жшчщ]ь$/.test(ru)) return { g: 'f', why: '-ь nach ж, ш, ч, щ → immer weiblich (ночь, вещь, мышь).', hard: true, typ: 'soft', grp: 'zisch', end: /[жшчщ]ь$/ };
+    if (GENDER_MONTHS.has(ru)) return { g: 'm', why: 'Monatsnamen sind männlich – auch die auf -ь.', hard: true, typ: 'soft', grp: 'monat', end: /ь$/ };
+    if (inList('m')) return { g: 'm', why: '-ь ohne Faustregel: männlich – muss man mitlernen.', hard: true, typ: 'soft', grp: 'lern-m', end: /ь$/ };
+    if (inList('f')) return { g: 'f', why: '-ь ohne Faustregel: weiblich – muss man mitlernen.', hard: true, typ: 'soft', grp: 'lern-f', end: /ь$/ };
     return null;
   }
-  if (/[ая]$/.test(ru)) return { g: 'f', why: 'Endet auf -а/-я → weiblich.', hard: false };
-  if (/[оеё]$/.test(ru)) return { g: 'n', why: 'Endet auf -о/-е → sächlich.', hard: false };
-  if (/[бвгджзйклмнпрстфхцчшщ]$/.test(ru)) return { g: 'm', why: 'Endet auf Konsonant oder -й → männlich.', hard: false };
+  if (/[ая]$/.test(ru)) return { g: 'f', why: 'Endet auf -а/-я → weiblich.', hard: false, typ: 'easy', end: /[ая]$/ };
+  if (/[оеё]$/.test(ru)) return { g: 'n', why: 'Endet auf -о/-е → sächlich.', hard: false, typ: 'easy', end: /[оеё]$/ };
+  if (/[бвгджзйклмнпрстфхцчшщ]$/.test(ru)) return { g: 'm', why: 'Endet auf Konsonant oder -й → männlich.', hard: false, typ: 'easy', end: /.$/ };
   return null;
 }
 let genderPoolCache = null;
@@ -23660,31 +23701,46 @@ function genderPool() {
   genderPoolCache = [...seen.values()];
   return genderPoolCache;
 }
-const GENDER_ROUND = 20;
+// Regelfälle (Endung verrät das Geschlecht) zählen nicht zum Fortschritt (12.11.): gespeichert wird alles unter
+// „gender“, gezählt nur die übrigen (grammarToolSources: dritter Eintrag = Filter)
+function genderZaehlt(id) { const x = genderById().get(id); return !!x && x.typ !== 'easy'; }
+let genderByIdCache = null, genderByIdPool = null;
+function genderById() { const p = genderPool(); if (genderByIdPool !== p) { genderByIdPool = p; genderByIdCache = new Map(p.map(x => [x.id, x])); } return genderByIdCache; }
+const GENDER_ROUND = 15;
 const genderState = {
-  scope: 'all',        // all | easy | hard
+  scope: 'all',        // all | easy | soft | exc | pl (12.11.: statt „Schwierige“ feiner)
   queue: [],
   index: 0,
   correct: 0,
   answered: false,
   fehler: [],
 };
+const GENDER_SCOPES = { all: 'Alle', easy: 'Regelfälle', soft: '-ь-Wörter', exc: 'Ausnahmen', pl: 'nur Plural' };
 function genderScopePool() {
   const p = genderPool();
-  return genderState.scope === 'all' ? p : p.filter(x => x.hard === (genderState.scope === 'hard'));
+  return genderState.scope === 'all' ? p : p.filter(x => x.typ === genderState.scope);
 }
-function genderTotal() { return genderPool().length; }
+// Fortschritt: nur Wörter, deren Geschlecht man nicht an der Endung ablesen kann
+function genderTotal() { return genderPool().filter(x => x.typ !== 'easy').length; }
+// Kopf: gewählter Bereich („-ь-Wörter: 40 von 160 gelernt“); „Alle“ = alle außer Regelfällen
+function genderProgressText(all) {
+  const sc = genderState.scope, key = 'gender';
+  const pool = sc === 'all' ? genderPool().filter(x => x.typ !== 'easy') : genderScopePool();
+  const map = all[key] || {}, n = pool.filter(x => srsDone(map[x.id])).length;
+  return (sc === 'all' ? '' : GENDER_SCOPES[sc] + ': ') + n + ' von ' + pool.length + ' gelernt';
+}
 function toggleGenderInfo() {
   const el = document.getElementById('gender-info-panel');
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 function setGenderScope(v) {
   genderState.scope = v;
-  ['all', 'easy', 'hard'].forEach(x => {
+  Object.keys(GENDER_SCOPES).forEach(x => {
     const b = document.getElementById('gender-scope-' + x);
     if (b) b.classList.toggle('active', x === v);
   });
   saveToolSettings();
+  updateGrammarTileProgress();
   restartGender();
 }
 function openGender() {
@@ -23726,16 +23782,19 @@ function renderGenderQuestion() {
     document.getElementById('gender-score').textContent = '';
     return;
   }
-  qEl.innerHTML = '<span class="case-prep" lang="ru">' + item.ru + '</span>' + item.de;
-  optEl.innerHTML = ['m', 'f', 'n', 'pl'].map(g =>
-    '<button class="case-opt" type="button" data-k="' + g + '" title="' + GENDER_NAME[g] + '" onclick="answerGender(\'' + g + '\')">'
-    + (g === 'pl' ? 'nur Pl' : g) + '</button>').join('');
+  qEl.innerHTML = '<span class="case-prep gd-wort" id="gender-wort" lang="ru">' + item.ru + '</span>' + htmlEsc(item.de);
+  optEl.innerHTML = ['m', 'f', 'n', 'pl'].map((g, i) =>
+    '<button class="case-opt gd-opt gd-' + g + '" type="button" data-k="' + g + '" aria-keyshortcuts="' + (i + 1) + '" aria-label="' + GENDER_NAME[g] + '" onclick="answerGender(\'' + g + '\')">'
+    + '<span class="gd-k">' + (g === 'pl' ? 'Pl.' : g) + '</span><span class="gd-l">' + (g === 'pl' ? 'nur Plural' : GENDER_NAME[g]) + '</span>'
+    + '<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">' + (i + 1) + '</kbd></button>').join('');
   document.getElementById('gender-score').textContent = (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.correct + ' richtig';
 }
 const GENDER_CHOICE = {
   panel: 'overlay-gender', opts: 'gender-opts', result: 'gender-result',
   item: () => genderState.queue[genderState.index], right: it => it.g, srs: it => ['gender', it.id],
-  text: (it, ok) => (ok ? 'Richtig — ' : (ok === false ? 'Falsch — ' : '') + '<b>' + it.ru + '</b> ist ' + GENDER_NAME[it.g] + '. ') + it.why,
+  text: (it, ok) => { genderZeigeLoesung(it);
+    return (ok ? 'Richtig — ' : (ok === false ? 'Falsch — ' : '') + '<b>' + it.ru + '</b> ist ' + GENDER_NAME[it.g] + '. ') + it.why
+      + '<span class="gd-bsp">Mit Begleiter: <b lang="ru">' + htmlEsc(genderBeispiel(it)) + '</b></span>'; },
   onAnswer: (it, ok) => {
     const st = genderState;
     if (ok) st.correct++;
@@ -23751,8 +23810,46 @@ function answerGender(g) { gtChoose(GENDER_CHOICE, g); }
 function revealGender() { gtChoiceReveal(GENDER_CHOICE); }
 function nextGender() { gtChoiceNext(GENDER_CHOICE); }
 function speakGender() {
+  // nach der Antwort mit Begleiter (моя мебель), vorher nur das Wort
   const item = genderState.queue[genderState.index];
-  if (item) speak(item.ru);
+  if (item) speak(GENDER_CHOICE.answered ? genderBeispiel(item) : item.ru);
+}
+// ── Liste der -ь-Wörter (eigenes Fenster): nach Faustregel geordnet, je Gruppe „üben“ ──
+const GENDER_GRUPPEN = [
+  ['tel', 'm', '-тель → männlich', 'Personen und Geräte'], ['ar', 'm', '-арь → männlich', ''], ['monat', 'm', 'Monatsnamen → männlich', ''],
+  ['ausn-m', 'm', 'Ausnahmen: männlich', 'trotz -ость/-есть'], ['lern-m', 'm', 'männlich ohne Faustregel', 'mitlernen'],
+  ['ost', 'f', '-ость/-есть → weiblich', 'Eigenschaften'], ['zisch', 'f', 'nach ж, ш, ч, щ → weiblich', ''],
+  ['ausn-f', 'f', 'Ausnahme: weiblich', 'trotz -тель'], ['lern-f', 'f', 'weiblich ohne Faustregel', 'mitlernen'],
+];
+function openGenderList() { renderGenderList(); document.getElementById('overlay-genderlist').classList.add('open'); }
+function renderGenderList() {
+  const body = document.getElementById('gender-list-body'); if (!body) return;
+  const pool = genderPool().filter(x => x.typ === 'soft'), srs = loadGrammarSrs().gender || {};
+  body.innerHTML = GENDER_GRUPPEN.map(([grp, g, titel, zusatz]) => {
+    const ws = pool.filter(x => x.grp === grp).sort((a, b) => a.ru.localeCompare(b.ru, 'ru'));
+    if (!ws.length) return '';
+    const fertig = ws.filter(x => srsDone(srs[x.id])).length;
+    return '<section class="rkl-group gd-' + g + '"><div class="rkl-head"><span class="rkl-title gd-grp-t">' + titel + (zusatz ? ' <small class="gdl-zusatz">' + zusatz + '</small>' : '') + '</span>'
+      + '<span class="rkl-n">' + fertig + ' / ' + ws.length + '</span>'
+      + '<button class="tool-btn rkl-ueben" type="button" onclick="practiceGenderGroup(\'' + grp + '\')" title="Runde nur mit diesen Wörtern"><i class="ti ti-player-play"></i> üben</button></div>'
+      + '<div class="gdl-woerter">' + ws.map(x => '<button class="gdl-w' + (srsDone(srs[x.id]) ? ' ok' : '') + '" type="button" onclick="speak(' + htmlEsc(JSON.stringify(genderBeispiel(x))) + ')" title="' + htmlEsc(x.de) + ' – anhören: ' + htmlEsc(genderBeispiel(x)) + '">'
+        + '<span lang="ru">' + htmlEsc(x.ru) + '</span><span class="gdl-de">' + htmlEsc(x.de) + '</span>' + (srsDone(srs[x.id]) ? '<i class="ti ti-check"></i>' : '') + '</button>').join('') + '</div></section>';
+  }).join('');
+}
+function practiceGenderGroup(grp) {
+  document.getElementById('overlay-genderlist').classList.remove('open');
+  const ws = shuffleInPlace(genderPool().filter(x => x.grp === grp));
+  startGenderRound(ws.slice(0, GENDER_ROUND));
+}
+// Begleiter zeigt das Geschlecht: мой дом, моя мебель, моё окно, мои часы
+const GENDER_MOJ = { m: 'мой', f: 'моя', n: 'моё', pl: 'мои' };
+function genderBeispiel(it) { return GENDER_MOJ[it.g] + ' ' + it.ru; }
+// nach der Antwort: Wort in der Farbe des Geschlechts, entscheidende Endung markiert
+function genderZeigeLoesung(it) {
+  const el = document.getElementById('gender-wort'); if (!el) return;
+  const m = it.end && it.ru.match(it.end);
+  el.innerHTML = m && m.index > 0 ? htmlEsc(it.ru.slice(0, m.index)) + '<span class="gd-end">' + htmlEsc(m[0]) + '</span>' : (m ? '<span class="gd-end">' + htmlEsc(it.ru) + '</span>' : htmlEsc(it.ru));
+  el.className = 'case-prep gd-wort gd-' + it.g;
 }
 
 // ── Verben · Rektion ─────────────────────────────────────────────
@@ -24071,6 +24168,19 @@ function speakRektion() {
   else speak(RK_CHOICE.answered && rektionExample(t.verb) || t.verb.v);
 }
 // Fall wählen: Tasten 1–9, 0 (vor der Antwort; „Lösung zeigen“ dort nur per Knopf)
+// Geschlecht: Tasten 1–4 (m, f, n, Pl.)
+function keyGenderChoice(e) {
+  if (!/^[1-4]$/.test(e.key) || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open') || GENDER_CHOICE.answered) return false;
+  const p = document.getElementById('overlay-gender');
+  if (!p || !p.getClientRects().length || p.classList.contains('gt-done')) return false;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
+  const btn = document.querySelector('#gender-opts .case-opt[aria-keyshortcuts="' + e.key + '"]');
+  if (!btn) return false;
+  e.preventDefault(); answerGender(btn.dataset.k);
+  return true;
+}
 // Fall wählen im Kasus-Drill: Tasten 1–5
 function keyCaseChoice(e) {
   if (!/^[1-5]$/.test(e.key) || e.ctrlKey || e.metaKey || e.altKey) return false;

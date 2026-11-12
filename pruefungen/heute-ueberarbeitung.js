@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
   const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
   const seed = () => { if (sessionStorage.getItem('x')) return; sessionStorage.setItem('x', '1'); const now = Date.now(), D = 864e5; const v = {};
     ['дом', 'кот', 'вода', 'хлеб', 'мама'].forEach((w, i) => v[w] = { c: 3, w: 0, mb: 2, l: now - 20 * D, z: now - 1000, d: 1 + (i % 3), dd: now - 5 * D });
-    const g = { rektion: { 'c:пользоваться': { c: 1, w: 4, mb: 1, l: now - 9 * D, z: now - 500, d: 1, dd: now - 3 * D } }, gender: { 'стол': { c: 1, w: 0, mb: 1, l: now - 9 * D, z: now, d: 1, dd: now - 3 * D }, 'окно': { c: 1, w: 0, mb: 1, l: now - 9 * D, z: now, d: 1, dd: now - 3 * D } } };
+    const g = { rektion: { 'c:пользоваться': { c: 1, w: 4, mb: 1, l: now - 9 * D, z: now - 500, d: 1, dd: now - 3 * D } }, gender: { 'мебель': { c: 1, w: 0, mb: 1, l: now - 9 * D, z: now, d: 1, dd: now - 3 * D }, 'ночь': { c: 1, w: 0, mb: 1, l: now - 9 * D, z: now, d: 1, dd: now - 3 * D } } };
     localStorage.setItem('vokabeltrainer-lifetime', JSON.stringify({ ver: 3, run: 1, v, g }));
     const log = {}; for (let i = 0; i < 14; i++) { const d = new Date(now - i * D); log[d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0')] = [1200 + i * 950, 1000 + i * 800]; }
     localStorage.setItem('vokabeltrainer-daylog', JSON.stringify(log)); };
