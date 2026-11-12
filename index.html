@@ -456,10 +456,29 @@
   #grammar-nav .grammar-chip[hidden] { display: none; }
   #grammar-nav .grammar-chip.active { background: var(--c-accent-soft-bg); color: var(--c-accent-strong); border-color: var(--c-accent); font-weight: 600; }
   #grammar-cats.no-tools { margin-bottom: 14px; }
+  .gcat-chev { display: none; }
   @media (max-width: 600px) {
     #grammar-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
     #grammar-cats .grammar-chip { justify-content: center; padding: 6px 4px; font-size: 12px; gap: 4px; min-width: 0; }
     #grammar-nav { padding-left: 0; border-left: none; }
+    /* Navigation (12.11.): bei geöffnetem Werkzeug nur der Bereich (antippen = alle Bereiche) und eine waagerecht
+       scrollbare Werkzeugzeile – statt vier Zeilen Chips */
+    #grammar-cats.zu { display: flex; margin-bottom: 6px; }
+    #grammar-cats.zu .grammar-chip:not(.active) { display: none; }
+    #grammar-cats.zu .grammar-chip.active { padding: 6px 12px; }
+    #grammar-cats .gcat-chev { display: none; font-size: 14px; margin-left: 2px; }
+    #grammar-cats.zu .grammar-chip.active .gcat-chev { display: inline; }
+    #grammar-nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-padding: 0 16px;
+      mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); padding-bottom: 2px; }
+    #grammar-nav::-webkit-scrollbar { display: none; }
+    #grammar-nav .grammar-chip { flex-shrink: 0; }
+    /* Kopf (12.11.): Titel und ⋯ in einer Zeile, Fortschritt klein darunter */
+    .grammar-panel > .grammar-panel-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; align-items: center; }
+    .grammar-panel > .grammar-panel-header .overlay-title-group { grid-column: 1; grid-row: 1; min-width: 0; }
+    .grammar-panel > .grammar-panel-header .gt-head-right { display: contents; }
+    .grammar-panel > .grammar-panel-header .gt-more { grid-column: 2; grid-row: 1; }
+    .grammar-panel > .grammar-panel-header .grammar-panel-progress { grid-column: 1; grid-row: 2; justify-self: start; margin: 0; font-size: 12px; }
+    .grammar-panel > .grammar-panel-header .overlay-title { font-size: 15px; }
   }
   /* Handy-Ansicht mit Touch: Blockwahl und Stern in der Kategorienliste sichtbar groß (Symbol 18 px, Fläche 44 px),
      Blockwahl als Knopf erkennbar. Nur bis 700 px – in der schmalen PC-Seitenleiste würde sonst der Kategoriename abgeschnitten. */
@@ -623,6 +642,14 @@
   .gt-task .case-question { padding: 10px 52px 12px; }
   .gt-task > .case-question + .gt-task-tools { position: absolute; top: 0; right: 0; padding-top: 0; }
   .gt-task .case-question .case-prep { color: var(--c-text-primary); }
+  .gt-speak-inline { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; position: relative; top: -0.12em;
+    margin-left: 0.35em; width: 34px; height: 34px; padding: 0; border-radius: 9px; border: 1px solid var(--c-border); background: var(--c-surface);
+    color: var(--c-text-secondary); font: 400 17px/1 system-ui, sans-serif; cursor: pointer; text-decoration: none; }
+  .gt-speak-inline:hover:not(:disabled) { color: var(--c-accent); border-color: var(--c-accent); }
+  .gt-speak-inline:disabled { opacity: 0.4; cursor: default; }
+  @media (pointer: coarse) { .gt-speak-inline { width: 44px; height: 44px; font-size: 19px; } }
+  .gt-task.has-inline-speak > .gt-task-tools button[onclick*="speak"] { display: none; }
+  .gt-task.has-inline-speak > .case-question { padding-left: 4px; padding-right: 4px; }
   /* Umformen: Ausgangsform klein, Art der Umformung, gesuchte Form groß als Lücke */
   .tf-from { display: block; font-size: 14px; color: var(--c-text-muted); }
   .tf-from [lang="ru"] { font-size: 17px; font-weight: 600; color: var(--c-text-secondary, var(--c-text-primary)); }
@@ -742,6 +769,7 @@
     .gt-task { flex-wrap: wrap; }
     .gt-task .conj-de-hint b { font-size: 22px; }
     .gt-task .case-question { padding: 46px 4px 10px; }   /* Aufgabe in voller Breite, Lautsprecher darüber (8.11.) */
+    .gt-task.has-inline-speak > .case-question { padding: 10px 4px 10px; }   /* seit 12.11. Lautsprecher neben dem Wort */
     #rektion-q .case-prep.rk-pair { font-size: 24px; }
     .gt-actions .gt-primary { flex-basis: 100%; }
   }
@@ -1663,12 +1691,12 @@
   <!-- Grammatik-Ansicht: ersetzt die Vokabel-Hauptfläche komplett -->
   <div id="grammar-view" style="display:none">
     <div id="grammar-cats" role="group" aria-label="Grammatikbereiche">
-        <button class="grammar-chip" id="gcat-verb" onclick="openGrammarCategory('verb')"><i class="ti ti-run"></i> Verben</button>
-        <button class="grammar-chip" id="gcat-noun" onclick="openGrammarCategory('noun')"><i class="ti ti-box"></i> Substantive</button>
-        <button class="grammar-chip" id="gcat-adj" onclick="openGrammarCategory('adj')"><i class="ti ti-grid-dots"></i> Adjektive</button>
-        <button class="grammar-chip" id="gcat-pron" onclick="openGrammarCategory('pron')"><i class="ti ti-user"></i> Pronomen</button>
-        <button class="grammar-chip" id="gcat-prep" onclick="openGrammarCategory('prep')"><i class="ti ti-target-arrow"></i> Präpositionen</button>
-        <button class="grammar-chip" id="gcat-syntax" onclick="openGrammarCategory('syntax')"><i class="ti ti-text-caption"></i> Sätze</button>
+        <button class="grammar-chip" id="gcat-verb" onclick="grammarCatClick('verb')"><i class="ti ti-run"></i> Verben<i class="ti ti-chevron-down gcat-chev" aria-hidden="true"></i></button>
+        <button class="grammar-chip" id="gcat-noun" onclick="grammarCatClick('noun')"><i class="ti ti-box"></i> Substantive<i class="ti ti-chevron-down gcat-chev" aria-hidden="true"></i></button>
+        <button class="grammar-chip" id="gcat-adj" onclick="grammarCatClick('adj')"><i class="ti ti-grid-dots"></i> Adjektive<i class="ti ti-chevron-down gcat-chev" aria-hidden="true"></i></button>
+        <button class="grammar-chip" id="gcat-pron" onclick="grammarCatClick('pron')"><i class="ti ti-user"></i> Pronomen<i class="ti ti-chevron-down gcat-chev" aria-hidden="true"></i></button>
+        <button class="grammar-chip" id="gcat-prep" onclick="grammarCatClick('prep')"><i class="ti ti-target-arrow"></i> Präpositionen<i class="ti ti-chevron-down gcat-chev" aria-hidden="true"></i></button>
+        <button class="grammar-chip" id="gcat-syntax" onclick="grammarCatClick('syntax')"><i class="ti ti-text-caption"></i> Sätze<i class="ti ti-chevron-down gcat-chev" aria-hidden="true"></i></button>
     </div>
     <div id="grammar-nav" aria-label="Werkzeuge">
         <button class="grammar-chip" data-cat="verb" id="gchip-conjugate" onclick="openConjugate()"><i class="ti ti-table"></i> Konjugieren</button>
@@ -16070,7 +16098,8 @@ function gtScore(c) {
 function gramAutoSpeak(panel) {
   if (!wgState.autoSpeak) return;
   if (typeof panel === 'string') panel = document.getElementById(panel);
-  const btn = panel && [...panel.querySelectorAll('.gt-task-tools button[onclick*="speak"]')].find(b => !b.disabled && b.getClientRects().length);
+  // Quelle ist der (evtl. versteckte) Lautsprecher der sichtbaren Aufgabe – sichtbar ist seit 12.11. der Knopf neben dem Wort
+  const btn = panel && [...panel.querySelectorAll('.gt-task-tools button[onclick*="speak"]')].find(b => !b.disabled && b.closest('.gt-task').getClientRects().length);
   if (btn) btn.click();
 }
 function gtCheck(c) {
@@ -17491,6 +17520,42 @@ function updateGtSettingsSummary(root) {
   });
 }
 // ⋯-Menü in der Kopfzeile; Einträge mit data-view nur, wenn diese Ansicht sichtbar ist
+// Lautsprecher direkt neben dem Wort (12.11.): ein Knopf im Hauptwort der Aufgabe, der den Lautsprecher der
+// Werkzeugleiste auslöst (der bleibt als Quelle, wird nur versteckt). Ein Beobachter setzt ihn nach jedem Neuaufbau neu.
+function gtInlineSpeak(task) {
+  const q = task.firstElementChild, src = task.querySelector(':scope > .gt-task-tools button[onclick*="speak"]');
+  if (!q || !src) return;
+  const ziel = q.querySelector(':scope > .case-satz, :scope > .case-sentence, :scope > .tf-from, :scope > .case-prep, :scope > b');
+  let btn = q.querySelector('.gt-speak-inline');
+  if (!ziel) { if (btn) btn.remove(); task.classList.remove('has-inline-speak'); return; }
+  if (!btn || btn.parentNode !== ziel) {
+    if (btn) btn.remove();
+    btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'gt-speak-inline';
+    btn.setAttribute('aria-label', src.getAttribute('aria-label') || 'Anhören');
+    btn.innerHTML = '<i class="ti ti-volume" aria-hidden="true"></i>';
+    btn.addEventListener('click', e => { e.stopPropagation(); src.click(); });
+    ziel.appendChild(btn);
+  }
+  // nur bei Änderung setzen – sonst meldet der Beobachter seine eigenen Schreibzugriffe endlos
+  if (btn.disabled !== src.disabled) btn.disabled = src.disabled;
+  const ti = src.title || 'Anhören'; if (btn.title !== ti) btn.title = ti;
+  if (!task.classList.contains('has-inline-speak')) task.classList.add('has-inline-speak');
+}
+// ein Beobachter für die ganze Grammatik-Ansicht (auch für Aufgaben, die erst später gebaut werden: Wortgruppen/Satzbau)
+(function gtInlineSpeakInit() {
+  const root = document.getElementById('grammar-view'); if (!root) return;
+  root.querySelectorAll('.gt-task').forEach(gtInlineSpeak);
+  new MutationObserver(list => {
+    const tasks = new Set();
+    list.forEach(m => {
+      const el = m.target.nodeType === 1 ? m.target : m.target.parentElement; if (!el) return;
+      const t = el.closest('.gt-task'); if (t) tasks.add(t);
+      if (m.type === 'childList') el.querySelectorAll('.gt-task').forEach(x => tasks.add(x));
+    });
+    tasks.forEach(gtInlineSpeak);
+  }).observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled', 'title'] });
+})();
 // Kopf der Grammatik-Werkzeuge (10.11.): Fortschritt und ⋯ bleiben zusammen rechts – bricht der Kopf
 // am Handy um, rutschte das ⋯ sonst allein nach links und sein Menü aus dem Bild
 (function gtHeadRight() {
@@ -17625,6 +17690,10 @@ function showGrammarCategory(cat, tool) {
   const single = GRAMMAR_CATS[cat].length < 2;
   document.getElementById('grammar-nav').classList.toggle('single', single);
   document.getElementById('grammar-cats').classList.toggle('no-tools', single);
+  // Handy: Bereiche zuklappen, aktives Werkzeug in der Werkzeugzeile sichtbar scrollen (ohne die Seite zu bewegen)
+  document.getElementById('grammar-cats').classList.add('zu');
+  const nav = document.getElementById('grammar-nav'), chip = tool && document.getElementById('gchip-' + tool);
+  if (chip && nav.scrollWidth > nav.clientWidth) requestAnimationFrame(() => { nav.scrollLeft = Math.max(0, chip.offsetLeft - nav.offsetLeft - (nav.clientWidth - chip.offsetWidth) / 2); });
   if (tool) {
     const last = loadGrammarCatLast();
     last[cat] = tool;
@@ -17632,6 +17701,13 @@ function showGrammarCategory(cat, tool) {
   }
 }
 // Klick auf einen Bereich: zuletzt benutztes Werkzeug darin, sonst das erste
+// Handy: Bereichsknopf des aktiven Bereichs klappt die übrigen Bereiche auf (12.11.)
+function grammarCatClick(cat) {
+  const cats = document.getElementById('grammar-cats');
+  const aktiv = document.getElementById('gcat-' + cat).classList.contains('active');
+  if (cats.classList.contains('zu') && aktiv && matchMedia('(max-width: 600px)').matches) { cats.classList.remove('zu'); return; }
+  openGrammarCategory(cat);
+}
 function openGrammarCategory(cat) {
   const last = loadGrammarCatLast()[cat];
   const tool = GRAMMAR_CATS[cat].includes(last) ? last : GRAMMAR_CATS[cat][0];
