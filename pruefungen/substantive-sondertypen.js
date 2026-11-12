@@ -33,8 +33,8 @@ const NEU = ['человек', 'ребёнок', 'друг', 'сын', 'мужч
     updateGrammarTileProgress(); out.hdr = document.getElementById('gtp-noun').textContent;
     // Zahl + Substantiv: ohne любовь/деньги, „пять человек“
     out.nn = numNounNouns(); out.nnOhne = !out.nn.includes('деньги') && !out.nn.includes('любовь') && out.nn.includes('человек');
-    const orig = Math.random; let zug = 0; const want = out.nn.indexOf('человек') / out.nn.length + 0.0001;
-    Math.random = () => [want, 0.6, 0.05][zug++] ?? 0.5; restartNumNoun(); Math.random = orig; out.fuenf = numNounState.current;
+    // seit 12.11. kommen die Aufgaben aus der Runde nach Lernstand: Aufgabe gezielt vorgeben
+    numNounState.queue = [['человек', 'r5']]; restartNumNoun(); out.fuenf = numNounState.current;
     out.wgOhne = buildWordgroupPairs().nouns.every(x => nounHas(x, 'sg') && nounHas(x, 'pl'));
     out.cfDash = caseFormTotal('noun') === Object.entries(nounDeclensionData).reduce((s, [n, d]) => s + ['sg', 'pl'].reduce((m, k) => m + Object.entries(d[k]).filter(([kk, f]) => f !== '—' && !(k === 'sg' && kk === 'Nom.') && f !== n).length, 0), 0);   // ohne Nom. Sg. und Formen gleich dem Wort (12.11.)
     return out;
