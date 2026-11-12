@@ -705,6 +705,26 @@
   .conj-stem-wrap { display: flex; align-items: center; flex: 1; min-width: 0; gap: 2px; }
   .conj-stem { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 1.15em; color: var(--c-text-muted); white-space: nowrap; }
   .conj-stem-wrap .conj-input { flex: 1; min-width: 0; }
+  /* Deklination Substantive (12.11.): Fragewörter, vorgegebener Nominativ, Beide in zwei Spalten */
+  .noun-frage { display: block; font-size: 11.5px; font-weight: 400; color: var(--c-text-muted); font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; margin-top: 1px; }
+  .conj-input.noun-given { background: var(--c-surface-alt); color: var(--c-text-muted); border-style: dashed; cursor: default; opacity: 1; -webkit-text-fill-color: var(--c-text-muted); }
+  #noun-grid .noun-col { display: grid; gap: 8px; align-content: start; }
+  #noun-grid.noun-zwei { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 28px; row-gap: 18px; }
+  .noun-col-kopf { font-size: 13px; font-weight: 600; color: var(--c-text-label); text-transform: uppercase; letter-spacing: .04em; padding-left: 2px; }
+  .noun-col-fehlt { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--c-text-muted); }
+  .noun-dot-gruppe { display: inline-flex; gap: 4px; }
+  .noun-dot-gruppe + .noun-dot-gruppe { margin-left: 8px; }
+  .noun-gleich { font-size: 14px; color: var(--c-text-muted); text-align: left; }
+  .noun-gleich b { color: var(--c-text-label); font-weight: 600; }
+  .noun-gleich [lang="ru"] { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
+  .gt-settings-sep { width: 1px; align-self: stretch; min-height: 24px; background: var(--c-border); margin: 0 4px; }
+  /* Augen-Knöpfe: beim Überfahren/Fokus der Zeile deutlicher (12.11.) */
+  .conj-row:hover .conj-reveal-one-btn, .conj-row:focus-within .conj-reveal-one-btn, .conj-reveal-one-btn:focus-visible { color: var(--c-text-muted); }
+  @media (min-width: 900px) {
+    #noun-grid:not(.noun-zwei) { max-width: 560px; margin-left: auto; margin-right: auto; width: 100%; }
+    #noun-grid .conj-row { grid-template-columns: 110px 1fr 34px; }
+  }
+  @media (min-width: 1200px) and (hover: hover) { #noun-grid .conj-input { font-size: 18px; } }
   .motion-list-forms { display: block; font-size: 12.5px; color: var(--c-text-muted); margin-top: 2px; }
   @media (max-width: 800px) { #motion-list-view .vocab-table { width: 100%; table-layout: fixed; } #motion-list-view .vocab-table td, #motion-list-view .vocab-table th { white-space: normal; overflow-wrap: anywhere; } }
   .case-opt .motion-opt-kbd { margin-left: 8px; vertical-align: middle; }
@@ -1962,7 +1982,7 @@
 <p><strong>Unregelmäßig</strong> – einfach lernen: есть → ешь!, пить → пей!, быть → будь!</p>
 <p><strong>видеть, хотеть, мочь:</strong> Sehen, wollen und können lassen sich nicht befehlen. Die Formen sind grammatisch bildbar, im Alltag aber praktisch nie zu hören.</p>
 </div>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
 <button class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
@@ -2019,7 +2039,7 @@
 <p>• <strong>Die Mehrzahl kennt kein Geschlecht:</strong> новые gilt für alle drei.</p>
 <p>• <strong>Weiche Adjektive</strong> (z. B. синий) folgen demselben Muster, nur mit weichen Vokalen: и statt ы, е statt о, я statt а, ю statt у – синий, синего, синяя, синюю.</p>
 <p><strong>Schreibregeln:</strong> Nach г, к, х, ж, ш, щ, ч steht nie ы, sondern и (хороший, русские). Nach ж, ш, щ, ч, ц wird unbetontes о zu е (хорошее, хорошего).</p>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button class="tool-btn" id="decl-sort-btn" onclick="cycleDeclSortMode()" title="Sortierung der Adjektivliste umschalten">
 <i class="ti ti-sort-ascending-2"></i> <span>Hart → Weich</span>
@@ -2083,16 +2103,17 @@
 <p><strong>Akkusativ:</strong> Im Plural gilt die Belebtheitsregel für alle Geschlechter: Lebewesen wie Genitiv (вижу студентов, вижу сестёр), Dinge wie Nominativ (вижу столы, вижу книги).</p>
 <p><strong>Schreibregel:</strong> Auch hier steht nach г, к, х, ж, ш, щ, ч и statt ы (книги).</p>
 </div>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Der Nominativ Singular ist vorgegeben. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button class="tool-btn" id="noun-sort-btn" onclick="cycleNounSortMode()" title="Sortierung der Substantivliste umschalten">
-<i class="ti ti-sort-ascending-2"></i> <span>Nach Klasse</span>
-</button><button aria-pressed="true" class="tool-btn gt-toggle" id="noun-hint-toggle" onclick="toggleNounHint()" title="Klassen-Hinweis hinter dem Wort ein-/ausblenden">
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="noun-hint-toggle" onclick="toggleNounHint()" title="Klassen-Hinweis hinter dem Wort ein-/ausblenden">
 <i class="ti ti-eye"></i> <span>Hilfe</span>
 </button><div class="tense-switcher">
 <button class="mode-btn active" id="noun-num-btn-sg" onclick="setNounNumber('sg')">Singular</button>
 <button class="mode-btn" id="noun-num-btn-pl" onclick="setNounNumber('pl')">Plural</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
+<button class="mode-btn" id="noun-num-btn-both" onclick="setNounNumber('both')" title="Singular und Plural zusammen">Beide</button>
+</div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="noun-endings-toggle" onclick="toggleNounEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="noun-muster-toggle" onclick="toggleNounMuster()" title="Ein Wort mit gleichem Deklinationsmuster zeigen (z. B. вода wie школа)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="noun-sort-btn" onclick="cycleNounSortMode()" title="Sortierung der Substantivliste umschalten">
+<i class="ti ti-sort-ascending-2"></i> <span>Nach Klasse</span>
+</button><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="noun-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="noun-pick-btn" onclick="openFormPicker('noun')" title="Substantiv aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Substantiv wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="noun-select" onchange="saveToolSettings(); renderNounTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('noun-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2106,6 +2127,7 @@
 
 <button class="tool-btn" onclick="nextNounItem()">Nächstes Substantiv <i class="ti ti-arrow-right"></i></button></div>
 <div aria-live="polite" class="conj-result" id="noun-result" role="status"></div>
+<div class="conj-after" id="noun-after"></div>
 <div class="conj-result" id="noun-score"></div>
 </div>
 </div>
@@ -2484,7 +2506,7 @@
 <p><strong>Nach einer Präposition</strong> bekommt die 3. Person ein н- davor: его → у него, ей → к ней, им → с ним. In der Tabelle steht diese Variante in Klammern.</p>
 <p><strong>Aussprache:</strong> его spricht man [jewo] – das г klingt hier wie w.</p>
 <p><strong>Possessivpronomen</strong> (мой, твой, свой, наш, ваш) werden wie Adjektive dekliniert und richten sich nach ihrem Substantiv. Mit m / f / n / Pl wählst du die Spalte. его, её und их im Sinn von „sein, ihr“ verändern sich dagegen nie und bekommen auch kein н-: у его брата.</p>
-<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste Feld, im letzten Feld wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Pronomen. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
+<p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Pronomen. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 <p><strong>Weitere Pronomen:</strong> In der Liste stehen auch die Fragewörter кто und что, das Reflexivpronomen себя (ohne Nominativ – es bezieht sich immer auf das Subjekt) sowie весь, этот und тот, die sich wie мой nach Geschlecht und Zahl richten (m / f / n / Pl).</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="pronoun-gender-switcher" style="display:none">
@@ -17665,7 +17687,7 @@ function restoreGtInfo(panel) {
   const ist = ip.style.display !== 'none';
   if (soll !== ist) ib.click();
 }
-// Tabellen: Enter springt ins nächste Feld; im letzten Feld oder nach dem Prüfen wird geprüft
+// Tabellen: Enter springt ins nächste leere Feld (12.11.); ist keins mehr leer oder wurde schon geprüft, wird geprüft
 function gtTableEnter(e, check) {
   if (e.key !== 'Enter') return;
   e.preventDefault();
@@ -17674,7 +17696,8 @@ function gtTableEnter(e, check) {
   const all = grid ? [...grid.querySelectorAll('input.conj-input')].filter(i => !i.disabled) : [];
   const geprueft = all.some(i => /\b(correct|wrong|revealed)\b/.test(i.className));
   const k = all.indexOf(inp);
-  if (!geprueft && k >= 0 && k < all.length - 1) { all[k + 1].focus(); return; }
+  const leer = k < 0 ? null : all.slice(k + 1).concat(all.slice(0, k)).find(i => !i.value.trim());
+  if (!geprueft && leer) { leer.focus(); return; }
   check();
 }
 // Zusammenfassung der Einstellungen nach jeder Änderung nachziehen
@@ -19268,6 +19291,9 @@ const TOOL_SETTINGS = [
   ['declSortMode', ...tsProp(() => declState, 'sortMode'), tsOneOf('type', 'alpha', 'random', 'random-hard')],
   ['nounSortMode', ...tsProp(() => nounState, 'sortMode'), tsOneOf('class', 'alpha', 'random', 'random-reg')],
   ['nounHintVisible', ...tsProp(() => nounState, 'hintVisible'), TS_BOOL],
+  ['nounNumber', ...tsProp(() => nounState, 'number'), tsOneOf('sg', 'pl', 'both')],
+  ['nounEndings', ...tsProp(() => nounState, 'endings'), TS_BOOL],
+  ['nounMuster', ...tsProp(() => nounState, 'muster'), TS_BOOL],
   ['aspectDir', ...tsProp(() => aspectState, 'dir'), tsOneOf('fwd', 'back')],
   ['motionDir', ...tsProp(() => motionState, 'dir'), tsOneOf('fwd', 'back')],
   ['caseScope', ...tsProp(() => caseState, 'scope'), tsOneOf('all', 'single', 'dual')],
@@ -19958,7 +19984,7 @@ function updateConjScore() {
 // Lernstand je Form (5.11.): jede Zeit, Singular/Plural und jedes Geschlecht eines Pronomens zählt
 // eigens. Die Grundform behält den alten Schlüssel (bisheriger Lernstand gilt für Präsens, Singular, m).
 function conjSrsKey() { return conjState.tense === 'nonpast' ? 'conj' : 'conj:' + conjState.tense; }
-function nounSrsKey() { return nounState.number === 'pl' ? 'noun:pl' : 'noun'; }
+function nounSrsKey() { return nounState.number === 'pl' ? 'noun:pl' : 'noun'; }   // bei „Beide“ nach dem Singular sortieren
 function pronounSrsKey(p) { const e = pronounEntry(p); return !e || e.kind !== 'gender' || pronounGender === 'masc' ? 'pronoun' : 'pronoun:' + pronounGender; }
 // Futur (буду + Infinitiv) ist bei allen Verben gleich gebaut: übbar, zählt aber nicht im Lernstand (7.11.)
 const CONJ_SRS_KEYS = ['conj', 'conj:past', 'conj:imperative'];
@@ -20232,7 +20258,7 @@ function gtTableReset(gridSel) {
 function gtTablePre(gridSel, next) {
   const g = document.querySelector(gridSel);
   if (!g) return false;
-  const ins = [...g.querySelectorAll('.conj-input')];
+  const ins = [...g.querySelectorAll('.conj-input')].filter(i => !i.disabled);
   if (ins.some(i => i.classList.contains('revealed'))) g.dataset.helped = '1';
   if (ins.length && ins.every(i => i.classList.contains('revealed'))) { next(); return true; }
   if (g.dataset.lastCheck && g.dataset.lastCheck === gtTableSnap(gridSel) && ins.some(i => i.value.trim())) { next(); return true; }
@@ -20248,7 +20274,7 @@ function gtTableHelped(gridSel) {
 }
 const GT_HELP_NOTE = ' (mit Lösungshilfe – zählt nicht als gewusst)';
 function checkGridInputs(gridSelector, resultId, unused) {
-  const inputs = document.querySelectorAll(gridSelector + ' .conj-input');
+  const inputs = [...document.querySelectorAll(gridSelector + ' .conj-input')].filter(i => !i.disabled);   // vorgegebene Felder zählen nicht
   let correctCount = 0, typoCount = 0;
   inputs.forEach(input => {
     input.classList.remove('revealed');
@@ -20275,7 +20301,7 @@ function checkGridInputs(gridSelector, resultId, unused) {
 // Alle Tabellen (Konjugation, Adjektive, Substantive, Pronomen, Bewegung)
 // zeigen ihre Lösung gleich an: Felder füllen, Markierung auf "aufgedeckt".
 function revealFormTable(gridId, resultId) {
-  document.querySelectorAll('#' + gridId + ' .conj-input').forEach(input => {
+  document.querySelectorAll('#' + gridId + ' .conj-input:not(:disabled)').forEach(input => {
     clearPartialFeedback(input);
     revealFormInput(input);
   });
@@ -21327,9 +21353,12 @@ const nounDeclensionData = {
 };
 // Zustand: Substantivdeklination
 const nounState = {
-  number: 'sg',
+  number: 'sg',          // sg | pl | both (Beide, 12.11.)
   sortMode: 'class',
   hintVisible: true,
+  endings: false,        // Nur Endungen (12.11.)
+  muster: false,         // Musterwort „wie школа“ (12.11.)
+  fallMarked: false,
   allCorrect: false,
   done: 0,
   correct: 0,
@@ -21386,7 +21415,7 @@ function isIrregularNoun(ru) {
 // Hat das Substantiv Formen in dieser Zahl? (любовь nur Singular, деньги nur Plural: dort steht „—“)
 function nounHas(n, num) { const f = (nounDeclensionData[n] || {})[num]; return !!f && !!f['Nom.'] && f['Nom.'] !== '—'; }
 function getSortedNouns() {
-  const nouns = Object.keys(nounDeclensionData).filter(n => nounHas(n, nounState.number));
+  const nouns = Object.keys(nounDeclensionData).filter(n => nounNums().some(num => nounHas(n, num)));
   const regular = nouns.filter(n => !isIrregularNoun(n));
   const irregular = nouns.filter(isIrregularNoun);
 
@@ -21450,27 +21479,105 @@ function toggleNounInfo() {
 }
 
 function openNounDecline() {
-  rebuildNounSelect();
-  setNounNumber('sg');
+  setNounNumber(nounState.number);
   showGrammarPanel('noun');
 }
 
 function setNounNumber(num) {
   nounState.number = num;
-  document.getElementById('noun-num-btn-sg').classList.toggle('active', num === 'sg');
-  document.getElementById('noun-num-btn-pl').classList.toggle('active', num === 'pl');
+  ['sg', 'pl', 'both'].forEach(n => { const b = document.getElementById('noun-num-btn-' + n); if (b) b.classList.toggle('active', num === n); });
+  saveToolSettings();
   rebuildNounSelect();
+}
+// Zahlen, die gerade abgefragt werden (Beide: Singular und Plural nebeneinander, 12.11.)
+function nounNums() { return nounState.number === 'both' ? ['sg', 'pl'] : [nounState.number]; }
+// Lernstand-Schlüssel der Tabelle; bei „Beide“ zählen beide Zahlen, die das Wort hat
+function nounSrsKeysFor(noun) { return nounNums().filter(n => nounHas(noun, n)).map(n => n === 'pl' ? 'noun:pl' : 'noun'); }
+// Fragewörter unter den Fallnamen (12.11.)
+const NOUN_FRAGE = { 'Nom.': 'кто? что?', 'Gen.': 'кого? чего?', 'Dat.': 'кому? чему?', 'Akk.': 'кого? что?', 'Instr.': 'кем? чем?', 'Präp.': 'о ком? о чём?' };
+const NOUN_NUM_NAME = { sg: 'Singular', pl: 'Plural' };
+// Muster (12.11.): ein anderes Wort mit genau derselben Klassenbeschreibung, z. B. вода wie школа
+function nounMusterWort(noun) {
+  const d = nounDeclensionData[noun], lab = (d || {}).typeLabel;
+  if (!lab) return null;
+  // gleiche Klasse und gleiche Belebtheit (Akkusativ!), z. B. вода wie книга, aber nicht книга wie мама
+  const belebt = isAnimate(d, noun);
+  return Object.keys(nounDeclensionData).find(n => n !== noun && nounDeclensionData[n].typeLabel === lab && isAnimate(nounDeclensionData[n], n) === belebt) || null;
+}
+// Lernstand je Fall (12.11.): nur für die Punkte am Wort, zählt nicht im Gesamtstand
+const NOUN_FALL_KEY = 'noun:fall';
+function nounFallMark(id, ok) {
+  const all = loadGrammarSrs(), m = all[NOUN_FALL_KEY] || (all[NOUN_FALL_KEY] = {});
+  const s = m[id] || { correct: 0, wrong: 0, box: 0 };
+  if (ok) { s.correct++; s.box = Math.min(GRAMMAR_SRS_MAX_BOX, s.box + 1); } else { s.wrong++; s.box = 0; }
+  s.lastSeen = Date.now(); m[id] = s;
+  saveGrammarSrs();
+}
+function nounFallInputs() { return [...document.querySelectorAll('#noun-grid .conj-input')].filter(i => !i.disabled); }
+function updateNounDots() {
+  const el = document.getElementById('noun-dots'); if (!el) return;
+  const noun = document.getElementById('noun-select').value, m = loadGrammarSrs()[NOUN_FALL_KEY] || {};
+  let n = 0, t = 0; const titel = [];
+  el.innerHTML = nounNums().filter(num => nounHas(noun, num)).map(num => '<span class="noun-dot-gruppe">' +
+    Object.keys(nounDeclensionData[noun][num]).filter(k => !(num === 'sg' && k === 'Nom.')).map(k => {
+      const fertig = srsDone(m[noun + '|' + num + '|' + k]); t++; if (fertig) n++;
+      titel.push((nounState.number === 'both' ? (num === 'sg' ? 'Sg. ' : 'Pl. ') : '') + k + (fertig ? ' ✓' : ' –'));
+      return '<span class="conj-dot' + (fertig ? ' fertig' : '') + '"></span>';
+    }).join('') + '</span>').join('');
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', n + ' von ' + t + ' Fällen sicher');
+  el.title = 'Fälle: ' + titel.join(' · ');
+}
+// Gleiche Formen (12.11.): Akk. = Nom. bei Unbelebtem, Akk. = Gen. bei Belebtem, Dat. = Präp. usw.
+function nounGleicheFormen(noun) {
+  const data = nounDeclensionData[noun], belebt = isAnimate(data, noun), teile = [];
+  nounNums().filter(num => nounHas(noun, num)).forEach(num => {
+    const f = data[num], ks = Object.keys(f), erst = v => String(v).split(/\s*[\/|]\s*/)[0];
+    const gruppen = [];
+    ks.forEach(k => { const g = gruppen.find(x => erst(f[x[0]]) === erst(f[k])); if (g) g.push(k); else gruppen.push([k]); });
+    const txt = gruppen.filter(g => g.length > 1).map(g => {
+      const akk = g.includes('Akk.') ? (g.includes('Nom.') && !belebt ? ' (unbelebt)' : g.includes('Gen.') && belebt ? ' (belebt)' : '') : '';
+      return (g.includes('Akk.') ? ['Akk.', ...g.filter(k => k !== 'Akk.')] : g).join(' = ') + akk;
+    });
+    if (txt.length) teile.push((nounState.number === 'both' ? NOUN_NUM_NAME[num] + ': ' : '') + txt.join(' · '));
+  });
+  return teile;
+}
+function nounColHtml(noun, num, start) {
+  const data = nounDeclensionData[noun], forms = data[num], has = nounHas(noun, num), ks = Object.keys(forms);
+  const nomGegeben = num === 'sg' && has;   // Nominativ Singular steht schon da (12.11.)
+  // Nur Endungen: gemeinsamer Anfang der abgefragten Formen ist vorgegeben
+  const stamm = nounState.endings && has ? conjStem(ks.filter(k => !(nomGegeben && k === 'Nom.')).map(k => forms[k])) : '';
+  const kopf = nounState.number === 'both' ? '<div class="noun-col-kopf">' + NOUN_NUM_NAME[num] + (has ? '' : ' <span class="noun-col-fehlt">– gibt es nicht</span>') + '</div>' : '';
+  return '<div class="noun-col" data-num="' + num + '">' + kopf + ks.map((kasus, j) => {
+    const i = start + j, gegeben = !has || (nomGegeben && kasus === 'Nom.');
+    const name = CF_KASUS_NAME[kasus] || kasus;
+    const feld = gegeben
+      ? `<input type="text" class="conj-input noun-given" id="noun-input-${i}" data-answer="${forms[kasus]}" data-num="${num}" data-kasus="${kasus}" value="${forms[kasus]}" disabled aria-label="${name}${has ? ', vorgegeben' : ''}">`
+      : (stamm ? `<span class="conj-stem-wrap"><span class="conj-stem" lang="ru" aria-hidden="true">${stamm}</span>` : '') +
+        `<input type="text" class="conj-input" id="noun-input-${i}" data-answer="${forms[kasus]}" data-num="${num}" data-kasus="${kasus}"${stamm ? ` data-stem="${stamm}"` : ''} aria-label="${name}${nounState.number === 'both' ? ' ' + NOUN_NUM_NAME[num] : ''}${stamm ? ', Endung nach ' + stamm : ''}" autocomplete="off" onkeydown="gtTableEnter(event, checkNounTable)">` + (stamm ? '</span>' : '');
+    return `
+    <div class="conj-row${gegeben ? ' noun-row-given' : ''}">
+      <span class="conj-pronoun">${kasus}<small class="noun-frage" lang="ru">${NOUN_FRAGE[kasus] || ''}</small></span>
+      ${feld}
+      ${gegeben ? '<span></span>' : `<button class="conj-reveal-one-btn" onclick="revealNounRow(${i})" title="Form zeigen" aria-label="Form zeigen: ${name}"><i class="ti ti-eye"></i></button>`}
+    </div>`;
+  }).join('') + '</div>';
 }
 
 function renderNounTable() {
   gtTableReset('#noun-grid');
   const sel = document.getElementById('noun-select');
-  if (!nounHas(sel.value, nounState.number)) sel.value = getSortedNouns()[0];
+  if (!nounNums().some(n => nounHas(sel.value, n))) sel.value = getSortedNouns()[0];
   const noun = sel.value || Object.keys(nounDeclensionData)[0];
   refreshFormPicker('noun');
   const data = nounDeclensionData[noun];
+  const muster = nounState.muster ? nounMusterWort(noun) : null;
   document.getElementById('noun-de-hint').innerHTML = '<b lang="ru">' + noun + '</b> — ' + data.de +
+    (muster ? ' <span class="conj-class-chip" title="gleiches Deklinationsmuster">wie <span lang="ru">' + muster + '</span></span>' : '') +
+    '<span class="conj-dots" id="noun-dots"></span>' +
     (nounState.hintVisible ? ' &nbsp;<span style="opacity:0.7">(' + data.typeLabel + ')</span>' : '');
+  setGtToggle(document.getElementById('noun-endings-toggle'), nounState.endings);
+  setGtToggle(document.getElementById('noun-muster-toggle'), nounState.muster);
   const noteEl = document.getElementById('noun-note');
   if (data.note) {
     noteEl.textContent = data.note;
@@ -21483,45 +21590,76 @@ function renderNounTable() {
   const infoPl = document.getElementById('noun-info-pl');
   if (infoSg && infoPl) {
     infoSg.style.display = nounState.number === 'pl' ? 'none' : 'block';
-    infoPl.style.display = nounState.number === 'pl' ? 'block' : 'none';
+    infoPl.style.display = nounState.number === 'sg' ? 'none' : 'block';
   }
-  const forms = data[nounState.number];
   const grid = document.getElementById('noun-grid');
-  grid.innerHTML = Object.keys(forms).map((kasus, i) => `
-    <div class="conj-row">
-      <span class="conj-pronoun">${kasus}</span>
-      <input type="text" class="conj-input" id="noun-input-${i}" data-answer="${forms[kasus]}" aria-label="${CF_KASUS_NAME[kasus] || kasus}" autocomplete="off" onkeydown="gtTableEnter(event, checkNounTable)">
-      <button class="conj-reveal-one-btn" onclick="revealNounRow(${i})" title="Nur diese Form anzeigen" aria-label="Nur diese Form anzeigen"><i class="ti ti-eye"></i></button>
-    </div>`).join('');
+  grid.classList.toggle('noun-zwei', nounState.number === 'both');
+  let start = 0;
+  grid.innerHTML = nounNums().map(num => { const h = nounColHtml(noun, num, start); start += Object.keys(data[num]).length; return h; }).join('');
   document.getElementById('noun-result').textContent = '';
-  nounState.allCorrect = false; nounState.attempted = false;
-  if (typeof updateNounScore === 'function') updateNounScore();
+  document.getElementById('noun-after').innerHTML = '';
+  nounState.allCorrect = false; nounState.attempted = false; nounState.fallMarked = false;
+  updateNounScore();
 }
 
 function updateNounScore() {
+  updateNounDots();
   const el = document.getElementById('noun-score');
   if (el) el.textContent = nounState.done ? 'In dieser Sitzung: ' + nounState.correct + ' von ' + nounState.done + ' Tabellen richtig' : '';
+}
+// Nach dem Prüfen/Aufdecken (12.11.): gleiche Formen, Muster, Beispielsatz und „Tabelle anhören“
+function showNounAfter() {
+  const noun = document.getElementById('noun-select').value;
+  if (!nounDeclensionData[noun]) return;
+  const w = findVocabEntry(noun), satz = w ? getWordSentence(w) : null, gleich = nounGleicheFormen(noun);
+  const muster = nounState.muster ? nounMusterWort(noun) : null;
+  const musterFormen = muster ? nounNums().filter(n => nounHas(noun, n) && nounHas(muster, n))
+    .map(n => (nounState.number === 'both' ? NOUN_NUM_NAME[n] + ': ' : '') + '<span lang="ru">' + Object.values(nounDeclensionData[muster][n]).join(', ') + '</span>').join('<br>') : '';
+  document.getElementById('noun-after').innerHTML =
+    '<button class="tool-btn" type="button" onclick="speakNounTable()"><i class="ti ti-volume"></i> Tabelle anhören</button>' +
+    (gleich.length ? '<div class="noun-gleich"><b>Gleiche Formen:</b> ' + gleich.join('; ') + '</div>' : '') +
+    (musterFormen ? '<div class="noun-gleich"><b>Gleiches Muster wie <span lang="ru">' + muster + '</span>:</b><br>' + musterFormen + '</div>' : '') +
+    (satz ? '<div class="conj-example"><span lang="ru">' + satz.ru + '</span><span class="conj-example-de">' + satz.de + '</span></div>' : '');
+}
+function speakNounTable() {
+  const noun = document.getElementById('noun-select').value, data = nounDeclensionData[noun];
+  if (!data) return;
+  const teile = nounNums().filter(n => nounHas(noun, n)).map(n => Object.values(data[n]).map(f => String(f).split(/\s*[\/|]\s*/)[0]).join(', '));
+  speak(teile.join('. ') + '.', Math.min(speakRate, 0.9));
+}
+function toggleNounEndings() { nounState.endings = !nounState.endings; saveToolSettings(); renderNounTable(); updateGtSettingsSummary(); }
+function toggleNounMuster() { nounState.muster = !nounState.muster; saveToolSettings(); renderNounTable(); updateGtSettingsSummary(); }
+function nounMarkAll(ok) {
+  const noun = document.getElementById('noun-select').value;
+  nounSrsKeysFor(noun).forEach(k => ok === null ? progressSeen(k, noun) : progressMark(k, noun, ok));
 }
 function checkNounTable() {
   // Zweiter Klick auf „Prüfen", wenn schon alles richtig war → nächstes Wort
   if (nounState.allCorrect) { nextNounInList(); return; }
   if (gtTablePre('#noun-grid', nextNounInList)) return;
+  const vorher = new Set(nounFallInputs().filter(i => i.classList.contains('revealed')));
   const res = checkGridInputs('#noun-grid', 'noun-result');
   gtTablePost('#noun-grid');
-  const filled = [...document.querySelectorAll('#noun-grid .conj-input')].filter(i => i.value.trim()).length;
-  // vollständig (alle 6 Felder) und alle richtig?
+  const ins = nounFallInputs(), filled = ins.filter(i => i.value.trim()).length;
+  const noun = document.getElementById('noun-select').value;
+  // Lernstand je Fall: einmal je Tabelle, sobald alle Felder ausgefüllt sind
+  if (!nounState.fallMarked && filled === res.total) {
+    nounState.fallMarked = true;
+    ins.forEach(i => nounFallMark(noun + '|' + i.dataset.num + '|' + i.dataset.kasus, i.classList.contains('correct') && !vorher.has(i)));
+  }
+  // vollständig und alle richtig?
   if (res.correct === res.total && filled === res.total) {
     nounState.allCorrect = true;
     const hilfe = gtTableHelped('#noun-grid');
-    if (!hilfe) {
-      nounState.done++; nounState.correct++;
-      progressMark(nounSrsKey(), document.getElementById('noun-select').value, true);
-    } else { nounState.attempted = true; progressSeen(nounSrsKey(), document.getElementById('noun-select').value); }
+    if (!hilfe) { nounState.done++; nounState.correct++; nounMarkAll(true); }
+    else { nounState.attempted = true; nounMarkAll(null); }
     document.getElementById('noun-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Wort';
+    showNounAfter();
   } else {
-    if (!nounState.attempted && filled === res.total) { nounState.attempted = true; nounState.done++; progressMark(nounSrsKey(), document.getElementById('noun-select').value, false); }
+    if (!nounState.attempted && filled === res.total) { nounState.attempted = true; nounState.done++; nounMarkAll(false); }
     nounState.allCorrect = false;
+    if (filled === res.total) showNounAfter();
   }
   updateNounScore();
 }
@@ -21529,16 +21667,17 @@ function checkNounTable() {
 // springt zum nächsten Substantiv in der aktuellen Sortierreihenfolge
 function nextNounInList() {
   const select = document.getElementById('noun-select');
-  if (!nounState.allCorrect && !nounState.attempted) progressSeen(nounSrsKey(), select.value);
+  if (!nounState.allCorrect && !nounState.attempted) nounMarkAll(null);
   const sorted = getSortedNouns();
   select.value = progressNext(nounSrsKey(), sorted, select.value);
   renderNounTable();
 }
 
 function revealNounTable() {
-  const neu = !nounState.attempted && !nounState.allCorrect, noun = document.getElementById('noun-select').value, key = nounSrsKey();
+  const neu = !nounState.attempted && !nounState.allCorrect, noun = document.getElementById('noun-select').value, keys = nounSrsKeysFor(noun);
   revealFormTable('noun-grid', 'noun-result');
-  if (neu) gtRateOffer('noun-result', ok => { nounState.attempted = true; nounState.done++; if (ok) nounState.correct++; progressMark(key, noun, ok); updateNounScore(); }, nextNounInList);
+  showNounAfter();
+  if (neu) gtRateOffer('noun-result', ok => { nounState.attempted = true; nounState.done++; if (ok) nounState.correct++; keys.forEach(k => progressMark(k, noun, ok)); updateNounScore(); }, nextNounInList);
 }
 function revealNounRow(i) { revealFormRow('noun-input-', i); }
 
