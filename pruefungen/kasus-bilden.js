@@ -67,7 +67,7 @@ const { chromium } = require('playwright');
   ok('Platzhalter nennt die Form', r.platzOk, r.platz);
   ok('Rahmen mit об/со: об окне, со словарём, много супов, нет книги, Это столы., Я вижу брата., к книгам',
     r.rahmen.join('|') === 'Я думаю об окне.|со словарём|много супов|нет книги|Это столы.|Я вижу брата.|к книгам', r.rahmen.join('|'));
-  ok('ohne Nominativ Singular: Pool und Gesamtzahl', r.keinNomSg && r.total[0] === r.total[1], JSON.stringify(r.total));
+  ok('ohne Grundform (Nom. Sg.), mit Akk. = Nom.: Pool und Gesamtzahl', r.keinNomSg && r.total[0] === r.total[1], JSON.stringify(r.total));
   ok('Runde nach Lernstand: 15 Aufgaben, 15 verschiedene Wörter', r.runde[0] === 15 && r.runde[1] === 15, JSON.stringify(r.runde));
   ok('Rahmen am Feld (нет), danach beide Zahlen + „In Deklination öffnen“', r.rahmenFeld === 'нет' && /Gen\. книги · книг/.test(r.nachher) && r.knopf, r.rahmenFeld + ' / ' + r.nachher);
   ok('Punkt je Fall gemeinsam mit der Deklination', r.dotCf === 1 && r.dotDekl === 1, JSON.stringify([r.dotCf, r.dotDekl]));

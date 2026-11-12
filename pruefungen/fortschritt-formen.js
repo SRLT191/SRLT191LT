@@ -30,7 +30,7 @@ const { chromium } = require('playwright');
       ['Substantive Singular', () => { openNounDecline(); setNounNumber('sg'); }, () => { fill(); checkNounTable(); }, 'noun'],
       ['Substantive Plural', () => setNounNumber('pl'), () => { fill(); checkNounTable(); }, 'noun:pl'],
       ['Kasus bilden Subst.', () => openCaseForm('noun'), () => drill(cfDrill('noun')), 'caseform'],
-      ['Zahl + Substantiv', () => openNumNoun(), () => drill(NUMNOUN_DRILL), 'numnoun'],
+      ['Zahl + Substantiv', () => { openNumNoun(); numNounState.queue = [['стол', 'r24']]; restartNumNoun(); }, () => drill(NUMNOUN_DRILL), 'numnoun'],
       ['Geschlecht', () => { genderState.scope = 'soft'; openGender(); }, () => choice(GENDER_CHOICE), 'gender'],
       ['Adjektive deklinieren', () => openDecline(), () => { fill(); checkDeclensionTable(); }, 'decl'],
       ['Kasus bilden Adj.', () => openCaseAdj(), () => drill(cfDrill('adj')), 'caseadj'],
@@ -51,11 +51,11 @@ const { chromium } = require('playwright');
       const h0 = hdr(), d0 = day(), c0 = calls.length;
       answer(); await wait(20);
       const c = calls.slice(c0);
-      const plus = key === 'conj:future' ? 0 : 1;   // Futur zählt nicht im Lernstand
+      const plus = key === 'conj:future' || key === 'wordgroup' ? 0 : 1;   // Futur zählt nicht; Wortgruppen erst nach 3 verschiedenen richtigen Antworten
       out.push({ name, ok: c.length === 1 && c[0][1] === true && c[0][0].startsWith(key) && hdr() === h0 + plus && day() === d0 + 1, info: JSON.stringify({ c, h0, h1: hdr() }) });
     }
     const all = loadGrammarSrs();
-    const tot = { conj: document.getElementById('gtp-conj').textContent, verbs: Object.keys(conjugationData).length, noun: document.getElementById('gtp-noun').textContent, nouns: Object.keys(nounDeclensionData).length, nounT: nounTotal(), case: document.getElementById('gtp-case').textContent, prep: PREP_CASES.length + caseWordCount() };
+    const tot = { conj: document.getElementById('gtp-conj').textContent, verbs: Object.keys(conjugationData).length + conjPfVerben().length, noun: document.getElementById('gtp-noun').textContent, nouns: Object.keys(nounDeclensionData).length, nounT: nounTotal(), case: document.getElementById('gtp-case').textContent, prep: PREP_CASES.length + caseWordCount() };
     // Auswahlliste der Verben zeigt den Stand der gewählten Zeit
     setConjTense('nonpast'); openFormPicker('conj'); const pill = z => { const tr = [...document.querySelectorAll('#formpicker-body tr')].find(t => t.textContent.includes('иметь')); return tr ? tr.textContent : ''; };
     const praesens = /erledigt/.test(pill()); closeOverlay('overlay-formpicker'); setConjTense('past'); openFormPicker('conj'); const vergangen = /erledigt/.test(pill()); closeOverlay('overlay-formpicker');

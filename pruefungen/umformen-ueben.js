@@ -18,14 +18,14 @@ const { chromium } = require('playwright');
     out.mig = { past: srs.transform['past:делать'], alt: Object.keys(srs.transform).filter(k => /Vergangenheit$|Futur/.test(k)), fut: Object.keys(srs['transform:future'] || {}), imp: !!srs.transform['ты + делать:Imperativ'], life: Object.keys(L.g.transform), lifeFut: Object.keys(L.g['transform:future'] || {}) };
     const items = buildTransformItems(), kinds = {}; items.forEach(t => kinds[t.task] = (kinds[t.task] || 0) + 1);
     const verben = new Set(items.filter(t => t.kind === 'past').map(t => t.inf)).size;
-    const erw = verben + items.filter(t => t.kind === 'imperative').length + items.filter(t => t.task === 'vollendet (Futur)').length + new Set(items.filter(t => t.task === 'vollendet (Vergangenheit)').map(t => t.inf)).size;
+    const erw = items.filter(t => t.kind === 'past').length + items.filter(t => t.kind === 'imperative').length + items.filter(t => t.task === 'vollendet (Futur)').length + new Set(items.filter(t => t.task === 'vollendet (Vergangenheit)').map(t => t.inf)).size;
     out.total = [transformTotal(), erw, items.length, kinds];
     setAppView('grammar'); setTransformScope('all'); openTransform(); updateGrammarTileProgress();
     out.hdr = document.getElementById('gtp-transform').textContent;
     // Runde „Alle“: höchstens 2× Futur; je Verb höchstens eine Vergangenheitsaufgabe
     let maxFut = 0, doppelt = 0; for (let i = 0; i < 30; i++) { restartTransform(); const q = transformState.queue; maxFut = Math.max(maxFut, q.filter(t => t.kind === 'future').length); const u = q.map(transformUnitId); if (new Set(u).size !== u.length) doppelt++; }
     out.runde = [maxFut, doppelt];
-    setTransformScope('past'); const pp = transformPool(); out.pastPool = [pp.length, new Set(pp.map(t => t.inf)).size];
+    setTransformScope('past'); const pq = transformState.queue; out.pastPool = [pq.length, new Set(pq.map(t => t.inf)).size];
     // Darstellung
     const t = transformState.queue[0];
     out.from = document.querySelector('#transform-q .tf-from [lang="ru"]').textContent; out.tFrom = t.fromPron + ' ' + t.from;
@@ -38,7 +38,7 @@ const { chromium } = require('playwright');
     out.futur = [!!(loadGrammarSrs()['transform:future'] || {})[transformId(f)], document.getElementById('gtp-transform').textContent];
     // Vergangenheit: eine Person reicht für das Verb
     setTransformScope('past'); const v = transformState.queue[0]; document.getElementById('transform-input').value = v.answer; checkTransform(); updateGrammarTileProgress();
-    out.verb = [!!loadGrammarSrs().transform['past:' + v.inf], document.getElementById('gtp-transform').textContent];
+    out.verb = [!!loadGrammarSrs().transform[transformUnitId(v)] && (v.pkey === 'он') === (transformUnitId(v) === 'past:' + v.inf), document.getElementById('gtp-transform').textContent];
     // Tipps
     const tipp = (task, inf, pkey, eingabe) => { const x = buildTransformItems().find(i => i.task === task && i.inf === inf && i.pkey === pkey); return x ? transformTipp(x, eingabe) : 'fehlt ' + inf; };
     out.tipps = {
@@ -58,13 +58,13 @@ const { chromium } = require('playwright');
     return out;
   });
   ok('alte Einträge übertragen: Vergangenheit je Verb (zusammengeführt), Futur unter eigenem Schlüssel', r.mig.past && r.mig.past.correct === 1 && r.mig.past.wrong === 1 && r.mig.alt.length === 0 && r.mig.fut.length === 1 && r.mig.imp && r.mig.life.includes('past:делать') && r.mig.lifeFut.length === 1, JSON.stringify(r.mig));
-  ok('Gesamtzahl: Vergangenheit je Verb + Imperativ + vollendet (Futur je Person, Vergangenheit je Verb), ohne Futur', r.total[0] === r.total[1] && r.hdr === '2 von ' + r.total[0] + ' gelernt', JSON.stringify(r.total) + ' ' + r.hdr);
-  ok('Runde „Alle“: höchstens 2 Futur-Aufgaben, keine Einheit doppelt; Vergangenheit je Verb eine Aufgabe', r.runde[0] <= 2 && r.runde[1] === 0 && r.pastPool[0] === r.pastPool[1], JSON.stringify([r.runde, r.pastPool]));
+  ok('Gesamtzahl: Vergangenheit je Form (12.11.) + Imperativ + vollendet (Futur je Person, Vergangenheit je Verb), ohne Futur', r.total[0] === r.total[1] && r.hdr === '2 von ' + r.total[0] + ' gelernt', JSON.stringify(r.total) + ' ' + r.hdr);
+  ok('Runde „Alle“: höchstens 2 Futur-Aufgaben, keine Einheit doppelt; Vergangenheit je Verb eine Aufgabe je Runde', r.runde[0] <= 2 && r.runde[1] === 0 && r.pastPool[0] === r.pastPool[1], JSON.stringify([r.runde, r.pastPool]));
   ok('Ausgangsform mit Person („он …“)', r.from === r.tFrom && /^он /.test(r.from), JSON.stringify([r.from, r.tFrom]));
   ok('„он“ statt „он / она / оно“ in Lücke und Platzhalter', r.gap === 'он' && /für он$/.test(r.ph), JSON.stringify([r.gap, r.ph]));
   ok('vollendete Vergangenheit als Aufgabe (он сказал, она сказала …)', r.apast.length === 3 && r.apast.every(x => / = \S+л[аи]?$/.test(x)), JSON.stringify(r.apast));
   ok('Futur wird gespeichert, zählt aber nicht', r.futur[0] && r.futur[1] === r.hdr, JSON.stringify(r.futur));
-  ok('Vergangenheit: eine richtige Person zählt das Verb', r.verb[0] && r.verb[1] !== r.hdr, JSON.stringify(r.verb));
+  ok('Vergangenheit: jede Form zählt einzeln (он unter der alten Kennung)', r.verb[0] && r.verb[1] !== r.hdr, JSON.stringify(r.verb));
   const T = r.tipps;
   ok('Tipps: Endung, -ся, -те, буду, Form von быть, Aspekt (Futur und Vergangenheit); sonst keiner', /-л, она -ла, они -ли/.test(T.endung) && /-ся/.test(T.sja) && /ohne -те/.test(T.te) && /буду, будешь/.test(T.budu) && /Form von быть/.test(T.byt) && /unvollendete Form/.test(T.aspekt) && /unvollendete Form/.test(T.aspektV) && T.nichts === '', JSON.stringify(T));
   ok('Rundenende: „он … → (ты) …!“ als Satz', r.ende[0] === r.ende[1], JSON.stringify(r.ende));

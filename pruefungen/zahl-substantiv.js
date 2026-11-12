@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     out.knopf = !!document.querySelector('#numnoun-result button[onclick*="cfZurTabelle"]');
     out.dots = [document.querySelectorAll('#numnoun-dots .conj-dot').length, document.querySelectorAll('#numnoun-dots .conj-dot.fertig').length];
     // Gesamtzahl 4 je Wort
-    updateGrammarTileProgress(); out.hdr = document.getElementById('gtp-numnoun').textContent; out.erw = numNounNouns().length * 4;
+    updateGrammarTileProgress(); out.hdr = document.getElementById('gtp-numnoun').textContent; out.erw = numNounNouns().length * 3;
     // Zahlbereich
     setNumNounRange('gross'); out.gross = nnZahlen().every(n => n > 100); restartNumNoun(); out.grossTask = st.current.n > 100;
     setNumNounRange('20'); out.bis20 = nnZahlen().every(n => n <= 20);
@@ -59,8 +59,8 @@ const { chromium } = require('playwright');
   ok('Regelfälle: 1/21/101 · 2/24/1022 · 5/20/100/1000 · 11/14/112/1013', r.regel === 'r1,r1,r1,r24,r24,r24,r5,r5,r5,r5,r11,r11,r11,r11', r.regel);
   ok('Runde nach Lernstand: 15 verschiedene Wörter', r.runde[0] === 15 && r.runde[1] === 15, JSON.stringify(r.runde));
   ok('danach: 1 стол · 2 стола · 5 столов + In Deklination öffnen', /1 стол · 2 стола · 5 столов/.test(r.nachher) && r.knopf, r.nachher);
-  ok('Punkte: 4 Regelfälle, einer erledigt', r.dots[0] === 4 && r.dots[1] === 1, JSON.stringify(r.dots));
-  ok('Gesamtzahl: 4 Regelfälle je Wort', r.hdr.endsWith('von ' + r.erw + ' gelernt'), r.hdr);
+  ok('Punkte: 3 gezählte Regelfälle (ohne „1“), einer erledigt', r.dots[0] === 3 && r.dots[1] === 1, JSON.stringify(r.dots));
+  ok('Gesamtzahl: 3 Regelfälle je Wort („1“ zählt nicht)', r.hdr.endsWith('von ' + r.erw + ' gelernt'), r.hdr);
   ok('Zahlbereich: große Zahlen > 100, bis 20', r.gross && r.grossTask && r.bis20);
   ok('Regelfälle wählbar (r24,r11)', r.faelle === 'r24,r11' && r.faellePool && !r.falschRegel, JSON.stringify([r.faelle, r.falschRegel]));
   ok('Zahl ausschreiben: одна мать, одно окно, двадцать один стол, две матери, два окна, сто столов, тридцать три матери',
