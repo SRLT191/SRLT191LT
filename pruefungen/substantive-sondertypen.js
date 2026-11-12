@@ -36,7 +36,7 @@ const NEU = ['человек', 'ребёнок', 'друг', 'сын', 'мужч
     const orig = Math.random; let zug = 0; const want = out.nn.indexOf('человек') / out.nn.length + 0.0001;
     Math.random = () => [want, 0.6, 0.05][zug++] ?? 0.5; restartNumNoun(); Math.random = orig; out.fuenf = numNounState.current;
     out.wgOhne = buildWordgroupPairs().nouns.every(x => nounHas(x, 'sg') && nounHas(x, 'pl'));
-    out.cfDash = caseFormTotal('noun') === Object.values(nounDeclensionData).reduce((s, d) => s + ['sg', 'pl'].reduce((m, k) => m + Object.values(d[k]).filter(f => f !== '—').length, 0), 0);
+    out.cfDash = caseFormTotal('noun') === Object.entries(nounDeclensionData).reduce((s, [n, d]) => s + ['sg', 'pl'].reduce((m, k) => m + Object.entries(d[k]).filter(([kk, f]) => f !== '—' && !(k === 'sg' && kk === 'Nom.') && f !== n).length, 0), 0);   // ohne Nom. Sg. und Formen gleich dem Wort (12.11.)
     return out;
   }, NEU);
   ok('16 neue Substantive mit allen Formen, Erklärung und Typ', r.fehlt.length === 0 && r.form.length === 0, JSON.stringify([r.fehlt, r.form]));
