@@ -34,7 +34,7 @@ const { chromium } = require('playwright');
     document.getElementById('rektion-mode-list').click(); [...ov.querySelectorAll('.rkl-group')].find(g => /^из/.test(g.querySelector('.rkl-title').textContent)).querySelector('.rkl-ueben').click();
     out.uebe2 = { mode: rektionState.mode, n: rektionState.queue.length };
     const info = document.getElementById('rektion-info-panel').textContent;
-    out.info = /Liste:/.test(info) && /Runden zu 15/.test(info) && /Tasten 1–9/.test(info) && /nur die Ergänzung/.test(info) && /зависеть/.test(info);
+    out.info = /Liste:/.test(info) && /Runden zu 15/.test(info) && /zwei Schritten/.test(info) && /nur die Ergänzung/.test(info) && /зависеть/.test(info);
     out.tasten = [...document.querySelectorAll('#rektion-opts .case-opt')].length; rkArt('fall'); const nf = document.querySelectorAll('#rektion-opts .case-opt').length; restartRektion(); rkArt(rkOpt(rektionState.current.verb.r).prep ? 'praep' : 'fall'); out.tasten = [out.tasten, nf, RK_OPTIONS.length];
     return out;
   });

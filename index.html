@@ -751,6 +751,13 @@
     #conj-grid, #decl-grid, #pronoun-grid { max-width: 560px; margin-left: auto; margin-right: auto; width: 100%; }
   }
   .gt-muster:empty { display: none; }
+  /* Antippflächen auf Touch-Geräten mindestens 36 px (13.11.) */
+  @media (hover: none) {
+    .conj-info-btn { min-width: 36px; min-height: 36px; }
+    .cat-group-toggle { min-width: 36px; min-height: 36px; align-items: center; justify-content: center; }
+    .hoertrainer-loop-row { min-height: 36px; }
+    .hoertrainer-loop-row input[type="checkbox"] { width: 22px; height: 22px; margin: 7px; }
+  }
   .gt-settings-sep { width: 1px; align-self: stretch; min-height: 24px; background: var(--c-border); margin: 0 4px; }
   /* Augen-Knöpfe: beim Überfahren/Fokus der Zeile deutlicher (12.11.) */
   .conj-row:hover .conj-reveal-one-btn, .conj-row:focus-within .conj-reveal-one-btn, .conj-reveal-one-btn:focus-visible { color: var(--c-text-muted); }
@@ -1809,7 +1816,7 @@
 <p>• <strong>Spiel oder Instrument:</strong> играть <em>в</em> футбол (in das Spiel hinein, Akk.), играть <em>на</em> гитаре (auf dem Instrument, Präp.).</p>
 <p>• <strong>Immer mit Fragewort oder kurzer Wortgruppe lernen:</strong> nicht nur звонить, sondern звонить <em>кому?</em> – звонить маме. Die Liste (Knopf oben) zeigt zu jedem Verb so ein Beispiel.</p></div>
 <p><strong>Sonderfall ждать</strong> (warten auf): ohne Präposition, mit Akkusativ bei bestimmten Personen oder Dingen (жду маму), mit Genitiv bei Abstraktem (жду ответа). Darum fehlt es hier in der Übung.</p>
-<p><strong>Bedienung:</strong> <em>Fall wählen</em> – zum Verb den Fall bzw. Präposition + Fall antippen; danach erscheint der Vergleich mit dem Deutschen. Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> (Taste 3) markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit den Tasten 1–9 und 0 wählst du direkt eine Antwort (dann zeigt nur der Knopf die Lösung). <em>Form bilden</em> – das Verb ist vorgegeben, du tippst nur die Ergänzung (звонить ___ → маме); die ganze Wortgruppe zählt auch. <em>Hilfe</em> (unter Einstellungen) zeigt dort den verlangten Fall. Beide Modi laufen in Runden zu 15 Aufgaben; am Ende stehen die Fehler mit „Fehler wiederholen“.</p>
+<p><strong>Bedienung:</strong> <em>Fall wählen</em> – zum Verb den Fall bzw. Präposition + Fall antippen; danach erscheint der Vergleich mit dem Deutschen. Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. Gewählt wird in zwei Schritten: erst die Art – <em>reiner Fall</em> (Taste 1) oder <em>Präposition + Fall</em> (Taste 2) –, dann der Fall bzw. die Präposition aus der passenden Gruppe (Tasten 1–4 bzw. 1–9 und 0). Eine falsche Art zählt gleich als falsch und zeigt die Lösung. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Form bilden</em> – das Verb ist vorgegeben, du tippst nur die Ergänzung (звонить ___ → маме); die ganze Wortgruppe zählt auch. <em>Hilfe</em> (unter Einstellungen) zeigt dort den verlangten Fall. Beide Modi laufen in Runden zu 15 Aufgaben; am Ende stehen die Fehler mit „Fehler wiederholen“.</p>
 <p><strong>Liste:</strong> öffnet ein Fenster mit allen Verben nach Fall bzw. Präposition + Fall, mit Beispiel und Vergleich zum Deutschen. <em>≠ Deutsch</em> markiert die Verben, deren Rektion anders ist als im Deutschen (Schalter „nur ≠ Deutsch“); ein Häkchen zeigt, was bei „Fall wählen“ schon richtig war; <em>üben</em> startet eine Runde nur mit dieser Gruppe.</p>
 </div>
 <div class="conj-toolbar gt-modes">
@@ -1895,7 +1902,7 @@
 <p>• durch ein <strong>ganz anderes Verb</strong> (suppletiv): говорить → сказать, брать → взять.</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Richtung – unvollendet → vollendet oder umgekehrt. <em>Liste</em> zeigt alle Paare im Überblick. Nach dem Prüfen erscheint, wo vorhanden, eine kurze Notiz zur Bildung des Paares.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
-</div>
+<p><strong>Außerdem:</strong> <em>Hilfe</em> (Einstellungen) zeigt die Bildungsweise des Partners schon vor dem Antworten.</p></div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
 <button class="mode-btn active" id="aspect-mode-practice" onclick="setAspectMode('practice')">Üben</button>
@@ -2018,7 +2025,7 @@
 <p><strong>видеть, хотеть, мочь:</strong> Sehen, wollen und können lassen sich nicht befehlen. Die Formen sind grammatisch bildbar, im Alltag aber praktisch nie zu hören.</p>
 </div>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
-</div>
+<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="false" class="tool-btn gt-toggle" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Aspekt</span><div class="tense-switcher">
 <button data-std="1" class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
 <button class="mode-btn" id="conj-aspect-btn-pf" onclick="setConjAspect('pf')">Vollendet</button>
@@ -2075,7 +2082,7 @@
 <p>• <strong>Weiche Adjektive</strong> (z. B. синий) folgen demselben Muster, nur mit weichen Vokalen: и statt ы, е statt о, я statt а, ю statt у – синий, синего, синяя, синюю.</p>
 <p><strong>Schreibregeln:</strong> Nach г, к, х, ж, ш, щ, ч steht nie ы, sondern и (хороший, русские). Nach ж, ш, щ, ч, ц wird unbetontes о zu е (хорошее, хорошего).</p>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
-</div>
+<p><strong>Außerdem:</strong> Unter <em>Geschlecht</em> zeigt <em>Alle</em> die vier Tabellen nebeneinander; <em>Hilfe</em> blendet den Adjektivtyp ein.</p><p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="decl-hint-toggle" onclick="toggleDeclHint()" title="Adjektivtyp hinter dem Wort ein-/ausblenden" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Geschlecht</span><div class="tense-switcher">
 <button data-std="1" class="mode-btn active" id="decl-gender-btn-masc" onclick="setDeclGender('masc')" title="männlich">m</button>
 <button class="mode-btn" id="decl-gender-btn-fem" onclick="setDeclGender('fem')" title="weiblich">f</button>
@@ -2390,7 +2397,7 @@
 <p>Im <strong>Akkusativ</strong> richten sich belebte männliche Wörter (und im Plural alle Lebewesen) nach dem Genitiv (вижу врача), unbelebte nach dem Nominativ (вижу дом).</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Zahl (Singular, Plural oder beide) und einen oder mehrere Fälle; „Nur regelmäßige“ lässt Sonderfälle weg. Vor dem Feld steht eine kurze Wendung (много ___, с ___ …), in die die Form passt. Eine Runde bringt zuerst fällige, dann zuletzt falsche und neue Formen. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die gesuchte Form.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
-</div>
+<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="cf-hint-toggle" onclick="toggleCaseFormHint('noun')" title="Hinweis zur Deklinationsklasse ein-/ausblenden">
 <i class="ti ti-eye"></i> <span>Hilfe</span>
 </button><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher" id="cf-num-switcher">
@@ -2427,7 +2434,7 @@
 <p>Im <strong>Akkusativ männlich und Plural</strong> sagt die Aufgabe, ob ein Ding oder ein Lebewesen gemeint ist: Dinge wie Nominativ (новый дом), Lebewesen wie Genitiv (нового студента).</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Zahl, das Geschlecht und bei Bedarf einen bestimmten Fall. Ein gewähltes Geschlecht gilt für den Singular. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
-</div>
+<p><strong>Außerdem:</strong> <em>Nur regelmäßige</em> beschränkt auf harte Adjektive ohne Schreibregel.</p><p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="ca-hint-toggle" onclick="toggleCaseFormHint('adj')" title="Hinweis zum Adjektivtyp ein-/ausblenden">
 <i class="ti ti-eye"></i> <span>Hilfe</span>
 </button><span class="gt-field"><span class="gt-field-label">Geschlecht</span><div class="tense-switcher" id="ca-gen-switcher">
@@ -2510,7 +2517,7 @@
 <p><strong>Superlativ:</strong> самый + Adjektiv, das sich wie ein Adjektiv mitverändert: самый новый дом, самая новая книга. Sonderformen: хороший → лучший (самый лучший), плохой → худший.</p>
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> zeigt die Regel zur Aufgabe. <em>Anhören</em> liest vor dem Prüfen die Grundform bzw. den Satz mit Lücke, danach die Lösung. Wo zwei Formen richtig sind (старше/старее, лучший/самый лучший), gilt jede.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
-</div>
+<p><strong>Außerdem:</strong> <em>Nur regelmäßige</em> lässt unregelmäßige Komparative und Kurzformen mit flüchtigem Vokal weg.</p><p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="adjform-hint-toggle" onclick="toggleAdjFormHint()" title="Regel zur Aufgabe ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" role="group" aria-label="Aufgabentyp">
 <button data-std="1" class="mode-btn active" id="adjform-scope-all" onclick="setAdjFormScope('all')">Alle</button>
 <button class="mode-btn" id="adjform-scope-short" onclick="setAdjFormScope('short')">Kurzform</button>
@@ -2565,7 +2572,7 @@
 
 
 <button class="tool-btn" onclick="nextPronounItem()">Nächstes Pronomen <i class="ti ti-arrow-right"></i></button></div>
-<div class="conj-result" id="pronoun-result"></div>
+<div aria-live="polite" class="conj-result" id="pronoun-result" role="status"></div>
 <div class="conj-after" id="pronoun-after"></div>
 </div>
 </div>
@@ -2585,7 +2592,7 @@
 <p><strong>Präpositionen mit zwei Fällen:</strong> Dann entscheidet die Bedeutung. Bei в, на, за, под gilt: Richtung (wohin?) → Akkusativ, Ort (wo?) → Präpositiv (в, на) bzw. Instrumental (за, под). Beispiel: в школу (in die Schule) – в школе (in der Schule). с heißt mit Instrumental „mit“, mit Genitiv „von, seit“.</p>
 <p>Die Übersicht zeigt alle Präpositionen nach Fall geordnet:</p>
 <table class="conj-info-table" id="case-info-table"></table>
-<p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen oder Taste 1–5 bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
+<p><strong>Bedienung:</strong> <em>Fall wählen</em> – Antippen oder Taste 1–5 bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst.</p>
 <p><em>Form bilden</em> – Setze Präposition und Substantiv in die Lücke des Satzes (Мы идём ___ → в школу). Es kommen nur Substantive dran, die inhaltlich passen; Sonderfälle wie об ответе, со станции, в лесу oder на мосту sind gezielt dabei. Nach der Antwort stehen Regel, Endung und der ganze Satz zum Anhören; bei typischen Fehlern gibt es einen Tipp. <em>Lösung zeigen</em> (Taste 3) deckt auf, danach bewertest du selbst. Eine Runde hat 15 Aufgaben.</p>
 <p><strong>⋯-Menü:</strong> <em>Neue Runde</em> und <em>Übersicht nach Fall</em> (alle Präpositionen mit Beispiel, je Fall eine Runde zum Üben). <strong>Einstellungen:</strong> <em>Bereich</em> (alle, ohne oder nur Wechselpräpositionen), bei „Form bilden“ außerdem <em>Fall</em> (nur Präpositionen eines Falls), <em>Hilfe</em> (Hinweis wie „Ort – wo? → Präp.“) und <em>Auch Plural</em> (в магазинах, к друзьям). Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
@@ -2709,10 +2716,10 @@
 <p>• <strong>vollendet (Vergangenheit):</strong> der vollendete Partner in der Vergangenheit – он сказал, она написала.</p>
 <p><strong>Gezählt</strong> wird die Vergangenheit je Form (он, она, они einzeln; in einer Runde kommt je Verb höchstens eine davon). Das Futur mit буду ist bei allen Verben gleich gebaut: übbar, aber es zählt nicht und kommt bei <em>Alle</em> höchstens zweimal pro Runde.</p>
 <p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em> und <em>Aspekt</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
-<p>Eine Runde hat 20 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
+<p>Eine Runde hat 15 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
 <p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
-<p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 20 neue Aufgaben und setzt den Zähler zurück.</p>
-</div>
+<p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 15 neue Aufgaben und setzt den Zähler zurück. <em>Nur regelmäßige</em> lässt Sonderfälle und Verben mit Stammwechsel weg.</p>
+<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="transform-hint-toggle" onclick="toggleTransformHint()" title="Zielverb im Hinweis ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Form</span><div class="tense-switcher">
 <button data-std="1" class="mode-btn active" id="transform-scope-btn-all" onclick="setTransformScope('all')">Alle</button>
 <button class="mode-btn" id="transform-scope-btn-past" onclick="setTransformScope('past')">Vergangenheit</button>
@@ -2854,7 +2861,7 @@
         <button class="tool-btn" onclick="toggleDictationTranslation()"><i class="ti ti-language"></i> Übersetzung</button>
       </div>
       <div id="dictation-diff" style="display:none; font-size:16px; line-height:1.7; margin-top:10px;"></div>
-      <div class="conj-result" id="dictation-result"></div>
+      <div aria-live="polite" class="conj-result" id="dictation-result" role="status"></div>
       <div class="conj-result" id="dictation-score"></div>
     </div>
   </div>
@@ -9665,6 +9672,9 @@ function mergeSrsEntry(a, b) {
   const m = {};
   ['correct', 'wrong', 'box', 'lastSeen'].forEach(f => { m[f] = Math.max(num(a, f), num(b, f)); });
   if (!m.correct && ((a && a.seenOnly) || (b && b.seenOnly))) m.seenOnly = true;
+  // Wortlisten (Muster: 10 verschiedene Wörter, Wortgruppen: 3) vereinigen – sonst ginge „Muster sicher“ bei jedem Abgleich verloren (13.11.)
+  const wa = a && Array.isArray(a.w) ? a.w : null, wb = b && Array.isArray(b.w) ? b.w : null;
+  if (wa || wb) m.w = [...new Set([...(wa || []), ...(wb || [])].filter(x => typeof x === 'string'))].slice(0, 10);
   return m;
 }
 function mergeSrsMap(a, b) {
@@ -17757,6 +17767,14 @@ function showGrammarPanel(name) {
   updateGrammarTileProgress();
 }
 
+// Antwortfelder (13.11.): Rechtschreibprüfung, Autokorrektur und automatische Großschreibung aus –
+// sonst „verbessert“ die Handy-Tastatur russische Antworten und der Browser unterkringelt sie
+document.addEventListener('focusin', e => {
+  const t = e.target;
+  if (!t || t.tagName !== 'INPUT' || !(t.classList.contains('conj-input') || t.id === 'answer-input') || t.hasAttribute('spellcheck')) return;
+  t.setAttribute('spellcheck', 'false'); t.setAttribute('autocapitalize', 'off'); t.setAttribute('autocorrect', 'off');
+});
+
 // ── Einheitliches Gerüst: Helfer für Einstellungen, ⋯-Menü, Infotext, Tasten ──
 // Hilfe-Schalter: Zustand zeigt die gedrückte Optik, die Beschriftung bleibt „Hilfe“
 function setGtToggle(btn, on) {
@@ -19994,6 +20012,7 @@ function aspectPairs() {
 }
 // Zustand: Aspektpaare
 const aspectState = {
+  hintVisible: false,   // Bildungsweise vor dem Antworten
   dir: 'fwd',
   current: null,
   done: 0,
@@ -24403,6 +24422,7 @@ const ADJ_SENTENCES = [
 ];
 const ADJ_GENUS_IDX = { masc: 0, fem: 1, neut: 2, plural: 3 };
 const adjFormState = {
+  regOnly: false,
   scope: 'all',        // all | short | comp | sup
   hintVisible: true,   // Regel/Übersetzung als Hilfe
   current: null,
@@ -26498,6 +26518,7 @@ const TRANSFORM_PERSONS = ['я', 'ты', 'он / она / оно', 'мы', 'вы
 const PAST_PERSONS = [['он', 'он'], ['она', 'она'], ['они', 'они']];
 // Zustand: Umformen
 const transformState = {
+  regOnly: false,
   hintVisible: true,   // Zielverb im Hinweis (bei Aspekt der vollendete Partner)
   scope: 'all',
   queue: [],

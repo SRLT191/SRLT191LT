@@ -45,7 +45,8 @@ const NEU = ['человек', 'ребёнок', 'друг', 'сын', 'мужч
   ok('Singular ohne деньги, Plural ohne любовь (kein „—“ mehr einzutippen)', !r.sg.деньги && r.sg.любовь && r.pl.деньги && !r.pl.любовь && r.wechsel, JSON.stringify([r.sg, r.pl, r.wechsel]));
   ok('деньги im Plural geübt und gespeichert', r.felder === 'деньги денег деньгам деньги деньгами деньгах' && r.gespeichert, JSON.stringify([r.felder, r.gespeichert]));
   ok('Gesamtzahl zählt nur vorhandene Zahlen', r.total === r.erwartet && r.hdr.endsWith('von ' + r.erwartet + ' gelernt'), JSON.stringify([r.total, r.erwartet, r.hdr]));
-  ok('Zahl + Substantiv ohne любовь/деньги; nach 5: человек (nicht людей)', r.nnOhne && r.fuenf.noun === 'человек' && r.fuenf.answer === 'человек' && r.fuenf.n >= 5, JSON.stringify(r.fuenf));
+  ok('Zahl + Substantiv ohne любовь/деньги; nach 5: человек (nicht людей)', r.nnOhne && r.fuenf.noun === 'человек' && r.fuenf.answer === 'человек' && r.fuenf.rule === 'r5',   // Regelfall 5–0: die Zahl kann auch 0 oder 10 sein (war zufallsabhängig)
+    JSON.stringify(r.fuenf));
   ok('Wortgruppen nur mit Wörtern in beiden Zahlen; Kasus bilden ohne „—“', r.wgOhne && r.cfDash);
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
