@@ -49,6 +49,20 @@ const fs = require('fs');
   fs.writeFileSync(f, JSON.stringify(old));
   await (await p.$('#backup-file')).setInputFiles(f); await p.waitForTimeout(800);
   await check('Alte Sicherung: Stand landet bei RU→DE', () => ev(() => { const a = JSON.parse(localStorage.getItem('vokabeltrainer-scores')); return { ok: !!a['вода'] && !!a['мама'], info: Object.keys(a).join(',') }; }));
+  // Wortlisten der Muster und Wortgruppen überstehen das Zusammenführen (13.11.)
+  await check('„Muster sicher“ und Wortgruppen-Wörter bleiben beim Abgleich erhalten', () => ev(() => {
+    const hart = Object.keys(declensionData).filter(a => declensionData[a].typeLabel === 'hart'), mid = 'ca|hart|fem|Gen.';
+    for (let i = 0; i < 10; i++) progressMark('caseadj', 'a:' + hart[i] + ':fem:Gen.', true);
+    const g = loadGrammarSrs(); (g.wordgroup = g.wordgroup || {})['x:y'] = { correct: 3, wrong: 0, box: 3, lastSeen: Date.now(), w: ['a', 'b', 'c'] }; saveGrammarSrs(); flushSaves();
+    const vor = musterSicher(mid), data = {}; BACKUP_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v !== null) data[k] = v; });
+    mergeAllFromBackup(data);                                                    // erster Abgleich bringt die Einträge in die Normalform
+    const data2 = {}; BACKUP_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v !== null) data2[k] = v; });
+    const geaendert = mergeAllFromBackup(data2);                                 // gleicher Stand: nichts ändert sich
+    const fremd = JSON.parse(data['vokabeltrainer-grammar-srs']); fremd.muster[mid].w = ['zzz']; fremd.wordgroup['x:y'].w = ['c', 'd'];
+    mergeAllFromBackup(Object.assign({}, data, { 'vokabeltrainer-grammar-srs': JSON.stringify(fremd) }));   // anderes Gerät mit weniger Wörtern
+    const n = loadGrammarSrs();
+    return { ok: vor && !geaendert && musterSicher(mid) && n.muster[mid].w.length === 10 && n.wordgroup['x:y'].w.join() === 'a,b,c,d', info: JSON.stringify([vor, geaendert, n.muster[mid].w.length, n.wordgroup['x:y'].w]) };
+  }));
   await check('keine JS-Fehler', () => ({ ok: errs.length === 0, info: errs.slice(0, 3).join(' | ') }));
   R.forEach(r => console.log(r[0], r[1], r[2] ? '· ' + r[2] : ''));
   console.log('\n' + R.filter(r => r[0] === 'OK ').length + ' von ' + R.length + ' bestanden');
