@@ -251,6 +251,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
     [['openCaseDrill();setCaseMode("abstract")', CASE_CHOICE], ['openMotion();setMotionMode("quiz")', MOTION_CHOICE],
      ['openRektion();setRektionMode("choose")', RK_CHOICE], ['openGender()', GENDER_CHOICE]].forEach(([o, c]) => {
       eval(o); const it = c.item();
+      if (c === RK_CHOICE) rkArt(rkOpt(it.verb.r).prep ? 'praep' : 'fall');   // Rektion: erst die Art (13.11.)
       const wrong = [...document.querySelectorAll('#' + c.opts + ' .case-opt')].map(b => b.dataset.k).find(k => k !== c.right(it));
       gtChoose(c, wrong);
       const marked = document.querySelector('#' + c.opts + ' .correct') && document.querySelector('#' + c.opts + ' .wrong');

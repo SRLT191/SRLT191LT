@@ -712,6 +712,9 @@
   #noun-grid.noun-zwei { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 28px; row-gap: 18px; }
   .noun-col-kopf { font-size: 13px; font-weight: 600; color: var(--c-text-label); text-transform: uppercase; letter-spacing: .04em; padding-left: 2px; }
   .noun-col-fehlt { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--c-text-muted); }
+  #decl-grid .noun-col { display: grid; gap: 8px; align-content: start; }
+  #decl-grid.decl-vier { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); column-gap: 28px; row-gap: 18px; }
+  #decl-grid.decl-vier .conj-row { grid-template-columns: 52px 1fr 30px; }
   .noun-dot-gruppe { display: inline-flex; gap: 4px; }
   .noun-dot-gruppe + .noun-dot-gruppe { margin-left: 8px; }
   .noun-gleich { font-size: 14px; color: var(--c-text-muted); text-align: left; }
@@ -744,6 +747,7 @@
     #overlay-aspect .gt-task ~ .conj-row, #overlay-aspect .gt-actions, #overlay-motion #motion-pair-view .conj-row, #overlay-motion #motion-pair-view .gt-actions,
     #overlay-transform .conj-row, #overlay-transform .gt-actions, #overlay-adjform .conj-row, #overlay-adjform .gt-actions,
     #overlay-pronform .conj-row, #overlay-pronform .gt-actions, #overlay-wordgroup .conj-row, #overlay-wordgroup .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
+    #decl-grid.decl-vier { max-width: none; }
     #conj-grid, #decl-grid, #pronoun-grid { max-width: 560px; margin-left: auto; margin-right: auto; width: 100%; }
   }
   .gt-muster:empty { display: none; }
@@ -788,6 +792,7 @@
   .rk-group-label { display: block; font-size: 12px; color: var(--c-text-muted); margin: 0 0 4px 2px; text-align: left; }
   .rk-group-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .rk-group-opts.rk-4 { grid-template-columns: repeat(4, 1fr); }
+  .rk-group-opts.rk-2 { grid-template-columns: repeat(2, 1fr); }
   @media (max-width: 480px) { .rk-group-opts.rk-4 { grid-template-columns: repeat(2, 1fr); } .rk-group-opts { grid-template-columns: repeat(2, 1fr); } }
   .rk-merk { border-left: 3px solid var(--c-accent-strong); padding-left: 10px; margin: 10px 0; }
   .rkl-group { margin-bottom: 18px; }
@@ -2076,6 +2081,7 @@
 <button class="mode-btn" id="decl-gender-btn-fem" onclick="setDeclGender('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="decl-gender-btn-neut" onclick="setDeclGender('neut')" title="sächlich">n</button>
 <button class="mode-btn" id="decl-gender-btn-plural" onclick="setDeclGender('plural')" title="Plural">Pl</button>
+<button class="mode-btn" id="decl-gender-btn-all" onclick="setDeclGender('all')" title="alle vier nebeneinander">Alle</button>
 </div></span><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="decl-sort-btn" onclick="cycleDeclSortMode()" title="Sortierung der Adjektivliste umschalten">
 <i class="ti ti-sort-ascending-2"></i> <span>Hart → Weich</span>
 </button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
@@ -2092,6 +2098,7 @@
 
 <button class="tool-btn" onclick="nextDeclensionAdj()">Nächstes Adjektiv <i class="ti ti-arrow-right"></i></button></div>
 <div aria-live="polite" class="conj-result" id="decl-result" role="status"></div>
+<div class="conj-after" id="decl-after"></div>
 <div class="conj-result" id="decl-score"></div>
 </div>
 </div>
@@ -2559,6 +2566,7 @@
 
 <button class="tool-btn" onclick="nextPronounItem()">Nächstes Pronomen <i class="ti ti-arrow-right"></i></button></div>
 <div class="conj-result" id="pronoun-result"></div>
+<div class="conj-after" id="pronoun-after"></div>
 </div>
 </div>
 
@@ -8597,6 +8605,16 @@ function toggleMusterAlle() {
   updateGtSettingsSummary();
 }
 // „Neue Runde“ im ⋯-Menü jedes Rundenwerkzeugs (13.11.): fehlt Menü oder Eintrag, wird er angelegt
+// „Vorlesen“ in jeder Einstellungen-Leiste (13.11.): ein gemeinsamer Schalter für alle Grammatikwerkzeuge
+function gtVorlesenErgaenzen() {
+  document.querySelectorAll('.grammar-panel .gt-settings-body').forEach(body => {
+    if (body.querySelector('#wg-speak-toggle, #sb-speak-toggle, .gram-speak-toggle')) return;
+    const row = [...body.querySelectorAll('.gt-settings-row')].pop(); if (!row) return;
+    if (!row.querySelector('.gt-settings-sep')) row.insertAdjacentHTML('beforeend', '<span aria-hidden="true" class="gt-settings-sep"></span>');
+    row.insertAdjacentHTML('beforeend', '<button aria-pressed="true" class="tool-btn gt-toggle gram-speak-toggle" data-std="1" data-sum="Vorlesen" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen (gilt für alle Grammatikwerkzeuge)" type="button"><i class="ti ti-volume"></i> <span>Vorlesen</span></button>');
+  });
+  applyWgAutoSpeak();
+}
 function gtMenueErgaenzen() {
   Object.entries(GT_RUNDEN).forEach(([id, R]) => {
     const view = document.getElementById(R.panel), panel = view && view.closest('.grammar-panel'); if (!panel || view.dataset.rundeMenue) return;
@@ -18033,7 +18051,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-caseadj', srcGelernt(src.caseadj, all));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
   set('gtp-adjform', srcGelernt(src.adjform, all));
-  if (!sink && !store) { musterSync(); gtMenueErgaenzen(); }
+  if (!sink && !store) { musterSync(); gtMenueErgaenzen(); if (!document.querySelector('.gram-speak-toggle')) gtVorlesenErgaenzen(); }
   set('gtp-rektion', srcGelernt(src.rektion, all));
   // Seitenleiste/Startseite: alle Nicht-Regelfälle; Kopf des Werkzeugs: gewählter Bereich
   set('gtp-gender', sink ? Object.entries(all.gender || {}).filter(([id, e]) => genderZaehlt(id) && srsDone(e)).length + ' von ' + genderTotal() + ' gelernt' : genderProgressText(all));
@@ -20239,7 +20257,7 @@ function conjSrsKey() { return conjState.tense === 'nonpast' ? 'conj' : 'conj:' 
 function conjPfVerben() { return Object.keys(conjugationData).filter(v => aspectData[v] && aspectData[v].pf && aspectData[v].nonPast && !conjugationData[aspectData[v].pf]); }
 function conjId(inf) { const v = inf || document.getElementById('conj-verb-select').value, pf = aspectData[v]; return conjState.aspect === 'pf' && pf && pf.pf && pf.nonPast && !conjugationData[pf.pf] ? pf.pf : v; }
 const DECL_SRS_KEYS = ['decl', 'decl:fem', 'decl:neut', 'decl:plural'];   // je Geschlecht (12.11.); m behält den alten Schlüssel
-function declSrsKey() { return declState.gender === 'masc' ? 'decl' : 'decl:' + declState.gender; }
+function declSrsKey() { return declState.gender === 'masc' || declState.gender === 'all' ? 'decl' : 'decl:' + declState.gender; }
 function nounSrsKey() { return nounState.number === 'pl' ? 'noun:pl' : 'noun'; }   // bei „Beide“ nach dem Singular sortieren
 function pronounSrsKey(p) { const e = pronounEntry(p); return !e || e.kind !== 'gender' || pronounGender === 'masc' ? 'pronoun' : 'pronoun:' + pronounGender; }
 // Futur (буду + Infinitiv) ist bei allen Verben gleich gebaut: übbar, zählt aber nicht im Lernstand (7.11.)
@@ -21197,11 +21215,28 @@ function openDecline() {
 
 function setDeclGender(gender) {
   declState.gender = gender;
-  document.getElementById('decl-gender-btn-masc').classList.toggle('active', gender === 'masc');
-  document.getElementById('decl-gender-btn-fem').classList.toggle('active', gender === 'fem');
-  document.getElementById('decl-gender-btn-neut').classList.toggle('active', gender === 'neut');
-  document.getElementById('decl-gender-btn-plural').classList.toggle('active', gender === 'plural');
+  ['masc', 'fem', 'neut', 'plural', 'all'].forEach(g => { const b = document.getElementById('decl-gender-btn-' + g); if (b) b.classList.toggle('active', gender === g); });
+  saveToolSettings();
   renderDeclensionTable();
+}
+// Geschlechter, die gerade abgefragt werden („Alle“: vier Spalten nebeneinander, 13.11.)
+const DECL_GENDERS = ['masc', 'fem', 'neut', 'plural'];
+const DECL_G_NAME = { masc: 'männlich', fem: 'weiblich', neut: 'sächlich', plural: 'Plural' };
+function declGenders() { return declState.gender === 'all' ? DECL_GENDERS : [declState.gender]; }
+function declKeys() { return declGenders().map(g => g === 'masc' ? 'decl' : 'decl:' + g); }
+// Lernstand je Form (nur für die Punkte): Tabelle („decl:fall“) oder Kasus bilden („caseadj“)
+function adjFormFertig(adj, gk, k) {
+  const g = loadGrammarSrs();
+  return srsDone((g['decl:fall'] || {})[adj + '|' + gk + '|' + k]) || srsDone((g.caseadj || {})['a:' + adj + ':' + gk + ':' + k]);
+}
+function updateDeclDots() {
+  const el = document.getElementById('decl-dots'); if (!el) return;
+  const adj = document.getElementById('decl-adj-select').value; if (!declensionData[adj]) return;
+  let n = 0, t = 0;
+  el.innerHTML = declGenders().map(gk => '<span class="noun-dot-gruppe">' + Object.keys(declensionData[adj][gk]).map(k => {
+    const f = adjFormFertig(adj, gk, k); t++; if (f) n++; return '<span class="conj-dot' + (f ? ' fertig' : '') + '"></span>';
+  }).join('') + '</span>').join('');
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', n + ' von ' + t + ' Formen sicher'); el.title = n + ' von ' + t + ' Formen sicher';
 }
 
 function renderDeclensionTable() {
@@ -21209,7 +21244,7 @@ function renderDeclensionTable() {
   const adj = document.getElementById('decl-adj-select').value || Object.keys(declensionData)[0];
   refreshFormPicker('decl');
   const data = declensionData[adj];
-  document.getElementById('decl-de-hint').innerHTML = '<b lang="ru">' + adj + '</b> — ' + data.de + (declState.hintVisible ? ' &nbsp;<span style="opacity:0.7">(' + data.typeLabel + ')</span>' : '');
+  document.getElementById('decl-de-hint').innerHTML = '<b lang="ru">' + adj + '</b> — ' + data.de + '<span class="conj-dots" id="decl-dots"></span>' + (declState.hintVisible ? ' &nbsp;<span style="opacity:0.7">(' + data.typeLabel + ')</span>' : '');
   setGtToggle(document.getElementById('decl-hint-toggle'), declState.hintVisible);
   const noteEl = document.getElementById('decl-note');
   if (data.note) {
@@ -21218,41 +21253,77 @@ function renderDeclensionTable() {
   } else {
     noteEl.style.display = 'none';
   }
-  const forms = data[declState.gender];
-  const grid = document.getElementById('decl-grid');
-  grid.innerHTML = Object.keys(forms).map((kasus, i) => `
+  const grid = document.getElementById('decl-grid'), alle = declState.gender === 'all';
+  grid.classList.toggle('decl-vier', alle);
+  let i = 0;
+  grid.innerHTML = declGenders().map(gk => '<div class="noun-col" data-g="' + gk + '">' + (alle ? '<div class="noun-col-kopf">' + DECL_G_NAME[gk] + '</div>' : '') +
+    Object.keys(data[gk]).map(kasus => { const k = i++; return `
     <div class="conj-row">
       <span class="conj-pronoun">${kasus}</span>
-      <input type="text" class="conj-input" id="decl-input-${i}" data-answer="${forms[kasus]}" aria-label="${CF_KASUS_NAME[kasus] || kasus}" autocomplete="off" onkeydown="gtTableEnter(event, checkDeclensionTable)">
-      <button class="conj-reveal-one-btn" onclick="revealDeclensionRow(${i})" title="Nur diese Form anzeigen" aria-label="Nur diese Form anzeigen"><i class="ti ti-eye"></i></button>
-    </div>`).join('');
+      <input type="text" class="conj-input" id="decl-input-${k}" data-answer="${data[gk][kasus]}" data-g="${gk}" data-kasus="${kasus}" aria-label="${(CF_KASUS_NAME[kasus] || kasus) + (alle ? ' ' + DECL_G_NAME[gk] : '')}" autocomplete="off" onkeydown="gtTableEnter(event, checkDeclensionTable)">
+      <button class="conj-reveal-one-btn" onclick="revealDeclensionRow(${k})" title="Form zeigen" aria-label="Form zeigen"><i class="ti ti-eye"></i></button>
+    </div>`; }).join('') + '</div>').join('');
   document.getElementById('decl-result').textContent = '';
-  declState.allCorrect = false; declState.attempted = false;
+  document.getElementById('decl-after').innerHTML = '';
+  declState.allCorrect = false; declState.attempted = false; declState.fallMarked = false;
   if (typeof updateDeclScore === 'function') updateDeclScore();
 }
 
 function updateDeclScore() {
+  updateDeclDots();
   const el = document.getElementById('decl-score');
   if (el) el.textContent = 'In dieser Sitzung: ' + (declState.done ? declState.correct + ' von ' + declState.done + ' Tabellen richtig' : 'noch keine Tabelle geprüft');
+}
+// gleiche Formen je Geschlecht, z. B. weiblich: Gen. = Dat. = Instr. = Präp.
+function gtGleicheFormen(formen) {
+  const ks = Object.keys(formen).filter(k => formen[k] && formen[k] !== '—'), erst = v => String(v).replace(/\s*\([^)]*\)/, '').split(/\s*[\/|]\s*/)[0], gr = [];
+  ks.forEach(k => { const g = gr.find(x => erst(formen[x[0]]) === erst(formen[k])); if (g) g.push(k); else gr.push([k]); });
+  return gr.filter(g => g.length > 1).map(g => g.join(' = '));
+}
+// nach dem Prüfen/Aufdecken (13.11.): Tabelle anhören, gleiche Formen, Beispielsatz – wie bei den Substantiven
+function showDeclAfter() {
+  const adj = document.getElementById('decl-adj-select').value, data = declensionData[adj]; if (!data) return;
+  const w = findVocabEntry(adj), satz = w ? getWordSentence(w) : null, alle = declState.gender === 'all';
+  const gleich = declGenders().map(gk => { const g = gtGleicheFormen(data[gk]); return g.length ? (alle ? DECL_G_NAME[gk] + ': ' : '') + g.join(' · ') : ''; }).filter(Boolean);
+  document.getElementById('decl-after').innerHTML =
+    '<button class="tool-btn" type="button" onclick="gtSpeakGrid(\'decl-grid\')"><i class="ti ti-volume"></i> Tabelle anhören</button>' +
+    (gleich.length ? '<div class="noun-gleich"><b>Gleiche Formen:</b> ' + gleich.join('; ') + '</div>' : '') +
+    (satz ? '<div class="conj-example"><span lang="ru">' + satz.ru + '</span><span class="conj-example-de">' + satz.de + '</span></div>' : '');
+}
+function gtSpeakGrid(id) {
+  const cols = [...document.querySelectorAll('#' + id + ' .noun-col')], zeilen = c => [...c.querySelectorAll('input')].map(i => String(i.dataset.answer).replace(/\s*\([^)]*\)/, '').split(/\s*[\/|]\s*/)[0]).join(', ');
+  speak((cols.length ? cols.map(zeilen) : [zeilen(document.getElementById(id))]).join('. ') + '.', Math.min(speakRate, 0.9));
+}
+function declMarkAll(ok) {
+  const adj = document.getElementById('decl-adj-select').value;
+  declKeys().forEach(k => ok === null ? progressSeen(k, adj) : progressMark(k, adj, ok));
 }
 function checkDeclensionTable() {
   if (declState.allCorrect) { nextAdjInList(); return; }
   if (gtTablePre('#decl-grid', nextAdjInList)) return;
+  const ins = [...document.querySelectorAll('#decl-grid .conj-input')], vorher = new Set(ins.filter(i => i.classList.contains('revealed')));
   const res = checkGridInputs('#decl-grid', 'decl-result');
   gtTablePost('#decl-grid');
-  const filled = [...document.querySelectorAll('#decl-grid .conj-input')].filter(i => i.value.trim()).length;
+  const filled = ins.filter(i => i.value.trim()).length, adj = document.getElementById('decl-adj-select').value;
+  if (!declState.fallMarked && filled === res.total) {
+    declState.fallMarked = true;
+    const all = loadGrammarSrs(), m = all['decl:fall'] || (all['decl:fall'] = {});
+    ins.forEach(i => { const id = adj + '|' + i.dataset.g + '|' + i.dataset.kasus, e = m[id] || (m[id] = { correct: 0, wrong: 0, box: 0 });
+      if (i.classList.contains('correct') && !vorher.has(i)) { e.correct++; e.box = Math.min(GRAMMAR_SRS_MAX_BOX, e.box + 1); } else { e.wrong++; e.box = 0; } e.lastSeen = Date.now(); });
+    saveGrammarSrs();
+  }
   if (res.correct === res.total && filled === res.total) {
     declState.allCorrect = true;
     const hilfe = gtTableHelped('#decl-grid');
-    if (!hilfe) {
-      declState.done++; declState.correct++;
-      progressMark(declSrsKey(), document.getElementById('decl-adj-select').value, true);
-    } else { declState.attempted = true; progressSeen(declSrsKey(), document.getElementById('decl-adj-select').value); }
+    if (!hilfe) { declState.done++; declState.correct++; declMarkAll(true); }
+    else { declState.attempted = true; declMarkAll(null); }
     document.getElementById('decl-result').textContent =
       res.correct + ' / ' + res.total + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Wort';
+    showDeclAfter();
   } else {
-    if (!declState.attempted && filled === res.total) { declState.attempted = true; declState.done++; progressMark(declSrsKey(), document.getElementById('decl-adj-select').value, false); }
+    if (!declState.attempted && filled === res.total) { declState.attempted = true; declState.done++; declMarkAll(false); }
     declState.allCorrect = false;
+    if (filled === res.total) showDeclAfter();
   }
   updateDeclScore();
 }
@@ -21260,16 +21331,17 @@ function checkDeclensionTable() {
 // springt zum nächsten Adjektiv in der Auswahlliste (Genus bleibt erhalten)
 function nextAdjInList() {
   const select = document.getElementById('decl-adj-select');
-  if (!declState.allCorrect && !declState.attempted) progressSeen(declSrsKey(), select.value);
+  if (!declState.allCorrect && !declState.attempted) declMarkAll(null);
   const opts = [...select.options].map(o => o.value);
   select.value = progressNext(declSrsKey(), musterFrei(opts, declSrsKey(), x => x), select.value);
   renderDeclensionTable();
 }
 
 function revealDeclensionTable() {
-  const neu = !declState.attempted && !declState.allCorrect, adj = document.getElementById('decl-adj-select').value, key = declSrsKey();
+  const neu = !declState.attempted && !declState.allCorrect, adj = document.getElementById('decl-adj-select').value, keys = declKeys();
   revealFormTable('decl-grid', 'decl-result');
-  if (neu) gtRateOffer('decl-result', ok => { declState.attempted = true; declState.done++; if (ok) declState.correct++; progressMark(key, adj, ok); updateDeclScore(); }, nextAdjInList);
+  showDeclAfter();
+  if (neu) gtRateOffer('decl-result', ok => { declState.attempted = true; declState.done++; if (ok) declState.correct++; keys.forEach(k => progressMark(k, adj, ok)); updateDeclScore(); }, nextAdjInList);
 }
 function revealDeclensionRow(i) { revealFormRow('decl-input-', i); }
 
@@ -22257,8 +22329,7 @@ function setSbHintMode(m) {
 // Wortgruppen/Satzbau (10.11.): automatisches Vorlesen – ein Schalter für beide Werkzeuge
 function applyWgAutoSpeak() {
   const cb = document.getElementById('gramspeak-toggle'); if (cb) cb.checked = wgState.autoSpeak;
-  ['wg', 'sb'].forEach(p => {
-    const b = document.getElementById(p + '-speak-toggle'); if (!b) return;
+  document.querySelectorAll('#wg-speak-toggle, #sb-speak-toggle, .gram-speak-toggle').forEach(b => {
     b.classList.toggle('gt-on', wgState.autoSpeak);
     b.setAttribute('aria-pressed', wgState.autoSpeak ? 'true' : 'false');
   });
@@ -23153,7 +23224,8 @@ function restartWordgroup() {
   const sb = (wgState.tool === 'sentence') ? sbPick(wgState.type) : null;
   const sbId = sb ? sbItemId(sb) : null;
   const build = (sb && sb.ru) ? WG_BUILDERS.fixed : (WG_BUILDERS[wgState.type] || WG_BUILDERS.np);
-  const task = build(sb);
+  // Wortgruppen: Kategorie nach Lernstand (13.11.)
+  const task = wgState.tool === 'sentence' ? build(sb) : gtBesteAufgabe(() => build(sb), 'wordgroup', x => x.srsKey || null, 8);
 
   // Freie Wortstellung: alle Reihenfolgen der Satzblöcke gelten als richtig
   let altAnswers = [];
@@ -23854,6 +23926,17 @@ function cfNounPool(st) {
   });
   return musterFrei(pool, 'caseform', x => 'n:' + x.join(':'));
 }
+// Werkzeuge, die ihre Aufgaben zufällig bauen (Kasus bilden Adjektive, Pronomen umformen, Wortgruppen), wählen seit 13.11.
+// aus mehreren Kandidaten nach Lernstand: fällig → zuletzt falsch → neu → am längsten nicht geübt
+function gtBesteAufgabe(build, key, idOf, n) {
+  const srs = loadGrammarSrs()[key] || {}, life = loadLifetime().g[key] || {}, now = Date.now(), seen = new Set(), k = [];
+  for (let i = 0; i < (n || 14) * 3 && k.length < (n || 14); i++) { const t = build(); if (!t) continue; const id = idOf(t); if (id == null) return t; if (!seen.has(id)) { seen.add(id); k.push(t); } }
+  if (!k.length) return null;
+  const klasse = t => { const id = idOf(t), e = life[id], x = srs[id]; return e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= now ? 0 : x && !srsDone(x) ? 1 : !x ? 2 : 3; };
+  const beste = Math.min(...k.map(klasse)), pool = k.filter(t => klasse(t) === beste);
+  if (beste === 3) pool.sort((a, b) => ((srs[idOf(a)] || {}).lastSeen || 0) - ((srs[idOf(b)] || {}).lastSeen || 0));
+  return beste === 3 ? pool[0] : pool[Math.floor(Math.random() * pool.length)];
+}
 function cfNounRound(st) { return gtLernstandRunde(cfNounPool(st), 'caseform', x => 'n:' + x.join(':'), x => x[0]); }
 // Runde nach Lernstand (12.11.): fällige, zuletzt falsche, neue, dann die am längsten nicht geübten;
 // jedes Wort (wortOf) höchstens einmal je Runde. Kasus bilden und Zahl + Substantiv.
@@ -23929,7 +24012,11 @@ function restartCaseForm(t) {
   const c = cfT(t), st = c.s;
   let task = gtRundeZwang(c.k);
   // Formen sicherer Muster auslassen (Adjektive werden zufällig gezogen); findet sich nichts anderes, gilt jede Aufgabe
-  for (let i = 0; i < 400 && !task; i++) { task = buildCaseFormTask(t); if (task && t === 'adj' && i < 360 && musterGesperrt('caseadj', task.id)) task = null; }
+  if (!task && t === 'adj') {
+    const bau = egal => { for (let i = 0; i < 60; i++) { const x = buildCaseFormTask(t); if (x && (egal || !musterGesperrt('caseadj', x.id))) return x; } return null; };
+    task = gtBesteAufgabe(() => bau(false), 'caseadj', x => x.id) || bau(true);
+  }
+  for (let i = 0; i < 400 && !task; i++) task = buildCaseFormTask(t);
   st.current = task;
   st.answered = false;
   st.lastCorrect = false;
@@ -24179,7 +24266,7 @@ function openPronForm() {
 }
 function restartPronForm() {
   const st = pronFormState;
-  st.current = gtRundeZwang('pronform') || buildPronFormTask();
+  st.current = gtRundeZwang('pronform') || gtBesteAufgabe(buildPronFormTask, 'pronform', x => x.id);
   st.answered = false;
   st.lastCorrect = false;
   st.lastInput = '';
@@ -24199,7 +24286,7 @@ function restartPronForm() {
 const PRONFORM_DRILL = {
   p: 'pronform', st: pronFormState, task: () => pronFormState.current,
   srs: () => 'pronform', id: t => t.id, restart: () => restartPronForm(), zufall: true,
-  runde: gtRundeRegistrieren('pronform', { restart: () => restartPronForm(), panel: 'overlay-pronform', q: 'pronform-q', score: 'pronform-score',
+  runde: gtRundeRegistrieren('pronform', { gruppe: x => ({ case: 'Personal', prep: 'Mit Präposition', poss: 'Possessiv', extra: 'кто · весь' })[x.typ] || x.typ, restart: () => restartPronForm(), panel: 'overlay-pronform', q: 'pronform-q', score: 'pronform-score',
     zeile: t => gtRundeZeile('<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + t.task, t.answer) }) && 'pronform',
 };
 function checkPronForm() { gtCheck(PRONFORM_DRILL); }
@@ -24446,7 +24533,7 @@ function restartAdjForm() {
 const ADJFORM_DRILL = {
   p: 'adjform', st: adjFormState, task: () => adjFormState.current,
   srs: () => 'adjform', id: t => t.id, answers: t => t.alts, restart: () => restartAdjForm(), zufall: true,
-  runde: gtRundeRegistrieren('adjform', { restart: () => restartAdjForm(), panel: 'overlay-adjform', q: 'adjform-q', score: 'adjform-score',
+  runde: gtRundeRegistrieren('adjform', { gruppe: x => ({ short: 'Kurzform', comp: 'Komparativ', sup: 'Superlativ' })[x.typ] || x.typ, restart: () => restartAdjForm(), panel: 'overlay-adjform', q: 'adjform-q', score: 'adjform-score',
     zeile: t => t.satz ? { satz: '<span lang="ru">' + htmlEsc(t.from).replace(/_{2,}|…/, '<b>' + htmlEsc(t.answer) + '</b>') + '</span>' } : gtRundeZeile('<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + t.task, t.answer) }) && 'adjform',
 };
 function checkAdjForm() { gtCheck(ADJFORM_DRILL); }
@@ -24615,7 +24702,7 @@ function renderGenderQuestion() {
   const item = st.queue[st.index];
   gtSetDone('overlay-gender', !item);
   if (!item) {
-    qEl.innerHTML = gtRoundEndHtml(st.correct, st.queue.length, (st.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.ru) + '</span> (' + htmlEsc(x.de) + ')', loesung: x.g === 'pl' ? 'nur Plural' : x.g + ' – ' + GENDER_NAME[x.g] })), 'gender', 'repeatGenderErrors()', 'restartGender()');
+    qEl.innerHTML = gtRoundEndHtml(st.correct, st.queue.length, (st.fehler || []).map(x => ({ frage: '<span lang="ru">' + htmlEsc(x.ru) + '</span> (' + htmlEsc(x.de) + ')', loesung: x.g === 'pl' ? 'nur Plural' : x.g + ' – ' + GENDER_NAME[x.g] })), 'gender', 'repeatGenderErrors()', 'restartGender()', gtFehlerGruppen(st.fehler || [], x => ({ m: 'männlich', f: 'weiblich', n: 'sächlich', pl: 'nur Plural' })[x.g] || x.g));
     optEl.innerHTML = '';
     document.getElementById('gender-score').textContent = '';
     return;
@@ -24915,8 +25002,9 @@ function rektionScoreText() {
   const st = rektionState;
   return st.index < st.queue.length ? (st.index + 1) + ' / ' + st.queue.length + ' · ' + st.rCorrect + ' richtig' : '';
 }
-function renderRektionTask() {
+function renderRektionTask(behalteArt) {
   const st = rektionState;
+  if (!behalteArt) st.art = null;
   st.answered = false; st.lastCorrect = false; st.lastInput = '';
   gtChoiceReset(RK_CHOICE);
   const q = document.getElementById('rektion-q'), t = st.queue[st.index];
@@ -24927,7 +25015,7 @@ function renderRektionTask() {
     q.innerHTML = gtRoundEndHtml(st.rCorrect, st.queue.length, st.fehler.map(f => ({ satz: f.noun
       ? '<span lang="ru">' + htmlEsc(f.verb.v) + ' <b>' + htmlEsc(f.obj) + '</b></span>'
       : '<span lang="ru">' + htmlEsc(f.verb.v) + '</span> + <b>' + htmlEsc(rkOpt(f.verb.r).label) + '</b>' + (rektionExample(f.verb) ? ' · <span lang="ru">' + htmlEsc(rektionExample(f.verb)) + '</span>' : '') })),
-      'rektion', 'repeatRektionErrors()', 'restartRektion()');
+      'rektion', 'repeatRektionErrors()', 'restartRektion()', gtFehlerGruppen(st.fehler, f => rkOpt(f.verb.r).label));
     document.getElementById('rektion-opts').innerHTML = '';
     document.getElementById('rektion-score').textContent = '';
     return;
@@ -24940,10 +25028,14 @@ function renderRektionTask() {
     const taste = i => i < 9 ? String(i + 1) : i === 9 ? '0' : '';
     const knopf = (o, i) => '<button class="case-opt" type="button" data-k="' + o.k + '"' + (taste(i) ? ' aria-keyshortcuts="' + taste(i) + '"' : '') + ' onclick="answerRektion(\'' + o.k + '\')">' + o.label
       + (taste(i) ? '<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">' + taste(i) + '</kbd>' : '') + '</button>';
+    // zwei Schritte (13.11.): erst die Art (reiner Fall oder Präposition + Fall), dann nur die passenden Knöpfe
     const faelle = RK_OPTIONS.filter(o => !o.prep), praep = RK_OPTIONS.filter(o => o.prep);
-    document.getElementById('rektion-opts').innerHTML =
-      '<div class="rk-group"><span class="rk-group-label">Fall</span><div class="rk-group-opts rk-4">' + faelle.map((o, i) => knopf(o, i)).join('') + '</div></div>'
-      + '<div class="rk-group"><span class="rk-group-label">Präposition + Fall</span><div class="rk-group-opts">' + praep.map((o, i) => knopf(o, i + faelle.length)).join('') + '</div></div>';
+    const art = (g, name, taste) => '<button class="case-opt rk-art" type="button" aria-keyshortcuts="' + taste + '" onclick="rkArt(\'' + g + '\')">' + name + '<kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">' + taste + '</kbd></button>';
+    document.getElementById('rektion-opts').innerHTML = !st.art
+      ? '<div class="rk-group"><span class="rk-group-label">Was folgt auf das Verb?</span><div class="rk-group-opts rk-2">' + art('fall', 'reiner Fall', '1') + art('praep', 'Präposition + Fall', '2') + '</div></div>'
+      : st.art === 'fall'
+        ? '<div class="rk-group"><span class="rk-group-label">Fall</span><div class="rk-group-opts rk-4">' + faelle.map((o, i) => knopf(o, i)).join('') + '</div></div>'
+        : '<div class="rk-group"><span class="rk-group-label">Präposition + Fall</span><div class="rk-group-opts">' + praep.map((o, i) => knopf(o, i)).join('') + '</div></div>';
   } else {
     // Verb steht da, gesucht ist nur die Ergänzung (8.11.); die ganze Wortgruppe zählt auch
     const o = rkOpt(x.r);
@@ -24977,6 +25069,15 @@ const RK_CHOICE = {
 };
 GT_CHOICES.push(RK_CHOICE);
 function answerRektion(k) { if (rektionState.mode === 'choose') gtChoose(RK_CHOICE, k); }
+// Schritt 1: Art wählen. Stimmt sie, folgen nur die passenden Knöpfe; stimmt sie nicht, ist die Aufgabe falsch
+// und die richtige Gruppe wird mit der Lösung gezeigt.
+function rkArt(g) {
+  const st = rektionState, t = st.current; if (!t || st.mode !== 'choose' || RK_CHOICE.answered) return;
+  const richtig = rkOpt(t.verb.r).prep ? 'praep' : 'fall';
+  st.art = richtig; renderRektionTask(true);
+  if (g !== richtig) gtChoose(RK_CHOICE, '–');
+  else { const b = document.querySelector('#rektion-opts .case-opt'); if (b && document.activeElement && document.activeElement.classList.contains('rk-art')) b.focus(); }
+}
 // Form bilden: Eingabe prüfen (zweites Prüfen ohne Änderung = weiter)
 // „Form bilden“ läuft über den Aufgabenmotor, „Fall wählen“ über die Knöpfe
 const REKTION_DRILL = {
@@ -24996,7 +25097,11 @@ function checkRektion() {
 }
 function revealRektion() {
   if (rektionState.mode === 'form') gtReveal(REKTION_DRILL);
-  else { gtChoiceReveal(RK_CHOICE); rektionState.answered = true; }
+  else {
+    // im ersten Schritt (Art wählen) erst die richtige Gruppe zeigen, dann die Lösung markieren
+    const st = rektionState; if (st.current && !st.art && !RK_CHOICE.answered) { st.art = rkOpt(st.current.verb.r).prep ? 'praep' : 'fall'; renderRektionTask(true); }
+    gtChoiceReveal(RK_CHOICE); rektionState.answered = true;
+  }
 }
 function nextRektion() { if (rektionState.mode === 'choose') gtChoiceNext(RK_CHOICE); else gtNext(REKTION_DRILL); }
 function speakRektion() {
@@ -25042,7 +25147,7 @@ function keyRektionChoice(e) {
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
   const btn = document.querySelector('#rektion-opts .case-opt[aria-keyshortcuts="' + e.key + '"]');
   if (!btn) return false;
-  e.preventDefault(); answerRektion(btn.dataset.k);
+  e.preventDefault(); if (btn.classList.contains('rk-art')) btn.click(); else answerRektion(btn.dataset.k);
   return true;
 }
 
@@ -25384,6 +25489,14 @@ function renderPronounTable() {
       <button class="conj-reveal-one-btn" onclick="revealPronounRow(${i})" title="Nur diese Form anzeigen" aria-label="Nur diese Form anzeigen"><i class="ti ti-eye"></i></button>
     </div>`).join('');
   document.getElementById('pronoun-result').textContent = '';
+  document.getElementById('pronoun-after').innerHTML = '';
+}
+function showPronounAfter() {
+  const f = {}; document.querySelectorAll('#pronoun-grid .conj-row').forEach(r => { f[r.querySelector('.conj-pronoun').textContent] = r.querySelector('input').dataset.answer; });
+  const gleich = gtGleicheFormen(f);
+  document.getElementById('pronoun-after').innerHTML =
+    '<button class="tool-btn" type="button" onclick="gtSpeakGrid(\'pronoun-grid\')"><i class="ti ti-volume"></i> Tabelle anhören</button>' +
+    (gleich.length ? '<div class="noun-gleich"><b>Gleiche Formen:</b> ' + gleich.join(' · ') + '</div>' : '');
 }
 
 // Eigene Prüfung statt checkGridInputs: die н-Variante in Klammern ist optional
@@ -25428,6 +25541,7 @@ function checkPronounTable() {
     else progressMark(pronounSrsKey(pron), pron, correctCount === inputs.length);
   }
   pronounAllCorrect = inputs.length > 0 && gefuellt === inputs.length && correctCount === inputs.length;
+  if (gefuellt === inputs.length && inputs.length) showPronounAfter();
   if (pronounAllCorrect) {
     document.getElementById('pronoun-result').textContent =
       correctCount + ' / ' + inputs.length + ' richtig' + (hilfe ? GT_HELP_NOTE : '') + ' — nochmal „Prüfen“ für das nächste Pronomen';
@@ -25437,6 +25551,7 @@ function checkPronounTable() {
 function revealPronounTable() {
   const pron = (document.getElementById('pronoun-select') || {}).value, neu = !!pron && !pronounAttempted && !pronounAllCorrect;
   revealFormTable('pronoun-grid', 'pronoun-result');
+  showPronounAfter();
   if (neu) { const key = pronounSrsKey(pron); progressSeen(key, pron); gtRateOffer('pronoun-result', ok => { pronounAttempted = true; progressMark(key, pron, ok); }, nextPronounItem); }
 }
 
@@ -25693,7 +25808,7 @@ function renderCaseQuestion() {
   const fertig = caseState.index >= caseState.queue.length;
   gtSetDone('overlay-casedrill', fertig && caseState.mode === 'abstract');
   if (fertig) {
-    qEl.innerHTML = gtRoundEndHtml(caseState.correct, caseState.queue.length, (caseState.fehler || []).map(x => { const bsp = prepListExample(x); return { frage: '<span lang="ru">' + htmlEsc(x.prep) + '</span>' + (x.hint ? ' (' + htmlEsc(x.hint) + ')' : ''), loesung: htmlEsc(x.kasus), ru: bsp ? caseWordSatz(bsp) : x.prep }; }), 'case', 'repeatCaseErrors()', 'restartCaseDrill()');
+    qEl.innerHTML = gtRoundEndHtml(caseState.correct, caseState.queue.length, (caseState.fehler || []).map(x => { const bsp = prepListExample(x); return { frage: '<span lang="ru">' + htmlEsc(x.prep) + '</span>' + (x.hint ? ' (' + htmlEsc(x.hint) + ')' : ''), loesung: htmlEsc(x.kasus), ru: bsp ? caseWordSatz(bsp) : x.prep }; }), 'case', 'repeatCaseErrors()', 'restartCaseDrill()', gtFehlerGruppen(caseState.fehler || [], x => x.kasus));
     optEl.innerHTML = '';
     document.getElementById('case-score').textContent = '';
     return;
@@ -26577,7 +26692,7 @@ function renderTransform() {
     document.getElementById('transform-q').innerHTML = gtRoundEndHtml(st.correct, st.queue.length,
       st.fehler.map(t => ({ satz: '<span lang="ru">' + (t.fromPron ? t.fromPron + ' ' : '') + htmlEsc(t.from) + '</span> → <span lang="ru">'
         + (t.kind === 'imperative' ? '(ты) <b>' + htmlEsc(t.answer) + '</b>!' : transformPerson(t) + ' <b>' + htmlEsc(t.answer) + '</b>') + '</span>' })),
-      'transform', 'repeatTransformErrors()', 'restartTransform()');
+      'transform', 'repeatTransformErrors()', 'restartTransform()', gtFehlerGruppen(st.fehler, t => t.task));
     document.getElementById('transform-score').textContent = '';
     input.disabled = true;
     input.placeholder = 'Runde fertig';

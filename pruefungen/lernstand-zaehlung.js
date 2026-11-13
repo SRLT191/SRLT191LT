@@ -39,8 +39,11 @@ const { chromium } = require('playwright');
     openWordgroup(); setWgAnswerMode('type'); setWgType('adjnoun'); out.wg = [];
     const key = () => wgState.current.srsKey;
     let k = null, n = 0; const gesehen = new Set();
+    // seit 13.11. wählt das Werkzeug die Kategorie nach Lernstand – hier auf einen Fall festlegen
+    setWgCase('Gen.');
     for (let i = 0; i < 400 && n < 3; i++) { restartWordgroup(); if (k && key() !== k) continue; if (gesehen.has(wgState.current.answer)) continue; k = key(); gesehen.add(wgState.current.answer);
       wgEl('input').value = wgState.current.answer; checkWordgroup(); n++; out.wg.push(hdr('gtp-wordgroup')); }
+    setWgCase('all');
     const e = loadGrammarSrs().wordgroup[k]; out.wgW = e.w.length;
     // gleiche Antwort dreimal zählt nicht
     const e2 = { correct: 3, w: ['a'] }; out.wgGleich = wgZaehlt('x', e2);

@@ -17,6 +17,9 @@ const { chromium, devices } = require('playwright');
     out.t = [sbTipps('В городе нет парк', ['В', 'городе', 'нет', 'парка']), sbTipps('я иду в школа', ['я', 'иду', 'в', 'школу']), sbTipps('я встречает весёлую сестру', ['я', 'встречаю', 'весёлую', 'сестру']), sbTipps('мы говорим о ответе', ['мы', 'говорим', 'об', 'ответе']), sbTipps('я иду в школу', ['я', 'иду', 'в', 'школу'])];
     // im Werkzeug: falsch → Tipp + Erklärung; aufdecken → Erklärung
     setAppView('grammar'); openSentenceBuild(); setWgAnswerMode('type'); setSbHelp('blocks'); setWgType('negation'); restartWordgroup();
+    // nur Sätze, deren letztes Wort ein Substantiv aus den Tabellen ist (sonst gibt es keinen Tipp – war zufallsabhängig)
+    const letztes = () => { const t = wgState.current.answer.split(' ').pop().toLowerCase(); return Object.keys(nounDeclensionData).some(n => Object.values(nounDeclensionData[n].sg).includes(t) && nounDeclensionData[n].sg['Nom.'] !== t); };
+    for (let i = 0; i < 80 && !letztes(); i++) restartWordgroup();
     const c = wgState.current, toks = c.answer.split(' ');
     wgEl('input').value = toks.slice(0, -1).join(' ') + ' ' + nounDeclensionData[Object.keys(nounDeclensionData).find(n => Object.values(nounDeclensionData[n].sg).includes(toks[toks.length - 1].toLowerCase()))]?.sg['Nom.'];
     checkWordgroup(); const res = document.getElementById('sb-result');
