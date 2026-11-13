@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
     set(a1[4], 4, 10); // dito
     set(a1[5], 4, 2);  // Stufe 4, vor 2 Tagen → sicher frühestens in 12 Tagen (10.11.)
     set(a1[6], 5, 20); set(a1[7], 5, 3); set(a1[8], 5, 100);   // sicher seit 20, 3 und 100 Tagen
-    L.g.conj = { a: { c: 1, w: 0, mb: 1, l: jetzt, d: 2, dd: jetzt - 5 * D }, b: { c: 1, w: 0, mb: 1, l: jetzt, d: 5, dd: jetzt - D } };
+    L.g.conj = { 'читать': { c: 1, w: 0, mb: 1, l: jetzt, d: 2, dd: jetzt - 5 * D }, 'говорить': { c: 1, w: 0, mb: 1, l: jetzt, d: 5, dd: jetzt - D } };
     L.g.case = { x: { c: 1, w: 0, mb: 1, l: jetzt, d: 1, dd: jetzt } };
     saveLifetime(); setAppView('home');
   };

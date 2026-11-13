@@ -733,6 +733,8 @@
   @media (min-width: 900px) {
     #overlay-caseform .cf-eingabe, #overlay-caseadj .cf-eingabe, #overlay-numnoun .cf-eingabe, #overlay-caseform .gt-actions, #overlay-caseadj .gt-actions, #overlay-numnoun .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
   }
+  .gt-muster { font-size: 13px; color: var(--c-text-muted); margin: 2px 2px 10px; }
+  .gt-muster:empty { display: none; }
   .gt-settings-sep { width: 1px; align-self: stretch; min-height: 24px; background: var(--c-border); margin: 0 4px; }
   /* Augen-Knöpfe: beim Überfahren/Fokus der Zeile deutlicher (12.11.) */
   .conj-row:hover .conj-reveal-one-btn, .conj-row:focus-within .conj-reveal-one-btn, .conj-reveal-one-btn:focus-visible { color: var(--c-text-muted); }
@@ -8237,8 +8239,8 @@ function reloadStateFromStorage() {
 function saveLifetime() {
   deferSave(LIFETIME_KEY, () => { if (lifetime) localStorage.setItem(LIFETIME_KEY, JSON.stringify(lifetime)); });
 }
-function lifeNote(map, id, ok, box) {
-  dayNote(ok);
+function lifeNote(map, id, ok, box, ohneTag) {
+  if (!ohneTag) dayNote(ok);
   const e = map[id] || (map[id] = { c: 0, w: 0, mb: 0, l: 0 });
   const fehler = lifeFehler(e);
   e.f = ok ? Math.max(0, fehler - 1) : fehler + 1;
@@ -8333,7 +8335,7 @@ function homeGrammarTools() {
   Object.keys(src).forEach(t => {
     let due = 0; const hard = [];
     src[t][0].forEach(k => Object.entries(g[k] || {}).forEach(([id, e]) => {
-      if (e && e.d > 0 && e.d < LIFE_RUNS_MAX && now >= lifeNextDue(e)) due++;
+      if (e && e.d > 0 && e.d < LIFE_RUNS_MAX && now >= lifeNextDue(e) && !musterGesperrt(k, id)) due++;
       const f = lifeFehler(e); if (e && f >= 2 && (e.d || 0) < LIFE_RUNS_MAX) hard.push({ t, id, f });
     }));
     out[t] = { due, hard };
@@ -8450,12 +8452,13 @@ const GRAMMAR_CAT_LABEL = { verb: 'Verben', noun: 'Substantive', adj: 'Adjektive
 function grammarToolSources() {
   const aspN = Object.keys(aspectPairs()).length;
   return {
-    conjugate: [CONJ_SRS_KEYS, conjTotal()], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
+    conjugate: [CONJ_SRS_KEYS, conjTotal(), null, null, () => musterBauen().items.conjugate], aspect: [['aspect:fwd', 'aspect:back'], aspN * 2],
     motion: [['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length],
-    transform: [['transform'], transformTotal()], rektion: [['rektion'], rektionTotal(), null, rektionEinheit],
-    noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun'), cfZaehlt],
+    transform: [['transform'], transformTotal(), null, null, () => musterBauen().items.transform], rektion: [['rektion'], rektionTotal(), null, rektionEinheit],
+    noun: [['noun', 'noun:pl'], nounTotal()], caseform: [['caseform'], caseFormTotal('noun'), cfZaehlt, null, () => musterBauen().items.caseform],
     numnoun: [['numnoun'], numNounNouns().length * 3, nnZaehlt], gender: [['gender'], genderTotal(), genderZaehlt],
-    decline: [DECL_SRS_KEYS, Object.keys(declensionData).length * DECL_SRS_KEYS.length], caseadj: [['caseadj'], caseFormTotal('adj'), caZaehlt], adjform: [['adjform'], adjFormTotal()],
+    decline: [DECL_SRS_KEYS, Object.keys(declensionData).length * DECL_SRS_KEYS.length, null, null, () => musterBauen().items.decline],
+    caseadj: [['caseadj'], caseFormTotal('adj'), caZaehlt, null, () => musterBauen().items.caseadj], adjform: [['adjform'], adjFormTotal(), null, null, () => musterBauen().items.adjform],
     pronoun: [PRONOUN_SRS_KEYS, pronounTotal()], pronform: [['pronform'], pronFormTotal()],
     casedrill: [['case', 'case:word'], PREP_CASES.length + caseWordCount()], wordgroup: [['wordgroup'], 12 + 6 + 14 + 3, wgZaehlt],
     sentencebuild: [Object.keys(loadLifetime().g || {}).filter(k => k.startsWith('sb:')), SB_ITEMS.length],
@@ -8463,10 +8466,158 @@ function grammarToolSources() {
 }
 // Stand Grammatik (9.11.): Balken und Prozent als Durchschnitt der Werkzeuge – jedes Werkzeug zählt gleich viel,
 // sonst bestimmen die Werkzeuge mit Tausenden Einzelformen (Kasus bilden) das Bild; die Zahlen bleiben echte Anzahlen
-// Einträge eines Werkzeugs im Lernstand. s[2]: optionaler Filter (id, Eintrag), z. B. Geschlecht ohne Regelfälle;
+// ── „Muster sitzt“ (12.11.) ──────────────────────────────────────
+// Regelmäßige Formen gehören zu einem Muster (z. B. hartes Adjektiv · weiblich · Genitiv). Hat man ein Muster mit
+// 10 verschiedenen Wörtern richtig (bei kleineren Mustern: mit allen), gilt es als sicher: seine übrigen Formen zählen
+// als gelernt und werden nicht mehr gefragt. Ein Fehler öffnet es wieder (3 weitere richtige Wörter nötig). Ein sicheres
+// Muster kommt in den üblichen Abständen (Stufen bis 5) mit einzelnen Aufgaben zurück. Sonderfälle zählen einzeln.
+// Speicher: Übungsstand „muster“ { Muster: { w: [Wörter], … } }, Stufen im Gesamtstand unter „muster“ (ohne Tageszählung).
+const MUSTER_NEED = 10, MUSTER_KEY = 'muster';
+const musterState = { alle: false, zuletzt: {} };   // alle: auch sichere Muster üben
+const MUSTER_TOOLS = { ca: 'caseadj', cf: 'caseform', tf: 'transform', cj: 'conjugate', dc: 'decline', af: 'adjform' };
+let musterDaten = null;
+// regelmäßige Vergangenheit: Infinitiv -ть → -л, -ла, -ли (auch reflexiv)
+function musterPastRegel(inf) {
+  const d = (conjugationData[inf] || {}).past; if (!d || !/ть(ся)?$/.test(inf)) return false;
+  const refl = /ся$/.test(inf), st = inf.replace(/ть(ся)?$/, '');
+  return d['он'] === st + 'л' + (refl ? 'ся' : '') && d['она'] === st + 'ла' + (refl ? 'сь' : '') && d['они'] === st + 'ли' + (refl ? 'сь' : '');
+}
+// alle gezählten Aufgaben der sechs Werkzeuge mit ihrem Muster (null = zählt einzeln)
+function musterBauen() {
+  if (musterDaten) return musterDaten;
+  const items = { caseadj: [], caseform: [], transform: [], conjugate: [], decline: [], adjform: [] };
+  const von = new Map(), woerter = {}, wort = new Map();
+  const add = (tool, key, id, mid, w) => {
+    items[tool].push([key, id]);
+    if (!mid) return;
+    von.set(key + '\u0001' + id, mid); wort.set(key + '\u0001' + id, w);
+    (woerter[mid] = woerter[mid] || new Set()).add(w);
+  };
+  // Adjektive: Kasus bilden (Typ × Genus × Fall) und Deklination (Typ × Genus); gleichbedeutende Typnamen zusammengelegt
+  const adjTyp = l => l === 'hart, betonter Stamm' ? 'hart' : l === 'hart, endbetont (-ой)' ? 'endbetont (-ой)' : l;
+  Object.entries(declensionData).forEach(([a, d0]) => {
+    const d = Object.assign({}, d0, { typeLabel: adjTyp(d0.typeLabel) });
+    ['masc', 'fem', 'neut', 'plural'].forEach((gk, gi) => {
+      add('decline', DECL_SRS_KEYS[gi], a, 'dc|' + d.typeLabel + '|' + gk, a);
+      CF_KASUS.forEach(k => {
+        if (!d[gk] || !d[gk][k]) return;
+        const id = 'a:' + a + ':' + gk + ':' + k;
+        if (caZaehlt(id)) add('caseadj', 'caseadj', id, 'ca|' + d.typeLabel + '|' + gk + '|' + k, a);
+        if (k === 'Akk.' && (gk === 'masc' || gk === 'plural')) add('caseadj', 'caseadj', id + ':belebt', 'ca|' + d.typeLabel + '|' + gk + '|Akk.|belebt', a);
+      });
+    });
+  });
+  // Substantive: Kasus bilden. Dat./Instr./Präp. Plural (-ам, -ами, -ах / -ям, -ями, -ях) ist für alle ein Muster;
+  // sonst Klasse × Zahl × Fall bei regelmäßigen Wörtern, Sonderfälle einzeln
+  const PL3 = { 'Dat.': ['ам', 'ям'], 'Instr.': ['ами', 'ями'], 'Präp.': ['ах', 'ях'] };
+  Object.entries(nounDeclensionData).forEach(([n, d]) => ['sg', 'pl'].forEach(num => CF_KASUS.forEach(k => {
+    const f = (d[num] || {})[k];
+    if (!f || f === '—' || cfIstGrundform(d, num, k)) return;
+    let mid = null;
+    if (num === 'pl' && PL3[k]) {
+      const st = String(d.pl['Nom.']).slice(0, -1);
+      if (f === st + PL3[k][0]) mid = 'cf|Plural|' + k + '|hart'; else if (f === st + PL3[k][1]) mid = 'cf|Plural|' + k + '|weich';
+    }
+    if (!mid && !isIrregularNoun(n)) mid = 'cf|' + d.typeLabel + '|' + num + '|' + k;
+    add('caseform', 'caseform', 'n:' + n + ':' + num + ':' + k, mid, n);
+  })));
+  // Verben umformen: regelmäßige Vergangenheit je Form
+  const gesehen = new Set();
+  buildTransformItems().filter(t => t.kind !== 'future').forEach(t => {
+    const id = transformUnitId(t); if (gesehen.has(id)) return; gesehen.add(id);
+    add('transform', 'transform', id, t.kind === 'past' && musterPastRegel(t.inf) ? 'tf|Vergangenheit|' + t.pkey : null, t.inf);
+  });
+  // Konjugieren: Präsens je Klasse (ohne Stammwechsel, Wechsel in der 1. Person, Sonderfälle), Vergangenheit regelmäßig, Imperativ 1. Konj.
+  const KL = { k1: 1, k2: 1, k2a: 1, k1t: 1 };
+  Object.keys(conjugationData).forEach(v => {
+    const kl = verbClassKey(v), name = (VERB_CLASS_INFO[kl] || {}).kurz || kl;
+    add('conjugate', 'conj', v, KL[kl] ? 'cj|Präsens|' + name : null, v);
+    add('conjugate', 'conj:past', v, musterPastRegel(v) ? 'cj|Vergangenheit' : null, v);
+    add('conjugate', 'conj:imperative', v, kl === 'k1' ? 'cj|Imperativ|' + name : null, v);
+  });
+  conjPfVerben().forEach(v => CONJ_SRS_KEYS.forEach(k => add('conjugate', k, aspectData[v].pf, null, v)));
+  // Kurzform & Steigerung: Superlativ mit самый, regelmäßige Kurzformen je Genus
+  adjFormItems().forEach(x => {
+    let mid = null;
+    if (x.typ === 'sup' && !x.satz && x.answer === 'самый ' + x.adj) mid = 'af|Superlativ';
+    else if (x.typ === 'short' && !x.satz && !(ADJ_FORMS[x.adj] || {}).sn) {
+      const st = x.adj.replace(/(ый|ой|ий)$/, '').replace(/ё/g, 'е'), f = String(x.answer).replace(/ё/g, 'е');
+      if (x.g === 'masc' ? f === st : f.length === st.length + 1 && f.startsWith(st)) mid = 'af|Kurzform|' + x.g;
+    }
+    add('adjform', 'adjform', x.id, mid, x.adj);
+  });
+  const need = {}; Object.keys(woerter).forEach(m => { need[m] = Math.min(MUSTER_NEED, woerter[m].size); });
+  musterDaten = { items, von, wort, need, anzahl: Object.fromEntries(Object.entries(woerter).map(([m, w]) => [m, w.size])) };
+  return musterDaten;
+}
+function musterOf(key, id) { return musterBauen().von.get(key + '\u0001' + id) || null; }
+function musterSicher(mid) {
+  if (!mid) return false;
+  const e = (loadGrammarSrs()[MUSTER_KEY] || {})[mid];
+  return !!e && Array.isArray(e.w) && e.w.length >= musterBauen().need[mid];
+}
+function musterFaellig(mid) {
+  const e = ((loadLifetime().g || {})[MUSTER_KEY] || {})[mid];
+  return !!e && (e.d || 0) < LIFE_RUNS_MAX && Date.now() >= lifeNextDue(e);
+}
+// wird diese Aufgabe gerade ausgelassen? (Muster sicher, nicht zur Wiederholung fällig, Schalter aus)
+function musterGesperrt(key, id) {
+  if (musterState.alle) return false;
+  const mid = musterOf(key, id);
+  return !!mid && musterSicher(mid) && !musterFaellig(mid);
+}
+function musterFrei(liste, key, idOf) { const f = liste.filter(x => !musterGesperrt(key, idOf(x))); return f.length ? f : liste; }
+// nach jeder gewerteten Antwort (aus progressMark)
+function musterNote(key, id, ok) {
+  const D = musterBauen(), mid = D.von.get(key + '\u0001' + id); if (!mid) return;
+  const all = loadGrammarSrs(), m = all[MUSTER_KEY] || (all[MUSTER_KEY] = {});
+  const e = m[mid] || (m[mid] = { correct: 0, wrong: 0, box: 0, w: [] });
+  if (!Array.isArray(e.w)) e.w = [];
+  const need = D.need[mid], war = e.w.length >= need, w = D.wort.get(key + '\u0001' + id);
+  if (ok) { e.correct++; e.box = Math.min(GRAMMAR_SRS_MAX_BOX, e.box + 1); if (!e.w.includes(w) && e.w.length < need) e.w.push(w); }
+  else { e.wrong++; e.box = 0; if (war) e.w = e.w.slice(0, Math.max(0, need - 3)); }
+  e.lastSeen = Date.now();
+  const g = loadLifetime().g, lm = g[MUSTER_KEY] || (g[MUSTER_KEY] = {});
+  if (war || e.w.length >= need) lifeNote(lm, mid, ok, e.box, true);
+  musterState.zuletzt[mid.split('|')[0]] = mid;
+  saveGrammarSrs();
+}
+function toggleMusterAlle() {
+  musterState.alle = !musterState.alle; saveToolSettings(); musterSync();
+  caseFormState.queue = [];
+  updateGtSettingsSummary();
+}
+// Schalter und Zeile „Muster sicher: X von Y“ in den sechs Werkzeugen anlegen und nachziehen
+function musterSync() {
+  const D = musterBauen(), srs = loadGrammarSrs()[MUSTER_KEY] || {};
+  Object.entries(MUSTER_TOOLS).forEach(([kz, tool]) => {
+    const panel = document.getElementById('overlay-' + tool); if (!panel) return;
+    const row = panel.querySelector('.gt-settings-row');
+    if (row && !row.querySelector('.muster-alle-toggle')) row.insertAdjacentHTML('beforeend', '<button aria-pressed="false" class="tool-btn gt-toggle muster-alle-toggle" data-sum="auch sichere Muster" onclick="toggleMusterAlle()" title="Regelmäßige Formen weiter abfragen, auch wenn ihr Muster schon sicher ist (10 verschiedene Wörter richtig)" type="button"><i class="ti ti-eye-off"></i> <span>Auch sichere Muster üben</span></button>');
+    const btn = panel.querySelector('.muster-alle-toggle'); if (btn) setGtToggle(btn, musterState.alle);
+    let zeile = panel.querySelector('.gt-muster');
+    if (!zeile) { const anker = panel.querySelector('.gt-settings'); if (!anker) return; anker.insertAdjacentHTML('afterend', '<div class="gt-muster"></div>'); zeile = panel.querySelector('.gt-muster'); }
+    const mids = Object.keys(D.need).filter(m => m.startsWith(kz + '|') && D.anzahl[m] >= 2);
+    const sicher = mids.filter(musterSicher).length, z = musterState.zuletzt[kz];
+    const stand = z && D.anzahl[z] >= 2 ? ' · zuletzt geübt: ' + z.split('|').slice(1).map(x => ({ masc: 'männlich', fem: 'weiblich', neut: 'sächlich', plural: 'Plural', sg: 'Singular', pl: 'Plural' })[x] || x).join(' · ') + ' ' + Math.min(((srs[z] || {}).w || []).length, D.need[z]) + '/' + D.need[z] : '';
+    zeile.textContent = mids.length ? 'Muster sicher: ' + sicher + ' von ' + mids.length + stand : '';
+    zeile.title = 'Ein Muster ist sicher, wenn du es mit ' + MUSTER_NEED + ' verschiedenen Wörtern richtig hattest (kleinere Muster: mit allen). Seine übrigen Formen zählen dann als gelernt und werden nur noch zur Wiederholung gefragt.';
+  });
+}
+// Einträge eines Werkzeugs im Lernstand. s[4]: optionale Liste aller Aufgaben [Schlüssel, Kennung] (Werkzeuge mit Mustern). s[2]: optionaler Filter (id, Eintrag), z. B. Geschlecht ohne Regelfälle;
 // s[3]: optionale Einheit (id → Einheit) – mehrere Aufgaben zählen als eine (Rektion „Form bilden“: je Verb), es gilt der beste Eintrag
 function srcEntries(s, g) {
   const out = []; if (!s) return out;
+  if (s[4]) {
+    // Aufgaben eines sicheren Musters übernehmen die Stufe des Musters, wenn sie selbst keine höhere haben
+    const gm = g[MUSTER_KEY] || {};
+    s[4]().forEach(([k, id]) => {
+      const e = (g[k] || {})[id], mid = musterOf(k, id), pe = mid && musterSicher(mid) ? gm[mid] : null;
+      const x = pe && (!e || (pe.d || 0) > (e.d || 0)) ? pe : e;
+      if (x) out.push(x);
+    });
+    return out;
+  }
   const je = {};
   s[0].forEach(k => Object.entries(g[k] || {}).forEach(([id, e]) => {
     if (s[2] && !s[2](id, e)) return;
@@ -8478,6 +8629,7 @@ function srcEntries(s, g) {
 }
 // „X von Y gelernt“ eines Werkzeugs aus dem Übungsstand – mit Filter und Einheit der Quelle (12.11.)
 function srcGelernt(s, all) {
+  if (s[4]) return s[4]().filter(([k, id]) => srsDone((all[k] || {})[id]) || musterSicher(musterOf(k, id))).length + ' von ' + s[1] + ' gelernt';
   const units = new Set(); let n = 0;
   s[0].forEach(k => Object.entries(all[k] || {}).forEach(([id, e]) => {
     if (!srsDone(e) || (s[2] && !s[2](id, e))) return;
@@ -17829,7 +17981,7 @@ function updateGrammarTileProgress(store, sink) {
     return n + ' von ' + total + ' gelernt';
   };
   const src = grammarToolSources();
-  set('gtp-conj', learnedMulti(CONJ_SRS_KEYS, conjTotal()));
+  set('gtp-conj', srcGelernt(src.conjugate, all));
   const aspN = Object.keys(aspectPairs()).length;
   set('gtp-aspect-fwd', learnedMulti(['aspect:fwd', 'aspect:back'], aspN * 2));
   set('gtp-noun', learnedMulti(['noun', 'noun:pl'], nounTotal()));
@@ -17838,14 +17990,15 @@ function updateGrammarTileProgress(store, sink) {
   // Wortgruppen: Adj+Subst 6 Fälle × 2 Zahlen, Begleiter 6 Fälle, Präposition 7 × 2, Zahl 3 Genera
   set('gtp-wordgroup', srcGelernt(src.wordgroup, all));   // je Kategorie erst nach 3 verschiedenen richtigen Antworten
   set('gtp-motion', learnedMulti(['motion:fwd', 'motion:back', 'motion:quiz', 'motion:prefix'], motionPairKeys().length * 2 + MOTION_QUIZ.length + MOTION_PREFIX.length));
-  set('gtp-transform', learned('transform', transformTotal()));
+  set('gtp-transform', srcGelernt(src.transform, all));
   set('gtp-case', learnedMulti(['case', 'case:word'], PREP_CASES.length + caseWordCount()));
   set('gtp-pronoun', learnedMulti(PRONOUN_SRS_KEYS, pronounTotal()));
   set('gtp-numnoun', srcGelernt(src.numnoun, all));   // 3 Regelfälle: 2–4 · 5–0 · 11–14; „1“ ist das Wort selbst und zählt nicht (12.11.)
-  set('gtp-caseform', Object.entries(all.caseform || {}).filter(([id, e]) => cfZaehlt(id) && srsDone(e)).length + ' von ' + caseFormTotal('noun') + ' gelernt');
+  set('gtp-caseform', srcGelernt(src.caseform, all));
   set('gtp-caseadj', srcGelernt(src.caseadj, all));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
-  set('gtp-adjform', learned('adjform', adjFormTotal()));
+  set('gtp-adjform', srcGelernt(src.adjform, all));
+  if (!sink && !store) musterSync();
   set('gtp-rektion', srcGelernt(src.rektion, all));
   // Seitenleiste/Startseite: alle Nicht-Regelfälle; Kopf des Werkzeugs: gewählter Bereich
   set('gtp-gender', sink ? Object.entries(all.gender || {}).filter(([id, e]) => genderZaehlt(id) && srsDone(e)).length + ' von ' + genderTotal() + ' gelernt' : genderProgressText(all));
@@ -19335,6 +19488,7 @@ const TOOL_SETTINGS = [
   ['conjEndings', ...tsProp(() => conjState, 'endings'), TS_BOOL],
   ['conjMixed', ...tsProp(() => conjState, 'mixed'), TS_BOOL],
   ['declSortMode', ...tsProp(() => declState, 'sortMode'), tsOneOf('type', 'alpha', 'random', 'random-hard')],
+  ['musterAlle', ...tsProp(() => musterState, 'alle'), TS_BOOL],
   ['nounSortMode', ...tsProp(() => nounState, 'sortMode'), tsOneOf('class', 'alpha', 'random', 'random-reg')],
   ['nounHintVisible', ...tsProp(() => nounState, 'hintVisible'), TS_BOOL],
   ['nounNumber', ...tsProp(() => nounState, 'number'), tsOneOf('sg', 'pl', 'both')],
@@ -19690,6 +19844,7 @@ function progressMark(toolKey, id, correct) {
   all[toolKey][id] = s;
   saveGrammarSrs();
   lifeGrammar(toolKey, id, correct, s.box);
+  if (toolKey !== MUSTER_KEY) musterNote(toolKey, id, correct);
 }
 // markiert ein nur „gesehenes" Item (Weiter ohne Prüfen): bleibt offen,
 // kommt aber erst nach den noch nie gesehenen wieder.
@@ -20073,7 +20228,10 @@ function nextConjugationVerb() {
   const opts = [...sel.options].map(o => o.value);
   if (!opts.length) return;
   const i = opts.indexOf(sel.value);
-  sel.value = opts[(i + 1) % opts.length];
+  // Verben überspringen, deren Muster in dieser Zeit sicher ist (von Hand bleiben sie wählbar)
+  let j = 1;
+  if (!conjState.mixed && conjState.aspect !== 'pf') while (j < opts.length && musterGesperrt(conjSrsKey(), opts[(i + j) % opts.length])) j++;
+  sel.value = opts[(i + j) % opts.length];
   saveToolSettings();
   if (conjState.mixed) { setConjTense(conjMixedTense(sel.value), true); return; }
   renderConjugationTable();
@@ -21057,7 +21215,7 @@ function nextAdjInList() {
   const select = document.getElementById('decl-adj-select');
   if (!declState.allCorrect && !declState.attempted) progressSeen(declSrsKey(), select.value);
   const opts = [...select.options].map(o => o.value);
-  select.value = progressNext(declSrsKey(), opts, select.value);
+  select.value = progressNext(declSrsKey(), musterFrei(opts, declSrsKey(), x => x), select.value);
   renderDeclensionTable();
 }
 
@@ -23640,7 +23798,7 @@ function cfNounPool(st) {
       pool.push([n, num, k]);
     }));
   });
-  return pool;
+  return musterFrei(pool, 'caseform', x => 'n:' + x.join(':'));
 }
 function cfNounRound(st) { return gtLernstandRunde(cfNounPool(st), 'caseform', x => 'n:' + x.join(':'), x => x[0]); }
 // Runde nach Lernstand (12.11.): fällige, zuletzt falsche, neue, dann die am längsten nicht geübten;
@@ -23716,7 +23874,8 @@ function buildCaseFormTask(t) {
 function restartCaseForm(t) {
   const c = cfT(t), st = c.s;
   let task = gtRundeZwang(c.k);
-  for (let i = 0; i < 20 && !task; i++) task = buildCaseFormTask(t);
+  // Formen sicherer Muster auslassen (Adjektive werden zufällig gezogen); findet sich nichts anderes, gilt jede Aufgabe
+  for (let i = 0; i < 400 && !task; i++) { task = buildCaseFormTask(t); if (task && t === 'adj' && i < 360 && musterGesperrt('caseadj', task.id)) task = null; }
   st.current = task;
   st.answered = false;
   st.lastCorrect = false;
@@ -24146,7 +24305,7 @@ function adjFormItems() {
 }
 function adjFormTotal() { return adjFormItems().length; }
 function buildAdjFormTask() {
-  const pool = adjFormItems().filter(x => adjFormState.scope === 'all' || x.typ === adjFormState.scope);
+  const pool = musterFrei(adjFormItems().filter(x => adjFormState.scope === 'all' || x.typ === adjFormState.scope), 'adjform', x => x.id);
   const ids = pool.map(x => x.id);
   const prev = adjFormState.current ? adjFormState.current.id : null;
   const id = progressNext('adjform', ids, prev);
@@ -26295,7 +26454,7 @@ function transformPool() {
   // je Einheit eine Aufgabe
   const je = {};
   shuffleInPlace(auswahl.slice()).forEach(t => { const u = transformUnitId(t); if (!je[u]) je[u] = t; });
-  return Object.values(je);
+  return musterFrei(Object.values(je), 'transform', transformUnitId);
 }
 function startTransformRound(queue) {
   transformState.queue = queue;
