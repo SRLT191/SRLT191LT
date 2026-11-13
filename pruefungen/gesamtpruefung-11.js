@@ -63,7 +63,7 @@ const { chromium } = require('playwright');
     out.leiste = ['conj-sort-btn', 'conj-scope-btn', 'case-hint-toggle', 'case-plural-toggle', 'case-kasus-chips'].filter(id => !document.getElementById(id).closest('.gt-settings-body'));
     out.notes = ['overlay-conjugate', 'overlay-decline', 'overlay-noun', 'overlay-pronoun'].filter(id => !document.querySelector('#' + id + ' .gt-settings-body .grammar-note-toggle'));
     // Kopf
-    out.kopf = [...document.querySelectorAll('.grammar-panel-header')].filter(h => h.querySelector('.gt-more') && !h.querySelector('.gt-head-right > .grammar-panel-progress + .gt-more')).length;
+    out.kopf = [...document.querySelectorAll('.grammar-panel-header')].filter(h => h.querySelector('.gt-more') && !h.querySelector('.gt-head-right > .grammar-panel-progress ~ .gt-more')).length;
     // Tastenkürzel
     const tk = document.querySelector('[data-sec="tasten"], section[aria-label="Tastenkürzel"]') || document.body; const tt = tk.textContent;
     out.tasten = /Kasus-Drill „Fall wählen“ 1–5/.test(tt) && /Rektion „Fall wählen“ 1–9 und 0/.test(tt) && /„Vorsilben“ 1–4/.test(tt) && /In Wortgruppen und Satzbau/.test(tt) && /nicht beim Auswählen/.test(tt);

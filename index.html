@@ -733,7 +733,19 @@
   @media (min-width: 900px) {
     #overlay-caseform .cf-eingabe, #overlay-caseadj .cf-eingabe, #overlay-numnoun .cf-eingabe, #overlay-caseform .gt-actions, #overlay-caseadj .gt-actions, #overlay-numnoun .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
   }
-  .gt-muster { font-size: 13px; color: var(--c-text-muted); margin: 2px 2px 10px; }
+  .gt-muster { font-size: 12px; font-weight: 600; color: var(--c-text-muted); border: 1px solid var(--c-border); border-radius: 999px; padding: 2px 9px; white-space: nowrap; cursor: help; }
+  .gt-richtung { margin: 0 0 12px; }
+  .gt-richtung .tense-switcher { display: inline-flex; width: auto; max-width: 100%; }
+  .gt-field:has(> .tense-switcher[style*="display: none"]), .gt-field:has(> .tense-switcher[style*="display:none"]) { display: none; }
+  /* Rektion „Fall wählen“: Taste 3 gehört dort „Dat.“ – kein Tastenhinweis an „Lösung zeigen“ */
+  #overlay-rektion:has(#rektion-opts:not([style*="none"]) .case-opt) #rektion-practice-view .gt-actions .tool-btn:not(.gt-primary) .gt-kbd:not(.gt-kbd-next) { display: none; }
+  @media (min-width: 900px) {
+    /* Einzelwort-Felder überall schmal und mittig, Tabellen kompakt (13.11.) */
+    #overlay-aspect .gt-task ~ .conj-row, #overlay-aspect .gt-actions, #overlay-motion #motion-pair-view .conj-row, #overlay-motion #motion-pair-view .gt-actions,
+    #overlay-transform .conj-row, #overlay-transform .gt-actions, #overlay-adjform .conj-row, #overlay-adjform .gt-actions,
+    #overlay-pronform .conj-row, #overlay-pronform .gt-actions, #overlay-wordgroup .conj-row, #overlay-wordgroup .gt-actions { max-width: 520px; margin-left: auto; margin-right: auto; width: 100%; }
+    #conj-grid, #decl-grid, #pronoun-grid { max-width: 560px; margin-left: auto; margin-right: auto; width: 100%; }
+  }
   .gt-muster:empty { display: none; }
   .gt-settings-sep { width: 1px; align-self: stretch; min-height: 24px; background: var(--c-border); margin: 0 4px; }
   /* Augen-Knöpfe: beim Überfahren/Fokus der Zeile deutlicher (12.11.) */
@@ -1802,7 +1814,7 @@
 <button class="mode-btn" id="rektion-mode-list" onclick="openRektionList()" title="Alle Verben nach Fall (eigenes Fenster)"><i class="ti ti-list"></i> Liste</button>
 </div>
 </div>
-<div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+<div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
 <div id="rektion-practice-view">
 <div class="gt-task"><div class="case-question" id="rektion-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakRektion()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="rektion-opts"></div>
@@ -1844,13 +1856,13 @@
 <p><strong>Bedienung:</strong> Antippen oder Taste 1–4 (m, f, n, Pl.) bewertet sofort und markiert die richtige Option. Danach steht das Wort in der Farbe seines Geschlechts (m blau, f rot, n grün, Pl. grau), die entscheidende Endung ist markiert, und darunter steht es mit Begleiter (моя мебель) zum Anhören. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Regel stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Eine Runde hat 15 Wörter.</p>
 <p><strong>Einstellungen:</strong> <em>Regelfälle</em> (Endung eindeutig), <em>-ь-Wörter</em>, <em>Ausnahmen</em> (männliche Personen auf -а/-я, кофе, Fremdwörter, -мя) und <em>nur Plural</em>. Regelfälle zählen nicht zum Fortschritt „gelernt“ – der Kopf zeigt den gewählten Bereich. <strong>⋯-Menü:</strong> <em>Liste der -ь-Wörter</em> (nach Faustregel geordnet, je Gruppe „üben“) und <em>Neue Runde</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" role="group" aria-label="Umfang">
-<button class="mode-btn active" id="gender-scope-all" onclick="setGenderScope('all')">Alle</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Bereich</span><div class="tense-switcher" role="group" aria-label="Umfang">
+<button data-std="1" class="mode-btn active" id="gender-scope-all" onclick="setGenderScope('all')">Alle</button>
 <button class="mode-btn" id="gender-scope-easy" onclick="setGenderScope('easy')">Regelfälle</button>
 <button class="mode-btn" id="gender-scope-soft" onclick="setGenderScope('soft')" title="Wörter auf -ь: Faustregeln und Wörter zum Mitlernen">-ь-Wörter</button>
 <button class="mode-btn" id="gender-scope-exc" onclick="setGenderScope('exc')" title="Männliche Personen auf -а/-я, кофе, unveränderliche Fremdwörter, -мя">Ausnahmen</button>
 <button class="mode-btn" id="gender-scope-pl" onclick="setGenderScope('pl')" title="Wörter ohne Einzahl (деньги, часы, очки)">nur Plural</button>
-</div></div></div></div>
+</div></span></div></div></div>
 <div class="gt-task"><div class="case-question" id="gender-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGender()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options gender-options" id="gender-opts"></div>
 <div class="conj-actions gt-actions">
@@ -1886,10 +1898,10 @@
 </div>
 </div>
 <div id="aspect-practice">
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
+<div class="gt-richtung"><div class="tense-switcher">
 <button class="mode-btn active" id="aspect-dir-btn-fwd" onclick="setAspectDir('fwd')">unvollendet → vollendet</button>
 <button class="mode-btn" id="aspect-dir-btn-back" onclick="setAspectDir('back')">vollendet → unvollendet</button>
-</div></div></div></div>
+</div></div><div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="false" class="tool-btn gt-toggle" id="aspect-hint-toggle" onclick="toggleAspectHint()" title="Bildungsweise des Partners (z. B. Vorsilbe по-) schon vor dem Antworten zeigen" type="button"><i class="ti ti-eye-off"></i> <span>Hilfe</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="aspect-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakAspect()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
 <input autocomplete="off" class="conj-input" id="aspect-input" onkeydown="if(event.key==='Enter') checkAspect()" placeholder="Partnerverb (Infinitiv)…" type="text"/>
@@ -2002,16 +2014,16 @@
 </div>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
-<button class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="false" class="tool-btn gt-toggle" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Aspekt</span><div class="tense-switcher">
+<button data-std="1" class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
 <button class="mode-btn" id="conj-aspect-btn-pf" onclick="setConjAspect('pf')">Vollendet</button>
-</div><div class="tense-switcher">
-<button class="mode-btn active" id="conj-tense-btn-nonpast" onclick="setConjTense('nonpast')">Präsens</button>
+</div></span><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher">
+<button data-std="1" class="mode-btn active" id="conj-tense-btn-nonpast" onclick="setConjTense('nonpast')">Präsens</button>
 <button class="mode-btn" id="conj-tense-btn-past" onclick="setConjTense('past')">Vergangenheit</button>
 <button class="mode-btn" id="conj-tense-btn-future" onclick="setConjTense('future')" title="буду + Infinitiv – zum Üben, zählt nicht im Lernstand">Futur</button>
 <button class="mode-btn" id="conj-tense-btn-imperative" onclick="setConjTense('imperative')">Imperativ</button>
 <button class="mode-btn" id="conj-tense-btn-mixed" onclick="setConjMixed()" title="Jedes Verb in einer zufälligen, noch offenen Zeit (Präsens, Vergangenheit, Imperativ)">Gemischt</button>
-</div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button class="tool-btn" id="conj-sort-btn" onclick="cycleConjSortMode()" title="Reihenfolge der Verben umschalten" type="button"><i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="ohne Tabelle" id="conj-scope-btn" onclick="toggleConjScope()" title="Auch Verben des Wortschatzes ohne Konjugationstabelle in der Liste zeigen" type="button"><i class="ti ti-list-check"></i> <span>Auch Verben ohne Tabelle</span></button></div></div></div>
+</div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="conj-sort-btn" onclick="cycleConjSortMode()" title="Reihenfolge der Verben umschalten" type="button"><i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span></button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="ohne Tabelle" id="conj-scope-btn" onclick="toggleConjScope()" title="Auch Verben des Wortschatzes ohne Konjugationstabelle in der Liste zeigen" type="button"><i class="ti ti-list-check"></i> <span>Ohne Tabelle</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="conj-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="conj-verb-btn" onclick="openVerbPicker()" title="Verb aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span id="conj-verb-btn-label">Verb wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="conj-verb-select" onchange="saveToolSettings(); renderConjugationTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('conj-verb-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2059,14 +2071,14 @@
 <p><strong>Schreibregeln:</strong> Nach г, к, х, ж, ш, щ, ч steht nie ы, sondern и (хороший, русские). Nach ж, ш, щ, ч, ц wird unbetontes о zu е (хорошее, хорошего).</p>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button class="tool-btn" id="decl-sort-btn" onclick="cycleDeclSortMode()" title="Sortierung der Adjektivliste umschalten">
-<i class="ti ti-sort-ascending-2"></i> <span>Hart → Weich</span>
-</button><div class="tense-switcher">
-<button class="mode-btn active" id="decl-gender-btn-masc" onclick="setDeclGender('masc')" title="männlich">m</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="decl-hint-toggle" onclick="toggleDeclHint()" title="Adjektivtyp hinter dem Wort ein-/ausblenden" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Geschlecht</span><div class="tense-switcher">
+<button data-std="1" class="mode-btn active" id="decl-gender-btn-masc" onclick="setDeclGender('masc')" title="männlich">m</button>
 <button class="mode-btn" id="decl-gender-btn-fem" onclick="setDeclGender('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="decl-gender-btn-neut" onclick="setDeclGender('neut')" title="sächlich">n</button>
 <button class="mode-btn" id="decl-gender-btn-plural" onclick="setDeclGender('plural')" title="Plural">Pl</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
+</div></span><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="decl-sort-btn" onclick="cycleDeclSortMode()" title="Sortierung der Adjektivliste umschalten">
+<i class="ti ti-sort-ascending-2"></i> <span>Hart → Weich</span>
+</button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="decl-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="decl-adj-btn" onclick="openFormPicker('decl')" title="Adjektiv aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Adjektiv wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="decl-adj-select" onchange="saveToolSettings(); renderDeclensionTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('decl-adj-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2123,15 +2135,15 @@
 </div>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Der Nominativ Singular ist vorgegeben. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Wort. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="noun-hint-toggle" onclick="toggleNounHint()" title="Klassen-Hinweis hinter dem Wort ein-/ausblenden">
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="noun-hint-toggle" onclick="toggleNounHint()" title="Klassen-Hinweis hinter dem Wort ein-/ausblenden">
 <i class="ti ti-eye"></i> <span>Hilfe</span>
-</button><div class="tense-switcher">
-<button class="mode-btn active" id="noun-num-btn-sg" onclick="setNounNumber('sg')">Singular</button>
+</button><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher">
+<button data-std="1" class="mode-btn active" id="noun-num-btn-sg" onclick="setNounNumber('sg')">Singular</button>
 <button class="mode-btn" id="noun-num-btn-pl" onclick="setNounNumber('pl')">Plural</button>
 <button class="mode-btn" id="noun-num-btn-both" onclick="setNounNumber('both')" title="Singular und Plural zusammen">Beide</button>
-</div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="noun-endings-toggle" onclick="toggleNounEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Muster" id="noun-muster-toggle" onclick="toggleNounMuster()" title="Ein Wort mit gleichem Deklinationsmuster zeigen (z. B. вода wie школа)"><i class="ti ti-eye-off"></i> <span>Muster</span></button><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="noun-sort-btn" onclick="cycleNounSortMode()" title="Sortierung der Substantivliste umschalten">
+</div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="noun-endings-toggle" onclick="toggleNounEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Beispielwort" id="noun-muster-toggle" onclick="toggleNounMuster()" title="Ein Wort mit gleichem Deklinationsmuster zeigen (z. B. вода wie школа)"><i class="ti ti-eye-off"></i> <span>Beispielwort</span></button><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="noun-sort-btn" onclick="cycleNounSortMode()" title="Sortierung der Substantivliste umschalten">
 <i class="ti ti-sort-ascending-2"></i> <span>Nach Klasse</span>
-</button><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
+</button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="noun-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="noun-pick-btn" onclick="openFormPicker('noun')" title="Substantiv aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Substantiv wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="noun-select" onchange="saveToolSettings(); renderNounTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('noun-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2167,24 +2179,24 @@
 <p>• <strong>Zahl + Adj + Subst:</strong> Nach 2–4 steht das Substantiv im Genitiv Singular, das Adjektiv im Genitiv Plural (два новых стола) – bei weiblichen Wörtern im Nominativ Plural (две новые книги).</p>
 <p>• <strong>Präposition:</strong> Die Präposition bestimmt den Fall: в новом доме, с моим братом.</p>
 <p><strong>Lebewesen im Akkusativ</strong> sehen aus wie der Genitiv (нового студента), Dinge wie der Nominativ (новый дом).</p>
-<p><strong>Bedienung:</strong> Singular/Plural und Fall wählst du oben. <em>Nur einfache</em> beschränkt die Auswahl auf harte Adjektive und regelmäßige Substantive. Antworten kannst du frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Mit <em>Vorlesen</em> (Einstellungen) wird die Lösung nach dem Prüfen oder Aufdecken automatisch vorgelesen, bei <em>Bausteine</em> auch jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Der Lautsprecher bzw. Taste 4 spielt die Lösung erneut.</p>
+<p><strong>Bedienung:</strong> Singular/Plural und Fall wählst du oben. <em>Nur regelmäßige</em> beschränkt die Auswahl auf harte Adjektive und regelmäßige Substantive. Antworten kannst du frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Mit <em>Vorlesen</em> (Einstellungen) wird die Lösung nach dem Prüfen oder Aufdecken automatisch vorgelesen, bei <em>Bausteine</em> auch jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Der Lautsprecher bzw. Taste 4 spielt die Lösung erneut.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" id="wg-type-switcher" role="group" aria-label="Art" style="flex-wrap:wrap">
-<button class="mode-btn active" id="wg-type-adjnoun" onclick="setWgType('adjnoun')">Adj + Subst</button>
+<button data-std="1" class="mode-btn active" id="wg-type-adjnoun" onclick="setWgType('adjnoun')">Adj + Subst</button>
 <button class="mode-btn" id="wg-type-detnoun" onclick="setWgType('detnoun')">Begleiter + Subst</button>
 <button class="mode-btn" id="wg-type-numadjnoun" onclick="setWgType('numadjnoun')">Zahl + Adj + Subst</button>
 <button class="mode-btn" id="wg-type-prepphrase" onclick="setWgType('prepphrase')">Präposition</button>
-</div></span></div><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher" id="wg-num-switcher" role="group" aria-label="Zahl">
-<button class="mode-btn active" id="wg-num-btn-sg" onclick="setWgNumber('sg')">Singular</button>
+</div></span></div><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="wg-hint-toggle" onclick="toggleWordgroupHint()" title="Grundformen über der Übersetzung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher" id="wg-num-switcher" role="group" aria-label="Zahl">
+<button data-std="1" class="mode-btn active" id="wg-num-btn-sg" onclick="setWgNumber('sg')">Singular</button>
 <button class="mode-btn" id="wg-num-btn-pl" onclick="setWgNumber('pl')">Plural</button>
-</div></span><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="wg-case-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-v="all" onclick="setWgCase('all')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setWgCase('Nom.')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setWgCase('Gen.')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setWgCase('Dat.')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setWgCase('Akk.')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setWgCase('Instr.')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setWgCase('Präp.')" title="Präpositiv">Präp</button></div></span><span class="gt-field"><span class="gt-field-label">Antwort</span><div class="tense-switcher" role="group" aria-label="Antwort">
-<button class="mode-btn active" id="wg-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
+</div></span><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="wg-case-switcher" role="group" aria-label="Fall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setWgCase('all')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setWgCase('Nom.')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setWgCase('Gen.')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setWgCase('Dat.')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setWgCase('Akk.')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setWgCase('Instr.')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setWgCase('Präp.')" title="Präpositiv">Präp</button></div></span><span class="gt-field"><span class="gt-field-label">Antwort</span><div class="tense-switcher" role="group" aria-label="Antwort">
+<button data-std="1" class="mode-btn active" id="wg-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
 <button class="mode-btn" id="wg-ansmode-click" onclick="setWgAnswerMode('click')"><i class="ti ti-hand-click"></i> Bausteine</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Wörter</span><div class="tense-switcher" role="group" aria-label="Wörter">
-<button class="mode-btn active" id="wg-diff-all" onclick="setWgDifficulty('all')">Alle Wörter</button>
-<button class="mode-btn" id="wg-diff-easy" onclick="setWgDifficulty('easy')">Nur einfache</button>
-</div></span><button aria-pressed="true" class="tool-btn gt-toggle" id="wg-hint-toggle" onclick="toggleWordgroupHint()" title="Grundformen über der Übersetzung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="wg-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
+<button data-std="1" class="mode-btn active" id="wg-diff-all" onclick="setWgDifficulty('all')">Alle Wörter</button>
+<button class="mode-btn" id="wg-diff-easy" onclick="setWgDifficulty('easy')">Nur regelmäßige</button>
+</div></span><span aria-hidden="true" class="gt-settings-sep"></span><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="wg-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
 
 <div id="wg-body"></div>
 </div>
@@ -2290,7 +2302,7 @@
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Satzart</span><div class="tense-switcher" id="sb-type-switcher" role="group" aria-label="Satzart" style="flex-wrap:wrap">
-<button class="mode-btn active" id="sb-type-sentence" onclick="setWgType('sentence')">Ganzer Satz</button>
+<button data-std="1" class="mode-btn active" id="sb-type-sentence" onclick="setWgType('sentence')">Ganzer Satz</button>
 <button class="mode-btn" id="sb-type-prepsentence" onclick="setWgType('prepsentence')">Satz + Präposition</button>
 <button class="mode-btn" id="sb-type-possession" onclick="setWgType('possession')">Besitz</button>
 <button class="mode-btn" id="sb-type-negation" onclick="setWgType('negation')">Verneinung</button>
@@ -2300,20 +2312,20 @@
 <button class="mode-btn" id="sb-type-imperative" onclick="setWgType('imperative')">Aufforderung</button>
 <button class="mode-btn" id="sb-type-place" onclick="setWgType('place')" title="wo? в/на + Präpositiv · wohin? в/на + Akkusativ">Ort / Richtung</button>
 </div></span></div><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher" id="sb-tense-switcher" role="group" aria-label="Zeit">
-<button class="mode-btn active" id="sb-tense-present" onclick="setWgTense('present')">Präsens</button>
+<button data-std="1" class="mode-btn active" id="sb-tense-present" onclick="setWgTense('present')">Präsens</button>
 <button class="mode-btn" id="sb-tense-past" onclick="setWgTense('past')">Vergangenheit</button>
 <button class="mode-btn" id="sb-tense-future" onclick="setWgTense('future')">Zukunft</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Antwort</span><div class="tense-switcher" role="group" aria-label="Antwort">
-<button class="mode-btn active" id="sb-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
+<button data-std="1" class="mode-btn active" id="sb-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
 <button class="mode-btn" id="sb-ansmode-click" onclick="setWgAnswerMode('click')"><i class="ti ti-hand-click"></i> Bausteine</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Vorgabe</span><div class="tense-switcher" role="group" aria-label="Vorgabe">
-<button class="mode-btn active" id="sb-help-blocks" onclick="setSbHelp('blocks')" title="Alle Wörter in der Grundform vorgeben">Grundformen</button>
+<button data-std="1" class="mode-btn active" id="sb-help-blocks" onclick="setSbHelp('blocks')" title="Alle Wörter in der Grundform vorgeben">Grundformen</button>
 <button class="mode-btn" id="sb-help-gap" onclick="setSbHelp('gap')" title="Fertiger Satz mit einer Lücke">Lücke</button>
 <button class="mode-btn" id="sb-help-free" onclick="setSbHelp('free')" title="Nur der deutsche Satz">Nur Deutsch</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Hinweis</span><div class="tense-switcher" id="sb-hint-modes" role="group" aria-label="Hinweis zum Kasus (z. B. „Objekt im Akk“)">
-<button class="mode-btn active" data-v="immer" onclick="setSbHintMode('immer')" title="Hinweis immer unter dem Satz">Immer</button>
+<button data-std="1" class="mode-btn active" data-v="immer" onclick="setSbHintMode('immer')" title="Hinweis immer unter dem Satz">Immer</button>
 <button class="mode-btn" data-sum="Hinweis nach Fehler" data-v="fehler" onclick="setSbHintMode('fehler')" title="Hinweis erst nach einer falschen Antwort">Nach Fehler</button>
-<button class="mode-btn" data-sum="ohne Hinweis" data-v="nie" onclick="setSbHintMode('nie')" title="Keinen Hinweis zeigen">Nie</button></div></span><button aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
+<button class="mode-btn" data-sum="ohne Hinweis" data-v="nie" onclick="setSbHintMode('nie')" title="Keinen Hinweis zeigen">Nie</button></div></span><span aria-hidden="true" class="gt-settings-sep"></span><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" data-sum="Vorlesen" id="sb-speak-toggle" onclick="toggleWgAutoSpeak()" title="Lösungen automatisch vorlesen – gilt für alle Grammatikwerkzeuge"><i class="ti ti-volume"></i> <span>Vorlesen</span></button></div></div></div>
 
 <div id="sb-body"></div>
 </div>
@@ -2341,7 +2353,7 @@
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="true" class="tool-btn gt-toggle" id="nn-hint-toggle" onclick="toggleNumNounHint()" title="Regel vor dem Antworten zeigen" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><div class="tense-switcher" id="nn-range-switcher" role="group" aria-label="Zahlbereich"><button class="mode-btn active" data-sum="bis 20" data-v="20" onclick="setNumNounRange('20')" type="button">bis 20</button><button class="mode-btn" data-sum="bis 100" data-v="100" onclick="setNumNounRange('100')" type="button">bis 100</button><button class="mode-btn" data-sum="große Zahlen" data-v="gross" onclick="setNumNounRange('gross')" title="z. B. 101, 112, 1000, 1021" type="button">große Zahlen</button></div><div class="tense-switcher" id="nn-rule-switcher" role="group" aria-label="Regelfall"><button class="mode-btn active" data-v="all" onclick="setNumNounRule('all')" type="button">Alle</button><button class="mode-btn" data-v="r1" onclick="setNumNounRule('r1')" title="Endziffer 1 → Nom. Sg." type="button">1</button><button class="mode-btn" data-v="r24" onclick="setNumNounRule('r24')" title="Endziffer 2–4 → Gen. Sg." type="button">2–4</button><button class="mode-btn" data-v="r5" onclick="setNumNounRule('r5')" title="Endziffer 0, 5–9 → Gen. Pl." type="button">5–0</button><button class="mode-btn" data-v="r11" onclick="setNumNounRule('r11')" title="11–14 → Gen. Pl." type="button">11–14</button></div><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="in Worten" id="nn-write-toggle" onclick="toggleNumNounWrite()" title="Ganze Wendung in Worten tippen (две матери) – übt один/одна/одно und два/две" type="button"><i class="ti ti-eye-off"></i> <span>Zahl ausschreiben</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="nn-reg-toggle" onclick="toggleNumNounReg()" title="Ohne Sonderfälle und Zählformen (пять человек)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="nn-hint-toggle" onclick="toggleNumNounHint()" title="Regel vor dem Antworten zeigen" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Zahlen</span><div class="tense-switcher" id="nn-range-switcher" role="group" aria-label="Zahlbereich"><button data-std="1" class="mode-btn active" data-sum="bis 20" data-v="20" onclick="setNumNounRange('20')" type="button">bis 20</button><button class="mode-btn" data-sum="bis 100" data-v="100" onclick="setNumNounRange('100')" type="button">bis 100</button><button class="mode-btn" data-sum="große Zahlen" data-v="gross" onclick="setNumNounRange('gross')" title="z. B. 101, 112, 1000, 1021" type="button">große Zahlen</button></div></span><span class="gt-field"><span class="gt-field-label">Regel</span><div class="tense-switcher" id="nn-rule-switcher" role="group" aria-label="Regelfall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setNumNounRule('all')" type="button">Alle</button><button class="mode-btn" data-v="r1" onclick="setNumNounRule('r1')" title="Endziffer 1 → Nom. Sg." type="button">1</button><button class="mode-btn" data-v="r24" onclick="setNumNounRule('r24')" title="Endziffer 2–4 → Gen. Sg." type="button">2–4</button><button class="mode-btn" data-v="r5" onclick="setNumNounRule('r5')" title="Endziffer 0, 5–9 → Gen. Pl." type="button">5–0</button><button class="mode-btn" data-v="r11" onclick="setNumNounRule('r11')" title="11–14 → Gen. Pl." type="button">11–14</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="in Worten" id="nn-write-toggle" onclick="toggleNumNounWrite()" title="Ganze Wendung in Worten tippen (две матери) – übt один/одна/одно und два/две" type="button"><i class="ti ti-eye-off"></i> <span>Zahl ausschreiben</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="nn-reg-toggle" onclick="toggleNumNounReg()" title="Ohne Sonderfälle und Zählformen (пять человек)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="numnoun-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakNumNoun()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;"><span class="cf-rahmen" id="numnoun-pre" lang="ru"></span>
 <input aria-label="Form nach der Zahl" autocomplete="off" class="conj-input" id="numnoun-input" onkeydown="if(event.key==='Enter') checkNumNoun()" placeholder="Substantivform eingeben…" type="text"/>
@@ -2372,13 +2384,13 @@
 <p><strong>Bedienung:</strong> Oben wählst du die Zahl (Singular, Plural oder beide) und einen oder mehrere Fälle; „Nur regelmäßige“ lässt Sonderfälle weg. Vor dem Feld steht eine kurze Wendung (много ___, с ___ …), in die die Form passt. Eine Runde bringt zuerst fällige, dann zuletzt falsche und neue Formen. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die gesuchte Form.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="cf-num-switcher">
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="cf-hint-toggle" onclick="toggleCaseFormHint('noun')" title="Hinweis zur Deklinationsklasse ein-/ausblenden">
+<i class="ti ti-eye"></i> <span>Hilfe</span>
+</button><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher" id="cf-num-switcher">
 <button class="mode-btn" id="cf-num-sg" onclick="setCaseFormNumber('sg', 'noun')">Singular</button>
 <button class="mode-btn" id="cf-num-pl" onclick="setCaseFormNumber('pl', 'noun')">Plural</button>
-<button class="mode-btn active" id="cf-num-mixed" onclick="setCaseFormNumber('mixed', 'noun')">Beide</button>
-</div><div class="tense-switcher" id="cf-case-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-v="all" onclick="setCaseFormCase('all', 'noun')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setCaseFormCase('Nom.', 'noun')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setCaseFormCase('Gen.', 'noun')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseFormCase('Dat.', 'noun')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseFormCase('Akk.', 'noun')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseFormCase('Instr.', 'noun')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseFormCase('Präp.', 'noun')" title="Präpositiv">Präp</button></div><button aria-pressed="true" class="tool-btn gt-toggle" id="cf-hint-toggle" onclick="toggleCaseFormHint('noun')" title="Hinweis zur Deklinationsklasse ein-/ausblenden">
-<i class="ti ti-eye"></i> <span>Hilfe</span>
-</button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="cf-reg-toggle" onclick="toggleCaseFormReg()" title="Nur regelmäßige Wörter (ohne flüchtige Vokale, -мя, люди usw.)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
+<button data-std="1" class="mode-btn active" id="cf-num-mixed" onclick="setCaseFormNumber('mixed', 'noun')">Beide</button>
+</div></span><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="cf-case-switcher" role="group" aria-label="Fall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setCaseFormCase('all', 'noun')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setCaseFormCase('Nom.', 'noun')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setCaseFormCase('Gen.', 'noun')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseFormCase('Dat.', 'noun')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseFormCase('Akk.', 'noun')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseFormCase('Instr.', 'noun')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseFormCase('Präp.', 'noun')" title="Präpositiv">Präp</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="cf-reg-toggle" onclick="toggleCaseFormReg()" title="Nur regelmäßige Wörter (ohne flüchtige Vokale, -мя, люди usw.)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="caseform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseForm('noun')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;"><span class="cf-rahmen" id="caseform-pre" lang="ru"></span>
 <input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="caseform-input" onkeydown="if(event.key==='Enter') checkCaseForm('noun')" placeholder="Form eingeben…" type="text"/><span class="cf-rahmen" id="caseform-post" lang="ru"></span>
@@ -2409,18 +2421,18 @@
 <p><strong>Bedienung:</strong> Oben wählst du die Zahl, das Geschlecht und bei Bedarf einen bestimmten Fall. Ein gewähltes Geschlecht gilt für den Singular. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="ca-gen-switcher">
-<button class="mode-btn active" id="ca-gen-all" onclick="setCaseFormGenus('all')">Alle</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="ca-hint-toggle" onclick="toggleCaseFormHint('adj')" title="Hinweis zum Adjektivtyp ein-/ausblenden">
+<i class="ti ti-eye"></i> <span>Hilfe</span>
+</button><span class="gt-field"><span class="gt-field-label">Geschlecht</span><div class="tense-switcher" id="ca-gen-switcher">
+<button data-std="1" class="mode-btn active" id="ca-gen-all" onclick="setCaseFormGenus('all')">Alle</button>
 <button class="mode-btn" id="ca-gen-masc" onclick="setCaseFormGenus('masc')" title="männlich">m</button>
 <button class="mode-btn" id="ca-gen-fem" onclick="setCaseFormGenus('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="ca-gen-neut" onclick="setCaseFormGenus('neut')" title="sächlich">n</button>
-</div><div class="tense-switcher" id="ca-num-switcher">
+</div></span><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher" id="ca-num-switcher">
 <button class="mode-btn" id="ca-num-sg" onclick="setCaseFormNumber('sg', 'adj')">Singular</button>
 <button class="mode-btn" id="ca-num-pl" onclick="setCaseFormNumber('pl', 'adj')">Plural</button>
-<button class="mode-btn active" id="ca-num-mixed" onclick="setCaseFormNumber('mixed', 'adj')">Beide</button>
-</div><div class="tense-switcher" id="ca-case-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-v="all" onclick="setCaseFormCase('all', 'adj')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setCaseFormCase('Nom.', 'adj')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setCaseFormCase('Gen.', 'adj')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseFormCase('Dat.', 'adj')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseFormCase('Akk.', 'adj')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseFormCase('Instr.', 'adj')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseFormCase('Präp.', 'adj')" title="Präpositiv">Präp</button></div><button aria-pressed="true" class="tool-btn gt-toggle" id="ca-hint-toggle" onclick="toggleCaseFormHint('adj')" title="Hinweis zum Adjektivtyp ein-/ausblenden">
-<i class="ti ti-eye"></i> <span>Hilfe</span>
-</button></div></div></div>
+<button data-std="1" class="mode-btn active" id="ca-num-mixed" onclick="setCaseFormNumber('mixed', 'adj')">Beide</button>
+</div></span><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="ca-case-switcher" role="group" aria-label="Fall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setCaseFormCase('all', 'adj')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setCaseFormCase('Nom.', 'adj')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setCaseFormCase('Gen.', 'adj')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseFormCase('Dat.', 'adj')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseFormCase('Akk.', 'adj')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseFormCase('Instr.', 'adj')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseFormCase('Präp.', 'adj')" title="Präpositiv">Präp</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="ca-reg-toggle" onclick="toggleCaseAdjReg()" title="Nur harte Adjektive ohne Schreibregel, weichen Stamm oder Endbetonung" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="caseadj-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseForm('adj')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;">
 <input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="caseadj-input" onkeydown="if(event.key==='Enter') checkCaseForm('adj')" placeholder="Form eingeben…" type="text"/>
@@ -2454,13 +2466,13 @@
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> blendet die deutsche Entsprechung ein (к нему – zu ihm). <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die Lösung.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
-<button class="mode-btn active" id="pronform-scope-all" onclick="setPronFormScope('all')">Alle</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="pronform-hint-toggle" onclick="togglePronFormHint()" title="Deutsche Entsprechung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher">
+<button data-std="1" class="mode-btn active" id="pronform-scope-all" onclick="setPronFormScope('all')">Alle</button>
 <button class="mode-btn" id="pronform-scope-case" onclick="setPronFormScope('case')">Personal</button>
 <button class="mode-btn" id="pronform-scope-prep" onclick="setPronFormScope('prep')">Mit Präposition</button>
 <button class="mode-btn" id="pronform-scope-poss" onclick="setPronFormScope('poss')">Possessiv</button>
 <button class="mode-btn" id="pronform-scope-extra" lang="ru" onclick="setPronFormScope('extra')">кто · весь</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle" id="pronform-hint-toggle" onclick="togglePronFormHint()" title="Deutsche Entsprechung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+</div></span></div></div></div>
 <div class="gt-task"><div class="case-question" id="pronform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakPronForm()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
 <input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="pronform-input" onkeydown="if(event.key==='Enter') checkPronForm()" placeholder="Form eingeben…" type="text"/>
@@ -2492,12 +2504,12 @@
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> zeigt die Regel zur Aufgabe. <em>Anhören</em> liest vor dem Prüfen die Grundform bzw. den Satz mit Lücke, danach die Lösung. Wo zwei Formen richtig sind (старше/старее, лучший/самый лучший), gilt jede.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" role="group" aria-label="Aufgabentyp">
-<button class="mode-btn active" id="adjform-scope-all" onclick="setAdjFormScope('all')">Alle</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="adjform-hint-toggle" onclick="toggleAdjFormHint()" title="Regel zur Aufgabe ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" role="group" aria-label="Aufgabentyp">
+<button data-std="1" class="mode-btn active" id="adjform-scope-all" onclick="setAdjFormScope('all')">Alle</button>
 <button class="mode-btn" id="adjform-scope-short" onclick="setAdjFormScope('short')">Kurzform</button>
 <button class="mode-btn" id="adjform-scope-comp" onclick="setAdjFormScope('comp')">Komparativ</button>
 <button class="mode-btn" id="adjform-scope-sup" onclick="setAdjFormScope('sup')">Superlativ</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle" id="adjform-hint-toggle" onclick="toggleAdjFormHint()" title="Regel zur Aufgabe ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+</div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="adjform-reg-toggle" onclick="toggleAdjFormReg()" title="Ohne unregelmäßige Komparative, Sonderformen und Kurzformen mit flüchtigem Vokal" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="adjform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakAdjForm()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
 <input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="adjform-input" onkeydown="if(event.key==='Enter') checkAdjForm()" placeholder="Form eingeben…" type="text"/>
@@ -2528,12 +2540,12 @@
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Pronomen. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
 <p><strong>Weitere Pronomen:</strong> In der Liste stehen auch die Fragewörter кто und что, das Reflexivpronomen себя (ohne Nominativ – es bezieht sich immer auf das Subjekt) sowie весь, этот und тот, die sich wie мой nach Geschlecht und Zahl richten (m / f / n / Pl).</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher" id="pronoun-gender-switcher" style="display:none">
-<button class="mode-btn active" id="pronoun-gender-masc" onclick="setPronounGender('masc')" title="männlich">m</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Geschlecht</span><div class="tense-switcher" id="pronoun-gender-switcher" style="display:none">
+<button data-std="1" class="mode-btn active" id="pronoun-gender-masc" onclick="setPronounGender('masc')" title="männlich">m</button>
 <button class="mode-btn" id="pronoun-gender-fem" onclick="setPronounGender('fem')" title="weiblich">f</button>
 <button class="mode-btn" id="pronoun-gender-neut" onclick="setPronounGender('neut')" title="sächlich">n</button>
 <button class="mode-btn" id="pronoun-gender-plural" onclick="setPronounGender('plural')" title="Plural">Pl</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
+</div></span><span aria-hidden="true" class="gt-settings-sep"></span><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="pronoun-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="pronoun-pick-btn" onclick="openFormPicker('pronoun')" title="Pronomen aus der Liste wählen"><i class="ti ti-list-search"></i>
  <span>Pronomen wählen</span>
 <i class="ti ti-chevron-down gt-chev"></i></button><select id="pronoun-select" onchange="renderPronounTable()" style="display:none"></select><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGrammarSelect('pronoun-select')" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
@@ -2572,11 +2584,9 @@
 <div class="conj-toolbar gt-modes"><div class="tense-switcher">
 <button class="mode-btn active" id="case-mode-btn-abstract" onclick="setCaseMode('abstract')">Fall wählen</button>
 <button class="mode-btn" id="case-mode-btn-word" onclick="setCaseMode('word')">Form bilden</button>
-</div></div><div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Bereich</span><div class="tense-switcher" role="group" aria-label="Bereich">
-<button class="mode-btn active" id="case-scope-btn-all" onclick="setCaseScope('all')" type="button">Alle</button><button class="mode-btn" id="case-scope-btn-single" onclick="setCaseScope('single')" type="button">Ohne Wechsel</button><button class="mode-btn" id="case-scope-btn-dual" onclick="setCaseScope('dual')" type="button">Nur Wechsel</button></div></span>
-<span class="gt-field" id="case-kasus-group"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="case-kasus-chips" role="group" aria-label="Fall">
-<button class="mode-btn active" data-v="all" onclick="setCaseKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Gen." onclick="setCaseKasus('Gen.')" title="Genitiv" type="button">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseKasus('Dat.')" title="Dativ" type="button">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseKasus('Akk.')" title="Akkusativ" type="button">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseKasus('Instr.')" title="Instrumental" type="button">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseKasus('Präp.')" title="Präpositiv" type="button">Präp</button></div></span>
-<button aria-pressed="true" class="tool-btn gt-toggle" id="case-hint-toggle" onclick="toggleCaseHint()" title="Hinweis „Ort – wo? → Präp.“ unter der Aufgabe ein-/ausblenden" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Plural" id="case-plural-toggle" onclick="toggleCasePlural()" title="Auch Pluralformen bilden (в магазинах, к друзьям)" type="button"><i class="ti ti-stack-2"></i> <span>Auch Plural</span></button></div></div></div>
+</div></div><div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="case-hint-toggle" onclick="toggleCaseHint()" title="Hinweis „Ort – wo? → Präp.“ unter der Aufgabe ein-/ausblenden" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Bereich</span><div class="tense-switcher" role="group" aria-label="Bereich">
+<button data-std="1" class="mode-btn active" id="case-scope-btn-all" onclick="setCaseScope('all')" type="button">Alle</button><button class="mode-btn" id="case-scope-btn-single" onclick="setCaseScope('single')" type="button">Ohne Wechsel</button><button class="mode-btn" id="case-scope-btn-dual" onclick="setCaseScope('dual')" type="button">Nur Wechsel</button></div></span><span class="gt-field" id="case-kasus-group"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="case-kasus-chips" role="group" aria-label="Fall">
+<button data-std="1" class="mode-btn active" data-v="all" onclick="setCaseKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Gen." onclick="setCaseKasus('Gen.')" title="Genitiv" type="button">Gen</button><button class="mode-btn" data-v="Dat." onclick="setCaseKasus('Dat.')" title="Dativ" type="button">Dat</button><button class="mode-btn" data-v="Akk." onclick="setCaseKasus('Akk.')" title="Akkusativ" type="button">Akk</button><button class="mode-btn" data-v="Instr." onclick="setCaseKasus('Instr.')" title="Instrumental" type="button">Instr</button><button class="mode-btn" data-v="Präp." onclick="setCaseKasus('Präp.')" title="Präpositiv" type="button">Präp</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Plural" id="case-plural-toggle" onclick="toggleCasePlural()" title="Auch Pluralformen bilden (в магазинах, к друзьям)" type="button"><i class="ti ti-stack-2"></i> <span>Auch Plural</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="case-question"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakCaseDrill()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="case-options"></div>
 <div class="conj-row" id="case-input-row" style="grid-template-columns: 1fr; display:none;">
@@ -2584,7 +2594,6 @@
 
 </div>
 <div class="conj-actions gt-actions" id="case-choice-actions">
-<button class="tool-btn" onclick="gtChoiceReveal(CASE_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen</button>
 <button class="tool-btn" onclick="gtChoiceNext(CASE_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
 <div class="conj-actions gt-actions" id="case-input-actions" style="display:none">
 <button class="tool-btn gt-primary" onclick="checkCaseWord()"><i class="ti ti-check"></i> Prüfen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button><button class="tool-btn" onclick="revealCaseWord()"><i class="ti ti-eye"></i> Lösung zeigen <kbd aria-hidden="true" class="gt-kbd">3</kbd></button>
@@ -2630,10 +2639,10 @@
 </div>
 </div>
 <div id="motion-pair-view">
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
+<div class="gt-richtung"><div class="tense-switcher">
 <button class="mode-btn active" id="motion-dir-btn-fwd" onclick="setMotionDir('fwd')">einmalig → wiederholt</button>
 <button class="mode-btn" id="motion-dir-btn-back" onclick="setMotionDir('back')">wiederholt → einmalig</button>
-</div></div></div></div>
+</div></div>
 <div class="gt-task"><div class="case-question" id="motion-pair-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakMotionPair()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
 <input autocomplete="off" class="conj-input" id="motion-pair-input" onkeydown="if(event.key==='Enter') checkMotionPair()" placeholder="Partnerverb (Infinitiv)…" type="text"/>
@@ -2696,13 +2705,13 @@
 <p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
 <p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 20 neue Aufgaben und setzt den Zähler zurück.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><div class="tense-switcher">
-<button class="mode-btn active" id="transform-scope-btn-all" onclick="setTransformScope('all')">Alle</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="transform-hint-toggle" onclick="toggleTransformHint()" title="Zielverb im Hinweis ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Form</span><div class="tense-switcher">
+<button data-std="1" class="mode-btn active" id="transform-scope-btn-all" onclick="setTransformScope('all')">Alle</button>
 <button class="mode-btn" id="transform-scope-btn-past" onclick="setTransformScope('past')">Vergangenheit</button>
 <button class="mode-btn" id="transform-scope-btn-future" onclick="setTransformScope('future')">Futur</button>
 <button class="mode-btn" id="transform-scope-btn-imperative" onclick="setTransformScope('imperative')">Imperativ</button>
 <button class="mode-btn" id="transform-scope-btn-aspect" onclick="setTransformScope('aspect')">Aspekt</button>
-</div><button aria-pressed="true" class="tool-btn gt-toggle" id="transform-hint-toggle" onclick="toggleTransformHint()" title="Zielverb im Hinweis ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+</div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="transform-reg-toggle" onclick="toggleTransformReg()" title="Ohne Sonderfälle und Verben mit Stammwechsel" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="transform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakTransform()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
 <input aria-label="Gesuchte Form" autocomplete="off" class="conj-input" id="transform-input" onkeydown="if(event.key==='Enter') checkTransform()" placeholder="Form eingeben…" type="text"/>
@@ -8587,21 +8596,41 @@ function toggleMusterAlle() {
   caseFormState.queue = [];
   updateGtSettingsSummary();
 }
+// „Neue Runde“ im ⋯-Menü jedes Rundenwerkzeugs (13.11.): fehlt Menü oder Eintrag, wird er angelegt
+function gtMenueErgaenzen() {
+  Object.entries(GT_RUNDEN).forEach(([id, R]) => {
+    const view = document.getElementById(R.panel), panel = view && view.closest('.grammar-panel'); if (!panel || view.dataset.rundeMenue) return;
+    view.dataset.rundeMenue = '1';
+    const kopf = panel.querySelector('.grammar-panel-header'); if (!kopf) return;
+    const ansicht = view !== panel && view.id && panel.querySelector('.gt-more-item[data-view]') ? ' data-view="' + view.id + '"' : '';
+    let more = kopf.querySelector('.gt-more');
+    if (!more) {
+      kopf.insertAdjacentHTML('beforeend', '<div class="gt-more"><button aria-expanded="false" aria-haspopup="menu" aria-label="Weitere Aktionen" class="gt-more-btn" onclick="toggleGtMore(this)" title="Weitere Aktionen" type="button"><i class="ti ti-dots"></i></button><div class="gt-more-menu"></div></div>');
+      more = kopf.querySelector('.gt-more');
+    }
+    const menu = more.querySelector('.gt-more-menu');
+    if (!ansicht && [...menu.querySelectorAll('.gt-more-item')].some(x => /Neue Runde/.test(x.textContent))) return;
+    gtHeadRight();
+    menu.insertAdjacentHTML('afterbegin', '<button class="gt-more-item"' + ansicht + ' onclick="closeGtMore(); gtRundeNeu(\'' + id + '\')" type="button"><i class="ti ti-arrows-shuffle"></i> <span>Neue Runde</span></button>');
+  });
+}
 // Schalter und Zeile „Muster sicher: X von Y“ in den sechs Werkzeugen anlegen und nachziehen
 function musterSync() {
   const D = musterBauen(), srs = loadGrammarSrs()[MUSTER_KEY] || {};
   Object.entries(MUSTER_TOOLS).forEach(([kz, tool]) => {
     const panel = document.getElementById('overlay-' + tool); if (!panel) return;
     const row = panel.querySelector('.gt-settings-row');
-    if (row && !row.querySelector('.muster-alle-toggle')) row.insertAdjacentHTML('beforeend', '<button aria-pressed="false" class="tool-btn gt-toggle muster-alle-toggle" data-sum="auch sichere Muster" onclick="toggleMusterAlle()" title="Regelmäßige Formen weiter abfragen, auch wenn ihr Muster schon sicher ist (10 verschiedene Wörter richtig)" type="button"><i class="ti ti-eye-off"></i> <span>Auch sichere Muster üben</span></button>');
+    const sep = row && row.querySelector('.gt-settings-sep');
+    if (row && !row.querySelector('.muster-alle-toggle')) (sep || row).insertAdjacentHTML(sep ? 'beforebegin' : 'beforeend', '<button aria-pressed="false" class="tool-btn gt-toggle muster-alle-toggle" data-sum="auch sichere Muster" onclick="toggleMusterAlle()" title="Regelmäßige Formen weiter abfragen, auch wenn ihr Muster schon sicher ist (10 verschiedene Wörter richtig)" type="button"><i class="ti ti-eye-off"></i> <span>Sichere Muster</span></button>');
     const btn = panel.querySelector('.muster-alle-toggle'); if (btn) setGtToggle(btn, musterState.alle);
+    // Abzeichen in der Kopfzeile neben „X von Y gelernt“ (13.11.)
     let zeile = panel.querySelector('.gt-muster');
-    if (!zeile) { const anker = panel.querySelector('.gt-settings'); if (!anker) return; anker.insertAdjacentHTML('afterend', '<div class="gt-muster"></div>'); zeile = panel.querySelector('.gt-muster'); }
+    if (!zeile) { const anker = panel.querySelector('.grammar-panel-progress'); if (!anker) return; anker.insertAdjacentHTML('afterend', '<span class="gt-muster"></span>'); zeile = panel.querySelector('.gt-muster'); }
     const mids = Object.keys(D.need).filter(m => m.startsWith(kz + '|') && D.anzahl[m] >= 2);
     const sicher = mids.filter(musterSicher).length, z = musterState.zuletzt[kz];
     const stand = z && D.anzahl[z] >= 2 ? ' · zuletzt geübt: ' + z.split('|').slice(1).map(x => ({ masc: 'männlich', fem: 'weiblich', neut: 'sächlich', plural: 'Plural', sg: 'Singular', pl: 'Plural' })[x] || x).join(' · ') + ' ' + Math.min(((srs[z] || {}).w || []).length, D.need[z]) + '/' + D.need[z] : '';
-    zeile.textContent = mids.length ? 'Muster sicher: ' + sicher + ' von ' + mids.length + stand : '';
-    zeile.title = 'Ein Muster ist sicher, wenn du es mit ' + MUSTER_NEED + ' verschiedenen Wörtern richtig hattest (kleinere Muster: mit allen). Seine übrigen Formen zählen dann als gelernt und werden nur noch zur Wiederholung gefragt.';
+    zeile.textContent = mids.length ? 'Muster ' + sicher + '/' + mids.length : '';
+    zeile.title = (stand ? stand.replace(/^ · /, '').replace(/^z/, 'Z') + '. ' : '') + 'Ein Muster ist sicher, wenn du es mit ' + MUSTER_NEED + ' verschiedenen Wörtern richtig hattest (kleinere Muster: mit allen). Seine übrigen Formen zählen dann als gelernt und werden nur noch zur Wiederholung gefragt.';
   });
 }
 // Einträge eines Werkzeugs im Lernstand. s[4]: optionale Liste aller Aufgaben [Schlüssel, Kennung] (Werkzeuge mit Mustern). s[2]: optionaler Filter (id, Eintrag), z. B. Geschlecht ohne Regelfälle;
@@ -17741,23 +17770,26 @@ function toggleGtSettings(btn) {
   box.classList.toggle('open', open);
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
+// Kurzfassung der zugeklappten Leiste (13.11.): nur, was vom Standard abweicht – sonst „Standard“.
+// Der Standard steht im Seitenquelltext: data-std am voreingestellten Knopf bzw. am eingeschalteten Schalter.
 function updateGtSettingsSummary(root) {
   (root || document).querySelectorAll('.gt-settings').forEach(box => {
     const parts = [];
     box.querySelectorAll('.gt-settings-body .tense-switcher').forEach(sw => {
       if (sw.offsetParent === null && sw.style.display === 'none') return;
-      const a = sw.querySelector('.mode-btn.active');
-      // „Alle“/„Beide“ sind die offenen Grundeinstellungen – sie stehen nicht in der Kurzfassung
-      if (a && !/^(Alle|Beide|Alle Wörter|Grundformen|Immer)$/.test(a.textContent.trim())) parts.push(a.dataset.sum || a.textContent.trim());
+      const aktiv = [...sw.querySelectorAll('.mode-btn.active')];
+      const txt = aktiv.map(a => a.dataset.sum || a.textContent.trim()).join('+');
+      if (aktiv.length && !(aktiv.length === 1 && aktiv[0].dataset.std)) parts.push(txt);
     });
     box.querySelectorAll('.gt-settings-body .gt-toggle').forEach(t => {
       if (t.style.display === 'none') return;
       const an = t.getAttribute('aria-pressed') === 'true';
-      if (t.dataset.sum) { if (an) parts.push(t.dataset.sum); }
-      else parts.push(an ? 'Hilfe an' : 'Hilfe aus');
+      if (an === !!t.dataset.std) return;
+      const name = t.dataset.sum || (t.querySelector('span') || t).textContent.trim();
+      parts.push(an ? name : name + ' aus');
     });
     const sum = box.querySelector('.gt-settings-sum');
-    if (sum) sum.textContent = parts.length ? parts.join(' · ') : 'alles gemischt';
+    if (sum) sum.textContent = parts.length ? parts.join(' · ') : 'Standard';
   });
 }
 // ⋯-Menü in der Kopfzeile; Einträge mit data-view nur, wenn diese Ansicht sichtbar ist
@@ -17799,14 +17831,17 @@ function gtInlineSpeak(task) {
 })();
 // Kopf der Grammatik-Werkzeuge (10.11.): Fortschritt und ⋯ bleiben zusammen rechts – bricht der Kopf
 // am Handy um, rutschte das ⋯ sonst allein nach links und sein Menü aus dem Bild
-(function gtHeadRight() {
+function gtHeadRight() {
   document.querySelectorAll('.grammar-panel-header').forEach(h => {
     const pr = h.querySelector(':scope > .grammar-panel-progress'), m = h.querySelector(':scope > .gt-more');
+    const da = h.querySelector(':scope > .gt-head-right');
+    if (da) { if (m) da.append(m); return; }   // nachträglich angelegtes ⋯-Menü (13.11.)
     if (!pr || !m) return;
     const w = document.createElement('span'); w.className = 'gt-head-right';
-    pr.before(w); w.append(pr, m);
+    pr.before(w); w.append(pr, ...[...h.querySelectorAll(':scope > .gt-muster')], m);
   });
-})();
+}
+gtHeadRight();
 function toggleGtMore(btn) {
   const box = btn.closest('.gt-more');
   const open = !box.classList.contains('open');
@@ -17998,7 +18033,7 @@ function updateGrammarTileProgress(store, sink) {
   set('gtp-caseadj', srcGelernt(src.caseadj, all));
   set('gtp-pronform', learned('pronform', pronFormTotal()));
   set('gtp-adjform', srcGelernt(src.adjform, all));
-  if (!sink && !store) musterSync();
+  if (!sink && !store) { musterSync(); gtMenueErgaenzen(); }
   set('gtp-rektion', srcGelernt(src.rektion, all));
   // Seitenleiste/Startseite: alle Nicht-Regelfälle; Kopf des Werkzeugs: gewählter Bereich
   set('gtp-gender', sink ? Object.entries(all.gender || {}).filter(([id, e]) => genderZaehlt(id) && srsDone(e)).length + ' von ' + genderTotal() + ' gelernt' : genderProgressText(all));
@@ -19488,6 +19523,11 @@ const TOOL_SETTINGS = [
   ['conjEndings', ...tsProp(() => conjState, 'endings'), TS_BOOL],
   ['conjMixed', ...tsProp(() => conjState, 'mixed'), TS_BOOL],
   ['declSortMode', ...tsProp(() => declState, 'sortMode'), tsOneOf('type', 'alpha', 'random', 'random-hard')],
+  ['aspectHintVisible', ...tsProp(() => aspectState, 'hintVisible'), TS_BOOL],
+  ['declHintVisible', ...tsProp(() => declState, 'hintVisible'), TS_BOOL],
+  ['caRegOnly', ...tsProp(() => caseAdjState, 'regOnly'), TS_BOOL],
+  ['adjformRegOnly', ...tsProp(() => adjFormState, 'regOnly'), TS_BOOL],
+  ['transformRegOnly', ...tsProp(() => transformState, 'regOnly'), TS_BOOL],
   ['musterAlle', ...tsProp(() => musterState, 'alle'), TS_BOOL],
   ['nounSortMode', ...tsProp(() => nounState, 'sortMode'), tsOneOf('class', 'alpha', 'random', 'random-reg')],
   ['nounHintVisible', ...tsProp(() => nounState, 'hintVisible'), TS_BOOL],
@@ -19790,13 +19830,13 @@ function rebuildConjVerbSelect() {
     const an = conjState.scope === 'all';
     scopeBtn.setAttribute('aria-pressed', an ? 'true' : 'false');
     scopeBtn.classList.toggle('gt-on', an);
-    scopeBtn.querySelector('span').textContent = 'Auch Verben ohne Tabelle' + (an ? ' (' + covered + ' von ' + total + ' mit Tabelle)' : '');
+    scopeBtn.querySelector('span').textContent = 'Ohne Tabelle' + (an ? ' (' + covered + ' von ' + total + ' mit Tabelle)' : '');
   }
   ['conj-sort-btn', 'verbpicker-sort-btn'].forEach(id => {
     const btn = document.getElementById(id);
     if (!btn) return;
     btn.querySelector('i').className = 'ti ' + CONJ_SORT_ICONS[conjState.sortMode];
-    btn.querySelector('span').textContent = (id === 'conj-sort-btn' ? 'Reihenfolge: ' : '') + CONJ_SORT_LABELS[conjState.sortMode];
+    btn.querySelector('span').textContent = (id === 'conj-sort-btn' ? 'Sortierung: ' : '') + CONJ_SORT_LABELS[conjState.sortMode];
   });
   applySavedSelect('conj-verb-select');
   renderConjugationTable();
@@ -19944,6 +19984,7 @@ const aspectState = {
   lastCorrect: false,
 };
 
+function toggleAspectHint() { aspectState.hintVisible = !aspectState.hintVisible; saveToolSettings(); restartAspect(); updateGtSettingsSummary(); }
 function setAspectMode(mode) {
   document.getElementById('aspect-mode-practice').classList.toggle('active', mode === 'practice');
   document.getElementById('aspect-mode-list').classList.toggle('active', mode === 'list');
@@ -19997,7 +20038,10 @@ function restartAspect() {
   clearPartialFeedback(input);
   document.getElementById('aspect-q').innerHTML =
     '<span class="case-prep" lang="ru">' + given + '</span>' + d.de +
-    '<span class="case-hint">' + givenLabel + ' — gesucht: ' + wantLabel + 'er Partner</span>';
+    '<span class="cf-form-chip">' + givenLabel + ' → ' + wantLabel + '</span>' +
+    (aspectState.hintVisible && d.bildung ? '<span class="case-hint" id="aspect-hint">Bildung: ' + d.bildung + '</span>' : '');
+  input.placeholder = wantLabel + 'er Partner (Infinitiv)…';
+  setGtToggle(document.getElementById('aspect-hint-toggle'), !!aspectState.hintVisible);
   document.getElementById('aspect-result').textContent = '';
   document.getElementById('aspect-note').style.display = 'none';
   document.getElementById('aspect-score').textContent =
@@ -20182,7 +20226,7 @@ function updateConjDots() {
 function updateConjScore() {
   updateConjDots();
   const el = document.getElementById('conj-score');
-  if (el) el.textContent = conjState.done ? 'In dieser Sitzung: ' + conjState.correct + ' von ' + conjState.done + ' Tabellen richtig' : '';
+  if (el) el.textContent = 'In dieser Sitzung: ' + (conjState.done ? conjState.correct + ' von ' + conjState.done + ' Tabellen richtig' : 'noch keine Tabelle geprüft');
 }
 // Nächsten Tabelleneintrag wählen: bevorzugt ungesehene bzw. fällige (SRS),
 // sonst der Reihe nach. Gleiche Logik für Adjektive, Substantive, Pronomen.
@@ -21065,7 +21109,9 @@ const declensionData = {
     plural:{ "Nom.":"мировые", "Gen.":"мировых", "Dat.":"мировым", "Akk.":"мировые", "Instr.":"мировыми", "Präp.":"мировых" } },
 };
 // Zustand: Adjektivdeklination
+function toggleDeclHint() { declState.hintVisible = !declState.hintVisible; saveToolSettings(); renderDeclensionTable(); updateGtSettingsSummary(); }
 const declState = {
+  hintVisible: true,   // Adjektivtyp hinter dem Wort (13.11.)
   gender: 'masc',
   sortMode: 'type',
   allCorrect: false,
@@ -21126,7 +21172,7 @@ function rebuildDeclAdjSelect() {
   const btn = document.getElementById('decl-sort-btn');
   if (btn) {
     btn.querySelector('i').className = 'ti ' + DECL_SORT_ICONS[declState.sortMode];
-    btn.querySelector('span').textContent = DECL_SORT_LABELS[declState.sortMode];
+    btn.querySelector('span').textContent = 'Sortierung: ' + DECL_SORT_LABELS[declState.sortMode];
   }
   applySavedSelect('decl-adj-select');
   renderDeclensionTable();
@@ -21163,7 +21209,8 @@ function renderDeclensionTable() {
   const adj = document.getElementById('decl-adj-select').value || Object.keys(declensionData)[0];
   refreshFormPicker('decl');
   const data = declensionData[adj];
-  document.getElementById('decl-de-hint').innerHTML = '<b lang="ru">' + adj + '</b> — ' + data.de + ' &nbsp;<span style="opacity:0.7">(' + data.typeLabel + ')</span>';
+  document.getElementById('decl-de-hint').innerHTML = '<b lang="ru">' + adj + '</b> — ' + data.de + (declState.hintVisible ? ' &nbsp;<span style="opacity:0.7">(' + data.typeLabel + ')</span>' : '');
+  setGtToggle(document.getElementById('decl-hint-toggle'), declState.hintVisible);
   const noteEl = document.getElementById('decl-note');
   if (data.note) {
     noteEl.textContent = data.note;
@@ -21186,7 +21233,7 @@ function renderDeclensionTable() {
 
 function updateDeclScore() {
   const el = document.getElementById('decl-score');
-  if (el) el.textContent = declState.done ? 'In dieser Sitzung: ' + declState.correct + ' von ' + declState.done + ' Tabellen richtig' : '';
+  if (el) el.textContent = 'In dieser Sitzung: ' + (declState.done ? declState.correct + ' von ' + declState.done + ' Tabellen richtig' : 'noch keine Tabelle geprüft');
 }
 function checkDeclensionTable() {
   if (declState.allCorrect) { nextAdjInList(); return; }
@@ -21681,7 +21728,7 @@ function rebuildNounSelect() {
   const btn = document.getElementById('noun-sort-btn');
   if (btn) {
     btn.querySelector('i').className = 'ti ' + NOUN_SORT_ICONS[nounState.sortMode];
-    btn.querySelector('span').textContent = NOUN_SORT_LABELS[nounState.sortMode];
+    btn.querySelector('span').textContent = 'Sortierung: ' + NOUN_SORT_LABELS[nounState.sortMode];
   }
   applySavedSelect('noun-select');
   renderNounTable();
@@ -21820,7 +21867,7 @@ function renderNounTable() {
 function updateNounScore() {
   updateNounDots();
   const el = document.getElementById('noun-score');
-  if (el) el.textContent = nounState.done ? 'In dieser Sitzung: ' + nounState.correct + ' von ' + nounState.done + ' Tabellen richtig' : '';
+  if (el) el.textContent = 'In dieser Sitzung: ' + (nounState.done ? nounState.correct + ' von ' + nounState.done + ' Tabellen richtig' : 'noch keine Tabelle geprüft');
 }
 // Nach dem Prüfen/Aufdecken (12.11.): gleiche Formen, Muster, Beispielsatz und „Tabelle anhören“
 function showNounAfter() {
@@ -23255,7 +23302,7 @@ function renderWordgroupTask() {
   wgEl('q').innerHTML =
     (zeigeTop ? '<span class="case-prep" lang="ru">' + wgState.current.promptTop + '</span>' : '')
     + (deGross ? '<span class="case-prep sb-de-gross">' + wgState.current.promptDe + '</span>' : wgState.current.promptDe) +
-    (wgState.current.hint && wgHintSichtbar() ? '<span class="case-hint">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : 'gesuchte Form: ') + wgState.current.hint + '</span>' : '');
+    (wgState.current.hint && wgHintSichtbar() ? '<span class="' + (wgState.tool === 'sentence' ? 'case-hint' : 'cf-form-chip') + '">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : '') + wgState.current.hint + '</span>' : '');
   const inputRow = wgEl('input-row');
   const clickArea = wgEl('click-area');
   if (wgState.answerMode === 'click') {
@@ -23689,7 +23736,7 @@ function markCaseFormButtons(t) {
       if (t !== 'adj' && b.dataset.v === 'Nom.') { b.disabled = c.s.number === 'sg'; b.title = b.disabled ? 'Nominativ Singular ist das Wort selbst' : 'Nominativ'; }
     });
   }
-  if (t !== 'adj') setGtToggle(document.getElementById('cf-reg-toggle'), c.s.regOnly);
+  setGtToggle(document.getElementById(t === 'adj' ? 'ca-reg-toggle' : 'cf-reg-toggle'), c.s.regOnly);
 }
 function setCaseFormNumber(v, t) {
   cfT(t).s.number = v;
@@ -23731,6 +23778,13 @@ function cfNomPruefen(t) {
     st.kasus = rest.length ? rest.join(',') : 'all';
   }
 }
+function toggleCaseAdjReg() {
+  caseAdjState.regOnly = !caseAdjState.regOnly;
+  setGtToggle(document.getElementById('ca-reg-toggle'), caseAdjState.regOnly);
+  saveToolSettings(); restartCaseForm('adj'); updateGtSettingsSummary();
+}
+// regelmäßig heißt bei Adjektiven: harter Stamm ohne Schreibregel, weichen Stamm oder Endbetonung
+function adjIstRegel(a) { return /^hart(, betonter Stamm)?$/.test((declensionData[a] || {}).typeLabel || ''); }
 function toggleCaseFormReg() {
   caseFormState.regOnly = !caseFormState.regOnly; caseFormState.queue = [];
   setGtToggle(document.getElementById('cf-reg-toggle'), caseFormState.regOnly);
@@ -23846,7 +23900,7 @@ function buildCaseFormTask(t) {
       id: 'n:' + noun + ':' + number + ':' + kasus,
     };
   }
-  const adj = rand(Object.keys(declensionData));
+  const adj = rand(Object.keys(declensionData).filter(a => !st.regOnly || adjIstRegel(a)));
   const d = declensionData[adj];
   // im Plural gibt es kein Genus; ein gewähltes Genus gilt nur für den Singular
   if (number === 'pl' && st.genus !== 'all' && st.number === 'mixed') number = 'sg';
@@ -23896,7 +23950,8 @@ function restartCaseForm(t) {
     applyCaseFormHint(t);
     if (t !== 'adj') cfDots(task);
   }
-  if (input && task) input.placeholder = task.frage + ' eingeben…';
+  // höchstens Fall + Zahl (Genus und Belebtheit stehen im Abzeichen)
+  if (input && task) input.placeholder = CF_KASUS_NAME[task.kasus] + ' ' + (task.number === 'pl' ? 'Plural' : 'Singular') + ' eingeben…';
   if (t !== 'adj') {
     const r = task ? cfRahmen(task) : null;
     document.getElementById('caseform-pre').textContent = r ? r[0] : '';
@@ -24134,7 +24189,8 @@ function restartPronForm() {
   const q = document.getElementById('pronform-q');
   if (q) q.innerHTML = '<span class="case-prep" lang="ru">' + t.from + '</span>'
     + '<span id="pronform-de">' + t.de + '</span>'
-    + '<span class="case-hint">→ ' + t.task + '</span>';
+    + '<span class="cf-form-chip">' + t.task + '</span>';
+  if (input) input.placeholder = /^mit Präposition/.test(t.task) ? 'Form nach der Präposition…' : String(t.task).replace(/\s*\(.*$/, '') + ' eingeben…';
   applyPronFormHint();
   document.getElementById('pronform-result').textContent = '';
   document.getElementById('pronform-score').textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
@@ -24305,7 +24361,9 @@ function adjFormItems() {
 }
 function adjFormTotal() { return adjFormItems().length; }
 function buildAdjFormTask() {
-  const pool = musterFrei(adjFormItems().filter(x => adjFormState.scope === 'all' || x.typ === adjFormState.scope), 'adjform', x => x.id);
+  let basis = adjFormItems().filter(x => adjFormState.scope === 'all' || x.typ === adjFormState.scope);
+  if (adjFormState.regOnly) { const r = basis.filter(adjFormIstRegel); if (r.length) basis = r; }
+  const pool = musterFrei(basis, 'adjform', x => x.id);
   const ids = pool.map(x => x.id);
   const prev = adjFormState.current ? adjFormState.current.id : null;
   const id = progressNext('adjform', ids, prev);
@@ -24332,6 +24390,9 @@ function buildAdjFormTask() {
   }
   return t;
 }
+// regelmäßig: Formen mit Muster (самый + Adjektiv, Kurzform ohne flüchtigen Vokal) und Komparative auf -ее
+function adjFormIstRegel(x) { return !x.satz && (!!musterOf('adjform', x.id) || (x.typ === 'comp' && /ее$/.test(x.answer) && !ADJ_COMP_IRREG.includes(x.answer))); }
+function toggleAdjFormReg() { adjFormState.regOnly = !adjFormState.regOnly; setGtToggle(document.getElementById('adjform-reg-toggle'), adjFormState.regOnly); saveToolSettings(); restartAdjForm(); updateGtSettingsSummary(); }
 function toggleAdjFormInfo() {
   const el = document.getElementById('adjform-info-panel');
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
@@ -24373,8 +24434,9 @@ function restartAdjForm() {
   const q = document.getElementById('adjform-q');
   if (q) q.innerHTML = '<span class="' + (t.satz ? 'case-sentence' : 'case-prep') + '" lang="ru">' + t.from + '</span>'
     + '<span>' + t.de + '</span>'
-    + '<span class="case-hint">→ ' + t.task + '</span>'
+    + '<span class="cf-form-chip">' + t.task.replace(/\s*\(.*$/, '') + '</span>'
     + '<span class="case-hint" id="adjform-hint">' + t.rule + '</span>';
+  if (input) input.placeholder = t.task.replace(/\s*\(.*$/, '').replace(/ von .*$/, '') + ' eingeben…';
   applyAdjFormHint();
   document.getElementById('adjform-result').textContent = '';
   document.getElementById('adjform-score').textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
@@ -25604,13 +25666,14 @@ function caseScopePool() {
 
 function restartCaseDrill() {
   if (caseState.mode === 'word') { restartCaseWord(); return; }
-  const pool = caseScopePool();
-  caseState.queue = [...pool];
-  for (let i = caseState.queue.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [caseState.queue[i], caseState.queue[j]] = [caseState.queue[j], caseState.queue[i]];
+  // Runde mit 15 Aufgaben wie überall (13.11.): bevorzugt neue und noch nicht sichere Präpositionen
+  const pool = caseScopePool(), ids = pool.map(it => it.prep + ':' + it.kasus), queue = [];
+  let prev = null;
+  while (queue.length < Math.min(GT_RUNDE, ids.length)) {
+    const id = progressNext('case', ids.filter(x => !queue.includes(x)), prev);
+    queue.push(id); prev = id;
   }
-  startCaseRound(caseState.queue);
+  startCaseRound(queue.map(id => pool[ids.indexOf(id)]));
 }
 function startCaseRound(queue) {
   caseState.queue = queue;
@@ -26331,6 +26394,9 @@ const transformState = {
   bewertet: -1,        // Index der Aufgabe, deren erste Bewertung schon zählt
 };
 
+// regelmäßig: keine Sonderfälle, kein Stammwechsel, regelmäßige Vergangenheit
+function transformIstRegel(t) { const k = verbClassKey(t.inf); return k !== 'sonder' && k !== 'k1s' && k !== 'none' && musterPastRegel(t.inf); }
+function toggleTransformReg() { transformState.regOnly = !transformState.regOnly; setGtToggle(document.getElementById('transform-reg-toggle'), transformState.regOnly); saveToolSettings(); restartTransform(); updateGtSettingsSummary(); }
 function toggleTransformHint() {
   transformState.hintVisible = !transformState.hintVisible;
   saveToolSettings();
@@ -26404,7 +26470,7 @@ function openTransform() {
   showGrammarPanel('transform');
 }
 
-const TRANSFORM_ROUND = 20;
+const TRANSFORM_ROUND = GT_RUNDE;   // überall 15 (13.11.)
 function transformId(t) { return t.prompt + ':' + t.task; }
 // Lernstand: Vergangenheit zählt seit 12.11. je Form (vorher je Verb), das Futur
 // (буду + Infinitiv) steht unter eigenem Schlüssel und zählt nicht
@@ -26454,7 +26520,9 @@ function transformPool() {
   // je Einheit eine Aufgabe
   const je = {};
   shuffleInPlace(auswahl.slice()).forEach(t => { const u = transformUnitId(t); if (!je[u]) je[u] = t; });
-  return musterFrei(Object.values(je), 'transform', transformUnitId);
+  let liste = Object.values(je);
+  if (transformState.regOnly) { const r = liste.filter(transformIstRegel); if (r.length) liste = r; }
+  return musterFrei(liste, 'transform', transformUnitId);
 }
 function startTransformRound(queue) {
   transformState.queue = queue;
@@ -26521,7 +26589,7 @@ function renderTransform() {
   const ziel = item.prompt.split(' + ')[1];
   document.getElementById('transform-q').innerHTML =
     '<span class="tf-from"><span lang="ru">' + (item.fromPron ? item.fromPron + ' ' : '') + htmlEsc(item.from) + '</span> · ' + htmlEsc(item.de) + '</span>'
-    + '<span class="tf-task">→ ' + htmlEsc(item.task) + '</span>'
+    + '<span class="tf-task cf-form-chip">' + htmlEsc(item.task) + '</span>'
     + '<span class="case-prep tf-gap" id="transform-gap" lang="ru">' + transformGapHtml(item) + '</span>'
     + (transformState.hintVisible ? '<span class="case-hint">von <span lang="ru">' + htmlEsc(ziel) + '</span></span>' : '');
   input.placeholder = transformPlaceholder(item);

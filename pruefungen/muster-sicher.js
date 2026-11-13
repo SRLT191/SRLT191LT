@@ -24,7 +24,7 @@ const { chromium } = require('playwright');
     openCaseAdj(); let gezogen = 0; for (let i = 0; i < 1500; i++) { restartCaseForm('adj'); const t = caseAdjState.current; if (t && musterOf('caseadj', t.id) === mid) gezogen++; gtRundeNeu('ca'); }
     out.gezogen = gezogen;
     // Schalter
-    out.knopf = !!document.querySelector('#overlay-caseadj .muster-alle-toggle') && /Muster sicher: 1 von/.test(document.querySelector('#overlay-caseadj .gt-muster').textContent);
+    out.knopf = !!document.querySelector('#overlay-caseadj .muster-alle-toggle') && /^Muster 1\//.test(document.querySelector('#overlay-caseadj .gt-muster').textContent);
     toggleMusterAlle(); out.alle = !musterGesperrt('caseadj', 'a:' + hart[20] + ':fem:Gen.'); toggleMusterAlle();
     // Startseite zählt die Formen des sicheren Musters mit
     out.home = srcEntries(grammarToolSources().caseadj, loadLifetime().g).length;
@@ -57,7 +57,7 @@ const { chromium } = require('playwright');
   ok('9 verschiedene Wörter (eins doppelt): noch nicht sicher, 9 gelernt, Tageszählung nur je Antwort', !r.neun[0] && r.neun[1] === 9 && r.neun[2] === 10, JSON.stringify(r.neun));
   ok('10. Wort: Muster sicher, alle 65 Formen zählen, übrige gesperrt (andere Fälle nicht)', r.zehn[0] && r.zehn[1] === 65 && r.zehn[2] && !r.zehn[3], JSON.stringify(r.zehn));
   ok('Formen des sicheren Musters werden nicht mehr gezogen', r.gezogen === 0, String(r.gezogen));
-  ok('Schalter und Zeile „Muster sicher“ im Werkzeug; Schalter hebt die Sperre auf', r.knopf && r.alle);
+  ok('Schalter in der Leiste, Abzeichen „Muster 1/…“ in der Kopfzeile; Schalter hebt die Sperre auf', r.knopf && r.alle);
   ok('Startseite zählt die Formen des sicheren Musters mit', r.home >= 65, String(r.home));
   ok('Fehler öffnet das Muster (7 von 10), 3 weitere Wörter schließen es', !r.offen[0] && r.offen[1] === 7 && r.wieder, JSON.stringify(r.offen));
   ok('Wiederholung: fälliges Muster wird wieder gefragt', r.stufe >= 1 && r.faellig[0] && !r.faellig[1], JSON.stringify([r.stufe, r.faellig]));
