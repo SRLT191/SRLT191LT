@@ -9,14 +9,17 @@ const { chromium } = require('playwright');
   const p = await b.newPage({ viewport: { width: 1400, height: 900 } }); p.on('pageerror', e => errs.push(e.message));
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   const a = await p.evaluate(() => { setAppView('grammar'); openRektion(); setRektionMode('choose');
+    const arten = document.querySelectorAll('#rektion-opts .rk-art').length; const art0 = rkOpt(rektionState.current.verb.r).prep ? 'praep' : 'fall';
+    rkArt('fall'); const g1 = [...document.querySelectorAll('#rektion-opts .case-opt')].map(b => b.dataset.k).join(','); const k1 = [...document.querySelectorAll('#rektion-opts .case-opt')].map(b => b.getAttribute('aria-keyshortcuts')).join('');
+    restartRektion();
     const grp = [...document.querySelectorAll('#rektion-opts .rk-group')].map(g => g.querySelector('.rk-group-label').textContent + ':' + [...g.querySelectorAll('.case-opt')].map(b => b.dataset.k).join(','));
-    return { grp, n: rektionState.queue.length, menu: !!document.querySelector('#overlay-rektion .gt-more-item[data-view="rektion-practice-view"]'), score: document.getElementById('rektion-score').textContent,
+    return { arten, g1, k1, grp, n: rektionState.queue.length, menu: !!document.querySelector('#overlay-rektion .gt-more-item[data-view="rektion-practice-view"]'), score: document.getElementById('rektion-score').textContent,
       it: rektionState.current.verb.r, keys: [...document.querySelectorAll('#rektion-opts .case-opt')].map(b => b.getAttribute('aria-keyshortcuts')).join('') }; });
   ok('Runde mit 15 Aufgaben, Zähler „1 / 15“, ⋯-Menü „Neue Runde“', a.n === 15 && /^1 \/ 15 · 0 richtig$/.test(a.score) && a.menu, JSON.stringify(a));
-  ok('Antworten in zwei Gruppen: Fall (Akk., Gen., Dat., Instr.) und Präposition + Fall; Tasten 1–9, 0', a.grp[0] === 'Fall:Akk,Gen,Dat,Instr' && /^Präposition \+ Fall:oPraep/.test(a.grp[1]) && a.keys === '1234567890', JSON.stringify([a.grp, a.keys]));
+  ok('Zwei Schritte: erst Art (Tasten 1, 2), dann nur die passende Gruppe', a.arten === 2 && a.keys === '12' && (a.g1 === 'Akk,Gen,Dat,Instr' ? a.k1 === '1234' : /^oPraep/.test(a.g1)), JSON.stringify([a.grp, a.keys]));
   // nur die ersten 10 Antworten haben eine Taste: so lange neu starten, bis die Lösung eine hat (sonst zufällig rot)
   const key = await p.evaluate(() => { const k = () => document.querySelector('#rektion-opts .case-opt[data-k="' + rektionState.current.verb.r + '"]').getAttribute('aria-keyshortcuts');
-    for (let i = 0; i < 50 && !k(); i++) restartRektion(); return k(); });
+    rkArt(rkOpt(rektionState.current.verb.r).prep ? 'praep' : 'fall'); return k(); });
   await p.keyboard.press(key); await p.waitForTimeout(40);
   const b1 = await p.evaluate(() => ({ res: document.getElementById('rektion-result').textContent, score: document.getElementById('rektion-score').textContent, v: rektionState.current.verb, bsp: rektionExample(rektionState.current.verb) }));
   ok('Taste wählt die Antwort; Rückmeldung mit Beispiel-Wortgruppe', /^Richtig — /.test(b1.res) && b1.bsp && b1.res.includes('Beispiel: ' + b1.bsp) && /1 richtig$/.test(b1.score), JSON.stringify(b1));
