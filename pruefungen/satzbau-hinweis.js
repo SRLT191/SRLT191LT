@@ -24,8 +24,8 @@ const { chromium } = require('playwright');
   // alte Einstellung (Schalter aus, kein Modus) → „Nie“
   const f = await p.evaluate(() => { wgState.sbHintMode = null; wgState.sbHintVisible = false; return [sbHintModus(), (wgState.sbHintVisible = true, sbHintModus())]; });
   ok('alte Einstellung an/aus wird übernommen', f.join() === 'nie,immer', f.join());
-  const w = await p.evaluate(() => { openWordgroup(); for (let i = 0; i < 40 && !wgState.current.hint; i++) restartWordgroup(); return !wgState.current.hint || /gesuchte Form/.test(document.querySelector('.grammar-panel.open .conj-q, .grammar-panel.open [id$="-q"]').textContent); });
-  ok('Wortgruppen unverändert („gesuchte Form“ bleibt)', w);
+  const w = await p.evaluate(() => { openWordgroup(); for (let i = 0; i < 40 && !wgState.current.hint; i++) restartWordgroup(); return !wgState.current.hint || !!document.querySelector('.grammar-panel.open [id$="-q"] .cf-form-chip'); });
+  ok('Wortgruppen: gesuchte Form als Abzeichen (13.11.)', w);
   const ctx = await b.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e => errs.push(e.message));
   await m.goto('file://' + APP_PATH); await m.waitForTimeout(400);
   const h = await m.evaluate(() => { setAppView('grammar'); openSentenceBuild(); document.querySelector('.grammar-panel.open .gt-settings-toggle').click(); const r = document.getElementById('sb-hint-modes').getBoundingClientRect(); return { sichtbar: r.width > 100 && r.height >= 30, ueber: document.documentElement.scrollWidth - innerWidth }; });

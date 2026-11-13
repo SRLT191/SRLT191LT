@@ -60,7 +60,7 @@ const { chromium } = require('playwright');
     out.plNom = ins()[0].disabled;
     // Einstellungen: Übungsoptionen zuerst, dann Trenner, dann Sortierung/Erklärung
     const row = document.querySelector('#overlay-noun .gt-settings-row');
-    out.reihe = [...row.children].map(c => c.id || (c.classList.contains('grammar-note-toggle') ? 'grammar-note-toggle' : c.className.split(' ').pop())).join(' ');
+    out.reihe = [...row.children].map(c => c.id || (c.classList.contains('gt-field') ? 'Zahl' : null) || (c.classList.contains('grammar-note-toggle') ? 'grammar-note-toggle' : c.className.split(' ').pop())).join(' ');
     out.eyeTitle = document.querySelector('#noun-grid .conj-reveal-one-btn').title;
     setNounNumber('sg');
     return out;
@@ -79,7 +79,7 @@ const { chromium } = require('playwright');
   ok('Beide: gleiche Formen je Zahl (Singular: Akk. = Nom. (unbelebt))', /Singular: Akk\. = Nom\. \(unbelebt\)/.test(r.beideGleich) && /Plural: Akk\. = Nom\. \(unbelebt\)/.test(r.beideGleich), r.beideGleich);
   ok('Beide: любовь ohne Plural – Spalte mit „—“ gesperrt, zählt nur Singular', r.ohnePl[0] === 2 && r.ohnePl[1] === 6 && r.ohnePl[2] === 1 && r.ohnePlOk && r.beideListe, JSON.stringify([r.ohnePl, r.ohnePlOk, r.beideListe]));
   ok('Plural: Nominativ wird abgefragt', !r.plNom);
-  ok('Einstellungen: Hilfe, Zahl, Nur Endungen, Muster | Sortierung, Erklärung', /^noun-hint-toggle tense-switcher noun-endings-toggle noun-muster-toggle gt-settings-sep noun-sort-btn grammar-note-toggle$/.test(r.reihe), r.reihe);
+  ok('Einstellungen: Hilfe, Zahl, Nur Endungen, Beispielwort | Sortierung, Erklärung', /^noun-hint-toggle Zahl noun-endings-toggle noun-muster-toggle gt-settings-sep noun-sort-btn grammar-note-toggle$/.test(r.reihe), r.reihe);
   ok('Augen-Knopf: „Form zeigen“', r.eyeTitle === 'Form zeigen', r.eyeTitle);
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
