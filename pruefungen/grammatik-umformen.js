@@ -36,7 +36,8 @@ const { chromium } = require('playwright');
   // 5 Runde: fällige und zuletzt falsche zuerst
   const r = await p.evaluate(() => {
     setTransformScope('past');
-    const pool = transformPool(), L = loadLifetime(), now = Date.now(), srs = loadGrammarSrs();
+    // je Verb eine Form: seit 12.11. zählt die Vergangenheit je Form, in einer Runde kommt aber nur eine Form je Verb
+    const pool = transformPool().filter((t, i, a) => a.findIndex(x => x.inf === t.inf) === i), L = loadLifetime(), now = Date.now(), srs = loadGrammarSrs();
     L.g.transform = L.g.transform || {}; srs.transform = srs.transform || {};
     // 30 sicher gelernte (nicht fällig), 5 fällig, 5 zuletzt falsch
     pool.slice(0, 30).forEach(t => { srs.transform[transformUnitId(t)] = { correct: 2, wrong: 0, box: 2, lastSeen: now }; L.g.transform[transformUnitId(t)] = { c: 2, w: 0, l: now, z: now, d: 2, dd: now }; });
