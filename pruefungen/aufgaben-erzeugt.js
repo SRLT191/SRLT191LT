@@ -28,6 +28,7 @@ const { chromium } = require('playwright');
     lauf('Kurzform & Steigerung', () => openAdjForm(), () => { const t = adjFormState.current; revealAdjForm(); const a = t && t.answer; nextAdjForm(); return a; }, 400);
     lauf('Pronomen umformen', () => openPronForm(), () => { const t = pronFormState.current; revealPronForm(); const a = t && t.answer; nextPronForm(); return a; }, 400);
     lauf('Rektion Form bilden', () => { openRektion(); setRektionMode('form'); }, () => { revealRektion(); rektionAdvance(); return null; }, 200);
+    lauf('Rektion Im Satz', () => { openRektion(); setRektionMode('satz'); }, () => { revealRektion(); rektionAdvance(); return null; }, 100);
     lauf('Rektion Fall wählen', () => { openRektion(); setRektionMode('choose'); }, () => { revealRektion(); rektionAdvance(); return null; }, 100);
     const wg = (name, open, typen, n) => typen.forEach(ty => lauf(name + ' ' + ty, () => { open(); setWgType(ty); open(); }, () => { restartWordgroup(); const t = wgState.current; if (!t) return ''; revealWordgroup(); try { sbErklaerung(t.answer.replace(/[.,!?]/g, '').split(' ')); } catch (e) { add(name + ' ' + ty + ': Erklärung stürzt ab', t.answer); } return t.answer; }, n));
     wg('Wortgruppen', () => openWordgroup(), ['adjnoun', 'detnoun', 'numadjnoun', 'prepphrase'], 250);

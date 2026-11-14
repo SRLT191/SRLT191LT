@@ -22,7 +22,7 @@ const { chromium } = require('playwright');
     out.caFrage = [trivial, oj];
     // 3 Rektion: Form bilden je Verb
     const rf = rektionItems('form'), v0 = rf[0].verb, gleiche = rf.filter(x => x.verb === v0);
-    out.rkT = [rektionTotal(), rektionItems('choose').length + new Set(rf.map(x => rkVerbId(x.verb))).size];
+    out.rkT = [rektionTotal(), rektionItems('choose').length + new Set(rf.map(x => rkVerbId(x.verb))).size + rektionItems('satz').length];
     gleiche.forEach(x => progressMark('rektion', x.id, true)); out.rk = [gleiche.length, hdr('gtp-rektion')];
     // 4 Konjugieren: vollendete Tabelle eigener Eintrag
     const pfV = conjPfVerben()[0], pfInf = aspectData[pfV].pf;
