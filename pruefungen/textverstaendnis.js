@@ -15,7 +15,7 @@ const PROBE = `TEXTE.length = 0; TEXTE.push(
   const a = await p.evaluate(() => {
     const out = {};
     out.knopf = [...document.querySelectorAll('#view-switcher .mode-btn')].map(x => x.id.replace('view-btn-', '')).join();
-    out.daten = TEXTE.every(t => t.id && LEVELS.includes(t.lvl) && t.titel && t.de && Array.isArray(t.saetze) && t.saetze.length && t.saetze.every(s => s.ru && s.de)) && new Set(TEXTE.map(t => t.id)).size === TEXTE.length;
+    out.daten = TEXTE.every(t => t.id && LEVELS.includes(t.lvl) && t.titel && t.de && Array.isArray(t.saetze) && t.saetze.length && t.saetze.every(s => s.ru && s.de && LEVELS.indexOf(sentenceLevel(s.ru)) <= LEVELS.indexOf(t.lvl))) && new Set(TEXTE.map(t => t.id)).size === TEXTE.length;
     document.getElementById('view-btn-reading').click();
     out.ansicht = [appView, document.getElementById('reading-view').style.display !== 'none', document.getElementById('inner').style.display, document.getElementById('view-btn-reading').classList.contains('active'), document.body.dataset.view];
     out.leer = TEXTE.length ? 'x' : (document.querySelector('.rd-leer') || {}).textContent;
@@ -23,7 +23,7 @@ const PROBE = `TEXTE.length = 0; TEXTE.push(
   });
   ok('Fünf Bereiche: Heute, Vokabeln, Grammatik, Hören, Textverständnis', a.knopf === 'home,vocab,grammar,listening,reading', a.knopf);
   ok('Ansicht öffnet, andere Bereiche sind aus, Knopf markiert', a.ansicht.join() === 'reading,true,none,true,reading', a.ansicht.join());
-  ok('Eingetragene Texte vollständig (Kennung, Stufe, Titel, Sätze mit Übersetzung), Kennungen eindeutig', a.daten);
+  ok('Eingetragene Texte vollständig (Kennung, Stufe, Titel, Sätze mit Übersetzung), kein Satz über der Stufe des Texts, Kennungen eindeutig', a.daten);
   ok('Ohne Texte steht ein Hinweis statt einer leeren Fläche', a.leer === 'x' || /Noch keine Texte/.test(a.leer), a.leer);
   const r = await p.evaluate(probe => {
     const out = {}; eval(probe); const gesprochen = []; window.speak = t => gesprochen.push(t);
