@@ -301,9 +301,10 @@
 
   /* card wrap */
   #card-wrap { display: flex; gap: 10px; align-items: stretch; margin-bottom: 1rem; min-width: 0; }
-  #exam-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; padding: 8px 10px 8px 14px; border-radius: 12px; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); border: 0.5px solid var(--c-accent); font-size: 14px; }
+  #exam-bar, #session-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; padding: 8px 10px 8px 14px; border-radius: 12px; background: var(--c-accent-soft-bg); color: var(--c-accent-strong); border: 0.5px solid var(--c-accent); font-size: 14px; }
   #exam-bar #exam-bar-text { flex: 1; min-width: 0; }
-  #exam-bar .tool-btn { margin-left: auto; }
+  #exam-bar .tool-btn, #session-bar .tool-btn { margin-left: auto; }
+  #session-bar #session-bar-text { flex: 1; min-width: 0; }
   #word-card { min-width: 0; }
 
   /* card mode indicator */
@@ -1680,6 +1681,11 @@
     <i class="ti ti-flag" aria-hidden="true"></i>
     <span id="exam-bar-text"></span>
     <button class="tool-btn" type="button" onclick="cancelLevelExam()"><i class="ti ti-x"></i> Abbrechen</button>
+  </div>
+  <div id="session-bar" role="status" style="display:none">
+    <i class="ti ti-circle-x" aria-hidden="true"></i>
+    <span id="session-bar-text"></span>
+    <button class="tool-btn" id="session-back-btn" type="button" onclick="sessionZurueck()"><span></span></button>
   </div>
   <div id="card-wrap">
     <div id="word-card">
@@ -9305,6 +9311,7 @@ function updateProgress() {
   updateBlocksToolBtn();
   updateSessionGoal();
   updateExamBar();
+  updateSessionBar();
   const pool = getPool();
   const mastered = activeMain === 'exam' && levelExam ? pool.filter(w => getKey(w) in levelExam.first).length : pool.filter(hasCorrectAnswer).length;
   document.getElementById('progress-bar').style.width = (pool.length ? Math.round((mastered/pool.length)*100) : 0) + '%';
@@ -10197,8 +10204,37 @@ function resetSession() {
   openSessionSummary();
 }
 // Übt nur die Wörter weiter, die in dieser Runde falsch waren
+// Auswahl vor der Fehlerrunde (14.11.): die Leiste über der Karte führt direkt dorthin zurück
+let sessionPrev = null;
+function auswahlName(main, sub) {
+  return main === 'all' ? 'Alle Kategorien' : main === 'multi' ? 'Auswahl (' + selectedCats.size + ')' : main === 'bookmarks' ? 'Merkliste'
+    : main === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : main === 'due' ? 'Fällige Wörter' : main === 'hard' ? 'Oft falsch' : (sub || main);
+}
+function updateSessionBar() {
+  const bar = document.getElementById('session-bar'); if (!bar) return;
+  const on = activeMain === 'session';
+  bar.style.display = on ? 'flex' : 'none';
+  if (!on) return;
+  const p = sessionPrev || { main: 'all', sub: null };
+  document.getElementById('session-bar-text').textContent = 'Fehler dieser Runde · ' + sessionWrong.length + (sessionWrong.length === 1 ? ' Wort' : ' Wörter');
+  document.querySelector('#session-back-btn span').textContent = '← Zurück zu „' + auswahlName(p.main, p.sub) + '“';
+}
+function sessionZurueck() {
+  if (activeMain !== 'session') return;
+  const p = sessionPrev || { main: 'all', sub: null };
+  // gibt es die Auswahl noch? sonst „Alle Kategorien“
+  const ok = ['all', 'bookmarks'].includes(p.main) || (p.main === 'multi' && selectedCats.size) || (p.main === 'exam' && levelExam)
+    || (['due', 'hard'].includes(p.main) && typeof homePool !== 'undefined' && homePool && homePool.length) || isCatGroup(p.main) || !!vocab[p.main];
+  activeMain = ok ? p.main : 'all'; activeSub = ok ? p.sub : null;
+  if (ok) { expandedMain = p.expMain; expandedTheme = p.expTheme; }
+  sessionPrev = null;
+  closeMobileSidebar();
+  updateMobileSidebarLabel(auswahlName(activeMain, activeSub));
+  saveSelection(); buildNav(); updateProgress(); updateInfoPanel(); nextWord();
+}
 function retrySessionWrong() {
   if (!sessionWrong.length) return;
+  if (activeMain !== 'session') sessionPrev = { main: activeMain, sub: activeSub, expMain: expandedMain, expTheme: expandedTheme };
   activeMain = 'session'; activeSub = null;
   closeOverlay('overlay-session');
   closeMobileSidebar();
