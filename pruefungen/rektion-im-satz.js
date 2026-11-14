@@ -1,5 +1,5 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Rektion (14.11.): Modus „Im Satz“ (30 Sätze mit Lücke), 24 weitere Verben, drei neue Antworten (с + Instr., по + Dat., перед + Instr.),
+// Rektion (14.11.): Modus „Im Satz“ (76 Sätze mit Lücke, einer je Verb), 24 weitere Verben, drei neue Antworten (с + Instr., по + Dat., перед + Instr.),
 // Präposition vor dem Wort (во врача), во мне
 const { chromium } = require('playwright');
 (async () => {
@@ -27,7 +27,8 @@ const { chromium } = require('playwright');
     out.satzFehler = RK_SAETZE.filter(z => !RK_VERBS.some(x => rkVerbId(x) === z.v) || z.ru.split('___').length !== 2 || !z.de || !z.a).map(z => z.v);
     out.satzForm = S.map(t => { const d = nounDeclensionData[t.noun], o = rkOpt(t.verb.r); if (!d) return null; const w = (o.prep ? rkPrep(o.prep, d.sg[o.kasus]) + ' ' : '') + d.sg[o.kasus]; return w === t.obj ? null : t.id + ' ' + t.obj + '≠' + w; }).filter(Boolean);
     out.satzPrep = S.filter(t => { const o = rkOpt(t.verb.r); return o.prep ? !t.obj.startsWith(o.prep + ' ') : / /.test(t.obj); }).map(t => t.id);
-    out.total = [rektionTotal(), rektionItems('choose').length + new Set(rektionItems('form').map(x => rektionEinheit(x.id))).size + 30];
+    out.ohneSatz = RK_VERBS.filter(x => !S.some(t => t.verb === x)).length;
+    out.total = [rektionTotal(), rektionItems('choose').length + new Set(rektionItems('form').map(x => rektionEinheit(x.id))).size + 76];
     // Bedienung
     setAppView('grammar'); openRektion(); setRektionMode('satz');
     out.modus = [rektionState.mode, document.getElementById('rektion-mode-satz').classList.contains('active'), document.getElementById('rektion-input-row').style.display !== 'none', document.getElementById('rektion-opts').style.display === 'none', rektionState.queue.length, rektionState.queue.every(t => !!t.satz)];
@@ -60,7 +61,7 @@ const { chromium } = require('playwright');
     out.info = /Im Satz/.test(info) && /скучать по/.test(info) && /nur mit Personen/.test(info) && /nur per Klick/.test(info);
     return out;
   });
-  ok('76 Verben mit eindeutiger Kennung, 17 Antworten, 30 Sätze', r.n.join() === '76,76,17,30,30' && r.optOk, r.n.join());
+  ok('76 Verben mit eindeutiger Kennung, 17 Antworten, 76 Sätze (jedes Verb hat einen)', r.n.join() === '76,76,17,76,76' && r.ohneSatz === 0 && r.optOk, r.n.join());
   ok('24 neue Verben mit bestätigter Rektion, alle im Wortschatz', r.fehlt.length === 0 && r.nichtImWortschatz.length === 0, JSON.stringify([r.fehlt, r.nichtImWortschatz]));
   ok('Formen: влюбляться во врача, ждать маму, требовать ответа, скучать по дому, извиняться перед соседом, знакомиться с сестрой, делиться яблоком, учиться языку, сомневаться в друге',
     r.formen.join() === 'влюбляться во врача,ждать маму,требовать ответа,скучать по дому,извиняться перед соседом,знакомиться с сестрой,делиться яблоком,учиться языку,сомневаться в друге', r.formen.join(' | '));
@@ -69,13 +70,13 @@ const { chromium } = require('playwright');
   ok('Pronomen: во мне, со мной, передо мной, в меня; скучать ohne Pronomen', r.pron === 'во мне|со мной|передо мной|в меня|false', r.pron);
   ok('Übersetzung vor der Antwort verrät bei keinem Verb die Präposition', r.ohneKlammer.length === 0, r.ohneKlammer.join());
   ok('Sätze: Verb vorhanden, genau eine Lücke, Übersetzung; Lösung = Tabellenform; Präposition genau bei Präpositionsverben', r.satzFehler.length === 0 && r.satzForm.length === 0 && r.satzPrep.length === 0, JSON.stringify([r.satzFehler, r.satzForm, r.satzPrep]));
-  ok('Gesamtzahl = Fall wählen + Form bilden je Verb + 30 Sätze', r.total[0] === r.total[1], r.total.join());
+  ok('Gesamtzahl = Fall wählen + Form bilden je Verb + 76 Sätze', r.total[0] === r.total[1], r.total.join());
   ok('Modus „Im Satz“: Eingabefeld, 15er-Runde nur aus Sätzen; Hilfe ja, Pronomen nein', r.modus.join() === 'satz,true,true,true,15,true' && r.schalter === 'true,false', JSON.stringify([r.modus, r.schalter]));
   ok('Aufgabe zeigt Satz mit Lücke und Grundform, Übersetzung und (mit Hilfe) den verlangten Fall', r.frage.every(Boolean), r.frage.join());
   ok('Ohne Präposition falsch; richtige Antwort zählt, zeigt den ganzen Satz und liest ihn vor', !r.ohnePraep && r.richtig[0] && r.richtig[1] === 'Он женится на сестре моего друга.' && r.richtig[2] === 2 && r.richtig[3] && r.vorlesen === 'Он женится на сестре моего друга.', JSON.stringify([r.ohnePraep, r.richtig, r.vorlesen]));
   ok('Verwechslungspaar auch im Satz: nach думать kommt мечтать', r.gegenstueck === 's:думать,s:мечтать,s:жениться,s:играть:в,s:звонить' && r.paarHinweis, r.gegenstueck);
   ok('Lösung zeigen füllt die Ergänzung; Rundenende zeigt die Sätze mit Lösung', r.aufgedeckt === 'в футбол' && r.ende[2], JSON.stringify([r.aufgedeckt, r.ende]));
-  ok('Fall-Filter gilt im Satzmodus; Satz zählt in der Liste wie „Form bilden“ (sicher)', r.filter[0] === 6 && r.filter[1] && r.stand === 3, JSON.stringify([r.filter, r.stand]));
+  ok('Fall-Filter gilt im Satzmodus; Satz zählt in der Liste wie „Form bilden“ (sicher)', r.filter[0] === 8 && r.filter[1] && r.stand === 3, JSON.stringify([r.filter, r.stand]));
   ok('Fall wählen: 13 Präpositionen, zehn mit Taste, „перед + Instr.“ per Klick; по + Dat. wird gewertet', r.knoepfe.join() === '13,10,перед + Instr.' && r.wahl === 1, r.knoepfe.join());
   ok('Liste: 76 Zeilen, Abschnitte с/по/перед', r.liste[0] === 76 && r.liste[1] === 'с + Instrumental|по + Dativ|перед + Instrumental', JSON.stringify(r.liste));
   ok('Erklärung nennt „Im Satz“, die neuen Präpositionen und ждать nur mit Personen', r.info);
