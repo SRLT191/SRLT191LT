@@ -17,8 +17,8 @@ const { chromium } = require('playwright');
       it: rektionState.current.verb.r, keys: [...document.querySelectorAll('#rektion-opts .case-opt')].map(b => b.getAttribute('aria-keyshortcuts')).join('') }; });
   ok('Runde mit 15 Aufgaben, Zähler „1 / 15“, ⋯-Menü „Neue Runde“', a.n === 15 && /^1 \/ 15 · 0 richtig$/.test(a.score) && a.menu, JSON.stringify(a));
   ok('Zwei Schritte: erst Art (Tasten 1, 2), dann nur die passende Gruppe', a.arten === 2 && a.keys === '12' && (a.g1 === 'Akk,Gen,Dat,Instr' ? a.k1 === '1234' : /^oPraep/.test(a.g1)), JSON.stringify([a.grp, a.keys]));
-  // nur die ersten 10 Antworten haben eine Taste: so lange neu starten, bis die Lösung eine hat (sonst zufällig rot)
-  const key = await p.evaluate(() => { const k = () => document.querySelector('#rektion-opts .case-opt[data-k="' + rektionState.current.verb.r + '"]').getAttribute('aria-keyshortcuts');
+  // nur die ersten 10 Präpositionen haben eine Taste: feste Aufgabe statt der gezogenen (sonst zufällig rot)
+  const key = await p.evaluate(() => { startRektionRound([rektionItems('choose').find(t => t.verb.v === 'думать')].concat(rektionItems('choose').slice(0, 14))); const k = () => document.querySelector('#rektion-opts .case-opt[data-k="' + rektionState.current.verb.r + '"]').getAttribute('aria-keyshortcuts');
     rkArt(rkOpt(rektionState.current.verb.r).prep ? 'praep' : 'fall'); return k(); });
   await p.keyboard.press(key); await p.waitForTimeout(40);
   const b1 = await p.evaluate(() => ({ res: document.getElementById('rektion-result').textContent, score: document.getElementById('rektion-score').textContent, v: rektionState.current.verb, bsp: rektionExample(rektionState.current.verb) }));

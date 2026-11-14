@@ -17899,7 +17899,23 @@ function setAppView(view) {
 // Musterübersetzung zeigen, selbst bewerten (eine freie Übersetzung lässt sich nicht automatisch prüfen).
 // Ein Text: { id, lvl: 'A1'…'C1', titel, de (Titel deutsch), saetze: [{ ru, de, p: true = neuer Absatz }] }.
 // Nur bestätigte Texte eintragen; die Kennung (id) bleibt für immer gleich, daran hängt der Lesestand.
-const TEXTE = [];
+const TEXTE = [
+  { id: 'moja-semja', lvl: 'A1', titel: 'Моя семья', de: 'Meine Familie', saetze: [
+    { ru: 'Меня зовут Анна.', de: 'Ich heiße Anna.' },
+    { ru: 'Я живу в большом городе.', de: 'Ich wohne in einer großen Stadt.' },
+    { ru: 'У меня есть брат и сестра.', de: 'Ich habe einen Bruder und eine Schwester.' },
+    { ru: 'Мой брат – врач, он много работает.', de: 'Mein Bruder ist Arzt, er arbeitet viel.' },
+    { ru: 'Моя сестра ещё маленькая.', de: 'Meine Schwester ist noch klein.' },
+    { ru: 'Утром мы пьём чай и едим хлеб с сыром.', de: 'Morgens trinken wir Tee und essen Brot mit Käse.', p: true },
+    { ru: 'Потом я работаю в школе.', de: 'Danach arbeite ich in der Schule.' },
+    { ru: 'Вечером мама готовит ужин.', de: 'Abends kocht Mama das Abendessen.' },
+    { ru: 'Мы ужинаем вместе и говорим о работе.', de: 'Wir essen zusammen zu Abend und sprechen über die Arbeit.' },
+    { ru: 'В субботу я не работаю.', de: 'Am Samstag arbeite ich nicht.', p: true },
+    { ru: 'Я гуляю с братом в парке.', de: 'Ich gehe mit dem Bruder im Park spazieren.' },
+    { ru: 'Брат любит футбол, а я люблю музыку.', de: 'Der Bruder mag Fußball, und ich mag Musik.' },
+    { ru: 'У меня хорошая семья.', de: 'Ich habe eine gute Familie.' },
+  ] },
+];
 const READING_KEY = 'vokabeltrainer-texte';
 const readState = { id: null, i: 0, offen: false, ende: false, ganz: false, eigene: {} };
 // Lesestand: { <id>: { s: { <Satz>: 1 gewusst | 0 nicht }, z: zuletzt, d: wie oft ganz durch } }
