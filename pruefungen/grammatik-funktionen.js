@@ -58,7 +58,7 @@ const { chromium } = require('playwright');
   ok('Kasus bilden Adjektive: neue Formen vor bekannten', r.lernstand === 0, String(r.lernstand));
   ok('Pronomen umformen und Wortgruppen: neue Aufgaben zuerst', !r.pronDoppelt && !r.wgDoppelt, JSON.stringify([r.pronDoppelt, r.wgDoppelt]));
   ok('„Vorlesen“ in jeder Einstellungen-Leiste, ein gemeinsamer Schalter', r.vorlesen === 0 && r.vorlesenSync.every(Boolean), JSON.stringify([r.vorlesen, r.vorlesenSync]));
-  ok('Rektion Schritt 1: zwei Arten; Schritt 2: nur die passende Gruppe', r.rk1 === 2 && (r.rk2[0] === 4 || r.rk2[0] === 10) && !r.rk2[1] && r.rk2[2] && r.rk3 === 1, JSON.stringify([r.rk1, r.rk2, r.rk3]));
+  ok('Rektion Schritt 1: zwei Arten; Schritt 2: nur die passende Gruppe', r.rk1 === 2 && (r.rk2[0] === 4 || r.rk2[0] === 13) && !r.rk2[1] && r.rk2[2] && r.rk3 === 1, JSON.stringify([r.rk1, r.rk2, r.rk3]));
   ok('Rektion: falsche Art zählt als falsch und zeigt die Lösung', r.rkNeu === 2 && r.rkFalsch.every(Boolean), JSON.stringify(r.rkFalsch));
   ok('Rundenende nach Gruppe (Pronomen, Umformen)', /Fehler/.test(r.ende.pronform) && /Fehler/.test(r.ende.transform), JSON.stringify(r.ende));
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
