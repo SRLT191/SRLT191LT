@@ -808,16 +808,47 @@
   .rkl-title { font-size: 16px; font-weight: 700; color: var(--c-accent-strong); }
   .rkl-n { color: var(--c-text-muted); font-size: 13px; }
   .rkl-ueben { margin-left: auto; padding: 4px 10px; min-height: 30px; }
-  .rkl-row { display: grid; grid-template-columns: 150px 170px 1fr 1.3fr 22px; gap: 4px 14px; align-items: baseline; padding: 7px 2px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
+  .rkl-row { display: grid; grid-template-columns: 170px 170px 1fr 1.3fr 22px; gap: 4px 14px; align-items: baseline; padding: 7px 2px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
+  .rkl-pf { display: block; font-size: 12px; font-weight: 400; color: var(--c-text-muted); }
+  button.rkl-bsp { background: none; border: 0; padding: 0; margin: 0; text-align: left; font-size: inherit; color: inherit; cursor: pointer; }
+  button.rkl-bsp:hover, button.rkl-bsp:focus-visible { color: var(--c-accent-strong); text-decoration: underline; }
+  .rkl-fall { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-border-input); font-size: 11.5px; font-weight: 600; white-space: nowrap; color: var(--c-text-secondary); }
+  .rkl-leer { color: var(--c-text-muted); padding: 14px 2px; }
+  .rkl-sprung { position: sticky; top: -0.75rem; z-index: 2; display: flex; gap: 6px; overflow-x: auto; padding: 8px 0; margin-bottom: 4px; background: var(--c-surface); scrollbar-width: none; }
+  .rkl-sprung:empty { display: none; }
+  .rkl-sprung button { flex: 0 0 auto; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--c-border-input); background: var(--c-surface); color: var(--c-text-secondary); font-size: 12.5px; cursor: pointer; white-space: nowrap; }
+  .rkl-sprung button:hover, .rkl-sprung button:focus-visible { border-color: var(--c-accent); color: var(--c-accent-strong); }
+  .rkl-group { scroll-margin-top: 44px; }
+  .rkl-toolbar { align-items: center; }
+  .rkl-toolbar .tool-btn.active { border-color: var(--c-accent); color: var(--c-accent-strong); }
+  .rkl-st.ok { color: var(--c-st5); }
+  .rkl-st.rk-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--c-border-input); align-self: center; justify-self: center; box-sizing: border-box; }
+  .rkl-st.rk-dot.s1 { border-color: var(--c-warn); background: var(--c-warn); }
+  .rkl-st.rk-dot.s2 { border-color: var(--c-st5); background: linear-gradient(90deg, var(--c-st5) 50%, transparent 50%); }
+  .rkl-st.rk-dot.s3 { border-color: var(--c-st5); background: var(--c-st5); box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 3.5px var(--c-st5); }
+  .rk-fb { display: block; font-weight: 400; margin-top: 4px; }
+  .rk-fb > span { display: block; margin-top: 3px; }
+  .rk-fb-regel { font-size: 15px; font-weight: 600; color: var(--c-text-primary); }
+  .rk-fb-de { font-weight: 400; color: var(--c-text-muted); }
+  .rk-fb-bsp { margin-top: 5px; background: none; border: 1px solid var(--c-border-input); border-radius: 999px; padding: 3px 12px; font-size: 14px; color: var(--c-text-primary); cursor: pointer; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
+  .rk-fb-bsp:hover { border-color: var(--c-accent); }
+  .rk-paar { display: table; margin: 0 auto 6px; padding: 1px 10px; border-radius: 999px; border: 1px solid var(--c-warn); color: var(--c-warn); font-size: 12px; font-weight: 600; }
   .rkl-v { font-weight: 700; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 15px; }
   .rkl-bsp { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
   .rkl-de, .rkl-vgl { color: var(--c-text-muted); }
   .rkl-anders { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--c-warn); color: var(--c-warn); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
-  .rkl-st.ok { color: var(--c-st5); }
   @media (max-width: 800px) {   /* Handy: je Verb ein Block statt Spalten */
-    .rkl-row { grid-template-columns: 1fr auto; gap: 2px 8px; }
-    .rkl-v { grid-column: 1; } .rkl-st { grid-column: 2; grid-row: 1; }
-    .rkl-de, .rkl-bsp, .rkl-vgl { grid-column: 1 / -1; }
+    /* 14.11.: zwei kompakte Zeilen – Verb · Übersetzung · Stand, darunter Beispiel und Marken; Antippen zeigt den Vergleich */
+    .rkl-row { grid-template-columns: minmax(0, auto) minmax(0, 1fr) 14px; gap: 1px 8px; padding: 6px 2px; cursor: pointer; }
+    .rkl-v { grid-column: 1; grid-row: 1; white-space: nowrap; } .rkl-pf { display: inline; }
+    .rkl-de { grid-column: 2; grid-row: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rkl-st { grid-column: 3; grid-row: 1; justify-self: end; }
+    .rkl-bsp { grid-column: 1; grid-row: 2; }
+    .rkl-vgl { display: contents; }
+    .rkl-chips { grid-column: 2 / 4; grid-row: 2; justify-self: end; white-space: nowrap; }
+    .rkl-chips .rkl-anders, .rkl-chips .rkl-fall { margin-right: 0; margin-left: 4px; }
+    .rkl-vgl-t { grid-column: 1 / -1; grid-row: 3; display: none; color: var(--c-text-muted); font-size: 13px; }
+    .rkl-row.open .rkl-vgl-t { display: block; } .rkl-row.open .rkl-de { white-space: normal; }
   }
   .gt-rate { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 6px; }
   .gt-rate-q { font-weight: 600; }
@@ -1822,8 +1853,11 @@
 <p>• <strong>Spiel oder Instrument:</strong> играть <em>в</em> футбол (in das Spiel hinein, Akk.), играть <em>на</em> гитаре (auf dem Instrument, Präp.).</p>
 <p>• <strong>Immer mit Fragewort oder kurzer Wortgruppe lernen:</strong> nicht nur звонить, sondern звонить <em>кому?</em> – звонить маме. Die Liste (Knopf oben) zeigt zu jedem Verb so ein Beispiel.</p></div>
 <p><strong>Sonderfall ждать</strong> (warten auf): ohne Präposition, mit Akkusativ bei bestimmten Personen oder Dingen (жду маму), mit Genitiv bei Abstraktem (жду ответа). Darum fehlt es hier in der Übung.</p>
-<p><strong>Bedienung:</strong> <em>Fall wählen</em> – zum Verb den Fall bzw. Präposition + Fall antippen; danach erscheint der Vergleich mit dem Deutschen. Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. Gewählt wird in zwei Schritten: erst die Art – <em>reiner Fall</em> (Taste 1) oder <em>Präposition + Fall</em> (Taste 2) –, dann der Fall bzw. die Präposition aus der passenden Gruppe (Tasten 1–4 bzw. 1–9 und 0). Eine falsche Art zählt gleich als falsch und zeigt die Lösung. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Form bilden</em> – das Verb ist vorgegeben, du tippst nur die Ergänzung (звонить ___ → маме); die ganze Wortgruppe zählt auch. <em>Hilfe</em> (unter Einstellungen) zeigt dort den verlangten Fall. Beide Modi laufen in Runden zu 15 Aufgaben; am Ende stehen die Fehler mit „Fehler wiederholen“.</p>
-<p><strong>Liste:</strong> öffnet ein Fenster mit allen Verben nach Fall bzw. Präposition + Fall, mit Beispiel und Vergleich zum Deutschen. <em>≠ Deutsch</em> markiert die Verben, deren Rektion anders ist als im Deutschen (Schalter „nur ≠ Deutsch“); ein Häkchen zeigt, was bei „Fall wählen“ schon richtig war; <em>üben</em> startet eine Runde nur mit dieser Gruppe.</p>
+<p><strong>Bedienung:</strong> <em>Fall wählen</em> – zum Verb den Fall bzw. Präposition + Fall antippen; danach erscheint der Vergleich mit dem Deutschen. Antippen bewertet sofort und markiert die richtige Option. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Erklärung stehen, bis du Enter oder <em>Weiter</em> drückst. Gewählt wird in zwei Schritten: erst die Art – <em>reiner Fall</em> (Taste 1) oder <em>Präposition + Fall</em> (Taste 2) –, dann der Fall bzw. die Präposition aus der passenden Gruppe (Tasten 1–4 bzw. 1–9 und 0). Eine falsche Art zählt gleich als falsch und zeigt die Lösung. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. <em>Form bilden</em> – das Verb ist vorgegeben, du tippst nur die Ergänzung (звонить ___ → маме); die ganze Wortgruppe zählt auch. Bei Personen steht ab und zu ein Pronomen statt des Substantivs (звонить + он → ему, думать + я → обо мне; nach Präposition die н-Form: о нём, на неё) – abschaltbar mit <em>Pronomen</em>. <em>Hilfe</em> (unter Einstellungen) zeigt dort den verlangten Fall. Beide Modi laufen in Runden zu 15 Aufgaben; am Ende stehen die Fehler mit „Fehler wiederholen“.</p>
+<p><strong>Vor und nach der Antwort:</strong> Die Übersetzung steht zunächst ohne die verräterische Ergänzung da (смеяться – „lachen“, nicht „lachen (über)“); wo es zur Unterscheidung nötig ist, steht ein neutrales Stichwort (Person, Beruf, ein Spiel). Nach der Antwort folgen drei kurze Zeilen: die Regel mit der vollen Übersetzung, der Vergleich mit dem Deutschen (<em>≠ Deutsch</em>, wenn es abweicht) und ein Beispiel – antippen liest es vor.</p>
+<p><strong>Einstellungen:</strong> <em>Fall</em> beschränkt die Runde auf einen Fall oder auf die Verben mit Präposition, <em>nur ≠ Deutsch</em> auf die Verben, deren Rektion vom Deutschen abweicht. Beides gilt für „Fall wählen“ und „Form bilden“.</p>
+<p><strong>Verwechslungspaare:</strong> Nach einem Fehler kommt das Gegenstück gleich als nächste Aufgabe (играть в ↔ играть на, благодарить ↔ помогать, звонить ↔ звать, надеяться на ↔ жениться на …) – die Runde wird dadurch um eine Aufgabe länger.</p>
+<p><strong>Liste:</strong> öffnet ein Fenster mit allen Verben nach Fall bzw. Präposition + Fall, mit Beispiel, vollendetem Partner (soweit im Wortschatz) und Vergleich zum Deutschen. Oben: Suchfeld, die Schalter <em>nur ≠ Deutsch</em> und <em>nur offene</em>, die Sortierung (<em>nach Fall</em>, <em>А–Я</em>, <em>Schwierige zuerst</em> = meiste Fehler) und Sprungmarken zu den Fällen. Der Punkt rechts zeigt den Stand: leer = neu, orange = geübt, aber noch nicht richtig, halb grün = „Fall wählen“ oder „Form bilden“ richtig, grün = beides richtig (sicher); in der Überschrift steht „x von y sicher“. Ein Beispiel antippen liest es vor; auf dem Handy zeigt Antippen der Zeile den Vergleich mit dem Deutschen. <em>üben</em> startet eine Runde nur mit dieser Gruppe.</p>
 </div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
@@ -1832,7 +1866,7 @@
 <button class="mode-btn" id="rektion-mode-list" onclick="openRektionList()" title="Alle Verben nach Fall (eigenes Fenster)"><i class="ti ti-list"></i> Liste</button>
 </div>
 </div>
-<div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button></div></div></div>
+<div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="rektion-kasus-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-std="1" data-v="all" onclick="setRektionKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Dat" onclick="setRektionKasus('Dat')" type="button">Dat.</button><button class="mode-btn" data-v="Gen" onclick="setRektionKasus('Gen')" type="button">Gen.</button><button class="mode-btn" data-v="Instr" onclick="setRektionKasus('Instr')" type="button">Instr.</button><button class="mode-btn" data-v="Akk" onclick="setRektionKasus('Akk')" type="button">Akk.</button><button class="mode-btn" data-v="praep" data-sum="mit Präp." onclick="setRektionKasus('praep')" type="button">mit Präposition</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" id="rektion-anders-toggle" onclick="toggleRektionAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-eye-off"></i> <span>nur ≠ Deutsch</span></button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-pron-toggle" onclick="toggleRektionPron()" title="Bei Personen ab und zu ein Pronomen statt des Substantivs (мне, ему, о ней)"><i class="ti ti-eye"></i> <span>Pronomen</span></button></div></div></div>
 <div id="rektion-practice-view">
 <div class="gt-task"><div class="case-question" id="rektion-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakRektion()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="rektion-opts"></div>
@@ -3387,7 +3421,13 @@
       <button class="overlay-close" onclick="closeOverlay('overlay-rektionlist')" aria-label="Schließen">×</button>
     </div>
     <div class="overlay-body">
-      <div class="list-toolbar"><button class="tool-btn" id="rektion-list-anders" aria-pressed="false" onclick="toggleRektionListAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-list-check"></i> <span>nur ≠ Deutsch</span></button></div>
+      <div class="list-toolbar rkl-toolbar">
+        <input type="text" class="list-search" id="rektion-list-search" placeholder="Verb oder Übersetzung suchen…" autocomplete="off" aria-label="Verb oder Übersetzung suchen" oninput="renderRektionList()">
+        <button class="tool-btn" id="rektion-list-anders" aria-pressed="false" onclick="toggleRektionListAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><span>nur ≠ Deutsch</span></button>
+        <button class="tool-btn" id="rektion-list-offen" aria-pressed="false" onclick="toggleRektionListOffen()" title="Nur Verben, die noch nicht sicher sind"><span>nur offene</span></button>
+        <div class="tense-switcher" id="rektion-list-sort" role="group" aria-label="Sortierung"><button class="mode-btn active" data-v="fall" onclick="setRektionListSort('fall')" type="button">nach Fall</button><button class="mode-btn" data-v="abc" onclick="setRektionListSort('abc')" type="button">А–Я</button><button class="mode-btn" data-v="schwer" onclick="setRektionListSort('schwer')" type="button">Schwierige zuerst</button></div>
+      </div>
+      <div class="rkl-sprung" id="rektion-list-sprung" role="group" aria-label="Zum Fall springen"></div>
       <div id="rektion-list-body" class="rkl"></div>
     </div>
   </div>
@@ -17846,6 +17886,7 @@ function syncGtToggles() {
     'cf-hint-toggle': () => caseFormState.hintVisible, 'ca-hint-toggle': () => caseAdjState.hintVisible,
     'pronform-hint-toggle': () => pronFormState.hintVisible, 'transform-hint-toggle': () => transformState.hintVisible,
     'wg-hint-toggle': () => wgState.hintVisible, 'adjform-hint-toggle': () => adjFormState.hintVisible, 'rektion-hint-toggle': () => rektionState.hintVisible,
+    'rektion-anders-toggle': () => rektionState.nurAnders, 'rektion-pron-toggle': () => rektionState.pron,
   };
   Object.keys(st).forEach(id => { const b = document.getElementById(id); if (b) setGtToggle(b, st[id]()); });
 }
@@ -19664,6 +19705,9 @@ const TOOL_SETTINGS = [
   ['afHintVisible', ...tsProp(() => adjFormState, 'hintVisible'), TS_BOOL],
   ['rkMode', ...tsProp(() => rektionState, 'mode'), tsOneOf('choose', 'form', 'list')],
   ['rkHintVisible', ...tsProp(() => rektionState, 'hintVisible'), TS_BOOL],
+  ['rkNurAnders', ...tsProp(() => rektionState, 'nurAnders'), TS_BOOL],
+  ['rkKasus', ...tsProp(() => rektionState, 'kasus'), tsOneOf('all', 'Dat', 'Gen', 'Instr', 'Akk', 'praep')],
+  ['rkPron', ...tsProp(() => rektionState, 'pron'), TS_BOOL],
   ['gdScope', ...tsProp(() => genderState, 'scope'), tsOneOf('all', 'easy', 'soft', 'exc', 'pl')],
   ['transformHintVisible', ...tsProp(() => transformState, 'hintVisible'), TS_BOOL],
   ['transformScope', ...tsProp(() => transformState, 'scope'), tsOneOf('all', 'past', 'future', 'imperative', 'aspect')],
@@ -24222,6 +24266,7 @@ function pfPrep(p, form) {
     if (p === 'с') return 'со';
     if (p === 'о') return 'обо';
     if (p === 'перед') return 'передо';
+    if (p === 'над') return 'надо';
   }
   return p;
 }
@@ -24941,6 +24986,7 @@ const rektionState = {
   mode: 'choose',      // choose | form | list
   queue: [], index: 0, rCorrect: 0, fehler: [], bewertet: -1,   // Runde (8.11.)
   hintVisible: true,
+  nurAnders: false, kasus: 'all', pron: true,   // Filter und Pronomen-Aufgaben (14.11.)
   current: null,
   done: 0,
   correct: 0,
@@ -24971,33 +25017,77 @@ function rektionExample(x) {
   const n = moegl.length ? moegl[Math.max(0, RK_VERBS.indexOf(x)) % moegl.length] : null;   // je Verb ein anderes Substantiv
   return n ? x.v + ' ' + (o.prep ? o.prep + ' ' : '') + nounDeclensionData[n].sg[o.kasus] : (x.bsp || '');
 }
+// Rückmeldung in drei kurzen Zeilen (14.11.): Regel · Vergleich mit dem Deutschen · Beispiel zum Antippen (liest vor)
 function rektionExplain(x, mitBeispiel) {
   const o = rkOpt(x.r), bsp = mitBeispiel ? rektionExample(x) : x.bsp;
-  return '<b>' + x.v + '</b> + ' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus]
-    + ' · Deutsch: ' + x.dt + (bsp ? ' · Beispiel: <span lang="ru">' + bsp + '</span>' : '');
+  return '<span class="rk-fb"><span class="rk-fb-regel"><b lang="ru">' + x.v + '</b> + ' + (o.prep ? '<span lang="ru">' + o.prep + '</span> + ' : '') + RK_KASUS_NAME[o.kasus]
+    + ' <span class="rk-fb-de">· ' + htmlEsc(x.de) + '</span></span>'
+    + '<span class="rk-fb-vgl">' + (rkAnders(x) ? '<span class="rkl-anders">≠ Deutsch</span>' + rkVergleichKurz(x) : 'Deutsch: ' + x.dt) + '</span>'
+    + (bsp ? '<button type="button" class="rk-fb-bsp" lang="ru" title="Anhören" onmousedown="event.preventDefault()" onclick="speak(this.dataset.t)" data-t="' + htmlEsc(bsp) + '"><i class="ti ti-volume"></i> ' + htmlEsc(bsp) + '</button>' : '')
+    + '</span>';
 }
 // Rektion anders als im Deutschen? (aus dem Vergleichstext)
 function rkAnders(x) { return /anders als im Deutschen|Russisch/.test(x.dt); }
 function rkVergleichKurz(x) { return x.dt.replace(/ – (wie im Deutschen|anders als im Deutschen)$/, ''); }
+// Übersetzung vor der Antwort (14.11.): die Klammer verrät oft die Rektion („lachen (über)“, „glauben (jemandem)“).
+// Sie fällt weg bzw. wird neutral („Person“); was zur Unterscheidung nötig ist (Spiel/Instrument), bleibt.
+const RK_FRAGE = { 'отвечать:на': 'antworten (Frage, Brief)', 'работать:кем': 'arbeiten (Beruf)', 'бороться за': 'kämpfen (Ziel)' };
+function rkDeFrage(x) {
+  return RK_FRAGE[rkVerbId(x)] || x.de.replace(/\((jemandem|wem\?)\)/, '(Person)').replace(/\s*\((?!ein |vom |etwas|Person)[^)]*\)/g, '');
+}
+// Stand je Verb: 0 neu · 1 geübt, noch nicht richtig · 2 eines von beiden richtig · 3 sicher (Fall wählen und Form bilden)
+function rkStaende() {
+  const srs = loadGrammarSrs().rektion || {}, je = {};
+  Object.keys(srs).forEach(k => { const u = rektionEinheit(k); (je[u] = je[u] || []).push(srs[k]); });
+  const out = {};
+  RK_VERBS.forEach(x => {
+    const id = rkVerbId(x), w = je['w:' + id] || [], f = je['f:' + id] || [], alle = w.concat(f);
+    const hatForm = (x.n || []).some(n => nounDeclensionData[n]), wOk = w.some(srsDone), fOk = f.some(srsDone);
+    out[id] = { s: wOk && (fOk || !hatForm) ? 3 : wOk || fOk ? 2 : alle.length ? 1 : 0,
+      falsch: alle.reduce((n, e) => n + (e.wrong || 0), 0), richtig: alle.reduce((n, e) => n + (e.correct || 0), 0) };
+  });
+  return out;
+}
+const RK_STAND_TEXT = ['neu', 'geübt, noch nicht richtig', 'eines von beiden richtig (Fall wählen / Form bilden)', 'sicher'];
 // Liste (9.11.): eigenes Fenster, alle Verben nach Fall bzw. Präposition + Fall; „≠ Deutsch“, Stand, Gruppe üben
-let rkListNurAnders = false;
+// 14.11.: Suche, Sprungmarken, „nur offene“, Sortierung, Aspektpartner, Beispiel liest vor, Stand als Punkt
+const rkList = { nurAnders: false, nurOffen: false, sort: 'fall' };
 function openRektionList() { renderRektionList(); document.getElementById('overlay-rektionlist').classList.add('open'); }
-function toggleRektionListAnders() { rkListNurAnders = !rkListNurAnders; renderRektionList(); }
+function toggleRektionListAnders() { rkList.nurAnders = !rkList.nurAnders; renderRektionList(); }
+function toggleRektionListOffen() { rkList.nurOffen = !rkList.nurOffen; renderRektionList(); }
+function setRektionListSort(v) { rkList.sort = v; renderRektionList(); }
+function rkListSprung(k) { const el = document.getElementById('rkl-g-' + k); if (el) el.scrollIntoView({ block: 'start' }); }
 function renderRektionList() {
   const body = document.getElementById('rektion-list-body'); if (!body) return;
-  const srs = loadGrammarSrs().rektion || {};
-  const btn = document.getElementById('rektion-list-anders');
-  if (btn) { btn.setAttribute('aria-pressed', rkListNurAnders ? 'true' : 'false'); btn.classList.toggle('active', rkListNurAnders); }
-  body.innerHTML = RK_OPTIONS.map(o => {
-    const alle = RK_VERBS.filter(x => x.r === o.k), vs = alle.filter(x => !rkListNurAnders || rkAnders(x)); if (!vs.length) return '';
-    return '<section class="rkl-group"><div class="rkl-head"><span class="rkl-title">' + (o.prep ? '<span lang="ru">' + o.prep + '</span> + ' : '') + RK_KASUS_NAME[o.kasus] + '</span><span class="rkl-n">' + vs.length + '</span>'
+  const stand = rkStaende(), paare = aspectPairs();
+  [['rektion-list-anders', rkList.nurAnders], ['rektion-list-offen', rkList.nurOffen]].forEach(([id, an]) => {
+    const btn = document.getElementById(id); if (btn) { btn.setAttribute('aria-pressed', an ? 'true' : 'false'); btn.classList.toggle('active', an); } });
+  markCaseSwitcher(document.getElementById('rektion-list-sort'), rkList.sort);
+  const such = ((document.getElementById('rektion-list-search') || {}).value || '').trim().toLowerCase().replace(/ё/g, 'е');
+  const pf = x => (paare[x.v] || {}).pf || '';
+  const passt = x => (!rkList.nurAnders || rkAnders(x)) && (!rkList.nurOffen || stand[rkVerbId(x)].s < 3)
+    && (!such || (x.v + ' ' + pf(x) + ' ' + x.de + ' ' + rektionExample(x)).toLowerCase().replace(/ё/g, 'е').includes(such));
+  const zeile = (x, mitFall) => { const st = stand[rkVerbId(x)], bsp = rektionExample(x), o = rkOpt(x.r);
+    return '<div class="rkl-row" onclick="this.classList.toggle(\'open\')"><span class="rkl-v" lang="ru">' + x.v + (pf(x) ? '<span class="rkl-pf" title="vollendeter Partner"> / ' + pf(x) + '</span>' : '') + '</span>'
+      + '<span class="rkl-de">' + x.de + '</span>'
+      + '<button class="rkl-bsp" lang="ru" type="button" title="Anhören" data-t="' + htmlEsc(bsp) + '" onclick="event.stopPropagation(); speak(this.dataset.t)">' + bsp + '</button>'
+      + '<span class="rkl-vgl"><span class="rkl-chips">' + (mitFall ? '<span class="rkl-fall">' + o.label + '</span>' : '') + (rkAnders(x) ? '<span class="rkl-anders" title="Rektion anders als im Deutschen">≠ Deutsch</span>' : '') + '</span><span class="rkl-vgl-t">' + rkVergleichKurz(x) + '</span></span>'
+      + '<span class="rkl-st rk-dot s' + st.s + '" role="img" title="' + RK_STAND_TEXT[st.s] + '" aria-label="' + RK_STAND_TEXT[st.s] + '"></span></div>'; };
+  const sprung = document.getElementById('rektion-list-sprung');
+  if (rkList.sort === 'fall') {
+    const gruppen = RK_OPTIONS.map(o => ({ o, alle: RK_VERBS.filter(x => x.r === o.k) })).map(g => Object.assign(g, { vs: g.alle.filter(passt) })).filter(g => g.vs.length);
+    if (sprung) sprung.innerHTML = gruppen.length > 1 ? gruppen.map(g => '<button type="button" onclick="rkListSprung(\'' + g.o.k + '\')">' + g.o.label + '</button>').join('') : '';
+    body.innerHTML = gruppen.map(({ o, alle, vs }) => '<section class="rkl-group" id="rkl-g-' + o.k + '"><div class="rkl-head"><span class="rkl-title">' + (o.prep ? '<span lang="ru">' + o.prep + '</span> + ' : '') + RK_KASUS_NAME[o.kasus] + '</span>'
+      + '<span class="rkl-n">' + alle.filter(x => stand[rkVerbId(x)].s === 3).length + ' von ' + alle.length + ' sicher</span>'
       + '<button class="tool-btn rkl-ueben" type="button" onclick="practiceRektionGroup(\'' + o.k + '\')" title="Runde nur mit diesen Verben"><i class="ti ti-player-play"></i> üben</button></div>'
-      + vs.map(x => { const ok = srsDone(srs['w:' + rkVerbId(x)]);
-        return '<div class="rkl-row"><span class="rkl-v" lang="ru">' + x.v + '</span><span class="rkl-de">' + x.de + '</span><span class="rkl-bsp" lang="ru">' + rektionExample(x) + '</span>'
-          + '<span class="rkl-vgl">' + (rkAnders(x) ? '<span class="rkl-anders" title="Rektion anders als im Deutschen">≠ Deutsch</span>' : '') + rkVergleichKurz(x) + '</span>'
-          + '<span class="rkl-st' + (ok ? ' ok' : '') + '" title="' + (ok ? 'bei „Fall wählen“ schon richtig' : 'noch nicht richtig') + '">' + (ok ? '<i class="ti ti-check"></i>' : '') + '</span></div>'; }).join('')
-      + '</section>';
-  }).join('');
+      + vs.map(x => zeile(x, false)).join('') + '</section>').join('') || '<p class="rkl-leer">Keine Verben für diese Auswahl.</p>';
+    return;
+  }
+  if (sprung) sprung.innerHTML = '';
+  const vs = RK_VERBS.filter(passt), S = x => stand[rkVerbId(x)];
+  if (rkList.sort === 'abc') vs.sort((a, b) => a.v.localeCompare(b.v, 'ru') || RK_VERBS.indexOf(a) - RK_VERBS.indexOf(b));
+  else vs.sort((a, b) => (S(b).falsch - S(b).richtig) - (S(a).falsch - S(a).richtig) || S(b).falsch - S(a).falsch || S(a).s - S(b).s || RK_VERBS.indexOf(a) - RK_VERBS.indexOf(b));
+  body.innerHTML = vs.length ? '<section class="rkl-group">' + vs.map(x => zeile(x, true)).join('') + '</section>' : '<p class="rkl-leer">Keine Verben für diese Auswahl.</p>';
 }
 // Gruppe üben: Runde „Form bilden“ nur mit diesen Verben (ohne Substantive: „Fall wählen“)
 function practiceRektionGroup(k) {
@@ -25012,17 +25102,58 @@ function toggleRektionInfo() {
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 function applyRektionHint() {
-  const btn = document.getElementById('rektion-hint-toggle');
-  setGtToggle(btn, rektionState.hintVisible);
-  // Einstellungen gibt es nur für „Form bilden“ (Hilfe = verlangter Fall)
-  document.getElementById('rektion-settings').style.display = rektionState.mode === 'form' ? '' : 'none';   // auch in der Liste aus
+  const st = rektionState, form = st.mode === 'form';
+  setGtToggle(document.getElementById('rektion-hint-toggle'), st.hintVisible);
+  setGtToggle(document.getElementById('rektion-anders-toggle'), st.nurAnders);
+  setGtToggle(document.getElementById('rektion-pron-toggle'), st.pron);
+  markCaseSwitcher(document.getElementById('rektion-kasus-switcher'), st.kasus);
+  // Hilfe (= verlangter Fall) und Pronomen gibt es nur bei „Form bilden“; die Filter gelten für beide Modi (14.11.)
+  ['rektion-hint-toggle', 'rektion-pron-toggle'].forEach(id => { const b = document.getElementById(id); if (b) b.style.display = form ? '' : 'none'; });
   const el = document.getElementById('rektion-hint');
-  if (el) el.style.visibility = rektionState.hintVisible ? '' : 'hidden';
+  if (el) el.style.visibility = st.hintVisible ? '' : 'hidden';
+  updateGtSettingsSummary(document.getElementById('overlay-rektion'));
 }
 function toggleRektionHint() {
   rektionState.hintVisible = !rektionState.hintVisible;
   saveToolSettings();
   applyRektionHint();
+}
+function toggleRektionAnders() { rektionState.nurAnders = !rektionState.nurAnders; saveToolSettings(); restartRektion(); }
+function toggleRektionPron() { rektionState.pron = !rektionState.pron; saveToolSettings(); restartRektion(); }
+function setRektionKasus(k) { rektionState.kasus = k; saveToolSettings(); restartRektion(); }
+// Filter der Einstellungen; passt nichts, gilt alles
+function rkPasst(x) {
+  const st = rektionState, o = rkOpt(x.r);
+  if (st.nurAnders && !rkAnders(x)) return false;
+  return st.kasus === 'all' || (st.kasus === 'praep' ? !!o.prep : x.r === st.kasus);
+}
+function rektionPool(mode) { const alle = rektionItems(mode), p = alle.filter(t => rkPasst(t.verb)); return p.length ? p : alle; }
+// „Form bilden“ ab und zu mit Pronomen (14.11.): bei Personen statt мама/брат ein Personalpronomen –
+// ohne Präposition ему/ей, mit Präposition die н-Form (о нём, на неё) und обо мне / ко мне / надо мной.
+// Zählt zur selben Einheit wie die Substantive des Verbs.
+const RK_PERSON = ['мама', 'брат', 'сестра', 'отец', 'врач', 'студент', 'друг', 'сосед', 'дочь'];
+const RK_PRON = ['я', 'ты', 'он', 'она', 'мы', 'вы', 'они'], RK_PRON_OHNE = ['становиться', 'работать:кем'], RK_PRON_ANTEIL = 0.3;
+function rkPronTask(t, pron) {
+  const o = rkOpt(t.verb.r), p = pron || RK_PRON[Math.floor(Math.random() * RK_PRON.length)];
+  const form = pfForm(pronounDeclensionData[p].forms[o.kasus], !!o.prep), obj = (o.prep ? pfPrep(o.prep, form) + ' ' : '') + form;
+  return { id: 'f:' + rkVerbId(t.verb) + ':~' + p, verb: t.verb, noun: p, pron: true, answer: t.verb.v + ' ' + obj, obj };
+}
+function rkPronMoeglich(t) { return !!t.noun && !t.pron && RK_PERSON.includes(t.noun) && !RK_PRON_OHNE.includes(rkVerbId(t.verb)); }
+// Verwechslungspaare (14.11.): nach einem Fehler kommt das Gegenstück gleich als nächste Aufgabe derselben Runde
+const RK_PAARE = [['играть:в', 'играть:на'], ['отвечать:кому', 'отвечать:на'], ['благодарить', 'помогать'], ['поздравлять', 'желать'], ['звонить', 'звать'],
+  ['радоваться', 'смеяться'], ['удивляться', 'жаловаться'], ['надеяться', 'жениться'], ['думать', 'мечтать'], ['заниматься', 'интересоваться'],
+  ['просить', 'спрашивать'], ['зависеть', 'отказываться'], ['готовиться', 'привыкать'], ['участвовать', 'играть:в'], ['болеть за', 'бороться за']];
+function rkPartner(id) { for (const [a, b] of RK_PAARE) { if (a === id) return b; if (b === id) return a; } return null; }
+function rkGegenstueck(t) {
+  const st = rektionState, pid = rkPartner(rkVerbId(t.verb)); if (!pid || t.paar) return;
+  const istP = q => rkVerbId(q.verb) === pid;
+  if (st.queue.slice(0, st.index).some(istP)) return;   // in dieser Runde schon dran gewesen
+  const i = st.queue.findIndex((q, j) => j > st.index && istP(q));
+  let neu;
+  if (i >= 0) neu = st.queue.splice(i, 1)[0];
+  else { const pool = rektionItems(st.mode).filter(istP); if (!pool.length) return; neu = Object.assign({}, pool[Math.floor(Math.random() * pool.length)]); }
+  neu.paar = t.verb.v;
+  st.queue.splice(st.index + 1, 0, neu);
 }
 function setRektionMode(m) {
   rektionState.mode = m;
@@ -25046,30 +25177,33 @@ function openRektion() {
 // Runde (8.11.): 15 Aufgaben – fällige, zuletzt falsche und neue zuerst; am Ende Fehlerliste
 const REKTION_ROUND = 15;
 function restartRektion() {
-  const st = rektionState, pool = rektionItems(st.mode);
+  const st = rektionState, pool = rektionPool(st.mode);
   const srs = loadGrammarSrs().rektion || {}, life = loadLifetime().g.rektion || {}, now = Date.now();
   const gruppe = t => { const e = life[t.id], x = srs[t.id];
     if (e && e.d && e.d < LIFE_RUNS_MAX && lifeNextDue(e) <= now) return 0; if (x && !srsDone(x)) return 1; if (!x) return 2; return 3; };
   const g = [[], [], [], []];
   shuffleInPlace(pool.slice()).forEach(t => g[gruppe(t)].push(t));
   g[3].sort((a, b) => ((srs[a.id] || {}).lastSeen || 0) - ((srs[b.id] || {}).lastSeen || 0));
-  startRektionRound(shuffleInPlace([].concat(...g).slice(0, REKTION_ROUND)));
+  let runde = shuffleInPlace([].concat(...g).slice(0, REKTION_ROUND));
+  if (st.mode === 'form' && st.pron) runde = runde.map(t => rkPronMoeglich(t) && Math.random() < RK_PRON_ANTEIL ? rkPronTask(t) : t);
+  startRektionRound(runde);
 }
 function startRektionRound(queue) {
   const st = rektionState;
+  queue.forEach(t => { delete t.paar; });
   st.queue = queue; st.index = 0; st.rCorrect = 0; st.fehler = []; st.bewertet = -1;
   renderRektionTask();
 }
 function repeatRektionErrors() { if (rektionState.fehler.length) startRektionRound(shuffleInPlace(rektionState.fehler.slice())); }
-function rektionNoteResult(t, ok) {
+function rektionNoteResult(t, ok, uebersprungen) {
   const st = rektionState;
   if (st.bewertet === st.index) return;
   st.bewertet = st.index;
-  if (ok !== true) st.fehler.push(t);
+  if (ok !== true) { st.fehler.push(t); if (!uebersprungen) rkGegenstueck(t); }
 }
 function rektionAdvance() {
   const st = rektionState;
-  if (st.current && !st.answered && st.index < st.queue.length) rektionNoteResult(st.current, null);   // übersprungen
+  if (st.current && !st.answered && st.index < st.queue.length) rektionNoteResult(st.current, null, true);   // übersprungen
   st.index++;
   renderRektionTask();
 }
@@ -25096,8 +25230,9 @@ function renderRektionTask(behalteArt) {
     return;
   }
   const x = t.verb;
+  const paar = t.paar ? '<span class="rk-paar">Gegenstück zu <span lang="ru">' + t.paar + '</span></span>' : '';
   if (st.mode === 'choose') {
-    q.innerHTML = '<span class="case-prep" lang="ru">' + x.v + '</span><span>' + x.de + '</span>'
+    q.innerHTML = paar + '<span class="case-prep" lang="ru">' + x.v + '</span><span>' + rkDeFrage(x) + '</span>'
       + '<span class="case-hint">Welcher Fall folgt?</span>';
     // reine Fälle oben, Präposition + Fall darunter (8.11.); Tasten 1–9, 0
     const taste = i => i < 9 ? String(i + 1) : i === 9 ? '0' : '';
@@ -25114,9 +25249,9 @@ function renderRektionTask(behalteArt) {
   } else {
     // Verb steht da, gesucht ist nur die Ergänzung (8.11.); die ganze Wortgruppe zählt auch
     const o = rkOpt(x.r);
-    const nde = (nounDeclensionData[t.noun] || {}).de || '';
-    q.innerHTML = '<span class="case-prep rk-pair" lang="ru">' + x.v + ' + ' + t.noun + '</span><span>' + x.de + ' · ' + nde + '</span>'
-      + '<span class="case-hint"><span lang="ru">' + x.v + '</span> ___ – passende Form (Singular)</span>'
+    const nde = ((t.pron ? pronounDeclensionData : nounDeclensionData)[t.noun] || {}).de || '';
+    q.innerHTML = paar + '<span class="case-prep rk-pair" lang="ru">' + x.v + ' + ' + t.noun + '</span><span>' + rkDeFrage(x) + ' · ' + nde + '</span>'
+      + '<span class="case-hint"><span lang="ru">' + x.v + '</span> ___ – passende Form' + (t.pron ? ' des Pronomens' : ' (Singular)') + '</span>'
       + '<span class="case-hint" id="rektion-hint">verlangt: ' + (o.prep ? o.prep + ' + ' : '') + RK_KASUS_NAME[o.kasus] + '</span>';
     const input = document.getElementById('rektion-input');
     input.value = ''; input.className = 'conj-input'; clearPartialFeedback(input);
@@ -25130,7 +25265,7 @@ const RK_CHOICE = {
   panel: 'overlay-rektion', opts: 'rektion-opts', result: 'rektion-result',
   active: () => rektionState.mode === 'choose',
   item: () => rektionState.current, right: t => t.verb.r, srs: t => ['rektion', t.id],
-  text: (t, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + rektionExplain(t.verb, true),
+  text: (t, ok) => (ok ? 'Richtig' : ok === false ? 'Falsch' : '') + rektionExplain(t.verb, true),
   onAnswer: (t, ok) => {
     const st = rektionState;
     st.done++; if (ok) { st.correct++; st.rCorrect++; }
@@ -25139,7 +25274,7 @@ const RK_CHOICE = {
     document.getElementById('rektion-score').textContent = rektionScoreText();
   },
   advance: () => rektionAdvance(),
-  fehler: t => rektionNoteResult(t, null),
+  fehler: t => rektionNoteResult(t, null, !RK_CHOICE.answered),   // unbeantwortet weiter = übersprungen (kein Gegenstück)
   unfehler: t => gtDropFehler(rektionState.fehler, t),
 };
 GT_CHOICES.push(RK_CHOICE);
@@ -25159,7 +25294,7 @@ const REKTION_DRILL = {
   p: 'rektion', st: rektionState, task: () => rektionState.current,
   srs: () => 'rektion', id: t => t.id, restart: () => rektionAdvance(),
   answers: t => [t.obj, t.answer], ohneAuch: true,   // ganze Wortgruppe zählt auch, wird aber nicht als Alternative genannt
-  extra: t => '<br><span class="case-hint">' + rektionExplain(t.verb) + '</span>',
+  extra: t => rektionExplain(t.verb),
   after: (t, ok) => rektionNoteResult(t, ok),
   score: () => rektionScoreText(),
   rated: (t, ok) => { if (ok) { gtDropFehler(rektionState.fehler, t); rektionState.rCorrect++; document.getElementById('rektion-score').textContent = rektionScoreText(); } },

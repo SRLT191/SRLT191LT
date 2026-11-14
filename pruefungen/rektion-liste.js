@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     toggleRektionListAnders(); out.nurAnders = ov.querySelectorAll('.rkl-row').length; toggleRektionListAnders();
     // Stand je Verb
     const srs = loadGrammarSrs(); srs.rektion = srs.rektion || {}; srs.rektion['w:помогать'] = { correct: 1, wrong: 0, box: 1, lastSeen: Date.now() }; saveGrammarSrs(); renderRektionList();
-    const zeile = [...ov.querySelectorAll('.rkl-row')].find(z => z.querySelector('.rkl-v').textContent === 'помогать'); out.haken = zeile.querySelector('.rkl-st').classList.contains('ok');
+    const zeile = [...ov.querySelectorAll('.rkl-row')].find(z => z.querySelector('.rkl-v').textContent.startsWith('помогать')); out.haken = zeile.querySelector('.rkl-st').className;
     // Gruppe üben
     const knopf = [...ov.querySelectorAll('.rkl-group')].find(g => /^к \+ Dativ/.test(g.querySelector('.rkl-title').textContent)).querySelector('.rkl-ueben'); knopf.click();
     out.uebe = { offen: ov.classList.contains('open'), mode: rektionState.mode, alle: rektionState.queue.every(t => t.verb.r === 'kDat'), n: rektionState.queue.length };
@@ -42,10 +42,10 @@ const { chromium } = require('playwright');
   ok('Formen gebildet: зависеть от погоды, готовиться к уроку, участвовать в концерте, болеть за брата, мечтать о доме, жениться на сестре',
     r.formen.join() === 'зависеть от погоды,готовиться к уроку,участвовать в концерте,болеть за брата,мечтать о доме,жениться на сестре', r.formen.join(' | '));
   ok('Liste öffnet als eigenes Fenster, nicht im Werkzeug', r.offen && !r.imWerkzeug);
-  ok('Gruppen mit Überschrift und Anzahl, alle Verben', r.zeilen === r.n && r.gruppen.some(g => /^от \+ Genitiv 2$/.test(g)) && r.gruppen.some(g => /^за \+ Akkusativ 3$/.test(g)), JSON.stringify(r.gruppen));
+  ok('Gruppen mit Überschrift und Anzahl, alle Verben', r.zeilen === r.n && r.gruppen.some(g => /^от \+ Genitiv 0 von 2 sicher$/.test(g)) && r.gruppen.some(g => /^за \+ Akkusativ 0 von 3 sicher$/.test(g)), JSON.stringify(r.gruppen));
   ok('Beispiele abwechselnd (höchstens 7× „мама“, vorher 12)', r.mama <= 7, String(r.mama));
   ok('„≠ Deutsch“ bei abweichender Rektion; Schalter zeigt nur diese; Vergleich ohne „wie/anders als im Deutschen“', r.anders === r.andersSoll && r.nurAnders === r.andersSoll && r.kurz === 0, JSON.stringify([r.anders, r.andersSoll, r.nurAnders, r.kurz]));
-  ok('Häkchen bei Verben, die bei „Fall wählen“ richtig waren', r.haken);
+  ok('Stand je Verb als Punkt: nur „Fall wählen“ richtig = halb (s2)', /\bs2\b/.test(r.haken), r.haken);
   ok('„üben“: Fenster zu, Runde „Form bilden“ nur mit der Gruppe; ohne Substantive „Fall wählen“', !r.uebe.offen && r.uebe.mode === 'form' && r.uebe.alle && r.uebe.n === 6 && r.uebe2.mode === 'choose' && r.uebe2.n === 1, JSON.stringify([r.uebe, r.uebe2]));
   ok('Erklärung nennt Liste, Runden, Tasten, nur Ergänzung und die neuen Präpositionen', r.info);
   ok('Fall wählen in zwei Schritten: erst 2 Arten, dann 4 Fälle bzw. 10 Präpositionen (14 Antworten)', r.tasten[0] === 2 && r.tasten[2] === 14, String(r.tasten));

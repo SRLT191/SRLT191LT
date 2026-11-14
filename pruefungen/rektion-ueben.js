@@ -22,7 +22,7 @@ const { chromium } = require('playwright');
     rkArt(rkOpt(rektionState.current.verb.r).prep ? 'praep' : 'fall'); return k(); });
   await p.keyboard.press(key); await p.waitForTimeout(40);
   const b1 = await p.evaluate(() => ({ res: document.getElementById('rektion-result').textContent, score: document.getElementById('rektion-score').textContent, v: rektionState.current.verb, bsp: rektionExample(rektionState.current.verb) }));
-  ok('Taste wählt die Antwort; Rückmeldung mit Beispiel-Wortgruppe', /^Richtig — /.test(b1.res) && b1.bsp && b1.res.includes('Beispiel: ' + b1.bsp) && /1 richtig$/.test(b1.score), JSON.stringify(b1));
+  ok('Taste wählt die Antwort; Rückmeldung mit Beispiel-Wortgruppe', /^Richtig/.test(b1.res) && b1.bsp && b1.res.trim().endsWith(b1.bsp) && /1 richtig$/.test(b1.score), JSON.stringify(b1));
   // Form bilden: nur Ergänzung
   const f = await p.evaluate(() => { setRektionMode('form'); const t = rektionState.current; const input = document.getElementById('rektion-input');
     const ph = input.placeholder; input.value = t.obj; checkRektion(); const res = document.getElementById('rektion-result').textContent, sc = document.getElementById('rektion-score').textContent;
