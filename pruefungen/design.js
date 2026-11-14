@@ -74,7 +74,7 @@ const { chromium } = require('playwright');
   await check('Handy: Heute, Bereiche und Einstellungen als Leiste unten, mind. 44 px hoch, ohne Vokabelliste/Alphabet', () => m.evaluate(() => {
     const h = document.getElementById('app-header').getBoundingClientRect(); const vis = [...document.querySelectorAll('#app-header button')].filter(x => x.offsetParent);
     const pad = parseFloat(getComputedStyle(document.body).paddingBottom);
-    return { ok: Math.round(h.bottom) === innerHeight && h.height >= 56 && vis.length === 5 && vis.every(x => x.getBoundingClientRect().height >= 44) && pad >= h.height - 1, info: vis.map(x => x.textContent.trim()).join(' | ') };
+    return { ok: Math.round(h.bottom) === innerHeight && h.height >= 56 && vis.length === 6 && vis.every(x => x.getBoundingClientRect().height >= 44) && pad >= h.height - 1, info: vis.map(x => x.textContent.trim()).join(' | ') };
   }));
   await check('Handy: Grammatik-Navigation über dem Werkzeug, Seitenleiste aus', () => m.evaluate(() => {
     setAppView('grammar'); const ok = document.getElementById('grammar-view').contains(document.getElementById('grammar-cats')) && !document.getElementById('sidebar').offsetParent && !!document.getElementById('gcat-verb').offsetParent;
@@ -82,7 +82,7 @@ const { chromium } = require('playwright');
   }));
   for (const w of [320, 360, 390]) await check('Handy ' + w + ' px: kein Überlauf in Vokabeln, Grammatik, Hören', async () => {
     await m.setViewportSize({ width: w, height: 760 }); await m.waitForTimeout(150);
-    return m.evaluate(() => { const bad = []; for (const v of ['vocab', 'grammar', 'listening']) { setAppView(v); if (document.documentElement.scrollWidth > document.documentElement.clientWidth) bad.push(v); } setAppView('vocab'); return { ok: !bad.length, info: bad.join(',') }; });
+    return m.evaluate(() => { const bad = []; for (const v of ['vocab', 'grammar', 'listening', 'reading']) { setAppView(v); if (document.documentElement.scrollWidth > document.documentElement.clientWidth) bad.push(v); } setAppView('vocab'); return { ok: !bad.length, info: bad.join(',') }; });
   });
   await check('PC ↔ Handy: Navigation wandert beim Ändern der Fensterbreite mit', async () => {
     await m.setViewportSize({ width: 1200, height: 800 }); await m.waitForTimeout(150);

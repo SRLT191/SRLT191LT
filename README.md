@@ -10,6 +10,7 @@ Ein Russisch-Trainer in einer einzigen Datei: **`index.html`** im Browser öffne
 - **Vokabeln:** 3720 Karten (3844 Wörter) in 79 Kategorien (Seitenleiste: Oberkategorie mit Klick aufklappen, mit Doppelklick alles üben; Unterkategorie mit einem Klick üben), RU → DE und DE → RU, Freitext, Auswahl und Aufdecken; Umschrift wahlweise nach der Aussprache oder Buchstabe für Buchstabe; Vorlesen mit wählbarer russischer und deutscher Stimme
 - **Grammatik:** 17 Werkzeuge (Verben, Substantive, Adjektive, Pronomen, Präpositionen, Sätze)
 - **Hörverstehen:** Hörtrainer, Hörquiz, Satzdiktat
+- **Textverständnis:** kurze Texte nach Sprachniveau, Satz für Satz übersetzen und mit der Musterübersetzung vergleichen
 - **Sprachniveau:** jedes Wort und jeder Satz mit Stufe (A1–C1), Stufenplan, Einstufungstest, Stufe abschließen; Übersicht „Fortschritt nach Stufen“ mit Ziel, Wörtern und Grammatik je Stufe in den Farben der Wiederholungsstufen, was bis zum Ziel fehlt, Stufenplan per Klick auf eine Stufe
 - **Kyrillisches Alphabet:** alle 33 Buchstaben nach Lauten oder alphabetisch, Lautwert, falsche Freunde (В Е Н Р С У Х), Beispielwort zum Anhören, Umschrift nach dem gewählten Schalter
 

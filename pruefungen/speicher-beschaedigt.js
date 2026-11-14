@@ -26,7 +26,7 @@ const { chromium } = require('playwright');
     await p.addInitScript(([k, v]) => { try { if (!localStorage.getItem('__gesetzt')) { localStorage.setItem(k, v); localStorage.setItem('__gesetzt', '1'); } } catch (e) {} }, [k, v]);
     await p.goto('file://' + APP_PATH); await p.waitForTimeout(250);
     const s = await p.evaluate(async () => { window.speak = () => {}; const o = [];
-      for (const v of ['home', 'vocab', 'grammar', 'listening']) { try { setAppView(v); } catch (e) { o.push(v + ': ' + e.message.slice(0, 80)); } await new Promise(r => setTimeout(r, 40)); }
+      for (const v of ['home', 'vocab', 'grammar', 'listening', 'reading']) { try { setAppView(v); } catch (e) { o.push(v + ': ' + e.message.slice(0, 80)); } await new Promise(r => setTimeout(r, 40)); }
       try { GRAMMAR_PANELS.forEach(t => GRAMMAR_PANEL_OPENERS[t]()); updateGrammarTileProgress(); } catch (e) { o.push('Werkzeug: ' + e.message.slice(0, 80)); }
       try { setAppView('vocab'); selectMainCat('all'); if (!currentWord) o.push('keine Karte'); } catch (e) { o.push('Vokabeln: ' + e.message.slice(0, 80)); }
       try { saveToolSettings(); flushSaves(); } catch (e) { o.push('Speichern: ' + e.message.slice(0, 80)); }

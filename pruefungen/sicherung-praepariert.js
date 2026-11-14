@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
   p.on('pageerror', e => errs.push(e.message.slice(0, 140))); p.on('dialog', d => { errs.push('DIALOG ' + d.message()); d.dismiss(); });
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   const alles = () => p.evaluate(async () => { window.speak = () => {};
-    for (const v of ['home', 'vocab', 'grammar', 'listening']) { try { setAppView(v); } catch (e) {} await new Promise(r => setTimeout(r, 60)); }
+    for (const v of ['home', 'vocab', 'grammar', 'listening', 'reading']) { try { setAppView(v); } catch (e) {} await new Promise(r => setTimeout(r, 60)); }
     try { GRAMMAR_PANELS.forEach(t => GRAMMAR_PANEL_OPENERS[t]()); updateGrammarTileProgress(); } catch (e) {}
     // alle Dialoge und Listen öffnen (ohne Zurücksetzen, GitHub, Ein-/Ausfuhr)
     document.querySelectorAll('[onclick*="open"], [onclick*="show"]').forEach(el => { const s = el.getAttribute('onclick'); if (/reset|gh[A-Z]|import|export|l[öo]sch|Picker\(\)/i.test(s)) return; try { el.click(); } catch (e) {} });
