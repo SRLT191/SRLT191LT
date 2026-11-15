@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   const R = await p.evaluate(() => {
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
-    const NEU = { 'лицо': ['Gesicht', 'A2', 'n'], 'губа': ['Lippe', 'B1', 'f'], 'щека': ['Wange', 'B2', 'f'], 'горло': ['Hals|Kehle', 'B1', 'n'], 'кровь': ['Blut', 'A1', 'f'] };
+    const NEU = { 'лицо': ['Gesicht', 'A2', 'n'], 'губа': ['Lippe', 'B1', 'f'], 'щека': ['Wange', 'B2', 'f'], 'горло': ['Hals|Kehle', 'B1', 'n'], 'кровь': ['Blut', 'A2', 'f'] };
     const kt = getAllWordsOfCat('Körperteile');
     Object.entries(NEU).forEach(([ru, [de, lv, g]]) => {
       const w = kt.find(x => x.ru === ru), s = w && getWordSentence(w);

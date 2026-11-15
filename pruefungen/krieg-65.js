@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   const R = await p.evaluate(() => {
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
-    const NEU = { 'капитан': ['Hauptmann|Kapitän', 'A1', 'm'], 'пистолет': ['Pistole', 'A1', 'm'], 'сержант': ['Feldwebel|Sergeant', 'A2', 'm'],
+    const NEU = { 'капитан': ['Hauptmann|Kapitän', 'A2', 'm'], 'пистолет': ['Pistole', 'A2', 'm'], 'сержант': ['Feldwebel|Sergeant', 'A2', 'm'],
       'лейтенант': ['Leutnant', 'A2', 'm'], 'офицер': ['Offizier', 'A2', 'm'], 'полковник': ['Oberst', 'A2', 'm'], 'майор': ['Major', 'A2', 'm'],
       'бой': ['Kampf|Gefecht', 'A2', 'm'], 'выстрел': ['Schuss', 'B1', 'm'], 'командир': ['Kommandeur|Befehlshaber', 'B1', 'm'], 'взрыв': ['Explosion', 'B1', 'm'],
       'нападение': ['Überfall', 'B1', 'n'], 'защита': ['Schutz', 'B1', 'f'], 'пуля': ['Kugel|Patrone', 'B1', 'f'], 'битва': ['Schlacht', 'B2', 'f'], 'флот': ['Flotte|Marine', 'B2', 'm'] };
