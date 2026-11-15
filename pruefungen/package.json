@@ -3,5 +3,5 @@
   "private": true,
   "description": "Browser-Prüfungen für das Russisch-Sprachtool (index.html)",
   "scripts": { "test": "bash alle.sh" },
-  "devDependencies": { "playwright": "1.64.1" }
+  "devDependencies": { "playwright": "1.65.1" }
 }

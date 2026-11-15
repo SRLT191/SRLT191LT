@@ -86,10 +86,19 @@ const PROBE = `TEXTE.length = 0; TEXTE.push(
   ok('Lesestand in Sicherung und GitHub-Abgleich, Breite gesichert', r.schluessel.every(Boolean), r.schluessel.join());
   ok('Beschädigter Lesestand: kein Fehler, nichts wird ausgeführt', r.kaputt[0] && r.kaputt[1] === 'probe-b' && r.kaputt[2] === '{}', JSON.stringify(r.kaputt));
   // Neuladen: Ansicht kommt nicht von selbst zurück (Start auf „Heute“), Lesestand bleibt
-  await p.evaluate(() => { localStorage.setItem(READING_KEY, JSON.stringify({ 'probe-a': { s: { 0: 1 }, z: 7, d: 2 } })); });
+  await p.reload(); await p.waitForTimeout(300);
+  const echt = await p.evaluate(() => { const id = TEXTE[0] ? TEXTE[0].id : 'x'; localStorage.setItem(READING_KEY, JSON.stringify({ [id]: { s: { 0: 1 }, z: 7, d: 2 }, 'alte-kennung': { s: { 0: 1 }, z: 3, d: 1 } })); return id; });
   await p.reload(); await p.waitForTimeout(400);
-  const n = await p.evaluate(probe => { eval(probe); const s = readingStand(readingText('probe-a')); return [appView, s.bew, s.d]; }, PROBE);
-  ok('Nach dem Neuladen: Start auf „Heute“, Lesestand erhalten', n.join() === 'home,1,2', n.join());
+  await p.waitForTimeout(100);
+  const n = await p.evaluate(id => { const t = readingText(id); const s = t ? readingStand(t) : { bew: -1, d: -1 }; return [appView, s.bew, s.d, Object.keys(JSON.parse(localStorage.getItem(READING_KEY) || '{}')).join()]; }, echt);
+  ok('Nach dem Neuladen: Start auf „Heute“, Lesestand erhalten, alte Kennungen entfernt', n.slice(0, 3).join() === 'home,1,2' && n[3] === echt, n.join());
+  const z = await p.evaluate(() => { setAppView('reading'); openText(TEXTE[0].id); const b = [...document.querySelectorAll('#reading-body .rd-s')];
+    const kurz = [...document.querySelectorAll('#set-sec-kuerzel strong')].map(s => s.textContent);
+    return [b.length === TEXTE[0].saetze.length, b.every(x => x.tagName === 'BUTTON' && /^Satz \d+/.test(x.getAttribute('aria-label'))), b[0].getAttribute('aria-label'), b[1].getAttribute('aria-current'), b[1].getAttribute('aria-label'), kurz.includes('Textverständnis')]; });
+  ok('Sätze sind Knöpfe mit Beschriftung (Nummer, Stand, aktuell); Tastenkürzel-Übersicht nennt Textverständnis', z[0] && z[1] && /^Satz 1, gewusst: /.test(z[2]) && z[3] === 'true' && /^Satz 2, aktuell: /.test(z[4]) && z[5], JSON.stringify(z));
+  const tx = await p.evaluate(() => { const S = id => (TEXTE.find(t => t.id === id) || { saetze: [] }).saetze.map(s => s.ru).join(' ');
+    return [/люблю свою работу/.test(S('moj-den')), /плавали туда на лодке/.test(S('otpusk-na-more')), !/обед/.test(S('den-rozhdenija-babuschki')), genderPool().some(g => g.ru === 'сутки' && g.g === 'pl')]; });
+  ok('Korrekturen 15.11.: свою работу, плавали, ужин statt обед, сутки im Werkzeug Geschlecht (nur Plural)', tx.every(Boolean), tx.join());
   for (const w of [320, 360]) {
     const ctx = await b.newContext({ viewport: { width: w, height: 700 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e => errs.push(e.message));
     await m.goto('file://' + APP_PATH); await m.waitForTimeout(400);

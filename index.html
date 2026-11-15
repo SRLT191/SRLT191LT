@@ -854,7 +854,8 @@
   .rd-prog { font-size: 13px; color: var(--c-text-secondary); white-space: nowrap; }
   .rd-text { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 19px; line-height: 1.75; margin: 4px 0 14px; }
   .rd-text p { margin: 0 0 10px; }
-  .rd-s { cursor: pointer; border-radius: 4px; padding: 1px 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .rd-s { cursor: pointer; border-radius: 4px; padding: 1px 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; border: 0; margin: 0; background: none; color: inherit; font: inherit; line-height: inherit; text-align: left; }
+  .rd-s:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 1px; }
   .rd-s:hover { background: var(--c-surface-alt); }
   .rd-s.cur { background: var(--c-accent); color: var(--c-on-accent); }
   .rd-s.ok { text-decoration: underline; text-decoration-color: var(--c-st5); text-decoration-thickness: 2px; text-underline-offset: 5px; }
@@ -3345,12 +3346,13 @@
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Lösung zeigen</strong><span>In den Grammatik- und Hörwerkzeugen; nicht beim Auswählen mit Zifferntasten (Kasus-Drill „Fall wählen“, Rektion „Fall wählen“, Bewegungsverben „Vorsilben“) – dort per Knopf; im Hörquiz-Aufdecken liest 3 erneut vor</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Wort-Tipp</strong><span>Im Satzbau: deckt das nächste Wort der Lösung auf</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Antwort wählen</strong><span>Im Auswahl-Modus der Vokabeln die passende Option</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">–</kbd><kbd class="kbd">9</kbd></span><div class="set-text"><strong>Antwort wählen (Grammatik)</strong><span>Kasus-Drill „Fall wählen“ 1–5, Rektion „Fall wählen“ 1–9 und 0, Bewegungsverben „Wahl“ 1/2 und „Vorsilben“ 1–4 – die Zahl steht auf jedem Knopf</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">–</kbd><kbd class="kbd">9</kbd></span><div class="set-text"><strong>Antwort wählen (Grammatik)</strong><span>Kasus-Drill „Fall wählen“ 1–5, Rektion „Fall wählen“ 1–9 und 0 (с, по, перед nur per Klick), Bewegungsverben „Wahl“ 1/2 und „Vorsilben“ 1–4 – die Zahl steht auf jedem Knopf</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Anhören</strong><span>In Wortgruppen und Satzbau: Lösung bzw. die schon aufgedeckten Wörter vorlesen, auch im Eingabefeld</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Gewusst / Nicht gewusst</strong><span>Im Aufdecken-Modus (Vokabeln und Hörquiz), nach dem Aufdecken; in der Grammatik nach „Lösung zeigen“ (1 zählt als richtig, 2 als falsch)</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Rückgängig</strong><span>Im Aufdecken-Modus der Vokabeln: nimmt die letzte Bewertung zurück, auch nach „Alles gelernt!“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Neu anfangen</strong><span>Im Aufdecken-Modus der Vokabeln bei „Alles gelernt!“: setzt den Fortschritt zurück</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Bewertung zurücknehmen</strong><span>Im Hörquiz-Aufdecken, wenn du dich verdrückt hast</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd><kbd class="kbd">3</kbd><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Textverständnis</strong><span>Enter oder 3 zeigt die Musterübersetzung (im Feld: Umschalt+Enter = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz vor (nicht im Feld)</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd><kbd class="kbd">5</kbd></span><div class="set-text"><strong>Einstufungstest</strong><span>1–4 wählt eine Antwort, 5 = weiß ich nicht</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Esc</kbd></span><div class="set-text"><strong>Dialog schließen</strong><span>Schließt Einstellungen, Listen, Auswahlfenster und das ⋯-Menü der Grammatik</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">+</kbd></span><div class="set-text"><strong>Fortschritt zurücksetzen</strong><span>Übungsstand von Vokabeln und Grammatik, sofort und ohne Rückfrage; auch im Antwortfeld</span></div></div>
@@ -17946,7 +17948,7 @@ const TEXTE = [
     { ru: 'Вечером мы вместе смотрим телевизор.', de: 'Abends sehen wir zusammen fern.' },
     { ru: 'Наша улица тихая.', de: 'Unsere Straße ist ruhig.', p: true },
     { ru: 'Рядом с домом есть магазин, школа и остановка.', de: 'Neben dem Haus gibt es ein Geschäft, eine Schule und eine Haltestelle.' },
-    { ru: 'Ключ от квартиры есть у меня и у родителей.', de: 'Einen Wohnungsschlüssel haben ich und meine Eltern.' },
+    { ru: 'Ключ от квартиры есть у меня и у родителей.', de: 'Einen Schlüssel für die Wohnung haben meine Eltern und ich.' },
     { ru: 'Я люблю нашу квартиру.', de: 'Ich mag unsere Wohnung.' },
   ] },
   { id: 'moj-den', lvl: 'A1', titel: 'Мой день', de: 'Mein Tag', saetze: [
@@ -17970,7 +17972,7 @@ const TEXTE = [
     { ru: 'Наша собака старая, но очень добрая.', de: 'Unser Hund ist alt, aber sehr lieb.' },
     { ru: 'Иногда мы помогаем бабушке.', de: 'Manchmal helfen wir der Großmutter.' },
     { ru: 'Бабушка живёт в старом доме.', de: 'Die Großmutter wohnt in einem alten Haus.' },
-    { ru: 'Я люблю мою работу.', de: 'Ich mag meine Arbeit.', p: true },
+    { ru: 'Я люблю свою работу.', de: 'Ich mag meine Arbeit.', p: true },
     { ru: 'Но свободное время я тоже люблю.', de: 'Aber die Freizeit mag ich auch.' },
   ] },
   { id: 'subbota-v-centre', lvl: 'A1', titel: 'Суббота в центре', de: 'Samstag im Zentrum', saetze: [
@@ -18016,7 +18018,7 @@ const TEXTE = [
     { ru: 'В субботу мы поднимались на высокую гору.', de: 'Am Samstag stiegen wir auf einen hohen Berg.', p: true },
     { ru: 'Я очень устала, но не жаловалась.', de: 'Ich wurde sehr müde, aber ich beklagte mich nicht.' },
     { ru: 'С горы мы увидели маленький остров.', de: 'Vom Berg aus erblickten wir eine kleine Insel.' },
-    { ru: 'На следующий день мы плыли туда на лодке.', de: 'Am nächsten Tag fuhren wir mit dem Boot dorthin.' },
+    { ru: 'На следующий день мы плавали туда на лодке.', de: 'Am nächsten Tag fuhren wir mit dem Boot dorthin.' },
     { ru: 'Родителям я послала открытку.', de: 'Den Eltern habe ich eine Postkarte geschickt.', p: true },
     { ru: 'Друзьям мы купили сувениры.', de: 'Den Freunden haben wir Souvenirs gekauft.' },
     { ru: 'Через две недели мы вернулись домой.', de: 'Nach zwei Wochen kehrten wir nach Hause zurück.' },
@@ -18029,7 +18031,7 @@ const TEXTE = [
     { ru: 'Теперь ей семьдесят лет.', de: 'Jetzt ist sie siebzig Jahre alt.' },
     { ru: 'Она пригласила всю семью и соседку.', de: 'Sie hat die ganze Familie und die Nachbarin eingeladen.' },
     { ru: 'Утром мы с мамой убрали квартиру.', de: 'Am Morgen haben Mama und ich die Wohnung aufgeräumt.' },
-    { ru: 'Мама приготовила обед, а я купила торт и цветы.', de: 'Mama hat das Mittagessen gekocht, und ich habe eine Torte und Blumen gekauft.' },
+    { ru: 'Мама приготовила ужин, а я купила торт и цветы.', de: 'Mama hat das Abendessen gekocht, und ich habe eine Torte und Blumen gekauft.' },
     { ru: 'Гости пришли в пять часов.', de: 'Die Gäste kamen um fünf Uhr.', p: true },
     { ru: 'Тётя приехала из другого города.', de: 'Die Tante kam aus einer anderen Stadt.' },
     { ru: 'Она подарила бабушке красивый шарф.', de: 'Sie schenkte der Großmutter einen schönen Schal.' },
@@ -18037,11 +18039,11 @@ const TEXTE = [
     { ru: 'Я поздравила бабушку и подарила ей розы.', de: 'Ich gratulierte der Großmutter und schenkte ihr Rosen.' },
     { ru: 'Бабушка улыбалась и говорила всем спасибо.', de: 'Die Großmutter lächelte und bedankte sich bei allen.' },
     { ru: 'Потом мы сели за стол.', de: 'Dann setzten wir uns an den Tisch.', p: true },
-    { ru: 'Обед был очень вкусный.', de: 'Das Essen war sehr lecker.' },
+    { ru: 'Ужин был очень вкусный.', de: 'Das Abendessen war sehr lecker.' },
     { ru: 'Особенно всем понравился сладкий торт.', de: 'Besonders gut schmeckte allen die süße Torte.' },
     { ru: 'Дедушка рассказал весёлую историю.', de: 'Der Großvater erzählte eine lustige Geschichte.' },
     { ru: 'Все громко смеялись.', de: 'Alle lachten laut.' },
-    { ru: 'После обеда бабушка показала старые фотографии.', de: 'Nach dem Essen zeigte die Großmutter alte Fotos.', p: true },
+    { ru: 'После ужина бабушка показала старые фотографии.', de: 'Nach dem Abendessen zeigte die Großmutter alte Fotos.', p: true },
     { ru: 'Она вспоминала детство и молодость.', de: 'Sie erinnerte sich an ihre Kindheit und Jugend.' },
     { ru: 'В молодости она работала медсестрой в больнице.', de: 'In ihrer Jugend arbeitete sie als Krankenschwester im Krankenhaus.' },
     { ru: 'Соседка спела красивую песню.', de: 'Die Nachbarin sang ein schönes Lied.' },
@@ -18053,6 +18055,7 @@ const TEXTE = [
   ] },
 ];
 const READING_KEY = 'vokabeltrainer-texte';
+setTimeout(() => { try { pruneReading(); } catch (e) {} }, 0);
 const readState = { id: null, i: 0, offen: false, ende: false, ganz: false, eigene: {} };
 // Lesestand: { <id>: { s: { <Satz>: 1 gewusst | 0 nicht }, z: zuletzt, d: wie oft ganz durch } }
 function cleanReading(o) {
@@ -18069,6 +18072,13 @@ function cleanReading(o) {
   return out;
 }
 function loadReading() { try { return cleanReading(JSON.parse(localStorage.getItem(READING_KEY) || '{}')); } catch (e) { return {}; } }
+// Lesestand zu nicht mehr vorhandenen Texten (alte Kennung nach dem Umschreiben) beim Start entfernen (15.11.)
+function pruneReading() {
+  if (!TEXTE.length) return;
+  try { const raw = localStorage.getItem(READING_KEY); if (!raw) return;
+    const m = loadReading(), ids = new Set(TEXTE.map(t => t.id)), alt = Object.keys(m).filter(id => !ids.has(id));
+    if (alt.length) { alt.forEach(id => delete m[id]); saveReading(m); } } catch (e) {}
+}
 function saveReading(m) { try { localStorage.setItem(READING_KEY, JSON.stringify(m)); } catch (e) {} }
 // Zusammenführen: je Text gilt der zuletzt gelesene Stand, „ganz durch“ das Höhere
 function mergeReading(aRaw, bRaw) {
@@ -18118,7 +18128,9 @@ function readingTextHtml(t) {
   const st = readingStand(t), rs = readState, s = t.saetze[rs.i] || t.saetze[0];
   const absaetze = []; t.saetze.forEach((x, i) => { if (i === 0 || x.p) absaetze.push([]); absaetze[absaetze.length - 1].push(i); });
   const kl = i => 'rd-s' + (!rs.ende && i === rs.i ? ' cur' : '') + (i in st.e.s ? (st.e.s[i] ? ' ok' : ' no') : '');
-  const text = absaetze.map(a => '<p>' + a.map(i => '<span class="' + kl(i) + '" data-i="' + i + '" onclick="readGoto(' + i + ')">' + htmlEsc(t.saetze[i].ru) + '</span>').join(' ') + '</p>').join('');
+  // Sätze als Knöpfe (15.11.): per Tastatur anwählbar, Stand für Vorleseprogramme in der Beschriftung
+  const standTxt = i => i in st.e.s ? (st.e.s[i] ? ', gewusst' : ', nicht gewusst') : '';
+  const text = absaetze.map(a => '<p>' + a.map(i => '<button type="button" class="' + kl(i) + '" data-i="' + i + '" onclick="readGoto(' + i + ')" aria-label="Satz ' + (i + 1) + standTxt(i) + (!rs.ende && i === rs.i ? ', aktuell' : '') + ': ' + htmlEsc(t.saetze[i].ru) + '"' + (!rs.ende && i === rs.i ? ' aria-current="true"' : '') + '>' + htmlEsc(t.saetze[i].ru) + '</button>').join(' ') + '</p>').join('');
   const laut = (fn, titel) => AUDIO_SUPPORTED ? '<button type="button" class="tool-btn gt-icon-btn" onclick="' + fn + '" title="' + titel + '" aria-label="' + titel + '"><i class="ti ti-volume"></i></button>' : '';
   let box;
   if (rs.ende) {
@@ -25062,7 +25074,7 @@ const GENDER_LIST = {
     + 'ненависть зависть мысль модель смесь дрель сеть память метель четверть осень кровь ткань запись грязь пыль пропасть плесень область нефть сталь шерсть изгородь ось бронь').split(' '),
   n: 'меню хобби такси цунами'.split(' '),
   pl: ('шахматы ворота весы ножницы каникулы деньги сумерки будни брюки джинсы трусы колготки очки часы шорты плавки подтяжки джунгли заросли грабли '
-    + 'аплодисменты тиски плоскогубцы пассатижи опилки макароны выборы переговоры осадки гастроли вилы кадры права').split(' '),
+    + 'аплодисменты тиски плоскогубцы пассатижи опилки макароны выборы переговоры осадки гастроли вилы кадры права сутки').split(' '),
 };
 // Wörter mit zwei Geschlechtern, reine Pluralformen zählbarer Wörter und Unsicheres
 const GENDER_EXCLUDE = new Set(('коллега судья сирота тёзка полвека полгода полчаса торнадо промилле пенальти дьюти-фри листья семена данные '
@@ -25104,7 +25116,7 @@ function genderOf(ru) {
 let genderPoolCache = null;
 const GENDER_ADJ_NOUN = /^[a-zäöüß]+(e|er|es|en) [A-ZÄÖÜ][a-zäöüß]+$/;
 // Substantive mit kleingeschriebener Übersetzung (десяток = „zehn Stück“), die trotzdem abgefragt werden
-const GENDER_INCLUDE = new Set(['десяток']);
+const GENDER_INCLUDE = new Set(['десяток', 'сутки']);   // Übersetzung beginnt nicht mit Großbuchstaben (zehn Stück, 24-Stunden-Tag)
 function genderPool() {
   if (genderPoolCache) return genderPoolCache;
   const seen = new Map();

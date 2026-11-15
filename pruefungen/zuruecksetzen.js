@@ -17,6 +17,8 @@ const { chromium } = require('playwright');
     pool.slice(0, 3).forEach(w => { for (let i = 0; i < 6; i++) updateScore(w, true); });
     updateScore(pool[3], true);
     ['дом', 'мама', 'книга'].forEach(id => { for (let i = 0; i < 6; i++) progressMark('gender', id, true); });
+    // drei Wörter, die im Werkzeug Geschlecht zählen (Regelfälle wie дом zählen seit 12.11. nicht mehr)
+    genderPool().filter(g => g.typ !== 'easy').slice(0, 3).forEach(g => { for (let i = 0; i < 6; i++) progressMark('gender', g.id, true); });
     progressMark('sb:dative', 'x1', true); progressMark('hearquiz:type', pool[0].ru, true);
     updateProgress(); updateGrammarTileProgress();
     return { box: scores[window.__w[0]].box, open: +document.getElementById('info-open').textContent };
@@ -38,7 +40,7 @@ const { chromium } = require('playwright');
   await check('Gesamtstand bleibt (Vokabeln + Grammatik)', () => ev(() => { const L = JSON.parse(localStorage.getItem('vokabeltrainer-lifetime')); const n = window.__w.slice(0, 3).filter(k => L.v[k] && L.v[k].l).length; return { ok: n === 3 && !!L.g.gender['дом'].l && !!L.g['sb:dative'] && !!L.g['hearquiz:type'], info: n + ' Wörter, Grammatik ' + Object.keys(L.g).join(',') }; }));
   await check('Karte wird gezeigt', () => ev(() => ({ ok: !!currentWord && getComputedStyle(document.getElementById('word-card')).display !== 'none', info: currentWord && currentWord.ru })));
   await check('Runde bleibt stehen', () => ev(() => ({ ok: JSON.stringify(sessionWrong) === window.__runde, info: 'unverändert' }))).catch(() => {});
-  await check('Grammatik-Kopfzeile: aktuell 0, Gesamtstand im Hinweis', () => ev(() => { updateGrammarTileProgress(); const e = document.getElementById('gtp-gender'); return { ok: /^0 /.test(e.textContent.trim()) && /3/.test(e.title), info: e.textContent.trim() + ' | ' + e.title }; }));
+  await check('Grammatik-Kopfzeile: aktuell 0, Gesamtstand im Hinweis', () => ev(() => { updateGrammarTileProgress(); const e = document.getElementById('gtp-gender'); return { ok: /^0 /.test(e.textContent.trim()) && /Gesamtstand: 3 von /.test(e.title), info: e.textContent.trim() + ' | ' + e.title }; }));
   await check('Vokabelliste: ✓ bleibt, Kasten 0', () => ev(() => { openVocabList(); const n = document.querySelectorAll('#overlay-vocab .ever-ok').length; closeOverlay('overlay-vocab'); return { ok: n >= 3, info: n + ' ✓' }; }));
   await check('Stufen: aktuell 0, schon einmal gelernt > 0', () => ev(() => { openLevelOverview(); const t = document.getElementById('overlay-levels').textContent; closeOverlay('overlay-levels'); return { ok: /schon einmal/.test(t), info: t.replace(/\s+/g, ' ').slice(0, 140) }; }));
   await check('Wortdetails: Gesamt-Angabe bleibt', () => ev(() => { const w = getPool().find(x => getKey(x) === window.__w[0]); openWordDetail(w); const t = document.getElementById('overlay-worddetail').textContent; closeOverlay('overlay-worddetail'); return { ok: /Gesamt: \d+× richtig/.test(t) && /gelernt seit/.test(t), info: (t.match(/Gesamt:[^\n]{0,60}/) || [''])[0] }; }));
