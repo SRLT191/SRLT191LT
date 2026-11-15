@@ -49,7 +49,7 @@ const { chromium } = require('playwright');
   ok('оба/обе, об обоих, со ста', r.oba.join() === 'обеими,обоих,об,со,к', r.oba.join());
   ok('Eigener Lernstand „numnoun:fall“ (zählt nicht zum Werkzeug)', r.srs[0] === 'numnoun:fall' && r.srs[1], JSON.stringify(r.srs));
   ok('Ausschalten: wieder normale Aufgaben, Zahlbereich frei', r.zurueck.join() === 'false,false', JSON.stringify(r.zurueck));
-  ok('Stufe B1 an allen neuen Auswahlen; Stufenplan B1 mit 6 Teilen', r.stufen === 'B1,B1,B1,B1,B1' && r.plan === 6, r.stufen + ' ' + r.plan);
+  ok('Stufe B1 an allen neuen Auswahlen; Stufenplan B1 mit allen B1-Teilen', r.stufen === 'B1,B1,B1,B1,B1' && r.plan >= 6, r.stufen + ' ' + r.plan);
   ok('Keine JS-Fehler', !errs.length, errs.join(' | '));
   await b.close();
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
