@@ -1154,6 +1154,32 @@
   #hoertrainer-sentence .ht-satz-de { font-size: 13px; color: var(--c-text-muted); margin-top: 4px; }
   .ht-order-row .tense-switcher { flex-wrap: wrap; max-width: 100%; }
   @media (max-width: 520px) { .ht-order-row .mode-btn { white-space: normal; } }
+  .dict-optionen { border: 1px solid var(--c-border-light); border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; }
+  .dict-optionen summary { cursor: pointer; font-size: 13px; color: var(--c-text-label); padding: 4px 0; list-style: none; }
+  .dict-optionen summary::-webkit-details-marker { display: none; }
+  #dict-opt-info { color: var(--c-text-muted); font-size: 12px; margin-left: 6px; }
+  .dict-cats { margin-top: 10px; }
+  .dict-cat-hint { font-size: 11px; color: var(--c-text-faint); }
+  #dict-cat-body { max-height: 300px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--c-border) transparent; }
+  #dict-cat-body .cat-group-title { color: var(--c-text-label); }
+  #dict-cat-body .cat-subgroup-title { opacity: 1; color: var(--c-text-muted); }
+  .dict-toolbar { flex-wrap: wrap; }
+  #dictation-runde { text-align: center; font-size: 12px; color: var(--c-text-faint); margin: 4px 0 2px; }
+  #dictation-woerter { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 4px 0 12px; font-size: 15px; }
+  #dictation-woerter .dw { min-width: 34px; padding: 2px 8px; border: 1px dashed var(--c-border-input); border-radius: 6px; color: var(--c-text-faint); text-align: center; }
+  #dictation-woerter .dw.offen { border-style: solid; color: var(--c-text-primary); }
+  #dictation-woerter .dw-n { font-size: 12px; color: var(--c-text-muted); align-self: center; }
+  #dictation-input { width: 100%; box-sizing: border-box; font-size: 17px; }
+  .dict-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .dict-actions .dict-pruefen { flex: 1 1 160px; justify-content: center; font-size: 15px; padding: 10px 18px; }
+  #dictation-loesung { text-align: center; margin: 16px 0 6px; padding: 16px 12px; background: var(--c-surface-alt); border-radius: 14px; }
+  #dictation-loesung .dl-ru { font-size: 22px; font-weight: 600; color: var(--c-text-primary); }
+  #dictation-loesung .dl-de { font-size: 14px; color: var(--c-text-muted); margin-top: 6px; }
+  #dictation-loesung .tool-btn { margin-top: 10px; }
+  #dictation-selbst { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 14px; color: var(--c-text-label); }
+  #dictation-ende { text-align: center; margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  #dictation-keys { text-align: center; font-size: 11px; color: var(--c-text-faint); margin-top: 14px; }
+  @media (hover: none) { #dictation-keys { display: none; } }
   #hoertrainer-keys { text-align: center; font-size: 11px; color: var(--c-text-faint); margin-top: 10px; }
   @media (hover: none) { #hoertrainer-keys { display: none; } }
   #hoertrainer-cat-body { scrollbar-width: thin; scrollbar-color: var(--c-border) transparent; }
@@ -3076,30 +3102,71 @@
         <p><strong>Worum es geht:</strong> Du hörst einen russischen Satz und tippst ihn so genau wie möglich. Das übt Hörverstehen und Rechtschreibung zugleich.</p>
         <p>Die Sätze stammen aus den Beispielsätzen der Vokabeln – das Zielwort kennst du also aus dem Wortschatz.</p>
         <p><strong>Sprachniveau:</strong> Jeder Satz trägt die Stufe seines schwersten Worts (Abzeichen neben der Aufgabe, ein Richtwert). Ist in den Einstellungen <em>Wörter bis Stufe</em> gesetzt, kommen nur Sätze bis zu dieser Stufe.</p>
-        <p><strong>Bedienung:</strong> <em>Vorlesen</em> wiederholt den Satz, das Tempo stellst du mit dem Regler ein. <em>Übersetzung</em> blendet die deutsche Bedeutung ein, wenn du nicht weiterkommst.</p>
+        <p><strong>Bedienung:</strong> Der Satz wird bei jedem neuen Satz gleich vorgelesen. <em>Vorlesen</em> wiederholt ihn, <em>Langsam</em> liest ihn einmal mit halbem Tempo, <em>2. Hälfte</em> nur den hinteren Teil; das Grundtempo stellst du mit dem Regler ein. Über dem Feld steht, wie viele Wörter der Satz hat; <em>Tipp</em> deckt nacheinander je ein Wort auf. <em>Übersetzung</em> blendet die deutsche Bedeutung ein. <em>Lösung zeigen</em> zeigt den Satz – danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>). Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam, Enter prüfen und danach weiter.</p>
+        <p><strong>Runden:</strong> Eine Runde hat 15 Sätze („Satz 3 von 15“), zuerst neue und zuletzt falsche. Am Ende siehst du die Fehler und kannst sie wiederholen. Richtig gelöste Sätze zählen in den Lernstand.</p>
+        <p><strong>Einstellungen:</strong> <em>Sätze bis Stufe</em> wählt die Stufe direkt (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen). Mit den <em>Kategorien</em> kommen nur Sätze zu Wörtern daraus; <em>Nur Sätze zu gelernten Wörtern</em> übt Hören mit bekanntem Wortschatz; <em>Auch Sätze aus den Texten</em> nimmt die zusammenhängenden Sätze aus dem Textverständnis dazu.</p>
         <p>Nach dem Prüfen siehst du deine Eingabe Wort für Wort mit dem Original verglichen. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen.</p>
       </div>
-      <div class="conj-toolbar">
-        <button class="tool-btn tool-btn-primary" onclick="playDictation()"><i class="ti ti-volume"></i> Vorlesen</button>
-        <button class="tool-btn" onclick="restartDictation()"><i class="ti ti-refresh"></i> Neuer Satz</button>
+      <details class="dict-optionen" id="dict-optionen">
+        <summary><i class="ti ti-adjustments"></i> Einstellungen <span id="dict-opt-info"></span></summary>
+        <div class="ht-order-row">
+          <span>Sätze bis Stufe</span>
+          <div class="tense-switcher" role="group" aria-label="Sätze bis Stufe" id="dict-level-switch">
+            <button class="mode-btn active" data-l="" onclick="setDictOpt('level','')">Alle</button>
+            <button class="mode-btn" data-l="A1" onclick="setDictOpt('level','A1')">A1</button>
+            <button class="mode-btn" data-l="A2" onclick="setDictOpt('level','A2')">A2</button>
+            <button class="mode-btn" data-l="B1" onclick="setDictOpt('level','B1')">B1</button>
+            <button class="mode-btn" data-l="B2" onclick="setDictOpt('level','B2')">B2</button>
+          </div>
+        </div>
+        <label class="hoertrainer-loop-row"><input type="checkbox" id="dict-gelernt" onchange="setDictOpt('gelernt', this.checked)"><span>Nur Sätze zu Wörtern, die ich schon gelernt habe</span></label>
+        <label class="hoertrainer-loop-row"><input type="checkbox" id="dict-texte" onchange="setDictOpt('texte', this.checked)"><span>Auch Sätze aus den Texten (Textverständnis)</span></label>
+        <div class="ht-cats dict-cats">
+          <div class="ht-cats-head">
+            <strong>Kategorien</strong>
+            <span class="picker-quick">
+              <a href="#" onclick="setDictCats('alle'); return false">Alle</a>
+              <a href="#" onclick="setDictCats('keine'); return false">Keine</a>
+              <a href="#" onclick="setDictCats('vokabeln'); return false">Aus Vokabeln übernehmen</a>
+            </span>
+            <span class="dict-cat-hint">keine gewählt = alle</span>
+          </div>
+          <div id="dict-cat-body"></div>
+        </div>
+      </details>
+      <div class="conj-toolbar dict-toolbar">
+        <button class="tool-btn tool-btn-primary" onclick="playDictation()" title="Vorlesen (Strg+Leertaste)" aria-keyshortcuts="Control+Space"><i class="ti ti-volume"></i> Vorlesen</button>
+        <button class="tool-btn" onclick="playDictation(0.5)" title="Langsam vorlesen (Strg+Umschalt+Leertaste)" aria-keyshortcuts="Control+Shift+Space"><i class="ti ti-volume"></i> Langsam</button>
+        <button class="tool-btn" onclick="playDictationHalf()" title="Nur die zweite Hälfte vorlesen"><i class="ti ti-volume"></i> 2. Hälfte</button>
         <div class="hoertrainer-pause-control" style="flex:1; min-width:150px;">
           <span style="font-size:12px; color:var(--c-text-muted)">Tempo</span>
           <input type="range" id="dictation-speed-range" aria-label="Vorlese-Tempo" min="6" max="11" step="1" value="9" oninput="updateDictationSpeedLabel()">
           <span id="dictation-speed-value" style="font-size:12px; font-weight:600; color:var(--c-accent); min-width:34px; text-align:right">0,9×</span>
         </div>
       </div>
+      <div id="dictation-runde"></div>
       <div class="case-question" id="dictation-hint"></div>
-      <div class="conj-row" style="grid-template-columns: 1fr 34px;">
+      <div id="dictation-woerter" aria-live="polite"></div>
+      <div id="dictation-eingabe">
         <input type="text" class="conj-input" id="dictation-input" autocomplete="off" placeholder="Gehörten Satz eingeben…" onkeydown="if(event.key==='Enter') checkDictation()">
-        <button class="conj-reveal-one-btn" onclick="revealDictation()" title="Lösung zeigen" aria-label="Lösung zeigen"><i class="ti ti-eye"></i></button>
+        <div class="dict-actions">
+          <button class="tool-btn gt-primary dict-pruefen" id="dictation-check-btn" onclick="checkDictation()" title="Prüfen (Enter) – nach dem Prüfen: weiter"><i class="ti ti-check"></i> Prüfen</button>
+          <button class="tool-btn" onclick="tippDictation()" title="Ein Wort aufdecken"><i class="ti ti-bulb"></i> Tipp</button>
+          <button class="tool-btn" onclick="revealDictation()" title="Lösung zeigen"><i class="ti ti-eye"></i> Lösung zeigen</button>
+          <button class="tool-btn" onclick="toggleDictationTranslation()"><i class="ti ti-language"></i> Übersetzung</button>
+        </div>
       </div>
-      <div class="conj-actions">
-        <button class="tool-btn" onclick="checkDictation()"><i class="ti ti-check"></i> Prüfen</button>
-        <button class="tool-btn" onclick="toggleDictationTranslation()"><i class="ti ti-language"></i> Übersetzung</button>
-      </div>
+      <div id="dictation-loesung" style="display:none"></div>
       <div id="dictation-diff" style="display:none; font-size:16px; line-height:1.7; margin-top:10px;"></div>
       <div aria-live="polite" class="conj-result" id="dictation-result" role="status"></div>
+      <div id="dictation-selbst" style="display:none">
+        <span>Wusstest du ihn?</span>
+        <button class="tool-btn" onclick="dictSelbst(true)"><i class="ti ti-check"></i> Gewusst</button>
+        <button class="tool-btn" onclick="dictSelbst(false)"><i class="ti ti-x"></i> Nicht gewusst</button>
+      </div>
       <div class="conj-result" id="dictation-score"></div>
+      <div id="dictation-ende" style="display:none"></div>
+      <div id="dictation-keys">Strg+Leertaste: vorlesen · Strg+Umschalt+Leertaste: langsam · Enter: prüfen, dann weiter</div>
     </div>
   </div>
 
@@ -28971,7 +29038,45 @@ const dictState = {
   current: null,
   done: 0,
   correct: 0,
+  runde: [], idx: 0, fehler: [], richtig: 0, ende: false,
+  bewertet: false, tipp: 0, aufgedeckt: false,
 };
+// Einstellungen (15.11.): Stufe, Kategorien, nur gelernte Wörter, Sätze aus den Texten
+const DICT_OPTS_KEY = 'vokabeltrainer-dictation-opts';
+const dictOpts = { level: '', cats: [], gelernt: false, texte: false };
+function loadDictOpts() {
+  try {
+    const d = JSON.parse(localStorage.getItem(DICT_OPTS_KEY) || 'null') || {};
+    if (d.level === '' || LEVELS.includes(d.level)) dictOpts.level = d.level;
+    if (Array.isArray(d.cats)) dictOpts.cats = d.cats.map(migrateCatName).filter(c => vocab[c]);
+    dictOpts.gelernt = d.gelernt === true; dictOpts.texte = d.texte === true;
+  } catch (e) {}
+}
+function saveDictOpts() { try { localStorage.setItem(DICT_OPTS_KEY, JSON.stringify(dictOpts)); } catch (e) {} }
+function markDictOpts() {
+  document.querySelectorAll('#dict-level-switch .mode-btn').forEach(b => b.classList.toggle('active', b.dataset.l === dictOpts.level));
+  const g = document.getElementById('dict-gelernt'); if (g) g.checked = dictOpts.gelernt;
+  const t = document.getElementById('dict-texte'); if (t) t.checked = dictOpts.texte;
+  const info = document.getElementById('dict-opt-info');
+  if (info) {
+    const teile = [dictOpts.level ? 'bis ' + dictOpts.level : null, dictOpts.cats.length ? dictOpts.cats.length + (dictOpts.cats.length === 1 ? ' Kategorie' : ' Kategorien') : null,
+      dictOpts.gelernt ? 'nur gelernte Wörter' : null, dictOpts.texte ? 'mit Texten' : null].filter(Boolean);
+    info.textContent = '· ' + dictPoolGefiltert().length + ' Sätze' + (teile.length ? ' · ' + teile.join(' · ') : '');
+  }
+}
+function setDictOpt(k, v) { dictOpts[k] = v; saveDictOpts(); markDictOpts(); dictNeueRunde(); }
+function renderDictCats() {
+  const body = document.getElementById('dict-cat-body'); if (!body) return;
+  const sel = new Set(dictOpts.cats);
+  buildCatPickerBody(body, c => sel.has(c), () => {
+    dictOpts.cats = [...body.querySelectorAll('input[data-cat]:checked')].map(cb => cb.dataset.cat);
+    saveDictOpts(); markDictOpts(); dictNeueRunde();
+  }, { collapsible: true });
+}
+function setDictCats(art) {
+  dictOpts.cats = art === 'alle' ? Object.keys(vocab) : art === 'vokabeln' ? vocabSelectionCats() : [];
+  saveDictOpts(); renderDictCats(); markDictOpts(); dictNeueRunde();
+}
 
 function buildDictationPool() {
   const out = [];
@@ -28989,31 +29094,108 @@ function buildDictationPool() {
   });
   // gleiche Sätze nur einmal (sie kommen aus Vorlagen und Satzpaaren)
   const gesehen = new Set();
-  return out.filter(x => !gesehen.has(x.ru) && gesehen.add(x.ru)).map(x => { const lvl = sentenceLevel(x.ru, x.tg); delete x.tg; return Object.assign(x, { lvl }); });
+  return out.filter(x => !gesehen.has(x.ru) && gesehen.add(x.ru)).map(x => Object.assign(x, { lvl: sentenceLevel(x.ru, x.tg) }));
+}
+// Sätze aus den Texten: Stufe des Texts
+function dictTextSaetze() {
+  const out = [];
+  (typeof TEXTE !== 'undefined' ? TEXTE : []).forEach(t => (t.saetze || []).forEach(x => out.push({ ru: x.ru, de: x.de, tg: [], lvl: t.lvl, text: t.titel })));
+  return out;
+}
+function dictPoolGefiltert() {
+  if (!dictState.pool) dictState.pool = buildDictationPool();
+  let pool = dictState.pool;
+  if (dictOpts.cats.length) {
+    const woerter = new Set();
+    dictOpts.cats.forEach(c => getAllWordsOfCat(c).forEach(w => { woerter.add(w.ru); w.ru.split(' / ').forEach(x => woerter.add(x)); }));
+    pool = pool.filter(x => (x.tg || []).some(t => woerter.has(t)));
+  }
+  if (dictOpts.gelernt) {
+    const life = loadLifetime().v || {}, gelernt = new Set();
+    Object.keys(life).forEach(k => { if (life[k] && life[k].c > 0) { gelernt.add(k); k.split(' / ').forEach(x => gelernt.add(x)); } });
+    pool = pool.filter(x => (x.tg || []).length && x.tg.every(t => gelernt.has(t)));
+  }
+  if (dictOpts.texte) pool = pool.concat(dictTextSaetze());
+  if (dictOpts.level) { const max = levelIdx(dictOpts.level); return pool.filter(x => levelIdx(x.lvl) <= max); }
+  return filterLevelOrAll(pool, x => x.lvl);
 }
 
 function openDictation() {
   if (!dictState.pool) dictState.pool = buildDictationPool();
+  loadDictOpts(); renderDictCats(); markDictOpts();
   dictState.done = 0;
   dictState.correct = 0;
-  restartDictation();
+  dictNeueRunde();
 }
-
-function restartDictation() {
-  if (!dictState.pool) dictState.pool = buildDictationPool();
-  const pool = filterLevelOrAll(dictState.pool, x => x.lvl);
-  dictState.current = pool[Math.floor(Math.random() * pool.length)];
+// neue Runde: 15 Sätze nach Lernstand (fällige, zuletzt falsche, neue, dann die am längsten nicht geübten)
+function dictNeueRunde(liste) {
+  const pool = liste || dictPoolGefiltert();
+  dictState.runde = liste ? shuffleInPlace(liste.slice()) : gtLernstandRunde(pool, 'dictation', x => x.ru, x => (x.tg && x.tg[0]) || x.ru);
+  dictState.idx = 0; dictState.fehler = []; dictState.richtig = 0; dictState.ende = false;
+  document.getElementById('dictation-ende').style.display = 'none';
+  document.getElementById('dictation-eingabe').style.display = '';
+  if (!dictState.runde.length) {
+    dictState.current = null;
+    document.getElementById('dictation-hint').innerHTML = '<span class="case-hint">Keine Sätze für diese Auswahl – ändere die Einstellungen.</span>';
+    document.getElementById('dictation-woerter').innerHTML = ''; document.getElementById('dictation-runde').textContent = '';
+    return;
+  }
+  dictZeigeSatz();
+}
+function dictWiederholen() { dictNeueRunde(dictState.fehler.map(f => f.item)); }
+function dictZeigeSatz() {
+  dictState.current = dictState.runde[dictState.idx];
+  dictState.bewertet = false; dictState.tipp = 0; dictState.aufgedeckt = false;
   const input = document.getElementById('dictation-input');
   input.value = '';
   input.className = 'conj-input';
   input.disabled = false;
-  document.getElementById('dictation-hint').innerHTML =
-    '<span class="case-hint">Tippe auf „Vorlesen“ und schreibe den Satz auf.</span> ' + lvlBadge(dictState.current.lvl);
-  document.getElementById('dictation-diff').style.display = 'none';
+  const hint = document.getElementById('dictation-hint');
+  hint.dataset.shown = '0';
+  hint.innerHTML = '<span class="case-hint">Hör zu und schreibe den Satz auf.</span> ' + lvlBadge(dictState.current.lvl);
+  document.getElementById('dictation-runde').textContent = 'Satz ' + (dictState.idx + 1) + ' von ' + dictState.runde.length;
+  dictZeigeWoerter();
+  ['dictation-diff', 'dictation-loesung', 'dictation-selbst'].forEach(id => { document.getElementById(id).style.display = 'none'; });
   document.getElementById('dictation-result').textContent = '';
+  document.getElementById('dictation-check-btn').innerHTML = '<i class="ti ti-check"></i> Prüfen';
   document.getElementById('dictation-score').textContent =
     dictState.done ? dictState.correct + ' von ' + dictState.done + ' richtig' : '';
   playDictation();
+}
+function dictWoerterListe() { return tokenizeSentence(dictState.current.ru).filter(t => /[а-яёa-z0-9]/i.test(t)); }
+function dictZeigeWoerter() {
+  const el = document.getElementById('dictation-woerter'); if (!dictState.current) { el.innerHTML = ''; return; }
+  const w = dictWoerterListe();
+  el.innerHTML = w.map((x, i) => '<span class="dw' + (i < dictState.tipp ? ' offen' : '') + '">' + (i < dictState.tipp ? htmlEsc(x) : '&nbsp;') + '</span>').join('')
+    + '<span class="dw-n">' + w.length + (w.length === 1 ? ' Wort' : ' Wörter') + '</span>';
+}
+function tippDictation() {
+  if (!dictState.current || dictState.bewertet) return;
+  dictState.tipp = Math.min(dictWoerterListe().length, dictState.tipp + 1);
+  dictZeigeWoerter();
+}
+
+function restartDictation() {
+  if (!dictState.pool) dictState.pool = buildDictationPool();
+  if (dictState.ende || !dictState.runde.length) { dictNeueRunde(); return; }
+  dictState.idx++;
+  if (dictState.idx >= dictState.runde.length) { dictRundenEnde(); return; }
+  dictZeigeSatz();
+}
+function dictRundenEnde() {
+  dictState.ende = true;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  document.getElementById('dictation-eingabe').style.display = 'none';
+  ['dictation-diff', 'dictation-loesung', 'dictation-selbst'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+  document.getElementById('dictation-result').textContent = '';
+  document.getElementById('dictation-woerter').innerHTML = '';
+  document.getElementById('dictation-hint').innerHTML = '';
+  document.getElementById('dictation-runde').textContent = '';
+  const ende = document.getElementById('dictation-ende');
+  ende.innerHTML = gtRoundEndHtml(dictState.richtig, dictState.runde.length,
+    dictState.fehler.map(f => ({ satz: '<span lang="ru">' + htmlEsc(f.item.ru) + '</span><br><span class="case-hint">' + htmlEsc(f.item.de) + '</span>', ru: f.item.ru })),
+    'dictation', 'dictWiederholen()', 'dictNeueRunde()');
+  ende.style.display = '';
 }
 
 function dictationRate() {
@@ -29025,13 +29207,19 @@ function updateDictationSpeedLabel() {
   const v = parseInt(document.getElementById('dictation-speed-range').value, 10) / 10;
   document.getElementById('dictation-speed-value').textContent = v.toFixed(1).replace('.', ',') + '×';
 }
-function playDictation() {
+function playDictation(rate) {
   if (!dictState.current) return;
   if (!AUDIO_SUPPORTED) {
     document.getElementById('dictation-result').textContent = 'Dieses Gerät unterstützt keine Sprachausgabe.';
     return;
   }
-  speak(dictState.current.ru, dictationRate());
+  speak(dictState.current.ru, typeof rate === 'number' ? rate : dictationRate());
+}
+// nur die hintere Hälfte des Satzes (ab dem mittleren Wort)
+function playDictationHalf() {
+  if (!dictState.current || !AUDIO_SUPPORTED) return;
+  const w = dictState.current.ru.split(/\s+/);
+  speak(w.slice(Math.floor(w.length / 2)).join(' '), dictationRate());
 }
 
 function toggleDictationTranslation() {
@@ -29039,38 +29227,72 @@ function toggleDictationTranslation() {
   const el = document.getElementById('dictation-hint');
   const shown = el.dataset.shown === '1';
   el.dataset.shown = shown ? '0' : '1';
-  el.innerHTML = shown
-    ? '<span class="case-hint">Tippe auf „Vorlesen“ und schreibe den Satz auf.</span>'
-    : '<span class="case-hint">' + dictState.current.de + '</span>';
+  el.innerHTML = (shown
+    ? '<span class="case-hint">Hör zu und schreibe den Satz auf.</span>'
+    : '<span class="case-hint">' + htmlEsc(dictState.current.de) + '</span>') + ' ' + lvlBadge(dictState.current.lvl);
+}
+// Satz groß mit Übersetzung und Anhören-Knopf
+function dictZeigeLoesung() {
+  const el = document.getElementById('dictation-loesung');
+  el.innerHTML = '<div class="dl-ru" lang="ru">' + htmlEsc(dictState.current.ru) + '</div><div class="dl-de">' + htmlEsc(dictState.current.de) + '</div>'
+    + (AUDIO_SUPPORTED ? '<button class="tool-btn" type="button" onclick="playDictation()"><i class="ti ti-volume"></i> Anhören</button>' : '');
+  el.style.display = '';
+  document.getElementById('dictation-check-btn').innerHTML = '<i class="ti ti-arrow-right"></i> Weiter';
+}
+function dictWerte(ok) {
+  progressMark('dictation', dictState.current.ru, ok);
+  dictState.done++;
+  if (ok) { dictState.correct++; dictState.richtig++; }
+  else if (!dictState.fehler.some(f => f.item === dictState.current)) dictState.fehler.push({ item: dictState.current });
+  document.getElementById('dictation-score').textContent = dictState.correct + ' von ' + dictState.done + ' richtig';
 }
 
 function checkDictation() {
+  if (dictState.ende) { dictNeueRunde(); return; }
   if (!dictState.current) return;
   const input = document.getElementById('dictation-input');
   const val = input.value.trim();
-  // bereits geprüft: „Prüfen“ holt den nächsten Satz
+  // bereits geprüft oder aufgedeckt: „Prüfen“ holt den nächsten Satz
   if (input.disabled) { restartDictation(); return; }
   if (!val) return;
   const ok = isSentenceMatch(val, dictState.current.ru);
   input.className = 'conj-input ' + (ok ? 'correct' : 'wrong');
   input.disabled = true;
-  progressMark('dictation', dictState.current.ru, ok);
-  dictState.done++;
-  if (ok) dictState.correct++;
+  dictState.bewertet = true;
+  dictWerte(ok);
   const diffEl = document.getElementById('dictation-diff');
   diffEl.innerHTML = renderSentenceDiff(tokenizeSentence(val), tokenizeSentence(dictState.current.ru));
   diffEl.style.display = 'block';
-  document.getElementById('dictation-result').textContent = ok ? 'Richtig' : dictState.current.ru;
-  document.getElementById('dictation-score').textContent = dictState.correct + ' von ' + dictState.done + ' richtig';
+  document.getElementById('dictation-result').textContent = ok ? 'Richtig' : '';
+  dictZeigeLoesung();
 }
 
 function revealDictation() {
-  if (!dictState.current) return;
+  if (!dictState.current || dictState.bewertet) return;
   const input = document.getElementById('dictation-input');
   input.value = dictState.current.ru;
   input.className = 'conj-input revealed';
   input.disabled = true;
+  dictState.bewertet = true; dictState.aufgedeckt = true;
+  dictZeigeLoesung();
+  document.getElementById('dictation-selbst').style.display = '';
 }
+// Selbstbewertung nach „Lösung zeigen“ (wie im Aufdecken-Modus der Vokabeln)
+function dictSelbst(gewusst) {
+  if (!dictState.aufgedeckt) return;
+  dictState.aufgedeckt = false;
+  document.getElementById('dictation-selbst').style.display = 'none';
+  dictWerte(gewusst);
+  restartDictation();
+}
+// Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam
+document.addEventListener('keydown', e => {
+  if (appView !== 'listening' || !(e.ctrlKey || e.metaKey) || !(e.key === ' ' || e.code === 'Space')) return;
+  const p = document.getElementById('overlay-dictation');
+  if (!p || !p.classList.contains('open')) return;
+  e.preventDefault();
+  playDictation(e.shiftKey ? 0.5 : undefined);
+});
 
 // ── Kyrillisches Alphabet ───────────────────────────────────────
 const ALPHABET_LETTERS = [
