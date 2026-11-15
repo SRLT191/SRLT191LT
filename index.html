@@ -882,6 +882,7 @@
   .rd-fehler [lang="ru"] { display: block; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 16.5px; }
   .rd-fehler span + span { color: var(--c-text-secondary); font-size: 14px; }
   .rd-back { flex: 0 0 auto; }
+  .aspect-s-art { display: block; font-size: 11.5px; color: var(--c-text-muted); font-family: 'Noto Sans', system-ui, sans-serif; }
   #pronform-q .pf-satz { font-size: clamp(20px, 3.2vw, 28px); line-height: 1.35; }
   /* Textverständnis-Ausbau (15.11.) */
   .rd-card { grid-template-columns: minmax(0, 1fr) auto; }
@@ -2053,10 +2054,12 @@
 <p>• durch ein <strong>ganz anderes Verb</strong> (suppletiv): говорить → сказать, брать → взять.</p>
 <p><strong>Bedienung:</strong> Oben wählst du die Richtung – unvollendet → vollendet oder umgekehrt. <em>Liste</em> zeigt alle Paare im Überblick. Nach dem Prüfen erscheint, wo vorhanden, eine kurze Notiz zur Bildung des Paares.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
+<p><strong>Im Satz (B1):</strong> Ein Satz mit Lücke, du wählst das unvollendete (Taste 1) oder das vollendete Verb (Taste 2). Danach steht die Regel dazu: Wiederholung und Dauer → unvollendet, einmaliges Ergebnis → vollendet; нельзя, не надо und verneinte Imperative meist unvollendet, не забудь und Bitten meist vollendet. Zwei Sätze (C1) zeigen feinere Fälle: Frage nach der Erfahrung, Handlung mit aufgehobenem Ergebnis.</p>
 <p><strong>Außerdem:</strong> <em>Hilfe</em> (Einstellungen) zeigt die Bildungsweise des Partners schon vor dem Antworten.</p></div>
 <div class="conj-toolbar gt-modes">
 <div class="tense-switcher">
 <button class="mode-btn active" id="aspect-mode-practice" onclick="setAspectMode('practice')">Üben</button>
+<button class="mode-btn" id="aspect-mode-satz" onclick="setAspectMode('satz')">Im Satz</button>
 <button class="mode-btn" id="aspect-mode-list" onclick="setAspectMode('list')">Liste</button>
 </div>
 </div>
@@ -2077,6 +2080,15 @@
 <div aria-live="polite" class="conj-result" id="aspect-result" role="status"></div>
 <div class="conj-note" id="aspect-note" style="display:none"></div>
 <div class="conj-result" id="aspect-score"></div>
+</div>
+<div id="aspect-satz" style="display:none">
+<div class="gt-task"><div class="case-question" id="aspect-s-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakAspectSatz()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
+<div class="case-options case-options-2" id="aspect-s-opts"></div>
+<div class="conj-actions gt-actions">
+<button class="tool-btn" onclick="gtChoiceReveal(ASPECT_SATZ_CHOICE)"><i class="ti ti-eye"></i> Lösung zeigen</button>
+<button class="tool-btn" onclick="gtChoiceNext(ASPECT_SATZ_CHOICE)">Weiter <i class="ti ti-arrow-right"></i><kbd aria-hidden="true" class="gt-kbd gt-kbd-next">⏎</kbd></button></div>
+<div aria-live="polite" class="conj-result" id="aspect-s-result" role="status"></div>
+<div class="conj-result" id="aspect-s-score"></div>
 </div>
 <div id="aspect-list" style="display:none">
 <table class="vocab-table"><thead><tr><th>Unvollendet</th><th>Vollendet</th><th>Deutsch</th><th>Bildung</th></tr></thead>
@@ -2458,6 +2470,20 @@
 <p>• <strong>„Lass uns …“:</strong> давай (zu einer Person, die du duzt) bzw. давайте (mehrere oder Sie) + мы-Form des vollendeten Verbs: Давай купим хлеб. Bei einer andauernden Tätigkeit ohne Ergebnis + Infinitiv des unvollendeten Verbs: Давай говорить по-русски.</p>
 <p><strong>Höflichkeit:</strong> пожалуйста darf vorn, hinten oder nach dem Verb stehen. Einladungen wie Садитесь! (setzen Sie sich) oder Проходите! (kommen Sie rein) stehen trotz Bejahung im unvollendeten Aspekt – das klingt freundlicher.</p>
 </div>
+<div class="sb-type-info" data-sbtype="nebensatz">
+<p class="sb-type-head">Nebensatz (B1)</p>
+<p><strong>Wann?</strong> Wenn ein Satz aus Haupt- und Nebensatz besteht. Vor dem Nebensatz steht immer ein Komma; die Wortstellung im Nebensatz ist die des Hauptsatzes.</p>
+<p>• <strong>чтобы</strong> (damit, dass, um … zu): gleiches Subjekt → Infinitiv (Я учу русский, чтобы читать книги); anderes Subjekt → Vergangenheit (Я хочу, чтобы ты пришёл).</p>
+<p>• <strong>если</strong> (wenn, falls): in der Zukunft steht auch im Nebensatz das Futur (Если будет хорошая погода …). <strong>если бы … бы</strong> + Vergangenheit = unwirklich (Wenn ich Zeit hätte, würde ich …).</p>
+<p>• <strong>когда</strong> (als, wenn): Zeit wie gemeint – Когда я приду домой (vollendetes Futur: wenn ich gekommen bin).</p>
+<p>• <strong>хотя</strong> (obwohl) und <strong>ли</strong> (ob): ли steht direkt hinter dem erfragten Wort, meist dem Verb: Я не знаю, придёт ли он.</p>
+<p>Die Wortstellung ist hier fest wie in der Lösung.</p>
+</div>
+<div class="sb-type-info" data-sbtype="rede">
+<p class="sb-type-head">Indirekte Rede (B2)</p>
+<p><strong>Wann?</strong> Wenn du wiedergibst, was jemand gesagt oder gefragt hat.</p>
+<p><strong>Regel:</strong> Anders als im Deutschen bleibt die Zeit der direkten Rede erhalten und es gibt keinen Konjunktiv: «Завтра будет дождь» → Он сказал, что завтра будет дождь (er sagte, es werde morgen regnen). Aussagen mit что, Fragen mit dem Fragewort (где, когда), Ja-Nein-Fragen mit ли.</p>
+</div>
 <details class="sb-info-more"><summary>Bedienung</summary>
 <p><strong>Antworten:</strong> frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Die <strong>Wortstellung ist frei</strong>: Новую книгу я читаю zählt genauso wie Я читаю новую книгу, Сегодня он не работает genauso wie Он не работает сегодня. Die Satzglieder dürfen getauscht werden; не bleibt vor seinem Wort, Präpositionen und давай vor dem folgenden, bei Fragen steht das Fragewort vorn. Nur Fragen mit ли (Знаешь ли ты ответ?) haben eine feste Stellung. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen.</p>
 <p><strong>Hilfen:</strong> Standardmäßig stehen die Wörter in Grundform über der Übersetzung. Unter <em>Vorgabe</em> wählst du die Stufe: <em>Grundformen</em> (Standard), <em>Lücke</em> zeigt den fertigen Satz mit einem fehlenden Wort, <em>Nur Deutsch</em> nur die Übersetzung. <em>Anhören</em> liest den Satz erst nach dem Prüfen vor, damit er die Lösung nicht verrät.</p>
@@ -2476,6 +2502,8 @@
 <button class="mode-btn" id="sb-type-modal" onclick="setWgType('modal')">Modalsatz</button>
 <button class="mode-btn" id="sb-type-imperative" onclick="setWgType('imperative')">Aufforderung</button>
 <button class="mode-btn" id="sb-type-place" onclick="setWgType('place')" title="wo? в/на + Präpositiv · wohin? в/на + Akkusativ">Ort / Richtung</button>
+<button class="mode-btn" id="sb-type-nebensatz" onclick="setWgType('nebensatz')" title="чтобы, если, когда, хотя, ли">Nebensatz</button>
+<button class="mode-btn" id="sb-type-rede" onclick="setWgType('rede')" title="Он сказал, что …">Indirekte Rede</button>
 </div></span></div><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher" id="sb-tense-switcher" role="group" aria-label="Zeit">
 <button data-std="1" class="mode-btn active" id="sb-tense-present" onclick="setWgTense('present')">Präsens</button>
 <button class="mode-btn" id="sb-tense-past" onclick="setWgTense('past')">Vergangenheit</button>
@@ -2669,6 +2697,7 @@
 <p><strong>Kurzform:</strong> Sie steht nur im Prädikat, also nach „ist/sind“: Обед готов (Das Essen ist fertig), Мама больна (Mama ist krank). Man lässt die Endung weg und hängt für weiblich -а, sächlich -о, Plural -ы/-и an: готов, готова, готово, готовы. Bei manchen Wörtern schiebt sich im Männlichen ein flüchtiges е/о ein: больной → болен, лёгкий → лёгок. Besonders: большой → велик und маленький → мал heißen „zu groß“ bzw. „zu klein“ (Пальто мне велико). Manche Adjektive bilden gar keine gebräuchliche Kurzform (деревянный, школьный) – sie fehlen hier bewusst.</p>
 <p><strong>Komparativ:</strong> Meist Stamm + -ее: интересный → интереснее, быстрый → быстрее. Bei г/к/х/ст im Stamm wechselt der Konsonant und es kommt -е: дорогой → дороже, лёгкий → легче, тихий → тише, чистый → чище. Einige sind unregelmäßig: хороший → лучше, плохой → хуже, большой → больше, маленький → меньше. Verglichen wird mit „чем“ oder dem Genitiv: Он старше, чем я = Он старше меня.</p>
 <p><strong>Superlativ:</strong> самый + Adjektiv, das sich wie ein Adjektiv mitverändert: самый новый дом, самая новая книга. Sonderformen: хороший → лучший (самый лучший), плохой → худший.</p>
+<p><strong>Partizip-Kurzform (B2):</strong> Die Kurzform der Passivpartizipien steht im Passiv: дом построен (das Haus ist gebaut), дверь открыта, письмо написано, книги прочитаны. -нный wird zu -н, -тый zu -т, dazu -а / -о / -ы. Kommt nur über die eigene Auswahl, nicht unter <em>Alle</em>.</p>
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> zeigt die Regel zur Aufgabe. <em>Anhören</em> liest vor dem Prüfen die Grundform bzw. den Satz mit Lücke, danach die Lösung. Wo zwei Formen richtig sind (старше/старее, лучший/самый лучший), gilt jede.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 <p><strong>Außerdem:</strong> <em>Nur regelmäßige</em> lässt unregelmäßige Komparative und Kurzformen mit flüchtigem Vokal weg.</p><p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
@@ -2677,6 +2706,7 @@
 <button class="mode-btn" id="adjform-scope-short" onclick="setAdjFormScope('short')">Kurzform</button>
 <button class="mode-btn" id="adjform-scope-comp" onclick="setAdjFormScope('comp')">Komparativ</button>
 <button class="mode-btn" id="adjform-scope-sup" onclick="setAdjFormScope('sup')">Superlativ</button>
+<button class="mode-btn" id="adjform-scope-ppp" onclick="setAdjFormScope('ppp')">Partizip-Kurzform</button>
 </div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="adjform-reg-toggle" onclick="toggleAdjFormReg()" title="Ohne unregelmäßige Komparative, Sonderformen und Kurzformen mit flüchtigem Vokal" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="adjform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakAdjForm()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -9624,7 +9654,7 @@ const TOOL_REVEALS = {
   'overlay-noun': () => revealNounTable(),
   'overlay-pronoun': () => revealPronounTable(),
   'overlay-motion': () => { if (motionState.mode === 'pair') revealMotionPair(); else if (motionState.mode === 'quiz') gtChoiceReveal(MOTION_CHOICE); else if (motionState.mode === 'prefix') gtChoiceReveal(MOTION_PREFIX_CHOICE); else return false; },
-  'overlay-aspect': () => revealAspect(),
+  'overlay-aspect': () => { if (aspectState.mode === 'satz') gtChoiceReveal(ASPECT_SATZ_CHOICE); else revealAspect(); },
   'overlay-transform': () => revealTransform(),
   'overlay-numnoun': () => revealNumNoun(),
   'overlay-caseform': () => revealCaseForm('noun'),
@@ -15254,7 +15284,7 @@ const GRAMMAR_PART_LEVEL = [
   // кто/весь-Formen; Wechsel в/на (Ort/Richtung); Aufforderung
   ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#sb-type-place', 'A2'], ['#sb-type-imperative', 'A2'],
   // B1 (15.11.): Konjunktiv mit бы, Adverbialpartizip, Partizip, Passiv mit -ся
-  ['#transform-scope-btn-konj', 'B1'], ['#pronform-scope-rel', 'B1'], ['#nn-fall-toggle', 'B1'], ['#transform-scope-btn-gerund', 'B1'], ['#transform-scope-btn-part', 'B1'], ['#transform-scope-btn-passiv', 'B1'],
+  ['#transform-scope-btn-konj', 'B1'], ['#sb-type-nebensatz', 'B1'], ['#sb-type-rede', 'B2'], ['#adjform-scope-ppp', 'B2'], ['#aspect-mode-satz', 'B1'], ['#pronform-scope-rel', 'B1'], ['#nn-fall-toggle', 'B1'], ['#transform-scope-btn-gerund', 'B1'], ['#transform-scope-btn-part', 'B1'], ['#transform-scope-btn-passiv', 'B1'],
 ];
 // Abzeichen an Chips, Titeln und höher liegenden Modi; über „Mein Niveau“ gedimmt
 function applyLevelMarks() {
@@ -19246,7 +19276,7 @@ function keyVocabCard(e) {
 document.addEventListener('keydown', e => {
   if (keyGlobal(e)) return;
   keyVocabChoice(e);
-  if (keyReading(e) || keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyGenderChoice(e) || keyWgSpeak(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
+  if (keyReading(e) || keyListeningSpace(e) || keyGtRate(e) || keyMotionChoice(e) || keyAspectChoice(e) || keyRektionChoice(e) || keyCaseChoice(e) || keyGenderChoice(e) || keyWgSpeak(e) || keyToolReveal(e) || keyHearquizFlip(e)) return;
   keyVocabCard(e);
 });
 
@@ -20563,7 +20593,7 @@ const TOOL_SETTINGS = [
   ['caHintVisible', ...tsProp(() => caseAdjState, 'hintVisible'), TS_BOOL],
   ['pfScope', ...tsProp(() => pronFormState, 'scope'), tsOneOf('all', 'case', 'prep', 'poss', 'extra', 'rel')],
   ['pfHintVisible', ...tsProp(() => pronFormState, 'hintVisible'), TS_BOOL],
-  ['afScope', ...tsProp(() => adjFormState, 'scope'), tsOneOf('all', 'short', 'comp', 'sup')],
+  ['afScope', ...tsProp(() => adjFormState, 'scope'), tsOneOf('all', 'short', 'comp', 'sup', 'ppp')],
   ['afHintVisible', ...tsProp(() => adjFormState, 'hintVisible'), TS_BOOL],
   ['rkMode', ...tsProp(() => rektionState, 'mode'), tsOneOf('choose', 'form', 'satz', 'list')],
   ['rkHintVisible', ...tsProp(() => rektionState, 'hintVisible'), TS_BOOL],
@@ -20984,11 +21014,77 @@ const aspectState = {
 
 function toggleAspectHint() { aspectState.hintVisible = !aspectState.hintVisible; saveToolSettings(); restartAspect(); updateGtSettingsSummary(); }
 function setAspectMode(mode) {
-  document.getElementById('aspect-mode-practice').classList.toggle('active', mode === 'practice');
-  document.getElementById('aspect-mode-list').classList.toggle('active', mode === 'list');
-  document.getElementById('aspect-practice').style.display = mode === 'practice' ? '' : 'none';
-  document.getElementById('aspect-list').style.display = mode === 'list' ? '' : 'none';
+  aspectState.mode = mode;
+  ['practice', 'satz', 'list'].forEach(m => {
+    document.getElementById('aspect-mode-' + m).classList.toggle('active', mode === m);
+    document.getElementById('aspect-' + m).style.display = mode === m ? '' : 'none';
+  });
   if (mode === 'list') renderAspectList();
+  if (mode === 'satz' && !aspectState.sQueue) restartAspectSatz();
+}
+// Aspekt im Satz (B1, bestätigt 15.11.; zwei Sätze C1): richtigen Aspekt wählen
+const ASPECT_SATZ = [
+  { ru: 'Не надо ___ ему, я уже позвонил.', de: 'Du musst ihn nicht anrufen, ich habe schon angerufen.', a: 'звонить', b: 'позвонить', correct: 'звонить', why: 'не надо + unvollendet: etwas ist unnötig.' },
+  { ru: 'Не забудь ___ маме!', de: 'Vergiss nicht, Mama anzurufen!', a: 'звонить', b: 'позвонить', correct: 'позвонить', why: 'не забудь + vollendet: eine einmalige Handlung soll geschehen.' },
+  { ru: 'В библиотеке нельзя громко ___.', de: 'In der Bibliothek darf man nicht laut sprechen.', a: 'говорить', b: 'сказать', correct: 'говорить', why: 'нельзя + unvollendet = verboten.' },
+  { ru: '___, пожалуйста, это письмо.', de: 'Lies bitte diesen Brief.', a: 'Читай', b: 'Прочитай', correct: 'Прочитай', why: 'Bitte um eine einmalige Handlung mit Ergebnis: vollendeter Imperativ.' },
+  { ru: 'Не ___ дверь, здесь холодно.', de: 'Mach die Tür nicht auf, hier ist es kalt.', a: 'открывай', b: 'открой', correct: 'открывай', why: 'verneinter Imperativ: meist unvollendet.' },
+  { ru: 'Я каждый день ___ газету.', de: 'Ich lese jeden Tag die Zeitung.', a: 'читаю', b: 'прочитаю', correct: 'читаю', why: 'каждый день: Wiederholung → unvollendet.' },
+  { ru: 'Вчера я ___ всю книгу.', de: 'Gestern habe ich das ganze Buch gelesen.', a: 'читал', b: 'прочитал', correct: 'прочитал', why: 'всю книгу: abgeschlossen mit Ergebnis → vollendet.' },
+  { ru: 'Мне нужно ___ ужин до семи.', de: 'Ich muss das Abendessen bis sieben fertig kochen.', a: 'готовить', b: 'приготовить', correct: 'приготовить', why: 'до семи: Ergebnis bis zu einem Zeitpunkt → vollendet.' },
+  { ru: 'Он долго ___ письмо.', de: 'Er schrieb lange an dem Brief.', a: 'писал', b: 'написал', correct: 'писал', why: 'долго: Dauer, Verlauf → unvollendet.' },
+  { ru: 'Не ___ эту книгу, она скучная.', de: 'Kauf dieses Buch nicht, es ist langweilig.', a: 'покупай', b: 'купи', correct: 'покупай', why: 'Abraten (не + Imperativ): unvollendet.' },
+  { ru: 'Обязательно ___ этот фильм!', de: 'Sieh dir diesen Film unbedingt an!', a: 'смотри', b: 'посмотри', correct: 'посмотри', why: 'Empfehlung einer einmaligen Handlung: vollendeter Imperativ.' },
+  { ru: 'Каждое утро я ___ в семь часов.', de: 'Jeden Morgen stehe ich um sieben auf.', a: 'встаю', b: 'встану', correct: 'встаю', why: 'каждое утро: Gewohnheit → unvollendet.' },
+  { ru: 'Ты ___ «Войну и мир»?', de: 'Hast du „Krieg und Frieden“ gelesen?', a: 'читал', b: 'прочитал', correct: 'читал', lvl: 'C1', why: 'Frage nach der Erfahrung (überhaupt einmal?) → unvollendet.' },
+  { ru: 'Вчера ко мне ___ брат, но уже уехал.', de: 'Gestern war mein Bruder da, ist aber schon wieder weg.', a: 'приходил', b: 'пришёл', correct: 'приходил', lvl: 'C1', why: 'Hin und zurück, das Ergebnis besteht nicht mehr → unvollendet.' },
+];
+function restartAspectSatz() { startAspectSatzRound(shuffleInPlace(ASPECT_SATZ.slice()).slice(0, GT_RUNDE)); }
+function startAspectSatzRound(queue) { aspectState.sQueue = queue; aspectState.sIndex = 0; aspectState.sCorrect = 0; aspectState.sFehler = []; renderAspectSatz(); }
+function repeatAspectSatzErrors() { if (aspectState.sFehler.length) startAspectSatzRound(shuffleInPlace(aspectState.sFehler.slice())); }
+function renderAspectSatz() {
+  gtChoiceReset(ASPECT_SATZ_CHOICE);
+  const st = aspectState, qEl = document.getElementById('aspect-s-q'), optEl = document.getElementById('aspect-s-opts');
+  document.getElementById('aspect-s-result').textContent = '';
+  const fertig = st.sIndex >= st.sQueue.length;
+  gtSetDone('aspect-satz', fertig);
+  if (fertig) {
+    qEl.innerHTML = gtRoundEndHtml(st.sCorrect, st.sQueue.length, st.sFehler.map(x => ({ satz: '<span lang="ru">' + htmlEsc(x.ru).replace('___', '<b>' + htmlEsc(x.correct) + '</b>') + '</span>' })), 'aspect-s', 'repeatAspectSatzErrors()', 'restartAspectSatz()');
+    optEl.innerHTML = ''; document.getElementById('aspect-s-score').textContent = '';
+    return;
+  }
+  const it = st.sQueue[st.sIndex];
+  qEl.innerHTML = '<span class="case-sentence" lang="ru">' + htmlEsc(it.ru) + '</span>' + htmlEsc(it.de) + (it.lvl ? ' ' + lvlBadge(it.lvl) : '');
+  optEl.innerHTML = [it.a, it.b].map((f, i) => `<button class="case-opt" type="button" data-k="${f}" lang="ru" aria-keyshortcuts="${i + 1}" onclick="gtChoose(ASPECT_SATZ_CHOICE, '${f}')">${f}<span class="aspect-s-art">${i ? 'vollendet' : 'unvollendet'}</span><kbd aria-hidden="true" class="gt-kbd motion-opt-kbd">${i + 1}</kbd></button>`).join('');
+  document.getElementById('aspect-s-score').textContent = (st.sIndex + 1) + ' / ' + st.sQueue.length + ' · ' + st.sCorrect + ' richtig';
+}
+function speakAspectSatz() {
+  const it = aspectState.sQueue && aspectState.sQueue[aspectState.sIndex]; if (!it) return;
+  speak(it.ru.replace('___', ASPECT_SATZ_CHOICE.answered ? it.correct : '…'));
+}
+const ASPECT_SATZ_CHOICE = {
+  panel: 'overlay-aspect', opts: 'aspect-s-opts', result: 'aspect-s-result',
+  active: () => aspectState.mode === 'satz',
+  item: () => aspectState.sQueue[aspectState.sIndex], right: it => it.correct,
+  srs: it => ['aspect:satz', it.ru],
+  text: (it, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + it.correct + ': ' + it.why,
+  onAnswer: (it, ok) => { if (ok) aspectState.sCorrect++; document.getElementById('aspect-s-score').textContent = (aspectState.sIndex + 1) + ' / ' + aspectState.sQueue.length + ' · ' + aspectState.sCorrect + ' richtig'; },
+  advance: () => { aspectState.sIndex++; renderAspectSatz(); },
+  fehler: it => aspectState.sFehler.push(it),
+  unfehler: it => gtDropFehler(aspectState.sFehler, it),
+};
+GT_CHOICES.push(ASPECT_SATZ_CHOICE);
+// Tasten 1/2 im Modus „Im Satz“
+function keyAspectChoice(e) {
+  if ((e.key !== '1' && e.key !== '2') || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'grammar' || document.querySelector('.overlay.open') || aspectState.mode !== 'satz' || ASPECT_SATZ_CHOICE.answered) return false;
+  const view = document.getElementById('aspect-satz');
+  if (!view || !view.getClientRects().length || view.classList.contains('gt-done')) return false;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return false;
+  const it = ASPECT_SATZ_CHOICE.item(); if (!it) return false;
+  e.preventDefault(); gtChoose(ASPECT_SATZ_CHOICE, e.key === '1' ? it.a : it.b);
+  return true;
 }
 function renderAspectList() {
   const tbody = document.getElementById('aspect-list-body');
@@ -22105,6 +22201,57 @@ const declensionData = {
     fem:{ "Nom.":"мировая", "Gen.":"мировой", "Dat.":"мировой", "Akk.":"мировую", "Instr.":"мировой", "Präp.":"мировой" },
     neut:{ "Nom.":"мировое", "Gen.":"мирового", "Dat.":"мировому", "Akk.":"мировое", "Instr.":"мировым", "Präp.":"мировом" },
     plural:{ "Nom.":"мировые", "Gen.":"мировых", "Dat.":"мировым", "Akk.":"мировые", "Instr.":"мировыми", "Präp.":"мировых" } },
+  // Ordnungszahlen (B1-Paket 2, 15.11.): dekliniert wie Adjektive, третий mit Sonderformen
+  "первый": { de: "erste", typeLabel: "hart, betonter Stamm",
+    masc:   { "Nom.":"первый", "Gen.":"первого", "Dat.":"первому", "Akk.":"первый", "Instr.":"первым", "Präp.":"первом" },
+    fem:    { "Nom.":"первая", "Gen.":"первой", "Dat.":"первой", "Akk.":"первую", "Instr.":"первой", "Präp.":"первой" },
+    neut:   { "Nom.":"первое", "Gen.":"первого", "Dat.":"первому", "Akk.":"первое", "Instr.":"первым", "Präp.":"первом" },
+    plural: { "Nom.":"первые", "Gen.":"первых", "Dat.":"первым", "Akk.":"первые", "Instr.":"первыми", "Präp.":"первых" } },
+  "второй": { de: "zweite", typeLabel: "hart, endbetont (-ой)",
+    masc:   { "Nom.":"второй", "Gen.":"второго", "Dat.":"второму", "Akk.":"второй", "Instr.":"вторым", "Präp.":"втором" },
+    fem:    { "Nom.":"вторая", "Gen.":"второй", "Dat.":"второй", "Akk.":"вторую", "Instr.":"второй", "Präp.":"второй" },
+    neut:   { "Nom.":"второе", "Gen.":"второго", "Dat.":"второму", "Akk.":"второе", "Instr.":"вторым", "Präp.":"втором" },
+    plural: { "Nom.":"вторые", "Gen.":"вторых", "Dat.":"вторым", "Akk.":"вторые", "Instr.":"вторыми", "Präp.":"вторых" } },
+  "третий": { de: "dritte", typeLabel: "Ordnungszahl, Sonderform", note: "третий hat vor der Endung ein Weichheitszeichen: третьего, третья, третье, третьи.",
+    masc:   { "Nom.":"третий", "Gen.":"третьего", "Dat.":"третьему", "Akk.":"третий", "Instr.":"третьим", "Präp.":"третьем" },
+    fem:    { "Nom.":"третья", "Gen.":"третьей", "Dat.":"третьей", "Akk.":"третью", "Instr.":"третьей", "Präp.":"третьей" },
+    neut:   { "Nom.":"третье", "Gen.":"третьего", "Dat.":"третьему", "Akk.":"третье", "Instr.":"третьим", "Präp.":"третьем" },
+    plural: { "Nom.":"третьи", "Gen.":"третьих", "Dat.":"третьим", "Akk.":"третьи", "Instr.":"третьими", "Präp.":"третьих" } },
+  "четвёртый": { de: "vierte", typeLabel: "hart, betonter Stamm",
+    masc:   { "Nom.":"четвёртый", "Gen.":"четвёртого", "Dat.":"четвёртому", "Akk.":"четвёртый", "Instr.":"четвёртым", "Präp.":"четвёртом" },
+    fem:    { "Nom.":"четвёртая", "Gen.":"четвёртой", "Dat.":"четвёртой", "Akk.":"четвёртую", "Instr.":"четвёртой", "Präp.":"четвёртой" },
+    neut:   { "Nom.":"четвёртое", "Gen.":"четвёртого", "Dat.":"четвёртому", "Akk.":"четвёртое", "Instr.":"четвёртым", "Präp.":"четвёртом" },
+    plural: { "Nom.":"четвёртые", "Gen.":"четвёртых", "Dat.":"четвёртым", "Akk.":"четвёртые", "Instr.":"четвёртыми", "Präp.":"четвёртых" } },
+  "пятый": { de: "fünfte", typeLabel: "hart, betonter Stamm",
+    masc:   { "Nom.":"пятый", "Gen.":"пятого", "Dat.":"пятому", "Akk.":"пятый", "Instr.":"пятым", "Präp.":"пятом" },
+    fem:    { "Nom.":"пятая", "Gen.":"пятой", "Dat.":"пятой", "Akk.":"пятую", "Instr.":"пятой", "Präp.":"пятой" },
+    neut:   { "Nom.":"пятое", "Gen.":"пятого", "Dat.":"пятому", "Akk.":"пятое", "Instr.":"пятым", "Präp.":"пятом" },
+    plural: { "Nom.":"пятые", "Gen.":"пятых", "Dat.":"пятым", "Akk.":"пятые", "Instr.":"пятыми", "Präp.":"пятых" } },
+  "шестой": { de: "sechste", typeLabel: "hart, endbetont (-ой)",
+    masc:   { "Nom.":"шестой", "Gen.":"шестого", "Dat.":"шестому", "Akk.":"шестой", "Instr.":"шестым", "Präp.":"шестом" },
+    fem:    { "Nom.":"шестая", "Gen.":"шестой", "Dat.":"шестой", "Akk.":"шестую", "Instr.":"шестой", "Präp.":"шестой" },
+    neut:   { "Nom.":"шестое", "Gen.":"шестого", "Dat.":"шестому", "Akk.":"шестое", "Instr.":"шестым", "Präp.":"шестом" },
+    plural: { "Nom.":"шестые", "Gen.":"шестых", "Dat.":"шестым", "Akk.":"шестые", "Instr.":"шестыми", "Präp.":"шестых" } },
+  "седьмой": { de: "siebte", typeLabel: "hart, endbetont (-ой)",
+    masc:   { "Nom.":"седьмой", "Gen.":"седьмого", "Dat.":"седьмому", "Akk.":"седьмой", "Instr.":"седьмым", "Präp.":"седьмом" },
+    fem:    { "Nom.":"седьмая", "Gen.":"седьмой", "Dat.":"седьмой", "Akk.":"седьмую", "Instr.":"седьмой", "Präp.":"седьмой" },
+    neut:   { "Nom.":"седьмое", "Gen.":"седьмого", "Dat.":"седьмому", "Akk.":"седьмое", "Instr.":"седьмым", "Präp.":"седьмом" },
+    plural: { "Nom.":"седьмые", "Gen.":"седьмых", "Dat.":"седьмым", "Akk.":"седьмые", "Instr.":"седьмыми", "Präp.":"седьмых" } },
+  "восьмой": { de: "achte", typeLabel: "hart, endbetont (-ой)",
+    masc:   { "Nom.":"восьмой", "Gen.":"восьмого", "Dat.":"восьмому", "Akk.":"восьмой", "Instr.":"восьмым", "Präp.":"восьмом" },
+    fem:    { "Nom.":"восьмая", "Gen.":"восьмой", "Dat.":"восьмой", "Akk.":"восьмую", "Instr.":"восьмой", "Präp.":"восьмой" },
+    neut:   { "Nom.":"восьмое", "Gen.":"восьмого", "Dat.":"восьмому", "Akk.":"восьмое", "Instr.":"восьмым", "Präp.":"восьмом" },
+    plural: { "Nom.":"восьмые", "Gen.":"восьмых", "Dat.":"восьмым", "Akk.":"восьмые", "Instr.":"восьмыми", "Präp.":"восьмых" } },
+  "девятый": { de: "neunte", typeLabel: "hart, betonter Stamm",
+    masc:   { "Nom.":"девятый", "Gen.":"девятого", "Dat.":"девятому", "Akk.":"девятый", "Instr.":"девятым", "Präp.":"девятом" },
+    fem:    { "Nom.":"девятая", "Gen.":"девятой", "Dat.":"девятой", "Akk.":"девятую", "Instr.":"девятой", "Präp.":"девятой" },
+    neut:   { "Nom.":"девятое", "Gen.":"девятого", "Dat.":"девятому", "Akk.":"девятое", "Instr.":"девятым", "Präp.":"девятом" },
+    plural: { "Nom.":"девятые", "Gen.":"девятых", "Dat.":"девятым", "Akk.":"девятые", "Instr.":"девятыми", "Präp.":"девятых" } },
+  "десятый": { de: "zehnte", typeLabel: "hart, betonter Stamm",
+    masc:   { "Nom.":"десятый", "Gen.":"десятого", "Dat.":"десятому", "Akk.":"десятый", "Instr.":"десятым", "Präp.":"десятом" },
+    fem:    { "Nom.":"десятая", "Gen.":"десятой", "Dat.":"десятой", "Akk.":"десятую", "Instr.":"десятой", "Präp.":"десятой" },
+    neut:   { "Nom.":"десятое", "Gen.":"десятого", "Dat.":"десятому", "Akk.":"десятое", "Instr.":"десятым", "Präp.":"десятом" },
+    plural: { "Nom.":"десятые", "Gen.":"десятых", "Dat.":"десятым", "Akk.":"десятые", "Instr.":"десятыми", "Präp.":"десятых" } },
 };
 // Zustand: Adjektivdeklination
 function toggleDeclHint() { declState.hintVisible = !declState.hintVisible; saveToolSettings(); renderDeclensionTable(); updateGtSettingsSummary(); }
@@ -23342,6 +23489,8 @@ const WG_NOUN_CLASS = {};
 'погода'.split(' ').forEach(n => { WG_NOUN_CLASS[n] = 'W'; });
 // je Adjektiv: [passende Klassen, zusätzlich passende einzelne Substantive]
 const WG_ADJ_FIT = {
+  'первый': ['POGVZA', ''], 'второй': ['POGVZA', ''], 'третий': ['POGVZA', ''], 'четвёртый': ['POGVZA', ''], 'пятый': ['POGVZA', ''],
+  'шестой': ['POGVZA', ''], 'седьмой': ['POGVZA', ''], 'восьмой': ['POGVZA', ''], 'девятый': ['POGVZA', ''], 'десятый': ['POGVZA', ''],
   'новый': ['POGVZA', ''],
   'тёплый': ['EKW', 'шапка рубашка кровать дом квартира комната кухня море озеро река город страна ночь утро день вечер'],
   'молодой': ['P', ''],
@@ -23493,7 +23642,7 @@ function setWgNumber(num) {
 // und „Satzbau" (ganze Sätze). Beide teilen sich den Generator, haben aber
 // eigene Panels. wgState.tool entscheidet, auf welche Elemente geschrieben wird.
 const WG_PHRASE_TYPES = ['adjnoun','detnoun','numadjnoun','prepphrase'];
-const WG_SENTENCE_TYPES = ['sentence','prepsentence','possession','negation','dative','question','modal','imperative','place'];
+const WG_SENTENCE_TYPES = ['sentence','prepsentence','possession','negation','dative','question','modal','imperative','place','nebensatz','rede'];
 function wgId(suffix) { return (wgState.tool === 'sentence' ? 'sb-' : 'wg-') + suffix; }
 function wgEl(suffix) { return document.getElementById(wgId(suffix)); }
 // Markierung setzen, falls das Bedienelement in diesem Panel existiert
@@ -23704,6 +23853,24 @@ const SB_ITEMS = [
   { type:"modal", parts:"мы + хотеть + есть", ru:"Мы хотим есть", de:"Wir wollen essen." },
   { type:"modal", parts:"вы + должен + знать + ответ", ru:"Вы должны знать ответ", de:"Ihr müsst die Antwort wissen." },
   { type:"modal", parts:"он + не мочь + работать + сегодня", ru:"Он не может работать сегодня", de:"Er kann heute nicht arbeiten." },
+  // Nebensätze (B1, bestätigt 15.11.): feste Wortstellung (fest), Hinweis je Satz
+  { type:"nebensatz", fest:true, parts:"я + хотеть, чтобы + ты + прийти", ru:"Я хочу, чтобы ты пришёл", de:"Ich möchte, dass du kommst.", hint:"чтобы + Vergangenheit, wenn das Subjekt wechselt" },
+  { type:"nebensatz", fest:true, parts:"мама + сказать, чтобы + мы + купить + хлеб", ru:"Мама сказала, чтобы мы купили хлеб", de:"Mama hat gesagt, wir sollen Brot kaufen.", hint:"чтобы + Vergangenheit: Aufforderung in indirekter Rede" },
+  { type:"nebensatz", fest:true, parts:"я + учить + русский, чтобы + читать + книги", ru:"Я учу русский, чтобы читать книги", de:"Ich lerne Russisch, um Bücher zu lesen.", hint:"чтобы + Infinitiv bei gleichem Subjekt (um … zu)" },
+  { type:"nebensatz", fest:true, parts:"если + быть + хорошая погода, + мы + пойти + в парк", ru:"Если будет хорошая погода, мы пойдём в парк", de:"Wenn das Wetter gut ist, gehen wir in den Park.", hint:"если + Futur: realer Fall in der Zukunft" },
+  { type:"nebensatz", fest:true, parts:"если бы + у меня + быть + время, + я бы + поехать + на море", ru:"Если бы у меня было время, я бы поехал на море", de:"Wenn ich Zeit hätte, würde ich ans Meer fahren.", hint:"если бы … бы + Vergangenheit: unwirklicher Fall" },
+  { type:"nebensatz", fest:true, parts:"если + ты + устать, + отдохнуть", ru:"Если ты устал, отдохни", de:"Wenn du müde bist, ruh dich aus.", hint:"если …, dann Imperativ" },
+  { type:"nebensatz", fest:true, parts:"когда + я + быть + маленький, + я + жить + в маленький город", ru:"Когда я был маленьким, я жил в маленьком городе", de:"Als ich klein war, wohnte ich in einer kleinen Stadt.", hint:"когда + Vergangenheit; быть + Instrumental (маленьким)" },
+  { type:"nebensatz", fest:true, parts:"когда + я + прийти + домой, + я + позвонить + ты", ru:"Когда я приду домой, я позвоню тебе", de:"Wenn ich nach Hause komme, rufe ich dich an.", hint:"когда + vollendetes Futur in beiden Teilen" },
+  { type:"nebensatz", fest:true, parts:"хотя + быть + холодно, + мы + гулять + в парк", ru:"Хотя было холодно, мы гуляли в парке", de:"Obwohl es kalt war, gingen wir im Park spazieren.", hint:"хотя – obwohl; Komma vor dem Hauptsatz" },
+  { type:"nebensatz", fest:true, parts:"хотя + он + устать, + он + работать + до вечера", ru:"Хотя он устал, он работал до вечера", de:"Obwohl er müde war, arbeitete er bis zum Abend.", hint:"хотя – obwohl; Komma vor dem Hauptsatz" },
+  { type:"nebensatz", fest:true, parts:"я + не знать, + прийти ли + он", ru:"Я не знаю, придёт ли он", de:"Ich weiß nicht, ob er kommt.", hint:"ob = Verb + ли (Verb zuerst)" },
+  { type:"nebensatz", fest:true, parts:"спросить, + быть ли + у них + хлеб", ru:"Спроси, есть ли у них хлеб", de:"Frag, ob sie Brot haben.", hint:"ob = Verb + ли (есть ли)" },
+  // Indirekte Rede (B2, bestätigt 15.11.)
+  { type:"rede", fest:true, parts:"он + сказать, что + завтра + быть + дождь", ru:"Он сказал, что завтра будет дождь", de:"Er sagte, dass es morgen regnen wird.", hint:"Die Zeit bleibt wie in der direkten Rede (будет)" },
+  { type:"rede", fest:true, parts:"она + спросить, где + я + жить", ru:"Она спросила, где я живу", de:"Sie fragte, wo ich wohne.", hint:"Fragewort bleibt, die Zeit wie in der direkten Rede (живу)" },
+  { type:"rede", fest:true, parts:"он + сказать, что + уже + прочитать + книга", ru:"Он сказал, что уже прочитал книгу", de:"Er sagte, er habe das Buch schon gelesen.", hint:"что + Vergangenheit, kein Konjunktiv wie im Deutschen" },
+  { type:"rede", fest:true, parts:"мама + спросить, когда + мы + вернуться", ru:"Мама спросила, когда мы вернёмся", de:"Mama fragte, wann wir zurückkommen.", hint:"Fragewort bleibt, Zeit wie in der direkten Rede (вернёмся)" },
   // Aufforderung: Imperativ (Bitte, Verbot, давай). Formen geprüft gegen conjugationData/aspectData.
   { type:"imperative", parts:"ты: открывать / открыть + окно", ru:"Открой окно", de:"Mach das Fenster auf!", hint:"Bitte/Befehl: meist vollendetes Verb" },
   { type:"imperative", parts:"вы: закрывать / закрыть + дверь", ru:"Закройте, пожалуйста, дверь", de:"Machen Sie bitte die Tür zu!", hint:"Bitte/Befehl: meist vollendetes Verb" },
@@ -23757,6 +23924,8 @@ const SB_HINTS = {
   dative:       () => 'Person im Dativ: мне, тебе, ему, ей, нам, вам, им',
   question:     () => 'Fragesatz — Fragewort zuerst',
   modal:        () => 'Modalausdruck + Infinitiv',
+  nebensatz:    () => 'Haupt- und Nebensatz mit Komma',
+  rede:         () => 'Indirekte Rede: Zeit wie in der direkten Rede',
   imperative:   () => 'Imperativ: ты-Form, bei вы mit -те',
   place:        c => c.wohin ? c.prep + ' + Akkusativ (wohin?)' : c.prep + ' + Präpositiv (wo?)',
 };
@@ -23973,7 +24142,7 @@ const WG_BUILDERS = {
     let alt = (sb.alt || []).slice();
     const bitte = /пожалуйста/i.test(sb.ru);
     const ohne = sb.ru.replace(/,?\s*пожалуйста,?/i, '').replace(/\s+/g, ' ').trim();
-    const blocks = sbFixedBlocks(sb.parts, ohne);
+    const blocks = sb.fest ? null : sbFixedBlocks(sb.parts, ohne);     // Nebensätze: feste Wortstellung
     const fassungen = blocks ? sbOrders(blocks, wgState.type === 'question') : [[ohne]];
     fassungen.forEach(f => {
       const satz = f.join(' ');
@@ -25414,9 +25583,18 @@ const ADJ_SENTENCES = [
   { t: 'comp', a: 'плохой', ru: 'Сегодня мне ___, чем вчера.', ans: 'хуже', de: 'Heute geht es mir schlechter als gestern.' },
 ];
 const ADJ_GENUS_IDX = { masc: 0, fem: 1, neut: 2, plural: 3 };
+// Kurzform der Passivpartizipien (B2, bestätigt 15.11.): -нный → -н, -тый → -т
+const ADJ_PPP = {
+  'прочитанный': ['прочитан', 'прочитана', 'прочитано', 'прочитаны'], 'написанный': ['написан', 'написана', 'написано', 'написаны'],
+  'сделанный': ['сделан', 'сделана', 'сделано', 'сделаны'], 'купленный': ['куплен', 'куплена', 'куплено', 'куплены'],
+  'открытый': ['открыт', 'открыта', 'открыто', 'открыты'], 'закрытый': ['закрыт', 'закрыта', 'закрыто', 'закрыты'],
+  'построенный': ['построен', 'построена', 'построено', 'построены'], 'приготовленный': ['приготовлен', 'приготовлена', 'приготовлено', 'приготовлены'],
+};
+// Verb zum Partizip (für die Bedeutung)
+function adjPppVerb(p) { const x = (TF_PARTIZIP['Partizip Präteritum Passiv'] || []).find(y => y[1] === p); return x ? x[0] : ''; }
 const adjFormState = {
   regOnly: false,
-  scope: 'all',        // all | short | comp | sup
+  scope: 'all',        // all | short | comp | sup | ppp (B2, nur über die eigene Auswahl)
   hintVisible: true,   // Regel/Übersetzung als Hilfe
   current: null,
   done: 0,
@@ -25457,18 +25635,19 @@ function adjFormItems() {
     }
   });
   ADJ_SENTENCES.forEach((s, i) => items.push({ typ: s.t, adj: s.a, satz: s, answer: s.ans, alts: [s.ans], id: 'satz:' + i }));
+  Object.entries(ADJ_PPP).forEach(([adj, f]) => ['masc', 'fem', 'neut', 'plural'].forEach((g, i) => items.push({ typ: 'ppp', adj, g, answer: f[i], alts: [f[i]], id: 'ppp:' + adj + ':' + g })));
   return items;
 }
 function adjFormTotal() { return adjFormItems().length; }
 function buildAdjFormTask() {
-  let basis = adjFormItems().filter(x => adjFormState.scope === 'all' || x.typ === adjFormState.scope);
+  let basis = adjFormItems().filter(x => adjFormState.scope === 'all' ? x.typ !== 'ppp' : x.typ === adjFormState.scope);
   if (adjFormState.regOnly) { const r = basis.filter(adjFormIstRegel); if (r.length) basis = r; }
   const pool = musterFrei(basis, 'adjform', x => x.id);
   const ids = pool.map(x => x.id);
   const prev = adjFormState.current ? adjFormState.current.id : null;
   const id = progressNext('adjform', ids, prev);
   const it = pool.find(x => x.id === id) || pool[Math.floor(Math.random() * pool.length)];
-  const de = (declensionData[it.adj] || {}).de || '';
+  const de = (declensionData[it.adj] || {}).de || (it.typ === 'ppp' ? 'Partizip von ' + adjPppVerb(it.adj) + ' (' + tfDe(adjPppVerb(it.adj)) + ')' : '');
   const t = Object.assign({}, it);
   if (it.satz) {
     t.from = it.satz.ru.replace('___', '____');
@@ -25480,9 +25659,10 @@ function buildAdjFormTask() {
   } else {
     t.from = it.adj;
     t.de = de;
-    t.task = it.typ === 'short' ? 'Kurzform · ' + PF_GENUS[it.g]
+    t.task = it.typ === 'ppp' ? 'Partizip-Kurzform · ' + PF_GENUS[it.g] : it.typ === 'short' ? 'Kurzform · ' + PF_GENUS[it.g]
       : it.typ === 'comp' ? 'Komparativ (größer, schneller …)' : 'Superlativ (der größte …)';
-    t.rule = it.typ === 'short' ? adjShortRule(it.adj, it.answer)
+    t.rule = it.typ === 'ppp' ? 'Passivpartizip: -нный → -н, -тый → -т; dazu -а / -о / -ы (дом построен, дверь открыта)'
+      : it.typ === 'short' ? adjShortRule(it.adj, it.answer)
       : it.typ === 'comp' ? adjCompRule(it.answer)
       : (ADJ_FORMS[it.adj].x ? 'Sonderform – eigenes Wort' : 'самый + Adjektiv');
     t.say = it.adj;
@@ -25509,7 +25689,7 @@ function toggleAdjFormHint() {
 }
 function setAdjFormScope(v) {
   adjFormState.scope = v;
-  ['all', 'short', 'comp', 'sup'].forEach(x => {
+  ['all', 'short', 'comp', 'sup', 'ppp'].forEach(x => {
     const b = document.getElementById('adjform-scope-' + x);
     if (b) b.classList.toggle('active', x === v);
   });
@@ -27559,6 +27739,11 @@ const MOTION_PREFIX = [
   { ru: "В прошлом году мы ___ в новую квартиру.", de: "Letztes Jahr sind wir in eine neue Wohnung umgezogen.", opts: ["переехали", "приехали", "уехали", "проехали"], correct: "переехали", pre: "пере-" },
   { ru: "Гости ___ поздно ночью, и мы легли спать.", de: "Die Gäste fuhren spät in der Nacht weg, und wir gingen schlafen.", opts: ["уехали", "приехали", "переехали", "проехали"], correct: "уехали", pre: "у-" },
   { ru: "Почтальон ___ к нам каждое утро.", de: "Der Briefträger kommt jeden Morgen zu uns.", opts: ["приходит", "уходит", "проходит", "переходит"], correct: "приходит", pre: "при-" },
+  // übertragene Bedeutung (B2, bestätigt 15.11.)
+  { ru: "Я хорошо ___ экзамен.", de: "Ich habe die Prüfung gut bestanden.", opts: ["прошёл", "пришёл", "перешёл", "вышел"], correct: "прошёл", pre: "про-", bed: "übertragen: пройти экзамен – eine Prüfung bestehen" },
+  { ru: "Время быстро ___.", de: "Die Zeit verging schnell.", opts: ["прошло", "пришло", "вошло", "перешло"], correct: "прошло", pre: "про-", bed: "übertragen: время прошло – die Zeit verging" },
+  { ru: "Мне ___ в голову хорошая мысль.", de: "Mir ist ein guter Gedanke gekommen.", opts: ["пришла", "ушла", "вышла", "прошла"], correct: "пришла", pre: "при-", bed: "übertragen: прийти в голову – einfallen" },
+  { ru: "Новый фильм ___ в пятницу.", de: "Der neue Film kommt am Freitag heraus.", opts: ["выйдет", "войдёт", "уйдёт", "перейдёт"], correct: "выйдет", pre: "вы-", bed: "übertragen: выйти – erscheinen (Film, Buch)" },
 ];
 function restartMotionPrefix() { startMotionPrefixRound(shuffleInPlace(MOTION_PREFIX.slice())); }
 function startMotionPrefixRound(queue) {
@@ -27597,7 +27782,7 @@ const MOTION_PREFIX_CHOICE = {
   active: () => motionState.mode === 'prefix',
   item: () => motionState.pQueue[motionState.pIndex], right: it => it.correct,
   srs: it => ['motion:prefix', it.ru],
-  text: (it, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + it.correct + ': ' + MOTION_PREFIX_MEANING[it.pre],
+  text: (it, ok) => (ok ? 'Richtig — ' : ok === false ? 'Falsch — ' : '') + it.correct + ': ' + (it.bed || MOTION_PREFIX_MEANING[it.pre]),
   onAnswer: (it, ok) => { if (ok) motionState.pCorrect++; motionPrefixScore(); },
   advance: () => { motionState.pIndex++; renderMotionPrefix(); },
   fehler: it => motionState.pFehler.push(it),

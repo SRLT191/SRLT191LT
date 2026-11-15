@@ -53,12 +53,12 @@ const { chromium } = require('playwright');
     out.keys = Object.values(s).some(x => x[0].includes('muster'));
     return out;
   });
-  ok('Muster hart · weiblich · Genitiv: 10 von 65 Wörtern nötig', r.need[0] === 10 && r.need[1] === 65, JSON.stringify(r.need));
+  ok('Muster hart · weiblich · Genitiv: 10 von 70 Wörtern nötig (mit den Ordnungszahlen)', r.need[0] === 10 && r.need[1] === 70, JSON.stringify(r.need));
   ok('9 verschiedene Wörter (eins doppelt): noch nicht sicher, 9 gelernt, Tageszählung nur je Antwort', !r.neun[0] && r.neun[1] === 9 && r.neun[2] === 10, JSON.stringify(r.neun));
-  ok('10. Wort: Muster sicher, alle 65 Formen zählen, übrige gesperrt (andere Fälle nicht)', r.zehn[0] && r.zehn[1] === 65 && r.zehn[2] && !r.zehn[3], JSON.stringify(r.zehn));
+  ok('10. Wort: Muster sicher, alle 70 Formen zählen, übrige gesperrt (andere Fälle nicht)', r.zehn[0] && r.zehn[1] === 70 && r.zehn[2] && !r.zehn[3], JSON.stringify(r.zehn));
   ok('Formen des sicheren Musters werden nicht mehr gezogen', r.gezogen === 0, String(r.gezogen));
   ok('Schalter in der Leiste, Abzeichen „Muster 1/…“ in der Kopfzeile; Schalter hebt die Sperre auf', r.knopf && r.alle);
-  ok('Startseite zählt die Formen des sicheren Musters mit', r.home >= 65, String(r.home));
+  ok('Startseite zählt die Formen des sicheren Musters mit', r.home >= 70, String(r.home));
   ok('Fehler öffnet das Muster (7 von 10), 3 weitere Wörter schließen es', !r.offen[0] && r.offen[1] === 7 && r.wieder, JSON.stringify(r.offen));
   ok('Wiederholung: fälliges Muster wird wieder gefragt', r.stufe >= 1 && r.faellig[0] && !r.faellig[1], JSON.stringify([r.stufe, r.faellig]));
   ok('kleine Muster brauchen alle Wörter; Sonderfälle zählen einzeln', r.klein === 1 && r.sonder[0] === null && /^cf\|Plural\|Dat\./.test(r.sonder[1]) && /^cf\|2\. Klasse/.test(r.sonder[2]) && r.sonder[3] === null && r.sonder[4] === 'tf|Vergangenheit|она'
