@@ -1,7 +1,7 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
 // Textverständnis-Ausbau (15.11.): Liste (zwei Spalten, Stand je Stufe, Balken, Dauer, Weiterlesen, Erklärung, Pfeiltasten),
-// Wörter (neu je Text, Wort antippen, „Wörter dieses Texts üben“), Umschrift und Schriftgröße, Übungsarten DE → RU und Hören,
-// Verständnisfragen (Probetext), Tagesprotokoll, Stufenplan, „Sätze wiederholen“ auf der Startseite.
+// Wörter (neu je Text, Wort antippen, „Wörter dieses Texts üben“), Umschrift und Schriftgröße, Übungsarten DE → RU und Hören
+// mit eigenen Texten (Probetexte, solange keine bestätigten da sind), Tagesprotokoll, Stufenplan, „Sätze wiederholen“ auf der Startseite.
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const R = []; const errs = [];
@@ -12,6 +12,10 @@ const { chromium } = require('playwright');
     const out = {}, gesprochen = []; window.speak = (t, rate) => gesprochen.push([t, rate]);
     const body = document.getElementById('reading-body'), taste = (key, ziel, extra) => (ziel || document.body).dispatchEvent(new KeyboardEvent('keydown', Object.assign({ key, bubbles: true, cancelable: true }, extra || {})));
     localStorage.removeItem(READING_KEY); localStorage.removeItem(READING_MODE_KEY); readState.modus = 'ru';
+    const echteDe = readingTexteDerArt('de').length, echteHoer = readingTexteDerArt('hoer').length;
+    TEXTE.push({ id: 'probe-de', art: 'de', lvl: 'A1', titel: 'Проба', de: 'Probe', saetze: [{ ru: 'Сегодня у меня свободный день.', de: 'Heute habe ich einen freien Tag.' }, { ru: 'Я пью чай.', de: 'Ich trinke Tee.' }] },
+      { id: 'probe-hoer', art: 'hoer', lvl: 'A2', titel: 'Проба', de: 'Probe', saetze: [{ ru: 'Это кот.', de: 'Das ist eine Katze.' }, { ru: 'Кот спит.', de: 'Die Katze schläft.' }, { ru: 'Я тоже сплю.', de: 'Ich schlafe auch.' }] });
+    out.arten = [readingTexteDerArt('ru').some(t => t.id === 'v-magazine'), readingTexteDerArt('de').every(t => t.art === 'de'), !readingTexteDerArt('ru').some(t => t.art)];
     setAppView('reading');
     // Liste
     const sp = body.querySelector('.rd-spalten'), gr = [...body.querySelectorAll('.rd-gruppe')];
@@ -36,23 +40,26 @@ const { chromium } = require('playwright');
     readZeigen(); readRate(true); readZeigen(); readRate(false);
     out.tag = (loadDaylog()[dayKey()] || [0, 0])[0] - vorher;
     out.stand = JSON.stringify(loadReading()['v-magazine'].s);
-    // Übungsart DE → RU
-    setReadModus('de', 'text');
-    out.de = [readState.modus, localStorage.getItem(READING_MODE_KEY), body.querySelector('.rd-text').getAttribute('lang'), body.querySelector('.rd-cur').textContent.trim(), document.getElementById('rd-input').getAttribute('lang'), readState.i];
+    // Übungsart DE → RU: eigene Texte
+    closeText(); setReadModus('de');
+    out.deListe = [...body.querySelectorAll('.rd-card')].map(x => x.dataset.id).join() === readingTexteDerArt('de').map(t => t.id).join() && !body.querySelector('.rd-card[data-id="v-magazine"]');
+    openText('probe-de');
+    out.de = [readState.modus, localStorage.getItem(READING_MODE_KEY), body.querySelector('.rd-text').getAttribute('lang'), body.querySelector('.rd-cur').textContent.trim(), document.getElementById('rd-input').getAttribute('lang'), !body.querySelector('#reading-text .rd-modus'), /Übersetzen/.test(body.querySelector('.rd-art').textContent)];
     readZeigen(); out.deLoesung = [(body.querySelector('.rd-loesung-ru') || {}).textContent, body.querySelectorAll('.rd-loesung .rd-w').length > 0];
     readRate(true);
-    out.getrennt = Object.keys(loadReading()).sort().join();
-    // Hören
-    setReadModus('hoer', 'text');
+    // Hören: eigene Texte
+    closeText(); setReadModus('hoer'); openText('probe-hoer');
     gesprochen.length = 0;
     out.hoer = [body.querySelectorAll('.rd-s.verdeckt').length, !!body.querySelector('.rd-hoer-btn'), body.querySelector('.rd-s.cur').getAttribute('aria-label')];
-    taste('4'); out.vorgelesen = gesprochen.map(x => x[0]).pop() === mag.saetze[0].ru;
+    taste('4'); out.vorgelesen = gesprochen.map(x => x[0]).pop() === 'Это кот.';
     body.querySelector('.rd-cur-hoer .tool-btn + .tool-btn').click(); out.langsam = gesprochen.pop()[1] < speakRate;
     readZeigen(); out.hoerOffen = [body.querySelectorAll('.rd-s.verdeckt').length, /Gehört/.test(body.querySelector('.rd-loesung').textContent), !!document.getElementById('rd-muster')];
     readRate(false);
-    out.hoerStand = JSON.stringify(loadReading()['v-magazine~hoer'].s);
+    out.getrennt = Object.keys(loadReading()).sort().join();
+    // Text einer anderen Art öffnen (Startseite, Weiterlernen) stellt den Reiter mit um
+    openText('v-magazine'); out.artWechsel = [readState.modus, localStorage.getItem(READING_MODE_KEY)];
     // zurück zur Liste: Weiterlesen, Balken, „zuletzt“, Erklärung zu, Pfeiltasten
-    setReadModus('ru', 'liste'); closeText();
+    closeText();
     const wl = body.querySelector('.rd-weiter');
     out.weiter = wl ? [wl.dataset.id, wl.textContent.replace(/\s+/g, ' ').trim()] : null;
     const km = body.querySelector('.rd-card[data-id="v-magazine"]');
@@ -60,20 +67,13 @@ const { chromium } = require('playwright');
     out.infoZu = !document.getElementById('rd-intro'); body.querySelector('.rd-info-btn').click(); out.infoAuf = !!document.getElementById('rd-intro');
     taste('ArrowDown'); const f1 = document.activeElement; taste('ArrowDown'); const f2 = document.activeElement;
     out.pfeile = [f1.className, f2.className, f2.dataset.id];
-    // Prune behält die Übungsarten
+    // Aufräumen beim Start: Lesestände vorhandener Texte bleiben, alte mit Zusatz (~de) fallen weg
+    const pm = loadReading(); pm['v-magazine~de'] = { s: {}, z: 1, d: 0 }; saveReading(pm);
     pruneReading(); out.prune = Object.keys(loadReading()).sort().join();
-    // Verständnisfragen (Probetext – die echten Fragen werden erst nach Bestätigung eingetragen)
-    TEXTE.push({ id: 'probe-q', lvl: 'A1', titel: 'Проба', de: 'Probe', saetze: [{ ru: 'Это кот.', de: 'Das ist eine Katze.' }],
-      fragen: [{ f: 'Кто это?', fde: 'Wer ist das?', a: ['кот', 'собака', 'мама'], r: 0 }, { f: 'Это собака?', fde: 'Ist das ein Hund?', a: ['да', 'нет'], r: 1 }] });
-    openText('probe-q'); readZeigen(); readRate(true);
-    out.ende = [readState.ende, !!body.querySelector('.rd-ende .gt-primary'), /2 Fragen/.test(body.querySelector('.rd-ende').textContent)];
-    readQuizStart(); out.q1 = [body.querySelector('.rd-q-f').textContent, body.querySelectorAll('.rd-q-a button').length];
-    const tag2 = (loadDaylog()[dayKey()] || [0, 0])[0];
-    taste('2'); out.q1falsch = [!!body.querySelector('.rd-q-a .falsch'), !!body.querySelector('.rd-q-a .richtig'), /Richtig wäre/.test(body.querySelector('.rd-q-rm').textContent)];
-    taste('Enter'); taste('2'); taste('Enter');
-    out.qEnde = [body.querySelector('.rd-quiz h3').textContent, /1 von 2 richtig/.test(body.querySelector('.rd-quiz').textContent), JSON.stringify([loadReading()['probe-q'].q, loadReading()['probe-q'].qn]), (loadDaylog()[dayKey()] || [0, 0])[0] - tag2];
-    out.qClean = JSON.stringify(cleanReading({ x: { s: {}, z: 1, q: 9, qn: 3 }, y: { s: {}, z: 1, q: 1, qn: 'x' } }));
-    TEXTE.pop(); closeText();
+    // ohne Texte einer Art: Hinweis
+    const alle = TEXTE.splice(0); setReadModus('de'); out.leer = (body.querySelector('.rd-leer') || {}).textContent; TEXTE.push(...alle); setReadModus('ru');
+    TEXTE.splice(TEXTE.findIndex(t => t.id === 'probe-de'), 1); TEXTE.splice(TEXTE.findIndex(t => t.id === 'probe-hoer'), 1);
+    out.echte = [readingTexteDerArt('de').length === echteDe, readingTexteDerArt('hoer').length === echteHoer];
     // Startseite: „Sätze wiederholen“ erst nach ein paar Tagen
     const m = loadReading(); setAppView('home'); out.homeFrisch = !document.getElementById('home-read-due');
     m['v-magazine'].z = Date.now() - 3 * 864e5; saveReading(m); setAppView('home');
@@ -102,18 +102,19 @@ const { chromium } = require('playwright');
   ok('Umschrift nach dem Schalter (Buchstaben, aus)', /^Segodnja u menja/.test(r.tr) && r.trAus, r.tr);
   ok('„Größe der Lernkarte“ vergrößert die Schrift des Texts', r.gross > r.normal, r.gross + ' > ' + r.normal);
   ok('Bewertungen zählen ins Tagesprotokoll', r.tag === 2 && r.stand === '{"0":1,"1":0}', r.tag + ' ' + r.stand);
-  ok('DE → RU: deutscher Text und Satz, russische Eingabe, Lösung = Original mit antippbaren Wörtern, gemerkt', r.de.slice(0, 5).join('|') === 'de|de|de|Heute habe ich einen freien Tag.|ru' && /Сегодня у меня свободный день/.test(r.deLoesung[0]) && r.deLoesung[1], JSON.stringify(r.de) + JSON.stringify(r.deLoesung));
-  ok('Lesestand je Übungsart getrennt (Kennung~de)', r.getrennt === 'v-magazine,v-magazine~de', r.getrennt);
-  ok('Hören: Sätze verdeckt, Knopf „Satz anhören“, 4 liest vor, „langsam“ langsamer', r.hoer[0] === 22 && r.hoer[1] && /verdeckt/.test(r.hoer[2]) && r.vorgelesen && r.langsam, JSON.stringify(r.hoer));
-  ok('Hören: Lösung zeigt den Satz und die Übersetzung, eigener Stand', r.hoerOffen[0] === 21 && r.hoerOffen[1] && r.hoerOffen[2] && r.hoerStand === '{"0":0}', JSON.stringify(r.hoerOffen) + ' ' + r.hoerStand);
+  ok('Jede Übungsart hat eigene Texte (Feld art, ohne = Lesen); Liste zeigt nur die Texte der Art', r.arten.every(Boolean) && r.deListe, JSON.stringify(r.arten) + r.deListe);
+  ok('DE → RU: deutscher Text und Satz, russische Eingabe, Lösung = Original mit antippbaren Wörtern; im Text kein Reiter, nur die Art', r.de.join('|') === 'de|de|de|Heute habe ich einen freien Tag.|ru|true|true' && /Сегодня у меня свободный день/.test(r.deLoesung[0]) && r.deLoesung[1], JSON.stringify(r.de) + JSON.stringify(r.deLoesung));
+  ok('Hören: Sätze verdeckt, Knopf „Satz anhören“, 4 liest vor, „langsam“ langsamer', r.hoer[0] === 3 && r.hoer[1] && /verdeckt/.test(r.hoer[2]) && r.vorgelesen && r.langsam, JSON.stringify(r.hoer));
+  ok('Hören: Lösung zeigt den Satz und die Übersetzung', r.hoerOffen[0] === 2 && r.hoerOffen[1] && r.hoerOffen[2], JSON.stringify(r.hoerOffen));
+  ok('Lesestand je Text (eigene Texte, keine Zusätze)', r.getrennt === 'probe-de,probe-hoer,v-magazine', r.getrennt);
+  ok('Text einer anderen Art öffnen stellt den Reiter um', r.artWechsel.join() === 'ru,', JSON.stringify(r.artWechsel));
   ok('Liste: „Weiterlesen“ mit angefangenem Text oben', r.weiter && r.weiter[0] === 'v-magazine' && /2 von 22 Sätzen/.test(r.weiter[1]), JSON.stringify(r.weiter));
   ok('Karte mit Balken (gewusst/nicht gewusst), „zuletzt heute“, Restdauer', r.balken[0] === 2 && r.balken[1] === 'zuletzt heute' && /übrig$/.test(r.balken[2]), JSON.stringify(r.balken));
   ok('Erklärung danach zugeklappt, ⓘ klappt sie auf', r.infoZu && r.infoAuf);
   ok('↑/↓ springt von Text zu Text (zuerst „Weiterlesen“)', /rd-weiter/.test(r.pfeile[0]) && /rd-card/.test(r.pfeile[1]), JSON.stringify(r.pfeile));
-  ok('Aufräumen beim Start behält die Lesestände der Übungsarten', r.prune === 'v-magazine,v-magazine~de,v-magazine~hoer', r.prune);
-  ok('Verständnisfragen: Knopf am Ende, Frage mit Antworten', r.ende.every(Boolean) && r.q1[0] === 'Кто это?' && r.q1[1] === 3, JSON.stringify(r.ende) + JSON.stringify(r.q1));
-  ok('Verständnisfragen: Tasten 1–n und ⏎, falsch markiert mit Lösung, Ergebnis gespeichert und im Tagesprotokoll', r.q1falsch.every(Boolean) && r.qEnde[1] && r.qEnde[2] === '[1,2]' && r.qEnde[3] === 2, JSON.stringify(r.q1falsch) + JSON.stringify(r.qEnde));
-  ok('Verständnisfragen im Speicher bereinigt (q ≤ qn, kaputtes qn verworfen)', r.qClean === '{"x":{"s":{},"z":1,"d":0,"qn":3,"q":3},"y":{"s":{},"z":1,"d":0}}', r.qClean);
+  ok('Aufräumen beim Start: Lesestände vorhandener Texte bleiben, unbekannte Kennungen fallen weg', r.prune === 'probe-de,probe-hoer,v-magazine', r.prune);
+  ok('Übungsart ohne Texte: Hinweis statt leerer Fläche', /Für „Übersetzen“ gibt es noch keine Texte|Noch keine Texte/.test(r.leer || ''), r.leer);
+  ok('Probetexte wieder entfernt', r.echte.every(Boolean));
   ok('Startseite: „Sätze wiederholen“ erst nach ein paar Tagen, öffnet die nicht gewussten Sätze', r.homeFrisch && r.homeAlt.every(Boolean) && r.homeKlick.join() === 'reading,v-magazine,ru,1,false', JSON.stringify(r.homeAlt) + JSON.stringify(r.homeKlick));
   ok('Stufenplan: Punkt „Texte A1: x von y Texten gelesen“, Link öffnet die Texte', /Texte A1: 1 von \d+ Texten gelesen/.test(r.plan) && r.planKlick[0] === 'reading' && r.planKlick[1] === null, r.plan + ' ' + JSON.stringify(r.planKlick));
   ok('„Wörter dieses Texts üben“: eigene Runde in den Vokabeln mit den Karten des Texts', r.vokabeln[0] === 'vocab' && r.vokabeln[1] === 'textw' && r.vokabeln[2] && /Wörter aus „В магазине“/.test(r.vokabeln[3]), JSON.stringify(r.vokabeln));
@@ -124,12 +125,11 @@ const { chromium } = require('playwright');
     const h = await p.evaluate(() => {
       setAppView('reading'); closeText();
       const ueber = () => [...document.querySelectorAll('#reading-view *')].filter(x => x.getBoundingClientRect().right > window.innerWidth + 1).length;
-      const liste = ueber(); openText('u-vracha'); readZeigen(); const text = ueber(); setReadModus('de', 'text'); const de = ueber();
-      const mb = [...document.querySelectorAll('.rd-modus button')].map(x => Math.round(x.getBoundingClientRect().height));
-      closeText(); setReadModus('ru', 'liste');
+      const liste = ueber(); const mb = [...document.querySelectorAll('.rd-modus button')].map(x => Math.round(x.getBoundingClientRect().height));
+      openText('u-vracha'); readZeigen(); const text = ueber(); closeText(); setReadModus('de'); const de = ueber(); setReadModus('ru');
       return [liste, text, de, Math.min(...mb)];
     });
-    ok('Handy ' + w + ' px: Liste, Text und DE → RU ohne Überlauf', h[0] + h[1] + h[2] === 0, JSON.stringify(h));
+    ok('Handy ' + w + ' px: Liste, Text und Liste DE → RU ohne Überlauf', h[0] + h[1] + h[2] === 0, JSON.stringify(h));
   }
   ok('Keine JS-Fehler', !errs.length, errs.join(' | '));
   await b.close();

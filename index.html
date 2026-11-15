@@ -907,7 +907,7 @@
   .rd-modus small { color: var(--c-text-muted); font-size: 11px; }
   .rd-modus button.on small { color: inherit; opacity: .85; }
   @media (max-width: 520px) { .rd-modus small { display: none; } }
-  #reading-text .rd-modus { margin-bottom: 6px; }
+  .rd-art { font-size: 12.5px; color: var(--c-text-muted); margin: 0 0 6px; }
   .rd-text[data-de] { font-family: 'Noto Sans', system-ui, sans-serif; font-size: 17px; }
   .rd-s.verdeckt { color: var(--c-text-muted); letter-spacing: 2px; background: var(--c-surface-alt); margin: 0 2px; }
   .rd-s.cur.verdeckt { color: var(--c-on-accent); }
@@ -929,17 +929,6 @@
   .rd-loesung .rd-loesung-ru { font-size: 18px; }
   .rd-loesung-ru { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 18px; }
   .rd-tools #rd-woerter-btn small { color: var(--c-accent-strong); margin-left: 2px; }
-  .rd-q-stand { margin-top: 4px; font-size: 14px; color: var(--c-text-secondary); }
-  .rd-quiz { text-align: center; }
-  .rd-q-f { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 20px; font-weight: 600; margin: 2px 0 2px; }
-  .rd-q-de { font-size: 13.5px; color: var(--c-text-muted); margin-bottom: 10px; }
-  .rd-q-a { display: grid; gap: 8px; text-align: left; }
-  .rd-q-a .tool-btn { justify-content: flex-start; min-height: 42px; font-size: 16px; }
-  .rd-q-a [lang="ru"] { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
-  .rd-q-a .richtig { border-color: var(--c-success-border); background: var(--c-success-bg); color: var(--c-success-text); }
-  .rd-q-a .falsch { border-color: var(--c-warn); text-decoration: line-through; }
-  .rd-q-a .tool-btn:disabled { opacity: 1; cursor: default; }
-  .rd-q-rm { margin-top: 10px; font-size: 15px; }
   @media (min-width: 1600px) and (hover: hover) { #reading-view.rd-liste:not(.area-custom) { max-width: 1240px; } }
   @media (min-width: 701px) {
     html[data-cardsize="gross"] .rd-text { font-size: 22px; } html[data-cardsize="gross"] .rd-text[data-de] { font-size: 19px; } html[data-cardsize="gross"] .rd-cur { font-size: 25px; } html[data-cardsize="gross"] .rd-loesung div { font-size: 18.5px; }
@@ -3415,7 +3404,7 @@
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Rückgängig</strong><span>Im Aufdecken-Modus der Vokabeln: nimmt die letzte Bewertung zurück, auch nach „Alles gelernt!“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Neu anfangen</strong><span>Im Aufdecken-Modus der Vokabeln bei „Alles gelernt!“: setzt den Fortschritt zurück</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Bewertung zurücknehmen</strong><span>Im Hörquiz-Aufdecken, wenn du dich verdrückt hast</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd><kbd class="kbd">3</kbd><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">4</kbd><kbd class="kbd">↑</kbd><kbd class="kbd">↓</kbd></span><div class="set-text"><strong>Textverständnis</strong><span>Enter oder 3 zeigt die Lösung (im Feld: Umschalt+Enter = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz vor (nicht im Feld); in der Liste ↑/↓ von Text zu Text; bei den Fragen zum Text 1–4 antworten, Enter weiter</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd><kbd class="kbd">3</kbd><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">4</kbd><kbd class="kbd">↑</kbd><kbd class="kbd">↓</kbd></span><div class="set-text"><strong>Textverständnis</strong><span>Enter oder 3 zeigt die Lösung (im Feld: Umschalt+Enter = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz vor (nicht im Feld); in der Liste ↑/↓ von Text zu Text</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd><kbd class="kbd">5</kbd></span><div class="set-text"><strong>Einstufungstest</strong><span>1–4 wählt eine Antwort, 5 = weiß ich nicht</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Esc</kbd></span><div class="set-text"><strong>Dialog schließen</strong><span>Schließt Einstellungen, Listen, Auswahlfenster und das ⋯-Menü der Grammatik</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">+</kbd></span><div class="set-text"><strong>Fortschritt zurücksetzen</strong><span>Übungsstand von Vokabeln und Grammatik, sofort und ohne Rückfrage; auch im Antwortfeld</span></div></div>
@@ -18213,17 +18202,17 @@ const TEXTE = [
 const READING_KEY = 'vokabeltrainer-texte';
 const READING_MODE_KEY = 'vokabeltrainer-texte-modus';
 setTimeout(() => { try { pruneReading(); } catch (e) {} }, 0);
-// Übungsarten (15.11.): ru = lesen (RU → DE), de = übersetzen (DE → RU), hoer = hören; je Art ein eigener Lesestand
+// Übungsarten (15.11.): ru = lesen (RU → DE), de = übersetzen (DE → RU), hoer = hören – jede Art hat eigene Texte (Feld art, ohne = ru),
+// damit man einen Text nicht schon aus einer anderen Übung kennt
 const READ_MODI = { ru: { name: 'Lesen', lang: 'RU → DE', icon: 'ti-book' }, de: { name: 'Übersetzen', lang: 'DE → RU', icon: 'ti-language' }, hoer: { name: 'Hören', lang: 'Hörverständnis', icon: 'ti-headphones' } };
 function readModusLaden() { try { const v = localStorage.getItem(READING_MODE_KEY); return v === 'de' || (v === 'hoer' && AUDIO_SUPPORTED) ? v : 'ru'; } catch (e) { return 'ru'; } }
-const readState = { id: null, i: 0, offen: false, ende: false, ganz: false, eigene: {}, modus: 'ru', info: false, wort: null, quiz: null };
+const readState = { id: null, i: 0, offen: false, ende: false, ganz: false, eigene: {}, modus: 'ru', info: false, wort: null };
 try { readState.modus = readModusLaden(); } catch (e) {}
-// Schlüssel des Lesestands: Kennung des Texts, bei DE → RU und Hören mit Zusatz (moj-den~de)
-function readKey(id, modus) { return modus && modus !== 'ru' ? id + '~' + modus : id; }
-function readBaseId(k) { return String(k).replace(/~(de|hoer)$/, ''); }
+function textArt(t) { return t && READ_MODI[t.art] ? t.art : 'ru'; }
+function readingTexteDerArt(k) { return TEXTE.filter(t => textArt(t) === k); }
 const READ_SEK_JE_SATZ = 25;            // grobe Dauer je Satz für „~ Min.“
 const READ_WIEDERHOLEN_TAGE = 2;        // nicht gewusste Sätze kommen nach so vielen Tagen auf die Startseite
-// Lesestand: { <Schlüssel>: { s: { <Satz>: 1 gewusst | 0 nicht }, z: zuletzt, d: wie oft ganz durch, q/qn: Verständnisfragen richtig/gestellt } }
+// Lesestand: { <Kennung>: { s: { <Satz>: 1 gewusst | 0 nicht }, z: zuletzt, d: wie oft ganz durch } }
 function cleanReading(o) {
   const out = {};
   if (!o || typeof o !== 'object' || Array.isArray(o)) return out;
@@ -18234,8 +18223,6 @@ function cleanReading(o) {
     const z = Number(e.z), d = Number(e.d), k = String(id).slice(0, 80);
     out[k] = { s, z: Number.isFinite(z) && z > 0 ? z : 0, d: Number.isFinite(d) && d > 0 ? Math.min(999, Math.floor(d)) : 0 };
     if (e.w) out[k].w = 1;   // läuft gerade „Nicht gewusste wiederholen“ – zählt nicht noch einmal als gelesen
-    const q = Number(e.q), qn = Number(e.qn);
-    if (Number.isFinite(qn) && qn > 0 && qn <= 50) { out[k].qn = Math.floor(qn); out[k].q = Number.isFinite(q) ? Math.max(0, Math.min(out[k].qn, Math.floor(q))) : 0; }
   });
   return out;
 }
@@ -18244,11 +18231,11 @@ function loadReading() { try { return cleanReading(JSON.parse(localStorage.getIt
 function pruneReading() {
   if (!TEXTE.length) return;
   try { const raw = localStorage.getItem(READING_KEY); if (!raw) return;
-    const m = loadReading(), ids = new Set(TEXTE.map(t => t.id)), alt = Object.keys(m).filter(k => !ids.has(readBaseId(k)));
+    const m = loadReading(), ids = new Set(TEXTE.map(t => t.id)), alt = Object.keys(m).filter(k => !ids.has(k));
     if (alt.length) { alt.forEach(k => delete m[k]); saveReading(m); } } catch (e) {}
 }
 function saveReading(m) { try { localStorage.setItem(READING_KEY, JSON.stringify(m)); } catch (e) {} }
-// Zusammenführen: je Text und Übungsart gilt der zuletzt gelesene Stand, „ganz durch“ das Höhere
+// Zusammenführen: je Text gilt der zuletzt gelesene Stand, „ganz durch“ das Höhere
 function mergeReading(aRaw, bRaw) {
   let a = {}, b = null;
   try { a = cleanReading(JSON.parse(aRaw || '{}')); } catch (e) {}
@@ -18259,16 +18246,16 @@ function mergeReading(aRaw, bRaw) {
   return JSON.stringify(out);
 }
 function readingText(id) { return TEXTE.find(t => t.id === id) || null; }
-function readingStand(t, m, modus) {
-  const e = (m || loadReading())[readKey(t.id, modus || readState.modus)] || { s: {}, z: 0, d: 0 };
+function readingStand(t, m) {
+  const e = (m || loadReading())[t.id] || { s: {}, z: 0, d: 0 };
   const idx = t.saetze.map((_, i) => i), bew = idx.filter(i => i in e.s), gew = bew.filter(i => e.s[i] === 1);
   return { e, n: t.saetze.length, bew: bew.length, gew: gew.length, d: e.d };
 }
-function readingGelesen(t, m) { m = m || loadReading(); return Object.keys(READ_MODI).some(x => ((m[readKey(t.id, x)] || {}).d || 0) > 0); }
-// zuletzt gelesener Text (für „Weiterlernen“ und „Zuletzt geübt“) – über alle Übungsarten
+function readingGelesen(t, m) { m = m || loadReading(); return ((m[t.id] || {}).d || 0) > 0; }
+// zuletzt gelesener Text (für „Weiterlernen“ und „Zuletzt geübt“)
 function readingLetzter() {
   const m = loadReading(); let best = null, bz = 0;
-  Object.keys(m).forEach(k => { const t = readingText(readBaseId(k)); if (t && m[k].z > bz) { bz = m[k].z; best = t; } });
+  Object.keys(m).forEach(k => { const t = readingText(k); if (t && m[k].z > bz) { bz = m[k].z; best = t; } });
   return best;
 }
 // ── Wörter der Texte: Form → Karte (für „Wort antippen“ und „neue Wörter“) ──
@@ -18346,24 +18333,23 @@ function renderReading() {
   const rv = document.getElementById('reading-view'); if (rv) rv.classList.toggle('rd-liste', !t);
   if (!t) { readState.id = null; el.innerHTML = readingListHtml(); return; }
   el.innerHTML = readingTextHtml(t);
-  if (readState.modus === 'hoer' && readState.autoHoer && !readState.offen && !readState.ende && !readState.quiz) { readState.autoHoer = false; setTimeout(readSpeak, 120); }
+  if (readState.modus === 'hoer' && readState.autoHoer && !readState.offen && !readState.ende) { readState.autoHoer = false; setTimeout(readSpeak, 120); }
 }
-function readModusSeg(ort) {
+function readModusSeg() {
   return '<div class="set-seg rd-modus" role="group" aria-label="Übungsart">' + Object.keys(READ_MODI).map(k => {
-    const x = READ_MODI[k], aus = k === 'hoer' && !AUDIO_SUPPORTED;
+    const x = READ_MODI[k], aus = k === 'hoer' && !AUDIO_SUPPORTED, n = readingTexteDerArt(k).length;
     return '<button type="button" class="' + (readState.modus === k ? 'on' : '') + '" aria-pressed="' + (readState.modus === k) + '" data-modus="' + k + '"' + (aus ? ' disabled title="Keine Sprachausgabe verfügbar"' : ' title="' + x.lang + '"')
-      + ' onclick="setReadModus(\'' + k + '\', \'' + ort + '\')"><i class="ti ' + x.icon + '" aria-hidden="true"></i> ' + x.name + ' <small>' + x.lang + '</small></button>'; }).join('') + '</div>';
+      + ' onclick="setReadModus(\'' + k + '\')"><i class="ti ' + x.icon + '" aria-hidden="true"></i> ' + x.name + ' <small>' + x.lang + ' · ' + n + '</small></button>'; }).join('') + '</div>';
 }
-function setReadModus(k, ort) {
+function readModusMerken(k) { try { if (k === 'ru') localStorage.removeItem(READING_MODE_KEY); else localStorage.setItem(READING_MODE_KEY, k); } catch (e) {} }
+function setReadModus(k) {
   if (!READ_MODI[k] || (k === 'hoer' && !AUDIO_SUPPORTED)) return;
-  haltAllAudio(); readState.modus = k;
-  try { if (k === 'ru') localStorage.removeItem(READING_MODE_KEY); else localStorage.setItem(READING_MODE_KEY, k); } catch (e) {}
-  if (ort === 'text' && readState.id) openText(readState.id); else renderReading();
+  haltAllAudio(); readState.modus = k; readState.id = null; readModusMerken(k); renderReading();
 }
 function readMinuten(n) { return '~' + Math.max(1, Math.round(n * READ_SEK_JE_SATZ / 60)) + ' Min.'; }
 function readingListHtml() {
-  const m = loadReading(), mein = LEVELS.indexOf(myLevel), modus = readState.modus;
-  const stufen = LEVELS.map(l => ({ l, ts: TEXTE.filter(t => t.lvl === l) })).filter(g => g.ts.length);
+  const m = loadReading(), mein = LEVELS.indexOf(myLevel), modus = readState.modus, texte = readingTexteDerArt(modus);
+  const stufen = LEVELS.map(l => ({ l, ts: texte.filter(t => t.lvl === l) })).filter(g => g.ts.length);
   const karte = t => { const st = readingStand(t, m), offen = st.n - st.bew;
     const stand = st.d ? '<i class="ti ti-check" aria-hidden="true"></i> gelesen' + (st.d > 1 ? ' (' + st.d + '×)' : '') : st.bew ? st.bew + ' von ' + st.n + ' Sätzen' : 'neu';
     const meta = st.d ? st.n + (st.n === 1 ? ' Satz' : ' Sätze') : (st.bew ? readMinuten(offen) + ' übrig' : st.n + ' Sätze · ' + readMinuten(st.n));
@@ -18375,20 +18361,20 @@ function readingListHtml() {
       + '<span class="rd-card-de">' + htmlEsc(t.de || '') + (neu ? ' · <span class="rd-neu" title="Wörter dieses Texts, die du noch nie gelernt hast">' + neu + (neu === 1 ? ' neues Wort' : ' neue Wörter') + '</span>' : '') + '</span>'
       + '<span class="rd-card-z">' + (st.e.z ? 'zuletzt ' + homeRelDay(st.e.z) : '') + '</span>' + balken + '</button>'; };
   // Weiterlesen: angefangener Text der gewählten Übungsart, zuletzt gelesen zuerst
-  const angefangen = TEXTE.map(t => ({ t, st: readingStand(t, m) })).filter(x => x.st.bew && x.st.bew < x.st.n && !x.st.d).sort((a, b) => b.st.e.z - a.st.e.z)[0]
-    || TEXTE.map(t => ({ t, st: readingStand(t, m) })).filter(x => x.st.bew && x.st.bew < x.st.n).sort((a, b) => b.st.e.z - a.st.e.z)[0];
+  const angefangen = texte.map(t => ({ t, st: readingStand(t, m) })).filter(x => x.st.bew && x.st.bew < x.st.n && !x.st.d).sort((a, b) => b.st.e.z - a.st.e.z)[0]
+    || texte.map(t => ({ t, st: readingStand(t, m) })).filter(x => x.st.bew && x.st.bew < x.st.n).sort((a, b) => b.st.e.z - a.st.e.z)[0];
   const weiter = angefangen ? '<button type="button" class="rd-weiter" data-id="' + htmlEsc(angefangen.t.id) + '" onclick="openText(this.dataset.id)"><i class="ti ti-player-play" aria-hidden="true"></i><span>Weiterlesen<strong lang="ru">' + htmlEsc(angefangen.t.titel) + '</strong></span><small>' + angefangen.st.bew + ' von ' + angefangen.st.n + ' Sätzen · ' + readMinuten(angefangen.st.n - angefangen.st.bew) + ' übrig</small></button>' : '';
   const info = readState.info || !Object.keys(m).length;
-  const gelesen = TEXTE.filter(t => readingStand(t, m).d).length;
+  const gelesen = texte.filter(t => readingStand(t, m).d).length;
   return '<div class="grammar-panel open" id="reading-list"><div class="grammar-panel-header"><span class="overlay-title-group"><span class="overlay-title"><i class="ti ti-book"></i> Textverständnis</span>'
     + '<button type="button" class="conj-info-btn rd-info-btn" onclick="readState.info = !readState.info; renderReading()" aria-expanded="' + info + '" aria-controls="rd-intro" title="Was ist das?" aria-label="Erklärung ' + (info ? 'ausblenden' : 'zeigen') + '"><i class="ti ti-info-circle"></i></button></span>'
-    + '<span class="rd-prog">' + (TEXTE.length ? gelesen + ' von ' + TEXTE.length + ' gelesen' : '') + '</span></div><div class="overlay-body">'
-    + (info ? '<p class="rd-intro" id="rd-intro">Kurze Texte, nach Sprachniveau geordnet. <strong>Lesen:</strong> du übersetzt Satz für Satz ins Deutsche, <strong>Übersetzen:</strong> vom Deutschen ins Russische, <strong>Hören:</strong> du hörst den Satz, ohne ihn zu sehen. Danach vergleichst du mit der Lösung und bewertest dich selbst. Wörter im aktuellen Satz kannst du antippen.</p>' : '')
-    + readModusSeg('liste') + weiter
+    + '<span class="rd-prog">' + (texte.length ? gelesen + ' von ' + texte.length + ' ' + (modus === 'hoer' ? 'gehört' : modus === 'de' ? 'übersetzt' : 'gelesen') : '') + '</span></div><div class="overlay-body">'
+    + (info ? '<p class="rd-intro" id="rd-intro">Kurze Texte, nach Sprachniveau geordnet. <strong>Lesen:</strong> du übersetzt Satz für Satz ins Deutsche, <strong>Übersetzen:</strong> vom Deutschen ins Russische, <strong>Hören:</strong> du hörst den Satz, ohne ihn zu sehen. Jede Übungsart hat eigene Texte. Danach vergleichst du mit der Lösung und bewertest dich selbst. Wörter im aktuellen Satz kannst du antippen.</p>' : '')
+    + readModusSeg() + weiter
     + (stufen.length ? '<div class="rd-spalten">' + stufen.map(g => { const gl = g.ts.filter(t => readingStand(t, m).d).length;
         return '<section class="rd-gruppe"><h3 class="rd-stufe" data-lv="' + g.l + '">' + lvlBadge(g.l) + '<small>' + gl + ' von ' + g.ts.length + (g.ts.length === 1 ? ' Text' : ' Texten') + ' gelesen</small>'
         + (mein >= 0 && LEVELS.indexOf(g.l) > mein ? '<span class="rd-ausblick">über deinem Niveau</span>' : '') + '</h3>' + g.ts.map(karte).join('') + '</section>'; }).join('') + '</div>'
-      : '<p class="rd-leer">Noch keine Texte vorhanden.</p>')
+      : '<p class="rd-leer">' + (TEXTE.length ? 'Für „' + READ_MODI[modus].name + '“ gibt es noch keine Texte.' : 'Noch keine Texte vorhanden.') + '</p>')
     + '</div></div>';
 }
 // russischer Satz mit antippbaren Wörtern
@@ -18408,7 +18394,7 @@ function readWortHtml() {
     + '<button type="button" class="rd-wort-x" onclick="readWort(null)" aria-label="Schließen">×</button></div>';
 }
 function readingTextHtml(t) {
-  const st = readingStand(t), rs = readState, s = t.saetze[rs.i] || t.saetze[0], modus = rs.modus;
+  const st = readingStand(t), rs = readState, s = t.saetze[rs.i] || t.saetze[0], modus = textArt(t);
   const absaetze = []; t.saetze.forEach((x, i) => { if (i === 0 || x.p) absaetze.push([]); absaetze[absaetze.length - 1].push(i); });
   const kl = i => 'rd-s' + (!rs.ende && i === rs.i ? ' cur' : '') + (i in st.e.s ? (st.e.s[i] ? ' ok' : ' no') : '');
   const standTxt = i => i in st.e.s ? (st.e.s[i] ? ', gewusst' : ', nicht gewusst') : '';
@@ -18418,14 +18404,11 @@ function readingTextHtml(t) {
   const text = absaetze.map(a => '<p>' + a.map(i => '<button type="button" class="' + kl(i) + (verdeckt(i) ? ' verdeckt' : '') + '" data-i="' + i + '" onclick="readGoto(' + i + ')" aria-label="Satz ' + (i + 1) + standTxt(i) + (!rs.ende && i === rs.i ? ', aktuell' : '') + (verdeckt(i) ? ', verdeckt' : ': ' + htmlEsc(zeile(i))) + '"' + (!rs.ende && i === rs.i ? ' aria-current="true"' : '') + '>' + (verdeckt(i) ? '<span aria-hidden="true">' + '· '.repeat(Math.min(12, Math.max(3, Math.round(t.saetze[i].ru.length / 6)))).trim() + '</span>' : htmlEsc(zeile(i))) + '</button>').join(' ') + '</p>').join('');
   const laut = (fn, titel) => AUDIO_SUPPORTED ? '<button type="button" class="tool-btn gt-icon-btn" onclick="' + fn + '" title="' + titel + '" aria-label="' + titel + '"><i class="ti ti-volume"></i></button>' : '';
   let box;
-  if (rs.quiz) box = readQuizHtml(t);
-  else if (rs.ende) {
-    const falsch = t.saetze.map((x, i) => i).filter(i => st.e.s[i] === 0), fq = t.fragen && t.fragen.length;
-    box = '<div class="rd-ende"><h3>Text ' + (modus === 'hoer' ? 'gehört' : 'gelesen') + '</h3><div>' + st.gew + ' von ' + st.n + (st.n === 1 ? ' Satz' : ' Sätzen') + ' gewusst</div>'
-      + (fq ? '<div class="rd-q-stand">' + (st.e.qn ? 'Fragen zum Text: ' + st.e.q + ' von ' + st.e.qn + ' richtig' : t.fragen.length + ' Fragen zum Text') + '</div>' : '')
+  if (rs.ende) {
+    const falsch = t.saetze.map((x, i) => i).filter(i => st.e.s[i] === 0);
+    box = '<div class="rd-ende"><h3>Text ' + (modus === 'hoer' ? 'gehört' : modus === 'de' ? 'übersetzt' : 'gelesen') + '</h3><div>' + st.gew + ' von ' + st.n + (st.n === 1 ? ' Satz' : ' Sätzen') + ' gewusst</div>'
       + (falsch.length ? '<ul class="rd-fehler">' + falsch.map(i => '<li><span lang="ru">' + htmlEsc(t.saetze[i].ru) + '</span><span>' + htmlEsc(t.saetze[i].de) + '</span></li>').join('') + '</ul>' : '')
-      + '<div class="gt-end-actions">' + (fq ? '<button type="button" class="tool-btn gt-primary" onclick="readQuizStart()"><i class="ti ti-list-check"></i> Fragen zum Text</button>' : '')
-      + (falsch.length ? '<button type="button" class="tool-btn" onclick="readWiederholen()"><i class="ti ti-repeat"></i> Nicht gewusste wiederholen</button>' : '')
+      + '<div class="gt-end-actions">' + (falsch.length ? '<button type="button" class="tool-btn" onclick="readWiederholen()"><i class="ti ti-repeat"></i> Nicht gewusste wiederholen</button>' : '')
       + '<button type="button" class="tool-btn" onclick="readNeu()"><i class="ti ti-refresh"></i> Nochmal von vorn</button><button type="button" class="tool-btn" onclick="closeText()">← Alle Texte</button></div></div>';
   } else {
     const eigene = rs.eigene[rs.i] || '';
@@ -18457,7 +18440,7 @@ function readingTextHtml(t) {
   let neu = []; try { neu = readNeueWoerter(t); } catch (e) {}
   return '<div class="grammar-panel open" id="reading-text"><div class="grammar-panel-header"><span class="overlay-title-group"><button type="button" class="tool-btn rd-back" onclick="closeText()" title="Zurück zur Liste der Texte">← Texte</button>'
     + '<span class="overlay-title"><span lang="ru">' + htmlEsc(t.titel) + '</span> ' + lvlBadge(t.lvl) + '</span></span><span class="rd-prog" id="rd-prog">' + st.bew + ' von ' + st.n + ' Sätzen</span></div>'
-    + '<div class="overlay-body">' + readModusSeg('text')
+    + '<div class="overlay-body"><div class="rd-art"><i class="ti ' + READ_MODI[modus].icon + '" aria-hidden="true"></i> ' + READ_MODI[modus].name + ' · ' + READ_MODI[modus].lang + '</div>'
     + '<div class="rd-text" lang="' + (modus === 'de' ? 'de' : 'ru') + '"' + (modus === 'de' ? ' data-de="1"' : '') + '>' + text + '</div><div class="rd-box">' + box + '</div>'
     + '<div class="rd-tools">' + (AUDIO_SUPPORTED ? '<button type="button" class="tool-btn" onclick="readSpeakAll()"><i class="ti ti-volume"></i> Ganzen Text anhören</button>' : '')
     + '<button type="button" class="tool-btn" id="rd-ganz-btn" aria-pressed="' + (rs.ganz ? 'true' : 'false') + '" onclick="toggleReadGanz()"><i class="ti ti-language"></i> ' + ganzName + ' ' + (rs.ganz ? 'ausblenden' : 'zeigen') + '</button>'
@@ -18470,17 +18453,19 @@ function openText(id) {
   const t = readingText(id); if (!t || !t.saetze.length) return;
   haltAllAudio();
   const st = readingStand(t), offen = t.saetze.findIndex((_, i) => !(i in st.e.s));
-  Object.assign(readState, { id, i: offen >= 0 ? offen : 0, offen: false, ende: false, ganz: false, eigene: {}, wort: null, quiz: null, autoHoer: true });
-  const m = loadReading(), k = readKey(id, readState.modus); m[k] = Object.assign({ s: {}, d: 0 }, m[k], { z: Date.now() }); saveReading(m);
+  if (textArt(t) === 'hoer' && !AUDIO_SUPPORTED) return;
+  if (readState.modus !== textArt(t)) { readState.modus = textArt(t); readModusMerken(readState.modus); }
+  Object.assign(readState, { id, i: offen >= 0 ? offen : 0, offen: false, ende: false, ganz: false, eigene: {}, wort: null, autoHoer: true });
+  const m = loadReading(); m[id] = Object.assign({ s: {}, d: 0 }, m[id], { z: Date.now() }); saveReading(m);
   renderReading(); readFokus();
 }
-function closeText() { haltAllAudio(); readState.id = null; readState.quiz = null; readState.wort = null; renderReading(); }
+function closeText() { haltAllAudio(); readState.id = null; readState.wort = null; renderReading(); }
 function readGoto(i) {
   const t = readingText(readState.id); if (!t || !t.saetze[i]) return;
   haltAllAudio();
-  Object.assign(readState, { i, offen: false, ende: false, wort: null, quiz: null, autoHoer: true }); renderReading(); readFokus();
+  Object.assign(readState, { i, offen: false, ende: false, wort: null, autoHoer: true }); renderReading(); readFokus();
 }
-function readZeigen() { if (!readingText(readState.id) || readState.ende || readState.offen || readState.quiz) return; readState.offen = true; renderReading(); }
+function readZeigen() { if (!readingText(readState.id) || readState.ende || readState.offen) return; readState.offen = true; renderReading(); }
 // nächster noch nicht bewerteter Satz (ab dem aktuellen, dann von vorn); keiner mehr: Abschluss
 function readWeiter() {
   const t = readingText(readState.id); if (!t) return;
@@ -18491,7 +18476,7 @@ function readWeiter() {
 }
 function readRate(ok) {
   const t = readingText(readState.id); if (!t || !readState.offen) return;
-  const m = loadReading(), k = readKey(t.id, readState.modus), e = m[k] = Object.assign({ s: {}, d: 0 }, m[k]);
+  const m = loadReading(), k = t.id, e = m[k] = Object.assign({ s: {}, d: 0 }, m[k]);
   const vorher = t.saetze.every((_, i) => i in e.s);
   e.s[readState.i] = ok ? 1 : 0; e.z = Date.now();
   if (!vorher && t.saetze.every((_, i) => i in e.s)) { if (e.w) delete e.w; else e.d = (e.d || 0) + 1; }
@@ -18501,15 +18486,15 @@ function readRate(ok) {
 }
 function readNeu() {
   const t = readingText(readState.id); if (!t) return;
-  const m = loadReading(), k = readKey(t.id, readState.modus); m[k] = Object.assign({ d: 0 }, m[k], { s: {}, z: Date.now() }); delete m[k].w; saveReading(m);
-  Object.assign(readState, { i: 0, offen: false, ende: false, eigene: {}, wort: null, quiz: null, autoHoer: true }); renderReading(); readFokus();
+  const m = loadReading(), k = t.id; m[k] = Object.assign({ d: 0 }, m[k], { s: {}, z: Date.now() }); delete m[k].w; saveReading(m);
+  Object.assign(readState, { i: 0, offen: false, ende: false, eigene: {}, wort: null, autoHoer: true }); renderReading(); readFokus();
 }
 function readWiederholen() {
   const t = readingText(readState.id); if (!t) return;
-  const m = loadReading(), e = m[readKey(t.id, readState.modus)]; if (!e) return;
+  const m = loadReading(), e = m[t.id]; if (!e) return;
   Object.keys(e.s).forEach(k => { if (!e.s[k]) delete e.s[k]; }); e.z = Date.now(); e.w = 1; saveReading(m);
   const i = t.saetze.findIndex((_, k) => !(k in e.s));
-  Object.assign(readState, { i: i >= 0 ? i : 0, offen: false, ende: false, eigene: {}, wort: null, quiz: null, autoHoer: true }); renderReading(); readFokus();
+  Object.assign(readState, { i: i >= 0 ? i : 0, offen: false, ende: false, eigene: {}, wort: null, autoHoer: true }); renderReading(); readFokus();
 }
 function toggleReadGanz() { readState.ganz = !readState.ganz; renderReading(); }
 function readSpeak(langsam) { const t = readingText(readState.id); if (t && t.saetze[readState.i]) speak(t.saetze[readState.i].ru, langsam === true ? Math.max(0.5, speakRate * 0.7) : undefined); }
@@ -18526,45 +18511,20 @@ function readWoerterUeben(id) {
   closeMobileSidebar(); updateMobileSidebarLabel('Wörter aus „' + t.titel + '“');
   buildNav(); updateProgress(); updateInfoPanel(); nextWord();
 }
-// ── Verständnisfragen (nur bei Texten mit bestätigten Fragen: fragen: [{ f, fde, a: [...], r }]) ──
-function readQuizStart() {
-  const t = readingText(readState.id); if (!t || !t.fragen || !t.fragen.length) return;
-  readState.quiz = { i: 0, wahl: null, ok: 0 }; readState.wort = null; renderReading();
-}
-function readQuizHtml(t) {
-  const q = readState.quiz, n = t.fragen.length;
-  if (q.i >= n) return '<div class="rd-ende rd-quiz"><h3>Fragen zum Text</h3><div>' + q.ok + ' von ' + n + ' richtig</div><div class="gt-end-actions">'
-    + '<button type="button" class="tool-btn" onclick="readQuizStart()"><i class="ti ti-refresh"></i> Nochmal</button><button type="button" class="tool-btn" onclick="readState.quiz = null; renderReading()">Zurück zum Text</button><button type="button" class="tool-btn" onclick="closeText()">← Alle Texte</button></div></div>';
-  const f = t.fragen[q.i], fertig = q.wahl != null;
-  return '<div class="rd-quiz"><div class="rd-nr">Frage ' + (q.i + 1) + ' von ' + n + '</div><div class="rd-q-f" lang="ru">' + htmlEsc(f.f) + '</div>' + (f.fde ? '<div class="rd-q-de">' + htmlEsc(f.fde) + '</div>' : '')
-    + '<div class="rd-q-a" role="group" aria-label="Antworten">' + f.a.map((a, i) => '<button type="button" class="tool-btn' + (fertig && i === f.r ? ' richtig' : '') + (fertig && i === q.wahl && i !== f.r ? ' falsch' : '') + '"' + (fertig ? ' disabled' : '') + ' onclick="readQuizWahl(' + i + ')" aria-keyshortcuts="' + (i + 1) + '"><kbd aria-hidden="true" class="gt-kbd">' + (i + 1) + '</kbd> <span lang="ru">' + htmlEsc(a) + '</span></button>').join('') + '</div>'
-    + (fertig ? '<div class="rd-q-rm" aria-live="polite">' + (q.wahl === f.r ? '<i class="ti ti-check"></i> Richtig' : '<i class="ti ti-x"></i> Richtig wäre: <span lang="ru">' + htmlEsc(f.a[f.r]) + '</span>') + '</div><div class="rd-actions"><button type="button" class="tool-btn gt-primary" id="rd-q-weiter" onclick="readQuizWeiter()">Weiter <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button></div>' : '')
-    + '</div>';
-}
-function readQuizWahl(i) {
-  const t = readingText(readState.id), q = readState.quiz; if (!t || !q || q.wahl != null) return;
-  const f = t.fragen[q.i]; if (!f || !f.a[i]) return;
-  q.wahl = i; if (i === f.r) q.ok++;
-  try { dayNote(i === f.r); } catch (e) {}
-  if (q.i === t.fragen.length - 1) { const m = loadReading(), k = readKey(t.id, readState.modus); m[k] = Object.assign({ s: {}, d: 0, z: Date.now() }, m[k], { q: q.ok, qn: t.fragen.length }); saveReading(m); }
-  renderReading(); const w = document.getElementById('rd-q-weiter'); if (w && window.matchMedia('(hover: hover)').matches) try { w.focus({ preventScroll: true }); } catch (e) {}
-}
-function readQuizWeiter() { const q = readState.quiz; if (!q || q.wahl == null) return; q.i++; q.wahl = null; renderReading(); }
 // nicht gewusste Sätze, die seit ein paar Tagen liegen (Startseite)
 function readingFaellig(now) {
   now = now || Date.now(); const m = loadReading(), out = [];
-  Object.keys(m).forEach(k => { const t = readingText(readBaseId(k)), e = m[k]; if (!t || !e.z || now - e.z < READ_WIEDERHOLEN_TAGE * 864e5) return;
-    const n = Object.keys(e.s).filter(i => e.s[i] === 0 && t.saetze[i]).length; if (n) out.push({ t, k, n, modus: (k.match(/~(de|hoer)$/) || [])[1] || 'ru', z: e.z }); });
+  Object.keys(m).forEach(k => { const t = readingText(k), e = m[k]; if (!t || !e.z || now - e.z < READ_WIEDERHOLEN_TAGE * 864e5) return;
+    const n = Object.keys(e.s).filter(i => e.s[i] === 0 && t.saetze[i]).length; if (n) out.push({ t, k, n, modus: textArt(t), z: e.z }); });
   return out.sort((a, b) => b.n - a.n || a.z - b.z);
 }
 function homeReadingDue() {
   const x = readingFaellig()[0]; if (!x) return;
   if (x.modus === 'hoer' && !AUDIO_SUPPORTED) return;
-  readState.modus = x.modus; try { if (x.modus === 'ru') localStorage.removeItem(READING_MODE_KEY); else localStorage.setItem(READING_MODE_KEY, x.modus); } catch (e) {}
   setAppView('reading'); openText(x.t.id); readWiederholen();
 }
 // Tasten: ⏎ zeigt die Lösung (im Feld: Umschalt+⏎ = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz;
-// in der Liste ↑/↓ von Text zu Text; bei den Fragen 1–4 und ⏎
+// in der Liste ↑/↓ von Text zu Text
 function keyReading(e) {
   if (appView !== 'reading' || document.querySelector('.overlay.open') || e.ctrlKey || e.metaKey || e.altKey) return false;
   const el = e.target, tag = ((el && el.tagName) || '').toLowerCase(), imFeld = tag === 'textarea' || tag === 'input' || tag === 'select';
@@ -18574,13 +18534,6 @@ function keyReading(e) {
       const i = ks.indexOf(document.activeElement), j = i < 0 ? 0 : Math.max(0, Math.min(ks.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)));
       e.preventDefault(); ks[j].focus(); return true;
     }
-    return false;
-  }
-  const q = readState.quiz;
-  if (q) {
-    const t = readingText(readState.id); if (!t || imFeld) return false;
-    if (q.wahl == null && /^[1-9]$/.test(e.key) && t.fragen[q.i] && Number(e.key) <= t.fragen[q.i].a.length) { e.preventDefault(); if (!e.repeat) readQuizWahl(Number(e.key) - 1); return true; }
-    if (q.wahl != null && e.key === 'Enter') { e.preventDefault(); if (!e.repeat) readQuizWeiter(); return true; }
     return false;
   }
   if (readState.ende) return false;
