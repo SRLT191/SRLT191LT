@@ -338,7 +338,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
   await check('H Satzdiktat richtig/falsch', () => ev(() => { setAppView('listening'); showListeningPanel('dictation'); openDictation(); const inp = document.getElementById('dictation-input'); inp.value = dictState.current.ru; checkDictation(); const c1 = dictState.correct; restartDictation(); inp.value = 'нет'; checkDictation(); return { ok: c1 === 1, info: 'richtig=' + dictState.correct + ' von ' + dictState.done }; }));
   await check('H Hörquiz Tippen', () => ev(() => { showListeningPanel('hearquiz'); setHearquizMode('type'); setHearquizLang('ru'); restartHearquiz(); revealHearquiz(); return true; }));
   await check('H Hörquiz Auswahl', () => ev(() => { setHearquizMode('choice'); restartHearquiz(); const b2 = document.querySelector('#listening-hearquiz [onclick^="answerHearquizChoice"]'); if (b2) b2.click(); return !!b2; }));
-  await check('H Hörquiz Aufdecken + Zurücknehmen', () => ev(() => { setHearquizMode('flip'); restartHearquiz(); revealHearquizFlip(); rateHearquiz(true); undoHearquizRate(); openHearquizSession(); closeOverlay('overlay-hq-session'); setHearquizMode('type'); return true; }));
+  await check('H Hörquiz Aufdecken + Zurücknehmen', () => ev(() => { setHearquizMode('flip'); restartHearquiz(); revealHearquizFlip(); rateHearquiz(true); undoHearquizRate(); setHearquizMode('type'); return true; }));
   await check('H Hörquiz DE', () => ev(() => { setHearquizLang('de'); restartHearquiz(); setHearquizLang('ru'); return true; }));
 
   // ── Sicherung einlesen ──

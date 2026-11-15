@@ -1180,6 +1180,30 @@
   #dictation-ende { text-align: center; margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
   #dictation-keys { text-align: center; font-size: 11px; color: var(--c-text-faint); margin-top: 14px; }
   @media (hover: none) { #dictation-keys { display: none; } }
+  .hq-toolbar { flex-wrap: wrap; }
+  .hq-lang-wrap { display: flex; align-items: center; gap: 6px; }
+  .hq-lang-lbl { font-size: 12px; color: var(--c-text-muted); }
+  #hq-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 2px 10px; }
+  #hq-chips:empty { display: none; }
+  #hq-cat-search { width: 100%; box-sizing: border-box; margin-bottom: 8px; }
+  #hearquiz-cat-body { max-height: 300px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--c-border) transparent; }
+  #hearquiz-cat-body .cat-group-title { color: var(--c-text-label); }
+  #hearquiz-cat-body .cat-subgroup-title { opacity: 1; color: var(--c-text-muted); }
+  .hq-reset-row { display: flex; justify-content: flex-end; margin-top: 10px; }
+  #hq-runde { text-align: center; font-size: 12px; color: var(--c-text-faint); margin: 8px 0 0; }
+  #hq-input { width: 100%; box-sizing: border-box; font-size: 17px; }
+  #hq-actions .gt-primary { flex: 1 1 160px; justify-content: center; }
+  #hq-selbst { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 14px; color: var(--c-text-label); }
+  #hq-choice-row .hq-key { display: inline-block; min-width: 18px; font-size: 11px; color: var(--c-text-faint); border: 1px solid var(--c-border-light); border-radius: 4px; margin-right: 6px; text-align: center; }
+  @media (hover: none) { #hq-choice-row .hq-key { display: none; } }
+  .hq-loesung { text-align: center; margin: 12px 0 6px; padding: 16px 12px; background: var(--c-surface-alt); border-radius: 14px; }
+  .hq-loesung .dl-ru { font-size: 24px; font-weight: 600; color: var(--c-text-primary); }
+  .hq-loesung .dl-tr { font-size: 13px; color: var(--c-text-faint); margin-top: 2px; }
+  .hq-loesung .dl-de { font-size: 15px; color: var(--c-text-muted); margin-top: 6px; }
+  .hq-loesung .dl-satz { margin-top: 12px; font-size: 15px; color: var(--c-text-primary); }
+  .hq-loesung .dl-satz-de { font-size: 13px; color: var(--c-text-muted); margin-top: 2px; }
+  .hq-loesung .dl-knoepfe { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  #hq-ende { text-align: center; margin-top: 12px; flex-direction: column; align-items: center; gap: 8px; }
   #hoertrainer-keys { text-align: center; font-size: 11px; color: var(--c-text-faint); margin-top: 10px; }
   @media (hover: none) { #hoertrainer-keys { display: none; } }
   #hoertrainer-cat-body { scrollbar-width: thin; scrollbar-color: var(--c-border) transparent; }
@@ -3181,61 +3205,86 @@
     <div class="conj-info-panel" id="hearquiz-info-panel" style="display:none">
       <p><strong>Worum es geht:</strong> Du hörst ein russisches Wort und musst es erkennen – aktiv statt nur zuhören.</p>
       <p><strong>Drei Modi:</strong></p>
-      <p>• <strong>Tippen:</strong> Wort anhören und die Antwort schreiben. Das Auge oder Taste 3 zeigt die Lösung.</p>
-      <p>• <strong>Auswahl:</strong> Wort anhören und aus vier Antworten die richtige wählen.</p>
+      <p>• <strong>Tippen:</strong> Wort anhören und die Antwort schreiben. <em>Lösung zeigen</em> (oder Taste 3 im leeren Feld) deckt auf, danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>).</p>
+      <p>• <strong>Auswahl:</strong> Wort anhören und aus vier Antworten die richtige wählen – mit der Maus oder den Tasten 1–4.</p>
       <p>• <strong>Aufdecken:</strong> Wort anhören, selbst beantworten, aufdecken und ehrlich bewerten. Enter deckt auf, 1 = gewusst, 2 = nicht gewusst, 3 liest erneut vor, 4 nimmt eine versehentliche Bewertung zurück.</p>
-      <p><strong>RU / DE</strong> legt fest, worauf du antwortest: <strong>RU</strong> = das gehörte Wort selbst (schreiben bzw. Schriftbild erkennen), <strong>DE</strong> = seine deutsche Bedeutung. Jede Kombination hat ihren eigenen Lernfortschritt.</p>
-      <p><em>Kategorien</em> legt fest, aus welchen Wortgruppen die Wörter kommen. Kommt kein Ton, tippe auf <em>Anhören</em>.</p>
-      <p><strong>Sprachniveau:</strong> Ist in den Einstellungen <em>Wörter bis Stufe</em> gesetzt, kommen nur Wörter bis zu dieser Stufe. Bleibt dabei nichts übrig, kommen alle Wörter der Kategorien.</p>
-      <p><em>Runde</em> zeigt die Bilanz dieser Sitzung mit allen Wörtern, die danebengingen. Dort kannst du nur diese Fehler weiterüben oder die Runde zurücksetzen. <em>Zurücksetzen</em> in der Leiste setzt dagegen den Hörquiz-Fortschritt zurück.</p>
+      <p><strong>Antwort: Russisch / Deutsch</strong> legt fest, worauf du antwortest: <strong>Russisch</strong> = das gehörte Wort selbst (schreiben bzw. Schriftbild erkennen), <strong>Deutsch</strong> = seine Bedeutung. Jede Kombination hat ihren eigenen Lernfortschritt.</p>
+      <p><strong>Runden:</strong> Eine Runde hat 15 Wörter („Wort 3 von 15“) – zuerst fällige, dann zuletzt falsche, dann neue. Nach jeder Antwort steht das Wort groß da, mit Übersetzung, Stufe und Beispielsatz. Am Ende siehst du die Fehler und kannst sie mit <em>Fehler wiederholen</em> noch einmal üben.</p>
+      <p><strong>Einstellungen:</strong> <em>Wörter bis Stufe</em> wählt die Stufe direkt im Hörquiz (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen; bleibt dabei nichts übrig, kommen alle Wörter der Kategorien). Die <em>Kategorien</em> gelten sofort; keine gewählt = alle. <em>Lernstand zurücksetzen</em> setzt den Hörquiz-Fortschritt zurück.</p>
+      <p><strong>Tasten:</strong> Strg+Leertaste spielt das Wort ab, Strg+Umschalt+Leertaste langsam; außerhalb des Eingabefelds genügt die Leertaste. Enter prüft und geht beim zweiten Drücken weiter. Kommt kein Ton, tippe auf <em>Anhören</em>.</p>
     </div>
-    <div class="conj-toolbar">
-      <div class="tense-switcher">
+    <div class="conj-toolbar hq-toolbar">
+      <div class="tense-switcher" role="group" aria-label="Modus">
         <button class="mode-btn active" id="hq-mode-type" onclick="setHearquizMode('type')">Tippen</button>
         <button class="mode-btn" id="hq-mode-choice" onclick="setHearquizMode('choice')">Auswahl</button>
         <button class="mode-btn" id="hq-mode-flip" onclick="setHearquizMode('flip')">Aufdecken</button>
       </div>
-      <div class="tense-switcher" title="Antwortsprache">
-        <button class="mode-btn active" id="hq-lang-ru" onclick="setHearquizLang('ru')">RU</button>
-        <button class="mode-btn" id="hq-lang-de" onclick="setHearquizLang('de')">DE</button>
-      </div>
-      <button class="tool-btn" onclick="openHearquizSession()" title="Zusammenfassung dieser Runde"><i class="ti ti-chart-bar"></i> <span id="hq-session-btn-label">Runde</span></button>
-      <button class="tool-btn" onclick="toggleHearquizCatPicker()"><i class="ti ti-adjustments"></i> Kategorien</button>
-      <button class="tool-btn tool-btn-reset" id="hq-reset-btn" onclick="resetHearquizProgress()" title="Hörquiz-Fortschritt zurücksetzen"><i class="ti ti-refresh"></i> Zurücksetzen</button>
-    </div>
-    <div id="hearquiz-cat-picker" style="display:none; border:1px solid var(--c-border-light); border-radius:10px; padding:10px; margin-bottom:12px;">
-      <div class="picker-quick">
-        <a onclick="setAllHearquizCat(true)">Alle auswählen</a>
-        <a onclick="setAllHearquizCat(false)">Alle abwählen</a>
-        <span id="hearquiz-cat-count" style="margin-left:auto; font-size:12px; color:var(--c-text-muted)"></span>
-      </div>
-      <div id="hearquiz-cat-body" style="max-height:280px; overflow-y:auto"></div>
-      <div class="picker-actions">
-        <button class="primary" onclick="applyHearquizCats()">Übernehmen</button>
+      <div class="hq-lang-wrap">
+        <span class="hq-lang-lbl">Antwort</span>
+        <div class="tense-switcher" role="group" aria-label="Antwortsprache">
+          <button class="mode-btn active" id="hq-lang-ru" onclick="setHearquizLang('ru')">Russisch</button>
+          <button class="mode-btn" id="hq-lang-de" onclick="setHearquizLang('de')">Deutsch</button>
+        </div>
       </div>
     </div>
+    <details class="dict-optionen" id="hq-optionen">
+      <summary><i class="ti ti-adjustments"></i> Einstellungen <span id="hq-opt-info"></span></summary>
+      <div class="ht-order-row">
+        <span>Wörter bis Stufe</span>
+        <div class="tense-switcher" role="group" aria-label="Wörter bis Stufe" id="hq-level-switch">
+          <button class="mode-btn active" data-l="" onclick="setHearquizLevel('')">Alle</button>
+          <button class="mode-btn" data-l="A1" onclick="setHearquizLevel('A1')">A1</button>
+          <button class="mode-btn" data-l="A2" onclick="setHearquizLevel('A2')">A2</button>
+          <button class="mode-btn" data-l="B1" onclick="setHearquizLevel('B1')">B1</button>
+          <button class="mode-btn" data-l="B2" onclick="setHearquizLevel('B2')">B2</button>
+        </div>
+      </div>
+      <div class="ht-cats dict-cats">
+        <div class="ht-cats-head">
+          <strong>Kategorien</strong>
+          <span class="picker-quick">
+            <a href="#" onclick="setHearquizCats('alle'); return false">Alle</a>
+            <a href="#" onclick="setHearquizCats('keine'); return false">Keine</a>
+            <a href="#" onclick="setHearquizCats('vokabeln'); return false" title="Die Kategorien der aktuellen Vokabelauswahl übernehmen">Aus Vokabeln übernehmen</a>
+          </span>
+          <span class="dict-cat-hint">keine gewählt = alle</span>
+        </div>
+        <div id="hq-chips"></div>
+        <input type="text" class="list-search" id="hq-cat-search" placeholder="Kategorie suchen…" autocomplete="off" aria-label="Kategorie suchen" oninput="applyCatPickerFilter(document.getElementById('hearquiz-cat-body'), this.value.trim().toLowerCase())">
+        <div id="hearquiz-cat-body"></div>
+      </div>
+      <div class="hq-reset-row">
+        <button class="tool-btn tool-btn-reset" id="hq-reset-btn" onclick="resetHearquizProgress()" title="Hörquiz-Fortschritt zurücksetzen"><i class="ti ti-refresh"></i> Lernstand zurücksetzen</button>
+      </div>
+    </details>
     <div class="hq-info" id="hearquiz-info">
       <div class="info-item">
         <div class="info-num" id="hq-info-total">–</div>
-        <div class="info-label">Wörter</div>
+        <div class="info-label" id="hq-info-total-lbl">Wörter</div>
       </div>
       <div class="info-divider"></div>
       <div class="info-item">
         <div class="info-num" id="hq-info-open">–</div>
         <div class="info-label">Offen</div>
       </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <div class="info-num" id="hq-info-right">–</div>
+        <div class="info-label">Richtig</div>
+      </div>
     </div>
+    <div id="hq-runde"></div>
+    <div id="hq-spiel">
     <div id="hearquiz-card" style="text-align:center; padding:14px 6px;">
-      <button class="tool-btn tool-btn-primary hq-play" id="hq-play-btn" onclick="speakHearquiz()" aria-label="Anhören"><i class="ti ti-volume"></i><span>Anhören</span></button>
+      <button class="tool-btn tool-btn-primary hq-play" id="hq-play-btn" onclick="speakHearquiz()" aria-label="Anhören" title="Anhören (Strg+Leertaste)"><i class="ti ti-volume"></i><span>Anhören</span></button>
       <div class="hoertrainer-pause-control" style="justify-content:center; margin-top:10px;">
         <span style="font-size:12px; color:var(--c-text-muted)">Tempo</span>
         <input type="range" id="hearquiz-speed-range" aria-label="Vorlese-Tempo" min="6" max="11" step="1" value="9" oninput="updateHearquizSpeedLabel()" style="max-width:160px">
         <span id="hearquiz-speed-value" style="font-size:12px; font-weight:600; color:var(--c-accent); min-width:34px; text-align:right">0,9×</span>
       </div>
     </div>
-    <div class="conj-row" id="hq-type-row" style="grid-template-columns: 1fr 34px;">
+    <div id="hq-type-row">
       <input type="text" class="conj-input" id="hq-input" autocomplete="off" placeholder="Gehörtes Wort auf Russisch…" onkeydown="if(event.key==='Enter') checkHearquiz()">
-      <button class="conj-reveal-one-btn" onclick="revealHearquiz()" title="Lösung zeigen" aria-label="Lösung zeigen"><i class="ti ti-eye"></i></button>
     </div>
     <div id="hq-choice-row" style="display:none"></div>
     <div id="hq-flip-row" style="display:none; text-align:center; padding:4px 6px 2px;">
@@ -3251,8 +3300,17 @@
     </div>
     <div class="conj-actions gt-actions" id="hq-actions">
       <button class="tool-btn gt-primary" onclick="hearquizAction()" id="hq-check-btn"><i class="ti ti-check" id="hq-check-icon"></i> <span id="hq-check-label">Prüfen</span></button>
+      <button class="tool-btn" id="hq-reveal-btn" onclick="revealHearquiz()" title="Lösung zeigen (Taste 3 im leeren Feld)"><i class="ti ti-eye"></i> Lösung zeigen</button>
+    </div>
+    <div id="hq-selbst" style="display:none">
+      <span>Wusstest du es?</span>
+      <button class="tool-btn" onclick="rateHearquizType(true)"><i class="ti ti-check"></i> Gewusst</button>
+      <button class="tool-btn" onclick="rateHearquizType(false)"><i class="ti ti-x"></i> Nicht gewusst</button>
     </div>
     <div class="conj-result" id="hearquiz-result" role="status" aria-live="polite"></div>
+    <div class="hq-loesung" id="hq-loesung" style="display:none"></div>
+    </div>
+    <div id="hq-ende" style="display:none"></div>
     <div class="conj-result" id="hearquiz-score"></div>
   </div>
 </div>
@@ -3636,23 +3694,6 @@
       <div class="picker-actions">
         <button onclick="resetSession()">Runde zurücksetzen</button>
         <button class="primary" id="session-retry-btn" onclick="retrySessionWrong()">Fehler wiederholen</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="overlay-hq-session">
-  <div class="overlay-box">
-    <div class="overlay-header">
-      <span class="overlay-title"><i class="ti ti-chart-bar"></i> Diese Hörquiz-Runde</span>
-      <button class="overlay-close" onclick="closeOverlay('overlay-hq-session')">×</button>
-    </div>
-    <div class="overlay-body">
-      <div id="hq-session-stats" class="hq-info"></div>
-      <div id="hq-session-wrong-list"></div>
-      <div class="picker-actions">
-        <button onclick="resetHearquizSession()">Runde zurücksetzen</button>
-        <button class="primary" id="hq-session-retry-btn" onclick="retryHearquizWrong()">Fehler wiederholen</button>
       </div>
     </div>
   </div>
@@ -9790,7 +9831,7 @@ const TOOL_REVEALS = {
   'overlay-dictation': () => revealDictation(),
   // nur dort sinnvoll, wo es die Lösung auch zu sehen gibt
   'overlay-casedrill': () => { if (caseState.mode === 'word') revealCaseWord(); else gtChoiceReveal(CASE_CHOICE); },
-  'listening-hearquiz': () => { if (hqState.mode === 'flip') return false; revealHearquiz(); },
+  'listening-hearquiz': () => { if (hqState.mode !== 'type' || hqState.ende || hqState.answered) return false; revealHearquiz(); },
 };
 // Blendet die Lösung des gerade offenen Werkzeugs ein; true, wenn etwas geschah
 function revealCurrentTool() {
@@ -15366,7 +15407,7 @@ function setMaxLevel(v) {
   maxLevel = LEVELS.includes(v) ? v : '';
   try { localStorage.setItem(MAX_LEVEL_KEY, maxLevel); } catch (e) {}
   updateProgress(); updateInfoPanel(); nextWord();
-  if (typeof hqState !== 'undefined' && hqState.pool && !hqRetry) { hqState.pool = buildHearquizPool(); if (typeof updateHearquizInfo === 'function') updateHearquizInfo(); }
+  if (typeof hqState !== 'undefined' && hqState.pool) { hqState.pool = buildHearquizPool(); if (typeof updateHearquizInfo === 'function') updateHearquizInfo(); }
 }
 function toggleLevelOrder() {
   levelOrder = document.getElementById('levelorder-toggle').checked;
@@ -19874,7 +19915,7 @@ function keyVocabChoice(e) {
 function keyListeningSpace(e) {
   // Hörverstehen: Leertaste spielt das Wort erneut ab
   if (appView === 'listening' && !document.querySelector('.overlay.open')
-      && (e.key === ' ' || e.code === 'Space')) {
+      && (e.key === ' ' || e.code === 'Space') && !e.ctrlKey && !e.metaKey) {
     const tag = ((e.target && e.target.tagName) || '').toLowerCase();
     if (tag !== 'input' && tag !== 'textarea' && tag !== 'select') {
       e.preventDefault();
@@ -29779,11 +29820,13 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'n' || e.key === 'N') { e.preventDefault(); repeatHoertrainerWord(); }
 });
 
-// ── Hörquiz (aktives Hörverstehen: Tippen / Raten / Auswahl) ────
+// ── Hörquiz (aktives Hörverstehen: Tippen / Auswahl / Aufdecken) ────
+// Runden mit 15 Wörtern (15.11.), Rundenende mit Fehlerliste wie in den Grammatikwerkzeugen.
 // Zustand: Hörquiz
 const hqState = {
   mode: 'type',
   lang: 'ru',
+  level: '',
   current: null,
   done: 0,
   pool: null,
@@ -29794,19 +29837,25 @@ const hqState = {
   revealed: false,
   lastInput: '',
   correct: 0,
+  runde: [], idx: 0, richtig: 0, fehler: [], ende: false,
 };
-// Modus, Antwortsprache, Kategorien und Tempo des Hörquiz merken
+// Modus, Antwortsprache, Stufe, Kategorien und Tempo des Hörquiz merken
 const HEARQUIZ_SETTINGS_KEY = 'vokabeltrainer-hearquiz-settings';
 function saveHearquizSettings() {
   if (!hqState.settingsReady) return;
   const el = document.getElementById('hearquiz-speed-range');
   try {
     localStorage.setItem(HEARQUIZ_SETTINGS_KEY, JSON.stringify({
-      mode: hqState.mode, lang: hqState.lang,
+      mode: hqState.mode, lang: hqState.lang, level: hqState.level,
       cats: [...hqState.selectedCats],
       speed: el ? el.value : null
     }));
   } catch (e) {}
+}
+function markHearquizButtons() {
+  ['type', 'choice', 'flip'].forEach(x => { const b = document.getElementById('hq-mode-' + x); if (b) b.classList.toggle('active', x === hqState.mode); });
+  ['ru', 'de'].forEach(x => { const b = document.getElementById('hq-lang-' + x); if (b) b.classList.toggle('active', x === hqState.lang); });
+  document.querySelectorAll('#hq-level-switch .mode-btn').forEach(b => b.classList.toggle('active', b.dataset.l === hqState.level));
 }
 function loadHearquizSettings() {
   try {
@@ -29814,23 +29863,17 @@ function loadHearquizSettings() {
     if (d) {
       if (['type','choice','flip'].includes(d.mode)) hqState.mode = d.mode;
       if (d.lang === 'ru' || d.lang === 'de') hqState.lang = d.lang;
-      if (Array.isArray(d.cats)) hqState.selectedCats = new Set(d.cats.filter(c => vocab[c]));
+      if (d.level === '' || LEVELS.includes(d.level)) hqState.level = d.level;
+      if (Array.isArray(d.cats)) hqState.selectedCats = new Set(d.cats.filter(c => typeof c === 'string' && vocab[c]));
       const el = document.getElementById('hearquiz-speed-range');
-      if (el && d.speed) { el.value = d.speed; updateHearquizSpeedLabel(); }
+      if (el && d.speed && /^\d+$/.test(String(d.speed))) { el.value = d.speed; updateHearquizSpeedLabel(); }
     }
   } catch (e) {}
-  ['type','choice'].forEach(x => {
-    const b = document.getElementById('hq-mode-' + x);
-    if (b) b.classList.toggle('active', x === hqState.mode);
-  });
-  ['ru','de'].forEach(x => {
-    const b = document.getElementById('hq-lang-' + x);
-    if (b) b.classList.toggle('active', x === hqState.lang);
-  });
+  markHearquizButtons();
   hqState.settingsReady = true;
 }
 
-// SRS wie in den Grammatik-Werkzeugen (progressNext/progressMark), getrennt je Modus
+// SRS wie in den Grammatik-Werkzeugen (progressMark), getrennt je Modus
 // bisherige Schlüssel bleiben für die ursprünglichen Kombinationen erhalten
 // (Tippen = Russisch, Auswahl = Deutsch), die neuen bekommen einen eigenen.
 function hearquizSrsKey() {
@@ -29840,126 +29883,163 @@ function hearquizSrsKey() {
 }
 // erwartete Antwort(en) des aktuellen Worts in der gewählten Sprache
 function hearquizAnswerLabel(w) { return hqState.lang === 'ru' ? w.ru : getDeDisplay(w); }
-// „Offen" = im gewählten Pool noch nie richtig beantwortet (wie bei den Vokabeln)
+// Kennzahlen: Auswahl (mit Stufe), offen = noch nie richtig, richtig in dieser Sitzung
 function updateHearquizInfo() {
   const pool = hqState.pool || [];
   const map = loadGrammarSrs()[hearquizSrsKey()] || {};
   const open = pool.filter(w => !map[w.ru] || !map[w.ru].correct).length;
-  const t = document.getElementById('hq-info-total'), o = document.getElementById('hq-info-open');
+  const t = document.getElementById('hq-info-total'), o = document.getElementById('hq-info-open'), r = document.getElementById('hq-info-right');
   if (t) t.textContent = pool.length;
   if (o) o.textContent = open;
+  if (r) r.textContent = hqState.done ? hqState.correct + '/' + hqState.done : '0';
+  const lvl = hqState.level || maxLevel;
+  const lbl = document.getElementById('hq-info-total-lbl'); if (lbl) lbl.textContent = lvl ? 'Wörter bis ' + lvl : 'Wörter';
+  const info = document.getElementById('hq-opt-info');
+  if (info) {
+    const n = hqState.selectedCats.size;
+    info.textContent = '· ' + pool.length + ' Wörter' + (hqState.level ? ' · bis ' + hqState.level : '') + ' · ' + (n ? n + (n === 1 ? ' Kategorie' : ' Kategorien') : 'alle Kategorien');
+  }
 }
 function toggleHearquizInfo() {
   const p = document.getElementById('hearquiz-info-panel');
   p.style.display = p.style.display === 'none' ? 'block' : 'none';
 }
 function buildHearquizPool() {
-  // Vokabeln mit ru+de; nur aus gewählten Kategorien (leer = alle)
+  // Vokabeln mit ru+de; nur aus gewählten Kategorien (leer = alle), gleiche Karten nur einmal
   const cats = hqState.selectedCats.size ? [...hqState.selectedCats] : Object.keys(vocab);
-  const pool = [];
+  const pool = [], seen = new Set();
   cats.forEach(cat => {
     if (!vocab[cat]) return;
-    getAllWordsOfCat(cat).forEach(w => { if (w.ru && w.de && w.de.length) pool.push(w); });
+    getAllWordsOfCat(cat).forEach(w => { if (w.ru && w.de && w.de.length && !seen.has(w.ru)) { seen.add(w.ru); pool.push(w); } });
   });
+  if (hqState.level) { const max = levelIdx(hqState.level); return pool.filter(w => levelIdx(wordLevel(w)) <= max); }
   return filterLevelOrAll(pool, wordLevel);
 }
-function toggleHearquizCatPicker() {
-  const box = document.getElementById('hearquiz-cat-picker');
-  const open = box.style.display === 'none';
-  box.style.display = open ? 'block' : 'none';
-  if (open) { renderCatPicker('hearquiz-cat-body', hqState.selectedCats, updateHearquizCatCount); updateHearquizCatCount(); }
+// Kategorien: dieselbe Auswahl wie Hörtrainer/Diktat, gilt sofort
+function renderHearquizCats() {
+  const body = document.getElementById('hearquiz-cat-body'); if (!body) return;
+  buildCatPickerBody(body, c => hqState.selectedCats.has(c), () => {
+    hqState.selectedCats = new Set([...body.querySelectorAll('input[data-cat]:checked')].map(cb => cb.dataset.cat));
+    hqKategorienGeaendert();
+  }, { collapsible: true });
+  const q = document.getElementById('hq-cat-search'); if (q && q.value) applyCatPickerFilter(body, q.value.trim().toLowerCase());
+  renderHearquizChips();
 }
-function setAllHearquizCat(state) {
-  document.querySelectorAll('#hearquiz-cat-body input[type="checkbox"]').forEach(cb => cb.checked = state);
-  updateCatPickerGroupChecks(document.getElementById('hearquiz-cat-body'));
-  updateHearquizCatCount();
+function renderHearquizChips() {
+  const box = document.getElementById('hq-chips'); if (!box) return;
+  box.innerHTML = '';
+  [...document.querySelectorAll('#hearquiz-cat-body input[data-cat]:checked')].forEach(cb => {
+    const cat = cb.dataset.cat;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ht-chip';
+    b.title = '„' + cat + '“ herausnehmen';
+    b.setAttribute('aria-label', '„' + cat + '“ aus der Auswahl nehmen');
+    b.innerHTML = '<i class="ti ' + (CAT_ICONS[cat] || 'ti-book') + '"></i>';
+    b.appendChild(document.createTextNode(cat));
+    b.insertAdjacentHTML('beforeend', '<i class="ti ti-x"></i>');
+    b.onclick = () => { hqState.selectedCats.delete(cat); renderHearquizCats(); hqKategorienGeaendert(); };
+    box.appendChild(b);
+  });
 }
-function updateHearquizCatCount() {
-  const checks = [...document.querySelectorAll('#hearquiz-cat-body input[data-cat]')];
-  const chosen = checks.filter(cb => cb.checked);
-  let words = 0;
-  chosen.forEach(cb => { words += getAllWordsOfCat(cb.dataset.cat).length; });
-  const el = document.getElementById('hearquiz-cat-count');
-  if (el) el.textContent = (chosen.length ? chosen.length + ' Kategorien · ' + words + ' Wörter' : 'alle Kategorien');
-}
-function applyHearquizCats() {
-  hqRetry = false;
-  const checks = [...document.querySelectorAll('#hearquiz-cat-body input[data-cat]:checked')];
-  hqState.selectedCats = new Set(checks.map(cb => cb.dataset.cat));
-  saveHearquizSettings();
+function hqKategorienGeaendert() {
+  saveHearquizSettings(); renderHearquizChips();
   hqState.pool = buildHearquizPool();
-  document.getElementById('hearquiz-cat-picker').style.display = 'none';
-  hqState.done = 0; hqState.correct = 0;
-  restartHearquiz();
+  restartHearquiz(true);
+}
+function setHearquizCats(art) {
+  hqState.selectedCats = new Set(art === 'alle' ? Object.keys(vocab) : art === 'vokabeln' ? vocabSelectionCats() : []);
+  renderHearquizCats(); hqKategorienGeaendert();
+}
+function setHearquizLevel(l) {
+  hqState.level = l === '' || LEVELS.includes(l) ? l : '';
+  saveHearquizSettings(); markHearquizButtons();
+  hqState.pool = buildHearquizPool();
+  restartHearquiz(true);
 }
 function openHearquiz() {
-  updateHearquizSessionButton();
   loadHearquizSettings();
+  renderHearquizCats();
   hqState.pool = buildHearquizPool();
   hqState.done = 0; hqState.correct = 0;
   restartHearquiz();
 }
 function setHearquizMode(m) {
   hqState.mode = m;
-  saveHearquizSettings();
-  ['type','choice','flip'].forEach(x => {
-    const b = document.getElementById('hq-mode-' + x);
-    if (b) b.classList.toggle('active', x === m);
-  });
+  saveHearquizSettings(); markHearquizButtons();
   restartHearquiz();
 }
 function setHearquizLang(l) {
   hqState.lang = l;
-  saveHearquizSettings();
-  ['ru','de'].forEach(x =>
-    document.getElementById('hq-lang-' + x).classList.toggle('active', x === l));
+  saveHearquizSettings(); markHearquizButtons();
   restartHearquiz();
 }
-function restartHearquiz(forceWord) {
-  if (!hqState.pool) hqState.pool = hqRetry ? hqSessionWrong.slice() : buildHearquizPool();
+// neue Runde: 15 Wörter nach Lernstand (fällige, zuletzt falsche, neue, dann die am längsten nicht geübten);
+// liste = „Fehler wiederholen“, stumm = ohne automatisches Vorlesen (beim Umstellen der Auswahl)
+function restartHearquiz(stumm, liste) {
+  if (!hqState.pool) hqState.pool = buildHearquizPool();
+  hqUndo = null;
+  hqState.runde = liste ? shuffleInPlace(liste.slice()) : gtLernstandRunde(hqState.pool, hearquizSrsKey(), w => w.ru, w => w.ru);
+  hqState.idx = 0; hqState.richtig = 0; hqState.fehler = []; hqState.ende = false;
   updateHearquizInfo();
-  if (!hqState.pool.length) { hqState.current = null; return; }
-  if (forceWord) {
-    hqState.current = forceWord;
-  } else {
-    const byRu = new Map(hqState.pool.map(w => [w.ru, w]));
-    const nextRu = progressNext(hearquizSrsKey(), [...byRu.keys()], hqState.current ? hqState.current.ru : null);
-    hqState.current = byRu.get(nextRu);
+  if (!hqState.runde.length) {
+    hqState.current = null;
+    document.getElementById('hq-spiel').style.display = 'none';
+    document.getElementById('hq-ende').style.display = 'none';
+    document.getElementById('hq-runde').textContent = 'Keine Wörter für diese Auswahl – ändere die Einstellungen.';
+    return;
   }
+  hqZeigeWort(hqState.runde[0], stumm === true);
+}
+function hqWiederholen() { restartHearquiz(false, hqState.fehler.slice()); }
+// zeigt ein Wort der Runde (auch beim Zurücknehmen einer Bewertung)
+function hqZeigeWort(w, stumm) {
+  hqState.current = w;
   hqState.answered = false; hqState.lastCorrect = false; hqState.revealed = false; hqState.lastInput = '';
-  const typeRow = document.getElementById('hq-type-row');
-  const choiceRow = document.getElementById('hq-choice-row');
-  typeRow.style.display = hqState.mode === 'type' ? '' : 'none';
-  choiceRow.style.display = hqState.mode === 'choice' ? '' : 'none';
-  const flipRow = document.getElementById('hq-flip-row');
-  const flipActions = document.getElementById('hq-flip-actions');
-  if (flipRow) flipRow.style.display = hqState.mode === 'flip' ? '' : 'none';
-  if (flipActions) flipActions.style.display = 'none';
-  const typeMode = hqState.mode === 'type';
-  const flipMode = hqState.mode === 'flip';
+  document.getElementById('hq-spiel').style.display = '';
+  document.getElementById('hq-ende').style.display = 'none';
+  document.getElementById('hq-runde').textContent = 'Wort ' + (hqState.idx + 1) + ' von ' + hqState.runde.length;
+  const typeMode = hqState.mode === 'type', flipMode = hqState.mode === 'flip';
+  document.getElementById('hq-type-row').style.display = typeMode ? '' : 'none';
+  document.getElementById('hq-choice-row').style.display = hqState.mode === 'choice' ? '' : 'none';
+  document.getElementById('hq-flip-row').style.display = flipMode ? '' : 'none';
+  document.getElementById('hq-flip-actions').style.display = 'none';
+  document.getElementById('hq-selbst').style.display = 'none';
+  document.getElementById('hq-loesung').style.display = 'none';
   document.getElementById('hq-actions').style.display = '';
+  document.getElementById('hq-reveal-btn').style.display = typeMode ? '' : 'none';
   document.getElementById('hq-check-label').textContent = typeMode ? 'Prüfen' : flipMode ? 'Aufdecken' : 'Weiter';
   document.getElementById('hq-check-icon').className = typeMode ? 'ti ti-check' : flipMode ? 'ti ti-eye' : 'ti ti-arrow-right';
   document.getElementById('hearquiz-result').textContent = '';
   document.getElementById('hearquiz-score').textContent =
     hqState.done ? hqState.correct + ' von ' + hqState.done + ' richtig' : '';
-  if (hqState.mode === 'type') {
+  if (typeMode) {
     const input = document.getElementById('hq-input');
     input.value = ''; input.className = 'conj-input'; input.disabled = false;
     input.placeholder = hqState.lang === 'ru' ? 'Gehörtes Wort auf Russisch…' : 'Bedeutung auf Deutsch…';
     clearPartialFeedback(input);
   } else if (hqState.mode === 'choice') {
     renderHearquizChoices();
-  } else if (hqState.mode === 'flip') {
-    const a = document.getElementById('hq-flip-answer');
-    if (a) a.innerHTML = '<span class="hq-flip-hidden">Erst zuhören, dann aufdecken</span>';
+  } else {
+    document.getElementById('hq-flip-answer').innerHTML = '<span class="hq-flip-hidden">Erst zuhören, dann aufdecken</span>';
   }
   updateHearquizUndoBtn();
-  // Wort automatisch vorlesen
-  speakHearquiz();
+  if (!stumm) speakHearquiz();
 }
-function speakHearquiz() {
-  if (hqState.current) speak(hqState.current.ru, hearquizRate());
+function hqRundenEnde() {
+  hqState.ende = true; hqState.current = null;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  document.getElementById('hq-spiel').style.display = 'none';
+  document.getElementById('hq-runde').textContent = '';
+  const esc = t => htmlEsc(t);
+  const ende = document.getElementById('hq-ende');
+  ende.innerHTML = gtRoundEndHtml(hqState.richtig, hqState.runde.length,
+    hqState.fehler.map(w => ({ satz: '<span lang="ru">' + esc(w.ru) + '</span> – ' + esc(getDeDisplay(w)), ru: w.ru })),
+    'hearquiz', 'hqWiederholen()', 'restartHearquiz()');
+  ende.style.display = 'flex';
+  updateHearquizUndoBtn();
+}
+function speakHearquiz(rate) {
+  if (hqState.current) speak(hqState.current.ru, typeof rate === 'number' ? rate : hearquizRate());
 }
 function hearquizRate() {
   const el = document.getElementById('hearquiz-speed-range');
@@ -29969,6 +30049,37 @@ function updateHearquizSpeedLabel() {
   const v = parseInt(document.getElementById('hearquiz-speed-range').value, 10) / 10;
   document.getElementById('hearquiz-speed-value').textContent = v.toFixed(1).replace('.', ',') + '×';
   saveHearquizSettings();
+}
+// Wertung eines Worts (einmal je Wort): Sitzung, Runde, Lernstand
+function hqWerte(ok) {
+  const w = hqState.current;
+  hqState.done++;
+  if (ok) { hqState.correct++; hqState.richtig++; }
+  else if (!hqState.fehler.some(x => x.ru === w.ru)) hqState.fehler.push(w);
+  progressMark(hearquizSrsKey(), w.ru, ok);
+  updateHearquizInfo();
+  document.getElementById('hearquiz-score').textContent = hqState.correct + ' von ' + hqState.done + ' richtig';
+}
+// Nach der Antwort: Wort groß mit Umschrift, Übersetzung, Stufe und Beispielsatz
+function hqZeigeLoesung(ohneWort) {
+  const w = hqState.current; if (!w) return;
+  const esc = t => htmlEsc(t);
+  const satz = typeof getWordSentence === 'function' ? getWordSentence(w) : null;
+  let h = '';
+  if (!ohneWort) {
+    h += '<div class="dl-ru" lang="ru">' + esc(w.ru) + ' ' + lvlBadge(wordLevel(w)) + '</div>';
+    if (showTranscription && w.tr) h += '<div class="dl-tr">' + esc(trFor(w)) + '</div>';
+    h += '<div class="dl-de">' + esc(getDeDisplay(w)) + '</div>';
+  }
+  if (satz && satz.ru) h += '<div class="dl-satz" lang="ru">' + esc(satz.ru) + '</div><div class="dl-satz-de">' + esc(satz.de || '') + '</div>';
+  if (AUDIO_SUPPORTED) h += '<div class="dl-knoepfe"><button class="tool-btn" type="button" onclick="speakHearquiz()"><i class="ti ti-volume"></i> Anhören</button>'
+    + (satz && satz.ru ? '<button class="tool-btn" type="button" onclick="hqSatzAnhoeren()"><i class="ti ti-volume"></i> Satz anhören</button>' : '') + '</div>';
+  const el = document.getElementById('hq-loesung');
+  el.innerHTML = h; el.style.display = h ? '' : 'none';
+}
+function hqSatzAnhoeren() {
+  const s = hqState.current && getWordSentence(hqState.current);
+  if (s && s.ru) speak(s.ru, hearquizRate());
 }
 function renderHearquizChoices() {
   const box = document.getElementById('hq-choice-row');
@@ -29992,41 +30103,37 @@ function renderHearquizChoices() {
     if (!picks.includes(val(w))) picks.push(val(w));
   }
   const opts = [correct, ...picks].sort(() => Math.random() - 0.5);
-  box.innerHTML = opts.map(o =>
-    `<button class="case-opt" onclick="answerHearquizChoice(this, ${JSON.stringify(o).replace(/"/g,'&quot;')})">${o}</button>`).join('');
+  box.innerHTML = opts.map((o, i) =>
+    `<button class="case-opt" data-v="${htmlEsc(o)}" onclick="answerHearquizChoice(this, this.dataset.v)"><span class="hq-key">${i + 1}</span> ${htmlEsc(o)}</button>`).join('');
   box.className = 'case-options';
 }
 function answerHearquizChoice(btn, choice) {
-  if (hqState.answered) return;
-  hqState.answered = true; hqState.done++;
+  if (hqState.answered || !hqState.current) return;
+  hqState.answered = true;
   const correctVal = hqState.lang === 'ru' ? hqState.current.ru : hqState.current.de[0];
   const ok = choice === correctVal;
-  if (ok) hqState.correct++;
   hqState.lastCorrect = ok;
-  progressMark(hearquizSrsKey(), hqState.current.ru, ok);
-  if (ok) clearHearquizWrong(hqState.current); else noteHearquizWrong(hqState.current);
-  updateHearquizSessionButton();
-  updateHearquizInfo();
+  hqWerte(ok);
   document.querySelectorAll('#hq-choice-row .case-opt').forEach(b => {
     b.disabled = true;
-    if (b.textContent === correctVal) b.classList.add('correct');
-    else if (b === btn) b.classList.add('wrong');
+    if (b === btn && !ok) b.classList.add('wrong');
+    if (b.dataset.v === correctVal) b.classList.add('correct');
   });
-  document.getElementById('hearquiz-result').textContent =
-    (ok ? 'Richtig' : 'Falsch') + ' — ' + hqState.current.ru + ' = ' + hqState.current.de.join(', ');
-  document.getElementById('hearquiz-score').textContent = hqState.correct + ' von ' + hqState.done + ' richtig';
+  document.getElementById('hearquiz-result').textContent = ok ? 'Richtig' : 'Falsch';
+  hqZeigeLoesung();
 }
-// ein Knopf für beide Modi: beim Tippen „Prüfen", in der Auswahl „Weiter"
-// setzt den Lernstand aller vier Hörquiz-Kombinationen zurück
+// setzt den Lernstand aller Hörquiz-Kombinationen zurück
 function resetHearquizProgress() {
-  if (!confirm('Wirklich den Hörquiz-Fortschritt zurücksetzen? Das betrifft Tippen und Auswahl in beiden Sprachen und kann nicht rückgängig gemacht werden.')) return;
+  if (!confirm('Wirklich den Hörquiz-Fortschritt zurücksetzen? Das betrifft alle Modi in beiden Sprachen und kann nicht rückgängig gemacht werden.')) return;
   const all = loadGrammarSrs();
   Object.keys(all).forEach(k => { if (k === 'hearquiz' || k.startsWith('hearquiz:')) delete all[k]; });
   saveGrammarSrs();
   hqState.done = 0; hqState.correct = 0;
   restartHearquiz();
 }
+// ein Knopf für alle Modi: Tippen „Prüfen“, Auswahl „Weiter“, Aufdecken „Aufdecken“
 function hearquizAction() {
+  if (hqState.ende) { restartHearquiz(); return; }
   if (hqState.mode === 'choice') nextHearquiz();
   else if (hqState.mode === 'flip') { if (hqState.revealed) nextHearquiz(); else revealHearquizFlip(); }
   else checkHearquiz();
@@ -30036,91 +30143,21 @@ function revealHearquizFlip() {
   const w = hqState.current;
   if (!w || hqState.revealed) return;
   hqState.revealed = true;
-  const esc = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const esc = t => htmlEsc(t);
   const zeilen = [];
   if (hqState.lang === 'ru') {
     zeilen.push('<span>' + esc(w.ru) + '</span>');
     if (showTranscription && w.tr) zeilen.push('<span class="hq-flip-tr">' + esc(trFor(w)) + '</span>');
-    zeilen.push('<span class="hq-flip-sub">' + esc(getDeDisplay(w)) + '</span>');
+    zeilen.push('<span class="hq-flip-sub">' + esc(getDeDisplay(w)) + ' ' + lvlBadge(wordLevel(w)) + '</span>');
   } else {
     zeilen.push('<span>' + esc(getDeDisplay(w)) + '</span>');
-    zeilen.push('<span class="hq-flip-sub">' + esc(w.ru) + '</span>');
+    zeilen.push('<span class="hq-flip-sub">' + esc(w.ru) + ' ' + lvlBadge(wordLevel(w)) + '</span>');
     if (showTranscription && w.tr) zeilen.push('<span class="hq-flip-tr">' + esc(trFor(w)) + '</span>');
   }
   document.getElementById('hq-flip-answer').innerHTML = zeilen.join('');
   document.getElementById('hq-actions').style.display = 'none';
   document.getElementById('hq-flip-actions').style.display = '';
-}
-// Falsch beantwortete Wörter dieser Hörquiz-Runde
-let hqSessionWrong = [];
-let hqRetry = false;   // übt gerade nur die Fehler dieser Runde
-function noteHearquizWrong(w) {
-  if (!w || hqSessionWrong.some(x => x.ru === w.ru)) return;
-  hqSessionWrong.push(w);
-  updateHearquizSessionButton();
-}
-// Richtig beantwortet: in der Fehlerrunde verschwindet das Wort aus der Liste
-function clearHearquizWrong(w) {
-  if (!w || !hqRetry) return;
-  const i = hqSessionWrong.findIndex(x => x.ru === w.ru);
-  if (i >= 0) hqSessionWrong.splice(i, 1);
-  updateHearquizSessionButton();
-  // In der Fehlerrunde schrumpft der Pool mit der Liste; ist sie leer,
-  // geht es mit allen gewählten Kategorien weiter.
-  if (!hqSessionWrong.length) { hqRetry = false; hqState.pool = buildHearquizPool(); }
-  else hqState.pool = hqSessionWrong.slice();
-  updateHearquizInfo();
-}
-function updateHearquizSessionButton() {
-  const el = document.getElementById('hq-session-btn-label');
-  if (el) el.textContent = hqState.done ? 'Runde (' + hqState.correct + '/' + hqState.done + ')' : 'Runde';
-}
-function openHearquizSession() {
-  document.getElementById('hq-session-stats').innerHTML =
-    '<div class="info-item"><div class="info-num">' + hqState.done + '</div><div class="info-label">Wörter</div></div>'
-    + '<div class="info-divider"></div>'
-    + '<div class="info-item"><div class="info-num">' + hqState.correct + '</div><div class="info-label">Richtig</div></div>'
-    + '<div class="info-divider"></div>'
-    + '<div class="info-item"><div class="info-num">' + hqSessionWrong.length + '</div><div class="info-label">Fehler</div></div>';
-  const list = document.getElementById('hq-session-wrong-list');
-  list.innerHTML = hqSessionWrong.length
-    ? hqSessionWrong.map(w => '<div class="cat-check-row"><i class="ti ti-circle-x"></i><span>' + w.ru + '</span>'
-        + '<span class="cat-count">' + getDeDisplay(w) + '</span>'
-        + '<button class="session-del" data-ru="' + w.ru.replace(/"/g, '&quot;') + '"'
-        + ' onclick="removeHearquizWrong(this.dataset.ru)" title="Aus der Fehlerliste entfernen"'
-        + ' aria-label="Aus der Fehlerliste entfernen">×</button></div>').join('')
-    : '<p style="text-align:center; color:var(--c-text-tertiary)">Noch keine Fehler in dieser Runde.</p>';
-  document.getElementById('hq-session-retry-btn').disabled = hqSessionWrong.length === 0;
-  document.getElementById('overlay-hq-session').classList.add('open');
-}
-function removeHearquizWrong(ru) {
-  const i = hqSessionWrong.findIndex(w => w.ru === ru);
-  if (i === -1) return;
-  hqSessionWrong.splice(i, 1);
-  updateHearquizSessionButton();
-  openHearquizSession();
-  if (hqRetry) {
-    hqState.pool = hqSessionWrong.slice();
-    if (!hqState.pool.length) { hqRetry = false; hqState.pool = buildHearquizPool(); }
-    restartHearquiz();
-  }
-}
-function resetHearquizSession() {
-  hqUndo = null;
-  hqSessionWrong = [];
-  hqState.done = 0; hqState.correct = 0;
-  if (hqRetry) { hqRetry = false; hqState.pool = buildHearquizPool(); }
-  updateHearquizSessionButton();
-  document.getElementById('hearquiz-score').textContent = '';
-  openHearquizSession();
-}
-// Übt nur die Wörter weiter, die in dieser Runde falsch waren
-function retryHearquizWrong() {
-  if (!hqSessionWrong.length) return;
-  hqRetry = true;
-  hqState.pool = hqSessionWrong.slice();
-  closeOverlay('overlay-hq-session');
-  restartHearquiz();
+  hqZeigeLoesung(true);
 }
 
 // Letzte Selbsteinschätzung, um sie zurücknehmen zu können
@@ -30135,19 +30172,14 @@ function rateHearquiz(known) {
       ? JSON.parse(JSON.stringify(all[key][hqState.current.ru])) : null;
     const lg = loadLifetime().g;
     hqUndo = { word: hqState.current, key, vorher, prevLife: lifeSnap(lg[key] || {}, hqState.current.ru), done: hqState.done, correct: hqState.correct,
-      warFalsch: hqSessionWrong.some(x => x.ru === hqState.current.ru) };
-    hqState.done++;
-    if (known) hqState.correct++;
-    progressMark(key, hqState.current.ru, known);
-    if (known) clearHearquizWrong(hqState.current); else noteHearquizWrong(hqState.current);
-    updateHearquizSessionButton();
-    updateHearquizInfo();
+      idx: hqState.idx, richtig: hqState.richtig, fehler: hqState.fehler.slice() };
+    hqWerte(known);
   }
   hqState.answered = true;
   nextHearquiz();
 }
 // Versehentliche Bewertung zurücknehmen: zurück zum vorigen Wort, Lernstand
-// und Zähler wie vorher, Lösung gleich wieder aufgedeckt
+// und Zähler wie vorher, Lösung gleich wieder aufgedeckt (auch nach dem Rundenende)
 function undoHearquizRate() {
   if (!hqUndo) return;
   const all = loadGrammarSrs();
@@ -30157,30 +30189,34 @@ function undoHearquizRate() {
   saveGrammarSrs();
   const lg = loadLifetime().g;
   lifeRestore(lg[hqUndo.key] || (lg[hqUndo.key] = {}), hqUndo.word.ru, hqUndo.prevLife);
-  hqState.done = hqUndo.done;
-  hqState.correct = hqUndo.correct;
+  hqState.done = hqUndo.done; hqState.correct = hqUndo.correct;
+  hqState.idx = hqUndo.idx; hqState.richtig = hqUndo.richtig; hqState.fehler = hqUndo.fehler;
+  hqState.ende = false;
   const wort = hqUndo.word;
-  // Fehlerliste mitführen: Eintrag wieder entfernen, falls er eben entstand
-  const iw = hqSessionWrong.findIndex(x => x.ru === wort.ru);
-  if (iw >= 0 && !hqUndo.warFalsch) hqSessionWrong.splice(iw, 1);
-  updateHearquizSessionButton();
   hqUndo = null;
-  restartHearquiz(wort);
+  updateHearquizInfo();
+  hqZeigeWort(wort, true);
   revealHearquizFlip();
-  document.getElementById('hearquiz-result').textContent =
-    'Bewertung zurückgenommen — jetzt neu einschätzen';
+  document.getElementById('hearquiz-result').textContent = 'Bewertung zurückgenommen — jetzt neu einschätzen';
   updateHearquizUndoBtn();
 }
 // Zeigt den Rücknahme-Knopf nur, wenn es etwas zurückzunehmen gibt
 function updateHearquizUndoBtn() {
   const b = document.getElementById('hq-undo-btn');
   if (b) b.style.display = (hqUndo && hqState.mode === 'flip') ? 'inline-flex' : 'none';
+  // nach dem Rundenende steht der Knopf unter der Bilanz
+  const ende = document.getElementById('hq-ende');
+  if (b && hqState.ende && hqUndo && ende && b.parentElement.parentElement !== ende) ende.appendChild(b.parentElement);
+  else if (b && !hqState.ende && ende && ende.contains(b)) document.getElementById('hq-actions').before(b.parentElement);
 }
 function checkHearquiz() {
+  if (hqState.ende) { restartHearquiz(); return; }
   if (!hqState.current) return;
-  // nach richtiger Antwort oder nach dem Aufdecken führt Prüfen/Enter direkt weiter
-  if (hqState.answered && (hqState.lastCorrect || hqState.revealed)) { nextHearquiz(); return; }
   const input = document.getElementById('hq-input');
+  // aufgedeckt, aber nicht bewertet: Prüfen/Enter zählt als „nicht gewusst“
+  if (hqState.revealed && !hqState.answered) { rateHearquizType(false); return; }
+  // nach richtiger Antwort führt Prüfen/Enter direkt weiter
+  if (hqState.answered && (hqState.lastCorrect || hqState.revealed)) { nextHearquiz(); return; }
   const val = input.value.trim();
   // nach falscher Antwort führt Prüfen/Enter ebenfalls weiter — es sei denn,
   // die Eingabe wurde inzwischen geändert, dann wird sie noch einmal geprüft
@@ -30192,74 +30228,88 @@ function checkHearquiz() {
   const w = hqState.current;
   let ok, typoHint = '';
   if (hqState.lang === 'ru') {
-    // gleiche Tippfehler-Toleranz wie bei den Vokabeln (z.B. fehlendes ь,
-    // -тся/-ться) — vorher zählte dort schon ein Buchstabe als falsch
+    // gleiche Tippfehler-Toleranz wie bei den Vokabeln (z.B. fehlendes ь, -тся/-ться)
     const cands = [w.ru, ...(w.ruAlt || [])].map(stripClarification);
     const exact = cands.find(c => normalizeYo(val) === normalizeYo(c));
     const hit = exact || cands.find(c => isFuzzyMatch(val, c));
     ok = !!hit;
     if (hit && !exact) typoHint = ' (Tippfehler – richtig: „' + hit + '“)';
   } else {
-    // Deutsch: gleiche Tippfehler-Toleranz wie bei den Vokabeln
     const hit = w.de.find(a => isFuzzyMatch(val, stripClarification(a)));
     ok = !!hit;
     if (hit && normalizeYo(val) !== normalizeYo(stripClarification(hit)))
       typoHint = ' (Tippfehler – richtig: „' + stripClarification(hit) + '“)';
   }
   input.className = 'conj-input ' + (ok ? 'correct' : 'wrong');
-  // Korrektur nach falschem Versuch oder nach Aufdecken: Wort bleibt im SRS
-  // als Fehler (kommt bald wieder) — das wird jetzt ausdrücklich angezeigt
-  const lateNote = (hqState.answered && ok)
-    ? ' — zählt als Fehler (nicht im ersten Versuch), kommt bald wieder'
-    : ' — nochmal „Prüfen“ fürs nächste Wort';
+  // Korrektur nach falschem Versuch: Wort bleibt als Fehler (kommt bald wieder)
+  const lateNote = (hqState.answered && ok) ? ' — zählt als Fehler (nicht im ersten Versuch), kommt bald wieder' : '';
   hqState.lastCorrect = ok;
-  if (!hqState.answered) {
-    hqState.done++; if (ok) hqState.correct++;
-    progressMark(hearquizSrsKey(), hqState.current.ru, ok);
-    if (ok) clearHearquizWrong(hqState.current); else noteHearquizWrong(hqState.current);
-    updateHearquizSessionButton();
-    updateHearquizInfo();
-  }
+  if (!hqState.answered) hqWerte(ok);
   hqState.answered = true;
+  document.getElementById('hq-reveal-btn').style.display = 'none';
   const res = document.getElementById('hearquiz-result');
   if (hqState.lang === 'ru') {
-    const esc = t => t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
     res.innerHTML = ok
-      ? 'Richtig — ' + esc(w.ru + ' = ' + w.de.join(', ') + typoHint + lateNote)
-      : 'Richtig wäre: ' + partialFeedbackHtml(val, w.ru) + ' (' + esc(w.de.join(', ')) + ')';
+      ? 'Richtig' + htmlEsc(typoHint + lateNote)
+      : 'Richtig wäre: ' + partialFeedbackHtml(val, w.ru) + ' — Enter fürs nächste Wort';
   } else {
-    res.textContent = ok
-      ? 'Richtig — ' + w.ru + ' = ' + getDeDisplay(w) + typoHint + lateNote
-      : 'Richtig wäre: ' + getDeDisplay(w) + ' (' + w.ru + ')';
+    res.textContent = ok ? 'Richtig' + typoHint + lateNote : 'Falsch — Enter fürs nächste Wort';
   }
-  document.getElementById('hearquiz-score').textContent = hqState.correct + ' von ' + hqState.done + ' richtig';
+  document.getElementById('hq-check-label').textContent = 'Weiter';
+  document.getElementById('hq-check-icon').className = 'ti ti-arrow-right';
+  hqZeigeLoesung();
 }
+// Tippen: „Lösung zeigen“ deckt auf, die Wertung kommt aus der Selbstbewertung
 function revealHearquiz() {
-  if (!hqState.current) return;
+  if (!hqState.current || hqState.answered || hqState.revealed) return;
   const input = document.getElementById('hq-input');
   input.value = hearquizAnswerLabel(hqState.current);
   input.className = 'conj-input revealed';
-  // aufgedeckt ohne vorherige Antwort = nicht gewusst → zählt als Fehler
-  // (Statistik + SRS), damit „x von y“ und „Offen“ zusammenpassen
-  const first = !hqState.answered;
-  if (first) {
-    hqState.done++;
-    progressMark(hearquizSrsKey(), hqState.current.ru, false);
-    noteHearquizWrong(hqState.current);
-    updateHearquizSessionButton();
-    updateHearquizInfo();
-  }
-  hqState.answered = true; hqState.revealed = true;
-  document.getElementById('hearquiz-result').textContent =
-    'Aufgedeckt: ' + hqState.current.ru + ' = ' + hqState.current.de.join(', ') +
-    (first ? ' — zählt als nicht gewusst, kommt bald wieder' : '') + ' — „Prüfen“ fürs nächste Wort';
-  document.getElementById('hearquiz-score').textContent = hqState.correct + ' von ' + hqState.done + ' richtig';
+  hqState.revealed = true;
+  document.getElementById('hq-reveal-btn').style.display = 'none';
+  document.getElementById('hq-actions').style.display = 'none';
+  document.getElementById('hq-selbst').style.display = '';
+  document.getElementById('hearquiz-result').textContent = '';
+  hqZeigeLoesung();
+}
+function rateHearquizType(known) {
+  if (!hqState.current || !hqState.revealed || hqState.answered) return;
+  hqState.answered = true; hqState.lastCorrect = known;
+  hqWerte(known);
+  nextHearquiz();
 }
 function nextHearquiz() {
-  // übersprungen ohne Antwort → nur als gesehen merken
-  if (hqState.current && !hqState.answered) progressSeen(hearquizSrsKey(), hqState.current.ru);
-  restartHearquiz();
+  if (hqState.ende) { restartHearquiz(); return; }
+  // übersprungen ohne Antwort → als gesehen merken, in der Runde ein Fehler
+  if (hqState.current && !hqState.answered) {
+    progressSeen(hearquizSrsKey(), hqState.current.ru);
+    if (!hqState.fehler.some(x => x.ru === hqState.current.ru)) hqState.fehler.push(hqState.current);
+  }
+  hqState.idx++;
+  if (hqState.idx >= hqState.runde.length) { hqRundenEnde(); return; }
+  hqZeigeWort(hqState.runde[hqState.idx]);
 }
+// Tasten (15.11.): Strg+Leertaste anhören (mit Umschalt langsam), 1–4 in der Auswahl,
+// Enter in der Auswahl nach der Antwort und am Rundenende: weiter
+document.addEventListener('keydown', e => {
+  if (appView !== 'listening' || document.querySelector('.overlay.open')) return;
+  const p = document.getElementById('listening-hearquiz');
+  if (!p || !p.classList.contains('open')) return;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  const imFeld = tag === 'input' || tag === 'textarea' || tag === 'select';
+  if ((e.ctrlKey || e.metaKey) && (e.key === ' ' || e.code === 'Space')) { e.preventDefault(); speakHearquiz(e.shiftKey ? 0.5 : undefined); return; }
+  if (imFeld || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === 'Enter' && (hqState.ende || (hqState.mode === 'choice' && hqState.answered))) {
+    if (tag === 'button') return;   // Knopf im Fokus löst selbst aus
+    e.preventDefault();
+    if (hqState.ende) { const b = document.querySelector('#hq-ende .gt-primary'); if (b) b.click(); } else nextHearquiz();
+    return;
+  }
+  if (hqState.mode === 'choice' && !hqState.answered && /^[1-4]$/.test(e.key)) {
+    const b = document.querySelectorAll('#hq-choice-row .case-opt')[+e.key - 1];
+    if (b) { e.preventDefault(); b.click(); }
+  }
+});
 
 if (AUDIO_SUPPORTED) {
   pickGermanVoice();
