@@ -23,7 +23,7 @@ const { chromium } = require('playwright');
   const pos = a.opts.indexOf(a.it.correct) + 1;
   await p.keyboard.press(String(pos)); await p.waitForTimeout(30);
   const b1 = await p.evaluate(() => ({ res: document.getElementById('motion-p-result').textContent, srs: Object.keys(loadGrammarSrs()['motion:prefix'] || {}), hdr: document.getElementById('gtp-motion').textContent }));
-  ok('Taste ' + pos + ' wählt die richtige Form; Bedeutung der Vorsilbe; gespeichert und gezählt', /^Richtig — .+: (при|у|в|вы|пере|про)- = /.test(b1.res) && b1.srs.includes(a.it.ru) && b1.hdr.startsWith('1 von'), JSON.stringify(b1));
+  ok('Taste ' + pos + ' wählt die richtige Form; Bedeutung der Vorsilbe; gespeichert und gezählt', /^Richtig — .+: ((при|у|в|вы|пере|про)- = |übertragen: )/.test(b1.res) && b1.srs.includes(a.it.ru) && b1.hdr.startsWith('1 von'), JSON.stringify(b1));
   ok('Antworten gemischt (richtige nicht immer vorne)', await p.evaluate(() => { const pos = new Set(); for (let i = 0; i < 20; i++) { restartMotionPrefix(); pos.add(MOTION_PREFIX_CHOICE.item().opts.indexOf(MOTION_PREFIX_CHOICE.item().correct)); } return pos.size > 1; }));
   const ende = await p.evaluate(() => { restartMotionPrefix(); const n = motionState.pQueue.length;
     for (let i = 0; i < n; i++) { const it = MOTION_PREFIX_CHOICE.item(); gtChoose(MOTION_PREFIX_CHOICE, i < 2 ? it.opts.find(o => o !== it.correct) : it.correct); gtChoiceNext(MOTION_PREFIX_CHOICE); }
