@@ -25,8 +25,10 @@ const { chromium } = require('playwright');
     return { ok: d('признак').includes('Anzeichen') && d('исследовать')[0] === 'erforschen' && d('кипеть')[0] === 'kochen', info: [d('признак'), d('исследовать'), d('кипеть')].join(' | ') };
   }));
   await check('neue Satzformen haben eine Stufe (соседа, парке, хлеба, веревкой, унести)', () => p.evaluate(() => {
-    const f = ['соседа', 'парке', 'хлеба', 'веревкой', 'унести'].filter(x => !SENT_FORM_LEVEL.get(x));
-    return { ok: !f.length, info: f.join(', ') };
+    // парке/хлеба gehören zu A1-Karten (парк, хлеб) und gelten deshalb als A1 (15.11.: Satzstufe = leichteste Lesart)
+    const f = ['соседа', 'веревкой', 'унести'].filter(x => !SENT_FORM_LEVEL.get(x));
+    const a1 = ['парке', 'хлеба'].filter(x => sentenceLevel('Это ' + x + '.') !== 'A1');
+    return { ok: !f.length && !a1.length, info: f.concat(a1).join(', ') };
   }));
   await check('Tippfehler im Satzvergleich: Farbe aus Variable, Kontrast hell und dunkel ≥ 4,5', () => p.evaluate(() => {
     const el = document.createElement('span'); el.className = 'diff-typo'; el.textContent = 'x'; document.body.appendChild(el);
