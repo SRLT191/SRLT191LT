@@ -15161,24 +15161,32 @@ function applyLevelOrder(pool) {
   return pool.filter(w => hasCorrectAnswer(w) || (levelIdx(wordLevel(w)) < 0 ? LEVELS.length : levelIdx(wordLevel(w))) === min);
 }
 
-// Stufen der Grammatikwerkzeuge (Richtwert nach üblichen A1–B1-Lehrplänen und den
-// FIPI-Anforderungen). Einzelne Modi oder Fälle, die höher liegen als ihr Werkzeug,
-// stehen in GRAMMAR_PART_LEVEL.
+// Stufen der Grammatik (15.11. vereinheitlicht): jedes Thema hat genau eine Stufe, und die gilt in jedem Werkzeug,
+// in dem es vorkommt – auch für die Texte im Textverständnis.
+//   A1: Präsens, Vergangenheit (unvollendet), Futur mit буду; alle sechs Fälle im Singular (Substantive, Adjektive,
+//       Pronomen, auch nach Präposition: у него, со мной); Plural nur im Nominativ und nach Zahlen (пять часов);
+//       Zahl + Substantiv; Geschlecht; Satzarten außer Aufforderung und Ort/Richtung (Dativ-Sätze: мне нравится).
+//   A2: Plural in allen Fällen; Aspekt (vollendete Formen, Aspektpaare); Bewegungsverben (auch Ort/Richtung
+//       und der Wechsel в/на + Akk./Präp.); Imperativ; Rektion; Kurzform und Steigerung; кто/весь-Formen.
+// Werkzeuge, die ganz zu einer Stufe gehören, stehen in GRAMMAR_TOOL_LEVEL; Modi und Schalter, die höher liegen als
+// ihr Werkzeug, in GRAMMAR_PART_LEVEL (mit Punkt im Stufenplan) bzw. GRAMMAR_BADGE_LEVEL (nur Abzeichen).
 const GRAMMAR_TOOL_LEVEL = {
   conjugate: 'A1', transform: 'A1', aspect: 'A2', motion: 'A2', rektion: 'A2',
   noun: 'A1', caseform: 'A1', numnoun: 'A1', gender: 'A1',
   decline: 'A1', caseadj: 'A1', adjform: 'A2',
-  pronoun: 'A1', pronform: 'A1', casedrill: 'A1', wordgroup: 'A2', sentencebuild: 'A1',
+  pronoun: 'A1', pronform: 'A1', casedrill: 'A1', wordgroup: 'A1', sentencebuild: 'A1',
 };
-// nur Abzeichen, kein eigener Punkt im Stufenplan (Imperativ zählt dort schon über Konjugieren)
-const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2'], ['#nn-write-toggle', 'A2']];
+// nur Abzeichen, kein eigener Punkt im Stufenplan (Imperativ zählt dort schon über Konjugieren; „Beide“/„Alle“ enthalten den Plural)
+const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2'], ['#nn-write-toggle', 'A2'],
+  ['#noun-num-btn-both', 'A2'], ['#cf-num-mixed', 'A2'], ['#ca-num-mixed', 'A2'], ['#decl-gender-btn-all', 'A2']];
 const GRAMMAR_PART_LEVEL = [
-  ['#conj-tense-btn-imperative', 'A2'], ['[onclick="setTransformScope(\'aspect\')"]', 'A2'],
-  ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'],
-  ['#cf-case-switcher [data-v="Dat."]', 'A2'], ['#cf-case-switcher [data-v="Instr."]', 'A2'],
-  ['#ca-case-switcher [data-v="Dat."]', 'A2'], ['#ca-case-switcher [data-v="Instr."]', 'A2'],
-  ['#pronform-scope-prep', 'A2'], ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#case-plural-toggle', 'A2'],
-  ['#sb-type-dative', 'A2'], ['#sb-type-imperative', 'A2'],
+  // Verben: Imperativ, vollendete Formen (Aspekt)
+  ['#conj-tense-btn-imperative', 'A2'], ['#conj-aspect-btn-pf', 'A2'], ['[onclick="setTransformScope(\'aspect\')"]', 'A2'],
+  // Plural in allen Fällen
+  ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'], ['#decl-gender-btn-plural', 'A2'], ['#pronoun-gender-plural', 'A2'],
+  ['#case-plural-toggle', 'A2'], ['#wg-num-btn-pl', 'A2'], ['#wg-type-numadjnoun', 'A2'],
+  // кто/весь-Formen; Wechsel в/на (Ort/Richtung); Aufforderung
+  ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#sb-type-place', 'A2'], ['#sb-type-imperative', 'A2'],
 ];
 // Abzeichen an Chips, Titeln und höher liegenden Modi; über „Mein Niveau“ gedimmt
 function applyLevelMarks() {
@@ -17948,7 +17956,7 @@ const TEXTE = [
     { ru: 'Вечером мы вместе смотрим телевизор.', de: 'Abends sehen wir zusammen fern.' },
     { ru: 'Наша улица тихая.', de: 'Unsere Straße ist ruhig.', p: true },
     { ru: 'Рядом с домом есть магазин, школа и остановка.', de: 'Neben dem Haus gibt es ein Geschäft, eine Schule und eine Haltestelle.' },
-    { ru: 'Ключ от квартиры есть у меня и у родителей.', de: 'Einen Schlüssel für die Wohnung haben meine Eltern und ich.' },
+    { ru: 'Ключ от квартиры есть у меня и у мамы.', de: 'Einen Schlüssel für die Wohnung haben Mama und ich.' },
     { ru: 'Я люблю нашу квартиру.', de: 'Ich mag unsere Wohnung.' },
   ] },
   { id: 'moj-den', lvl: 'A1', titel: 'Мой день', de: 'Mein Tag', saetze: [
