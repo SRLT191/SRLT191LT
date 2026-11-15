@@ -1679,9 +1679,24 @@
   .home-hello h1 { margin: 0; font-size: 28px; font-weight: 600; }
   .home-hello p { margin: 4px 0 0; color: var(--c-text-muted); font-size: 14px; }
   .home-hello p .ti-flame { color: var(--c-warm); }
-  .home-go { height: 52px; padding: 0 24px; border-radius: 14px; border: 0; background: var(--c-accent); color: var(--c-on-accent); display: flex; align-items: center; gap: 10px; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 18px var(--c-shadow-soft, rgba(0,0,0,.12)); }
-  .home-go span { opacity: .8; font-weight: 400; font-size: 14px; }
+  .home-go, .home-go-due { height: 52px; padding: 0 24px; border-radius: 14px; border: 0; background: var(--c-accent); color: var(--c-on-accent); display: flex; align-items: center; gap: 10px; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 18px var(--c-shadow-soft, rgba(0,0,0,.12)); }
+  .home-go span, .home-go-due span { opacity: .8; font-weight: 400; font-size: 14px; }
   .home-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; grid-auto-flow: row dense; }
+  /* 15.11.: „Oft falsch“ neben beiden Stand-Karten – sonst bleibt unter „Stand je Sprachstufe“ ein Loch */
+  .home-grid > #home-hard { grid-row: span 2; }
+  .home-go-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+  .home-go.home-go-2 { background: var(--c-surface); color: var(--c-accent); border: 1px solid var(--c-border); box-shadow: none; font-size: 14px; height: 52px; padding: 0 16px; max-width: 320px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .home-go.home-go-2 span { color: var(--c-text-muted); }
+  .home-bereiche { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+  .home-bereiche b { font-weight: 600; color: var(--c-text-label); }
+  .home-zeit i, #home-weektime i { margin-right: 4px; }
+  .home-res .home-res-n { display: block; font-style: normal; font-size: 12px; color: var(--c-text-muted); margin-top: 1px; }
+  .home-week div { cursor: pointer; }
+  .home-week div.gewaehlt { outline: 2px solid var(--c-accent); outline-offset: 1px; }
+  .home-weektag { margin-top: 6px; }
+  .home-lv-tools { margin-top: 8px; padding-left: 10px; border-left: 2px solid var(--c-border-light); }
+  .home-lv-tools .home-lvr b { font-weight: 500; font-size: 12.5px; }
+  .home-lvr-auf > b::after { content: ' ▾'; font-size: 11px; font-weight: 400; color: var(--c-text-faint); }
   @media (min-width: 1600px) and (hover: hover) { #home-view { max-width: 1320px; } }
   .home-fc { margin-top: 6px; }
   .home-fc-bars { display: flex; gap: 6px; align-items: flex-end; height: 52px; }
@@ -1767,10 +1782,10 @@
   .home-click:focus-visible, .home-lvr:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
   .home-go-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 0; }
   .home-plan { font-size: 13px; color: var(--c-text-muted); max-width: 360px; text-align: right; }
-  .home-sync { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: var(--c-surface); border: 0.5px solid var(--c-typo-text); color: var(--c-typo-text); font-size: 13.5px; }
+  .home-sync { display: flex; align-items: center; gap: 8px; padding: 3px 4px 3px 10px; border-radius: 10px; background: var(--c-surface); border: 0.5px solid var(--c-typo-text); color: var(--c-typo-text); font-size: 12.5px; }
   .home-sync[hidden] { display: none; }
   .home-sync span { flex: 1; min-width: 0; }
-  .home-sync button { border: 0; border-radius: 10px; min-height: 36px; padding: 0 14px; background: var(--c-accent); color: var(--c-on-accent); font: inherit; font-weight: 600; cursor: pointer; }
+  .home-sync button { border: 0; border-radius: 8px; min-height: 28px; padding: 0 10px; font-size: 12.5px; background: var(--c-accent); color: var(--c-on-accent); font: inherit; font-weight: 600; cursor: pointer; }
   .home-sync button:disabled { opacity: .5; cursor: default; }
   .home-week div.heute { opacity: 1; box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 3.5px var(--c-accent); }
   .home-week div.leer.heute { box-shadow: 0 0 0 1.5px var(--c-accent); }
@@ -1794,11 +1809,13 @@
   @media (max-width: 900px) { .home-grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 701px) and (max-width: 1000px) { .hdr-name { display: none; } .hdr-logo { width: auto; } #view-switcher .mode-btn { padding: 7px 11px; } #app-header { gap: 10px; } }
   @media (max-width: 700px) {
-    .home-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .home-wide, .home-grid > .home-card:not(.home-pair) { grid-column: 1 / -1; }
+    .home-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .home-grid > #home-hard { grid-row: auto; } .home-wide, .home-grid > .home-card:not(.home-pair) { grid-column: 1 / -1; }
     .home-pair { padding: 12px 14px; } .home-pair .home-big { font-size: 26px; } .home-pair .home-ring { display: none; }
     .home-pair .home-k { font-size: 11px; letter-spacing: .03em; } .home-lang { display: none; }
     .home-hello { flex-direction: column; align-items: stretch; } .home-go { justify-content: center; }
-    .home-go-wrap { align-items: stretch; } .home-plan { text-align: center; max-width: none; }
+    .home-go-wrap { align-items: stretch; } .home-go-row { flex-wrap: nowrap; justify-content: stretch; } .home-go-due { flex: 1 1 auto; justify-content: center; min-width: 0; }
+    .home-go-due { overflow: hidden; white-space: nowrap; flex: 1 1 0; width: 0; } .home-go-row { min-width: 0; width: 100%; }
+    .home-go.home-go-2 { flex: 0 0 52px; width: 52px; padding: 0; justify-content: center; font-size: 0; } .home-go.home-go-2 span { display: none; } .home-go.home-go-2 i { font-size: 20px; } .home-plan { text-align: center; max-width: none; }
     .home-n { width: 70px; }
     .home-card .home-k { flex-wrap: wrap; } .home-legend { margin-left: 0; width: 100%; }
     #view-switcher .mode-btn { font-size: 10.5px; }
@@ -8679,10 +8696,47 @@ function loadDaylog() {
 function dayNote(ok) {
   const log = loadDaylog(), k = dayKey(), e = log[k] || [0, 0];
   e[0]++; if (ok) e[1]++; log[k] = e;
+  try { dayStatNote(ok); } catch (err) {}
   const keys = Object.keys(log).sort(); keys.slice(0, Math.max(0, keys.length - 400)).forEach(x => delete log[x]);
   daylogMem = log;
   deferSave(DAYLOG_KEY, () => { localStorage.setItem(DAYLOG_KEY, JSON.stringify(daylogMem || log)); daylogMem = null; });
 }
+// Tagesstatistik (15.11.): Antworten je Bereich (Vokabeln, Grammatik, Hören, Texte) und ungefähre Lernzeit.
+// Lernzeit = Abstände zwischen zwei Antworten bis 5 Minuten (längere Pausen zählen 15 s). Nur auf diesem Gerät.
+const DAYSTATS_KEY = 'vokabeltrainer-daystats';
+function cleanDaystats(x) {
+  const out = {};
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return out;
+  const zahl = v => Math.max(0, Math.round(Number(v) || 0));
+  Object.keys(x).forEach(k => {
+    if (k === 'last') { out.last = zahl(x.last); return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(k) || !x[k] || typeof x[k] !== 'object' || Array.isArray(x[k])) return;
+    const d = { ms: zahl(x[k].ms) };
+    LERN_ANSICHTEN.forEach(v => { const e = x[k][v]; if (Array.isArray(e)) { const a = zahl(e[0]); if (a) d[v] = [a, Math.min(a, zahl(e[1]))]; } });
+    out[k] = d;
+  });
+  return out;
+}
+function loadDaystats() { try { return cleanDaystats(JSON.parse(localStorage.getItem(DAYSTATS_KEY) || '{}')); } catch (e) { return {}; } }
+function dayStatNote(ok) {
+  const v = LERN_ANSICHTEN.includes(appView) ? appView : 'vocab';
+  const st = loadDaystats(), k = dayKey(), now = Date.now();
+  const d = st[k] || (st[k] = { ms: 0 });
+  const e = d[v] || (d[v] = [0, 0]); e[0]++; if (ok) e[1]++;
+  const gap = now - (st.last || 0);
+  d.ms += gap >= 0 && gap < 300000 ? gap : 15000;
+  st.last = now;
+  const tage = Object.keys(st).filter(x => x !== 'last').sort(); tage.slice(0, Math.max(0, tage.length - 60)).forEach(x => delete st[x]);
+  try { localStorage.setItem(DAYSTATS_KEY, JSON.stringify(st)); } catch (err) {}
+}
+// „ca. 1 h 10 min“
+function fmtDauer(ms) {
+  const min = Math.round((ms || 0) / 60000);
+  if (min < 1) return 'unter 1 min';
+  return 'ca. ' + (min >= 60 ? Math.floor(min / 60) + ' h' + (min % 60 ? ' ' + (min % 60) + ' min' : '') : min + ' min');
+}
+const BEREICH_NAME = { vocab: 'Vokabeln', grammar: 'Grammatik', listening: 'Hören', reading: 'Texte' };
+function dayStatTeile(d) { return d ? LERN_ANSICHTEN.filter(v => d[v]).map(v => ({ v, a: d[v][0], r: d[v][1] })) : []; }
 function mergeDaylog(aRaw, bRaw) {
   let a = {}, b = {}; try { a = cleanDaylog(JSON.parse(aRaw || '{}')); } catch (e) {} try { b = cleanDaylog(JSON.parse(bRaw || '{}')); } catch (e) {}
   const out = Object.assign({}, a);
@@ -8741,6 +8795,11 @@ function homeGrammarTools() {
 }
 function homeToolName(t) { const c = document.getElementById('gchip-' + t); return c ? c.textContent.replace(/\s+/g, ' ').trim() : t; }
 function homeOpenTool(t) { setAppView('grammar'); const c = document.getElementById('gchip-' + t); if (c) c.click(); }
+// Grammatikfehler üben (15.11.): das Werkzeug mit den meisten oft falschen Aufgaben
+function homeGrammarHard() {
+  const tools = homeGrammarTools(), t = Object.keys(tools).sort((a, b) => tools[b].hard.length - tools[a].hard.length)[0];
+  if (t && tools[t].hard.length) homeOpenTool(t); else setAppView('grammar');
+}
 // Grammatik wiederholen: das Werkzeug mit den meisten fälligen Aufgaben
 function homeGrammarDue() {
   const tools = homeGrammarTools(), t = Object.keys(tools).sort((a, b) => tools[b].due - tools[a].due)[0];
@@ -8796,11 +8855,11 @@ function homeStufenRows(rows, opt) {
   const wort = opt.wort || ['Wort', 'Wörter'];
   return rows.map((l, idx) => {
     const sum = l.L === 'Gesamt', key = (opt.id || 'lv') + '-' + idx, txt = homeZeileText(l, wort), name = l.name || (sum ? 'Gesamt' : l.L);
-    const klick = sum ? '' : `role="button" tabindex="0" aria-expanded="false" aria-controls="home-det-${key}" onclick="homeLvClick(event, '${key}', ${opt.klick ? `'${opt.klick}'` : 'null'})" onkeydown="homeKey(event)"`;
+    const klick = sum || opt.flach ? (l.tool ? `role="button" tabindex="0" onclick="homeOpenTool('${l.tool}')" onkeydown="homeKey(event)"` : '') : `role="button" tabindex="0" aria-expanded="false" aria-controls="home-det-${key}" onclick="homeLvClick(event, '${key}', ${opt.klick ? `'${opt.klick}'` : 'null'})" onkeydown="homeKey(event)"`;
     const segs = l.stufen.map((n, i) => n ? `<span class="s${i + 1}" data-st="${i + 1}" style="width:${l.anteil ? l.anteil[i] * 100 : l.total ? n / l.total * 100 : 0}%" title="${htmlEsc(name)} · Wiederholung ${i + 1}${i + 1 === LIFE_RUNS_MAX ? ' (sicher)' : ''}: ${n} ${n === 1 ? wort[0] : wort[1]} (${homeProz(n, l.total)} von ${l.total})"></span>` : '').reverse().join('');
     const up = l.bereit ? `<span class="home-up" title="${l.bereit} ${l.bereit === 1 ? wort[0] + ' kann' : wort[1] + ' können'} heute mit einer richtigen Antwort eine Stufe aufsteigen">↑${fmtN(l.bereit)}</span>` : '<span class="home-up" aria-hidden="true"></span>';
-    return `<div class="home-lvr${sum ? ' home-lvr-sum' : ''}" data-key="${key}" data-stufen="${l.stufen.join(',')}" data-total="${l.total}" ${klick} aria-label="${htmlEsc(name)}: ${l.sicher + l.arbeit} von ${l.total} geübt · ${htmlEsc(txt)}" title="${htmlEsc(txt)}"><b>${sum ? 'Σ' : htmlEsc(l.L)}</b><div class="home-t">${segs}</div>${up}<span class="home-n" title="geübt (Wiederholung 1–5) von gesamt – über einen Balkenabschnitt oder die Legende fahren zeigt eine einzelne Wiederholungsstufe">${fmtN(l.sicher + l.arbeit)} / ${fmtN(l.total)}</span><span class="home-p" title="${l.anteil ? 'Durchschnitt der Werkzeuge – jedes Werkzeug zählt gleich viel' : 'Anteil geübt (Wiederholung 1–5)'}">${l.anteil ? homeProz(l.anteil.reduce((a, b) => a + b, 0), 1) : (l.total ? Math.round((l.sicher + l.arbeit) / l.total * 100) : 0) + ' %'}</span></div>`
-      + (sum ? '' : `<div class="home-lv-det" id="home-det-${key}" hidden>${l.name ? '<b>' + htmlEsc(l.name) + ':</b> ' : ''}${htmlEsc(txt)}${opt.klick ? ` <button type="button" class="home-lv-link" onclick="${opt.klick}()">${opt.klickText || 'Übersicht'} →</button>` : ''}</div>`);
+    return `<div class="home-lvr${sum ? ' home-lvr-sum' : ''}${l.tools && l.tools.length ? ' home-lvr-auf' : ''}" data-key="${key}" data-stufen="${l.stufen.join(',')}" data-total="${l.total}" ${klick} aria-label="${htmlEsc(name)}: ${l.sicher + l.arbeit} von ${l.total} geübt · ${htmlEsc(txt)}" title="${htmlEsc(txt)}"><b>${sum ? 'Σ' : htmlEsc(l.L)}</b><div class="home-t">${segs}</div>${up}<span class="home-n" title="geübt (Wiederholung 1–5) von gesamt – über einen Balkenabschnitt oder die Legende fahren zeigt eine einzelne Wiederholungsstufe">${fmtN(l.sicher + l.arbeit)} / ${fmtN(l.total)}</span><span class="home-p" title="Fortschritt: jede Wiederholungsstufe zählt ein Fünftel (Wiederholung 1 = 20 %, 5 sicher = 100 %)${l.anteil ? ' – Durchschnitt der Werkzeuge, jedes zählt gleich viel' : ''}">${homeProz(homeFortschritt(l), 1)}</span></div>`
+      + (sum || opt.flach ? '' : `<div class="home-lv-det" id="home-det-${key}" hidden>${l.name ? '<b>' + htmlEsc(l.name) + ':</b> ' : ''}${htmlEsc(txt)}${opt.klick ? ` <button type="button" class="home-lv-link" onclick="${opt.klick}()">${opt.klickText || 'Übersicht'} →</button>` : ''}${l.tools && l.tools.length ? `<div class="home-lv home-lv-tools">${homeStufenRows(l.tools, { id: key + 't', wort: wort, flach: true })}</div>` : ''}</div>`);
   }).join('');
 }
 // Wiederholungsstufe hervorheben: Darüberfahren über einen Balkenabschnitt (diese Zeile) oder über die Legende
@@ -9084,6 +9143,8 @@ function homeGrammarRows(now) {
     GRAMMAR_CATS[c].forEach(t => { const s = src[t]; if (!s) return; total += s[1]; entries.push(...srcEntries(s, g)); });
     const z = homeStufenZeile(GRAMMAR_CAT_LABEL[c], total, entries, now);
     z.anteil = homeMittel(GRAMMAR_CATS[c].map(t => homeToolAnteile(t, g, src, now)));
+    // die Werkzeuge einzeln (15.11.): aufklappbar unter der Zeile
+    z.tools = GRAMMAR_CATS[c].map(t => { const s = src[t]; if (!s || !s[1]) return null; const r = homeStufenZeile(homeToolName(t).replace(/^\S+ · /, '').replace(/\s+(A1|A2|B1|B2|C1)$/, ''), s[1], srcEntries(s, g), now); r.tool = t; return r; }).filter(Boolean);
     return z;
   });
 }
@@ -9115,6 +9176,11 @@ function homeStufeInfo(i) {
   const t = LIFE_STEP_DAYS[i - 1];
   return 'Wiederholung ' + i + ': frühestens ' + t + (t === 1 ? ' Tag' : ' Tage') + ' nach Wiederholung ' + (i - 1) + ' mit einer richtigen Antwort'
     + (i === LIFE_RUNS_MAX ? ' – dann gilt das Wort als sicher' : '');
+}
+// Fortschritt einer Zeile (15.11.): Wiederholung k zählt k/5, sicher = 1 – statt nur „geübt“
+function homeFortschritt(l) {
+  if (l.anteil) return l.anteil.reduce((a, x, i) => a + x * (i + 1) / LIFE_RUNS_MAX, 0);
+  return l.total ? l.stufen.reduce((a, n, i) => a + n * (i + 1), 0) / (LIFE_RUNS_MAX * l.total) : 0;
 }
 function homeProz(n, total) { if (!total) return '0 %'; const p = n / total * 100; return (p > 0 && p < 1 ? '<1' : Math.round(p)) + ' %'; }
 // Summe über alle Sprachstufen (Zeile „Σ“)
@@ -9187,12 +9253,12 @@ function setHardMin(n) {
 }
 // „Älteste zuerst“: bei den fälligen Wörtern zuerst die, deren Wartezeit am längsten abgelaufen ist
 let homeDueOrder = 'zufall';
-function homeStartPool(kind, order) {
+function homeStartPool(kind, order, max) {
   homeDueOrder = kind === 'due' && order === 'alt' ? 'alt' : 'zufall';
   const now = Date.now();
   const list = kind === 'due'
     ? allVocabWords().filter(w => { const e = lifeVocabEntry(w); return e && e.d > 0 && e.d < LIFE_RUNS_MAX && now >= lifeNextDue(e); })
-    : homeHardList(homeStats().hardAll).map(x => x.w);
+    : homeHardList(homeStats().hardAll).map(x => x.w).slice(0, max || undefined);
   if (!list.length) {
     if (kind === 'due' && homeStats().dueGrammar) setAppView('grammar');
     return;
@@ -9281,18 +9347,32 @@ function homeBestwerte(log) {
 }
 // Vorwoche: Antworten der sieben Tage vor dieser Woche
 function homeVorwoche(log) { let n = 0; for (let i = 7; i < 14; i++) n += (log[dayKey(daysAgo(i))] || [0])[0]; return n; }
+// Tag der Woche antippen: Antworten, Bereiche und Lernzeit dieses Tags (15.11.)
+function homeWeekTag(k) {
+  const el = document.getElementById('home-weektag'); if (!el) return;
+  if (el.dataset.tag === k && !el.hidden) { el.hidden = true; document.querySelectorAll('.home-week div.gewaehlt').forEach(x => x.classList.remove('gewaehlt')); return; }
+  const log = loadDaylog()[k] || [0, 0], d = loadDaystats()[k], t = dayStatTeile(d);
+  const name = new Date(k + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'numeric' });
+  el.innerHTML = '<b>' + htmlEsc(name) + ':</b> ' + (log[0] ? fmtN(log[0]) + (log[0] === 1 ? ' Antwort' : ' Antworten') + ', ' + Math.round(log[1] / log[0] * 100) + ' % richtig' : 'nicht geübt')
+    + (t.length ? ' · ' + t.map(x => BEREICH_NAME[x.v] + ' ' + fmtN(x.a)).join(', ') : '') + (d && d.ms ? ' · ' + fmtDauer(d.ms) : '');
+  el.dataset.tag = k; el.hidden = false;
+  document.querySelectorAll('.home-week div').forEach(x => x.classList.toggle('gewaehlt', x.dataset.tag === k));
+}
 // Startseite: Karte „Diese Woche“ (Balken, Zahlen je Tag, Vorwoche, Bestwerte)
 function homeWeekCard(s) {
   const max = Math.max(1, ...s.week.map(d => d.n));
   return `<div class="home-card"><div class="home-k"><i class="ti ti-chart-bar"></i>Diese Woche</div>
-      ${s.weekSum ? `<div class="home-week" role="img" aria-label="Antworten der letzten sieben Tage: ${s.week.map(d => d.tag + ' ' + d.n).join(', ')}">${s.week.map((d, i) => `<div class="${d.n ? '' : 'leer'}${i === 6 ? ' heute' : ''}" style="height:${d.n ? Math.max(8, Math.round(d.n / max * 100)) : 6}%" title="${d.tag}: ${d.n ? d.n + (d.n === 1 ? ' Antwort' : ' Antworten') + ' · ' + Math.round(d.r / d.n * 100) + ' % richtig' : 'nicht geübt'}"></div>`).join('')}</div>
+      ${s.weekSum ? `<div class="home-week" role="img" aria-label="Antworten der letzten sieben Tage: ${s.week.map(d => d.tag + ' ' + d.n).join(', ')}">${s.week.map((d, i) => `<div class="${d.n ? '' : 'leer'}${i === 6 ? ' heute' : ''}" data-tag="${d.k}" onclick="homeWeekTag('${d.k}')" style="height:${d.n ? Math.max(8, Math.round(d.n / max * 100)) : 6}%" title="${d.tag}: ${d.n ? d.n + (d.n === 1 ? ' Antwort' : ' Antworten') + ' · ' + Math.round(d.r / d.n * 100) + ' % richtig' : 'nicht geübt'}"></div>`).join('')}</div>
       <div class="home-wl">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.tag}</span>`).join('')}</div>
       <div class="home-wl home-wn" id="home-weeknums">${s.week.map((d, i) => `<span${i === 6 ? ' class="heute"' : ''}>${d.n ? fmtN(d.n) : '–'}</span>`).join('')}</div>
       <div class="home-s" id="home-weeksum">${fmtN(s.weekSum)} ${s.weekSum === 1 ? 'Antwort' : 'Antworten'} · Ø ${fmtN(Math.round(s.weekSum / Math.max(1, s.weekDays)))} je Übungstag (${s.weekDays} von 7) · ${Math.round(s.weekRight / s.weekSum * 100)} % richtig</div>
       ${(() => { const log = loadDaylog(), vw = homeVorwoche(log), b = homeBestwerte(log);
         const vergleich = vw ? `<div class="home-s" id="home-vorwoche">${s.weekSum >= vw ? '+' : '−'}${Math.abs(Math.round((s.weekSum - vw) / vw * 100))} % zur Vorwoche (${fmtN(vw)})</div>` : '';
         const best = b.bestN ? `<div class="home-s home-best" id="home-best"><i class="ti ti-trophy"></i>Bester Tag: ${b.bestK === dayKey() ? 'heute' : new Date(b.bestK + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' })} (${fmtN(b.bestN)}) · längste Serie: ${b.lang} ${b.lang === 1 ? 'Tag' : 'Tage'}</div>` : '';
-        return vergleich + best; })()}`
+        const st = loadDaystats(), ms = s.week.reduce((a, d) => a + ((st[d.k] || {}).ms || 0), 0);
+        const zeit = ms ? `<div class="home-s" id="home-weektime"><i class="ti ti-clock"></i>Lernzeit ${fmtDauer(ms)}</div>` : '';
+        return zeit + vergleich + best; })()}
+      <div class="home-s home-weektag" id="home-weektag" hidden></div>`
       : '<div class="home-s home-empty" id="home-weeksum">Diese Woche noch nichts geübt.</div>'}</div>`;
 }
 function renderHome() {
@@ -9317,7 +9397,7 @@ function renderHome() {
   const naechste = s.forecast.find(d => d.n);
   el.innerHTML = `
   <div class="home-hello"><div><h1 lang="ru">${gruss}</h1><p>${htmlEsc(datum)}${s.streak ? ' · <i class="ti ti-flame"></i> ' + s.streak + (s.streak === 1 ? ' Tag' : ' Tage') + ' in Folge geübt' : ''}</p></div>
-    <div class="home-go-wrap"><button class="home-go" type="button" onclick="homeContinue()"><i class="ti ti-player-play"></i>Weiterlernen${goLabel ? '<span>· ' + htmlEsc(goLabel) + '</span>' : ''}</button>
+    <div class="home-go-wrap"><div class="home-go-row">${s.dueWords ? `<button class="home-go-due" id="home-go-due" type="button" onclick="homeStartPool('due')"><i class="ti ti-repeat"></i>Wiederholen<span>· ${fmtN(s.dueWords)} fällig</span></button>` : ''}<button class="home-go${s.dueWords ? ' home-go-2' : ''}" type="button" onclick="homeContinue()"${s.dueWords ? ' title="Weiterlernen' + (goLabel ? ' · ' + htmlEsc(goLabel) : '') + '"' : ''}><i class="ti ti-player-play"></i>Weiterlernen${goLabel ? '<span>· ' + htmlEsc(goLabel) + '</span>' : ''}</button></div>
     ${plan ? `<div class="home-plan" id="home-plan">${htmlEsc(plan)}</div>` : ''}</div></div>
   <div class="home-sync" id="home-sync" role="status" hidden><i class="ti ti-upload"></i><span>Lernstand noch nicht auf GitHub gespeichert</span><button type="button" onclick="ghSync()">Jetzt speichern</button></div>
   <div class="home-grid">
@@ -9343,6 +9423,8 @@ function renderHome() {
       ${(() => { const h = s.heuteTeile; const sum = h.v + h.g; if (!sum) return '';
         return `<div class="home-split" id="home-split" title="heute geübte verschiedene Wörter und Grammatikaufgaben"><div class="home-split-bar"><span class="v" style="width:${h.v / sum * 100}%"></span><span class="g" style="width:${h.g / sum * 100}%"></span></div>
         <div class="home-s"><span class="home-split-dot v"></span>${fmtN(h.v)} ${h.v === 1 ? 'Wort' : 'Wörter'} · <span class="home-split-dot g"></span>${fmtN(h.g)} ${h.g === 1 ? 'Grammatikaufgabe' : 'Grammatikaufgaben'}</div></div>`; })()}
+      ${(() => { const d = loadDaystats()[dayKey()], t = dayStatTeile(d); if (!t.length) return '';
+        return `<div class="home-s home-bereiche" id="home-bereiche" title="Antworten heute je Bereich (richtig/gesamt)">${t.map(x => `<span><b>${BEREICH_NAME[x.v]}</b> ${fmtN(x.r)}/${fmtN(x.a)}</span>`).join('')}<span class="home-zeit"><i class="ti ti-clock"></i>${fmtDauer(d.ms)}</span></div>`; })()}
       ${s.gewinn.neu + s.gewinn.auf + s.gewinn.gNeu + s.gewinn.gAuf ? `<div class="home-s home-gewinn" id="home-gewinn"><i class="ti ti-chart-line"></i>${[s.gewinn.neu ? s.gewinn.neu + ' neu gelernt' : '', s.gewinn.auf ? s.gewinn.auf + ' aufgestiegen' : '', s.gewinn.gNeu + s.gewinn.gAuf ? 'Grammatik ' + (s.gewinn.gNeu + s.gewinn.gAuf) : ''].filter(Boolean).join(' · ')}</div>` : ''}
       ${s.goal > 0 && s.today.a >= 2 * s.goal && DAY_GOALS.some(n => n > s.goal) ? `<div class="home-goal-pick" id="home-goal-up" role="group" aria-label="Höheres Tagesziel wählen"><span class="home-s">Höheres Ziel:</span>${DAY_GOALS.filter(n => n > s.goal).slice(0, 3).map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>` : ''}
       ${s.goal > 0 ? '' : `<div class="home-goal-pick" role="group" aria-label="Tagesziel festlegen"><span class="home-s">Tagesziel:</span>${DAY_GOALS.map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>`}</div></div>
@@ -9357,20 +9439,23 @@ function renderHome() {
       <div class="home-card home-wide" id="home-gstufen"><div class="home-k"><i class="ti ti-book"></i>Stand Grammatik</div>
       <div class="home-lv">${homeStufenRows([...gram, gsum], { id: 'gr', wort: ['Aufgabe', 'Aufgaben'] })}</div>
       <div class="home-s home-lv-sum">${fmtN(gsum.total)} Grammatikaufgaben · ${fmtN(gsum.sicher)} sicher · ${fmtN(gsum.arbeit)} in Wiederholung · ${fmtN(gsum.total - gsum.sicher - gsum.arbeit)} noch nicht geübt${gsum.bereit ? ' · ' + fmtN(gsum.bereit) + ' heute aufstiegsbereit' : ''}</div>
-      <div class="home-s">Prozent und Balken: Durchschnitt der Werkzeuge – jedes zählt gleich viel.</div></div>`; })()}
+      <div class="home-s">Prozent: Fortschritt über die Wiederholungsstufen, Durchschnitt der Werkzeuge – jedes zählt gleich viel. Ein Klick auf einen Bereich zeigt die Werkzeuge einzeln.</div></div>`; })()}
     ${(() => { const gh = Object.values(homeGrammarTools()).flatMap(x => x.hard).sort((a, b) => b.f - a.f); s.gHard = gh; return ''; })()}
     ${s.hardAll.length || s.gHard.length ? (() => {
       const liste = homeHardList(s.hardAll), mehr = liste.length - 5, eff = homeHardMin(s.hardAll);
-      const gram = s.gHard.length ? `<div class="home-hard-g" id="home-hard-g"><div class="home-s home-hard-g-k">Grammatik</div>${s.gHard.slice(0, 5).map(x => `<button type="button" class="home-hard-g-row" onclick="homeOpenTool('${x.t}')" title="${htmlEsc(homeToolName(x.t))} öffnen"><b lang="ru">${htmlEsc(homeGrammarTaskText(x.id))}</b><span>${htmlEsc(homeToolName(x.t))}</span><small>${x.f}× falsch</small></button>`).join('')}${s.gHard.length > 5 ? `<div class="home-s">und ${s.gHard.length - 5} weitere</div>` : ''}</div>` : '';
+      const gram = s.gHard.length ? `<div class="home-hard-g" id="home-hard-g"><div class="home-s home-hard-g-k">Grammatik</div>${s.gHard.slice(0, 5).map(x => `<button type="button" class="home-hard-g-row" onclick="homeOpenTool('${x.t}')" title="${htmlEsc(homeToolName(x.t))} öffnen"><b lang="ru">${htmlEsc(homeGrammarTaskText(x.id))}</b><span>${htmlEsc(homeToolName(x.t))}</span><small>${x.f}× falsch</small></button>`).join('')}${s.gHard.length > 5 ? `<div class="home-s">und ${s.gHard.length - 5} weitere</div>` : ''}<div class="home-hard-sw"><button type="button" class="home-btn" id="home-hard-g-btn" onclick="homeGrammarHard()" title="Öffnet das Grammatikwerkzeug mit den meisten oft falschen Aufgaben"><i class="ti ti-player-play"></i>Grammatikfehler üben</button></div></div>` : '';
       if (!s.hardAll.length) return `<div class="home-card" id="home-hard"><div class="home-k"><i class="ti ti-circle-x"></i>Oft falsch</div>${gram}</div>`;
       return `<div class="home-card" id="home-hard"><div class="home-k"><i class="ti ti-circle-x"></i>Oft falsch</div>
       <div class="home-hard">${liste.slice(0, 5).map(x => `<div><b lang="ru">${htmlEsc(x.w.ru)}</b><span>${htmlEsc((x.w.de || [])[0] || '')}</span><small title="Fehlerzähler: +1 bei falsch, −1 bei richtig">${x.falsch}× falsch</small></div>`).join('')}</div>
       ${mehr > 0 ? `<div class="home-s home-hard-mehr">und ${mehr} ${mehr === 1 ? 'weiteres' : 'weitere'}</div>` : ''}
       <div class="home-hard-sw"><div class="set-seg" role="group" aria-label="Wörter üben ab so vielen Fehlern">${HARD_MINS.map(n => { const k = s.hardAll.filter(x => x.falsch >= n).length; return `<button type="button" class="${n === eff ? 'on' : ''}" aria-pressed="${n === eff}" ${k ? '' : 'disabled'} onclick="setHardMin(${n})" title="${k} ${k === 1 ? 'Wort' : 'Wörter'} mit mindestens ${n} Fehlern">ab ${n}× <small>${k}</small></button>`; }).join('')}</div>
-      <button type="button" class="home-btn" onclick="homeStartPool('hard')"><i class="ti ti-player-play"></i>${liste.length === 1 ? 'Dieses Wort' : 'Alle ' + liste.length} üben</button></div>${gram}</div>`;
+      <button type="button" class="home-btn" onclick="homeStartPool('hard')"><i class="ti ti-player-play"></i>${liste.length === 1 ? 'Dieses Wort' : 'Alle ' + liste.length} üben</button>${liste.length > 5 ? `<button type="button" class="home-btn home-btn-2" id="home-hard-top5" onclick="homeStartPool('hard', null, 5)" title="Nur die fünf Wörter mit den meisten Fehlern"><i class="ti ti-player-play"></i>Top 5 üben</button>` : ''}</div>${gram}</div>`;
     })() : ''}
     <div class="home-card"><div class="home-k"><i class="ti ti-history"></i>Zuletzt geübt</div><div class="home-res">
-      ${zuletzt.map(v => `<button type="button" onclick="setAppView('${v}')"><i class="ti ${ansicht[v][0]}"></i><span>${ansicht[v][1]}${panelName(v) ? ' · ' + htmlEsc(panelName(v).replace(/^\S+ · /, '')) : ''}</span><small>${homeRelDay(s.times[v])}</small></button>`).join('') || '<div class="home-s">Noch nichts geübt – los geht’s mit „Weiterlernen“.</div>'}
+      ${zuletzt.map(v => { const tag = dayKey(new Date(s.times[v])), d = (loadDaystats()[tag] || {})[v];
+        const wann = tag === dayKey() ? new Date(s.times[v]).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : homeRelDay(s.times[v]);
+        const menge = d ? `<em class="home-res-n">${fmtN(d[0])} ${d[0] === 1 ? 'Antwort' : 'Antworten'} · ${fmtN(d[1])} richtig</em>` : '';
+        return `<button type="button" onclick="setAppView('${v}')" title="Dort weitermachen, wo du aufgehört hast"><i class="ti ${ansicht[v][0]}"></i><span>${ansicht[v][1]}${panelName(v) ? ' · ' + htmlEsc(panelName(v).replace(/^\S+ · /, '')) : ''}${menge}</span><small>${wann}</small></button>`; }).join('') || '<div class="home-s">Noch nichts geübt – los geht’s mit „Weiterlernen“.</div>'}
       ${s.bookmarks ? `<button type="button" onclick="setAppView('vocab'); selectMainCat('bookmarks')"><i class="ti ti-bookmark"></i><span>Merkliste · ${s.bookmarks}</span><small></small></button>` : ''}</div></div>
   </div>`;
   try { if (typeof ghUpdateIndicator === 'function') ghUpdateIndicator(); } catch (e) {}

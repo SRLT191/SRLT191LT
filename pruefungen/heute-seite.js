@@ -32,7 +32,9 @@ const SAAT = () => {
     const e = document.getElementById('home-weeksum'); const bars = document.querySelectorAll('.home-week div');
     return { ok: /^167 Antworten · Ø 28 je Übungstag \(6 von 7\) · 74 % richtig$/.test(e.textContent.trim()) && bars[6].classList.contains('heute') && !bars[5].classList.contains('heute'), info: e.textContent };
   }));
-  await check('Stufen: Prozent je Stufe', () => ev(() => { const p = [...document.querySelectorAll('#home-stufen .home-lvr:not(.home-lvr-sum) .home-p')].map(x => x.textContent); return { ok: p.length === 5 && p.every(x => /^\d+ %$/.test(x)) && p[0] === '5 %', info: p.join(' ') }; }));
+  await check('Stufen: Prozent je Stufe', () => ev(() => { const p = [...document.querySelectorAll('#home-stufen .home-lvr:not(.home-lvr-sum) .home-p')].map(x => x.textContent); // seit 15.11. Fortschritt: Wiederholung k zählt k/5
+    const soll = [...document.querySelectorAll('#home-stufen .home-lvr:not(.home-lvr-sum)')].map(r => { const st = r.dataset.stufen.split(',').map(Number), tot = +r.dataset.total; return homeProz(st.reduce((a, n, i) => a + n * (i + 1), 0) / (5 * tot), 1); });
+    return { ok: p.length === 5 && p.every(x => /^(<1|\d+) %$/.test(x)) && p.join() === soll.join() && p[0] !== '0 %', info: p.join(' ') }; }));
   await check('Klick auf Fällig übt genau die fälligen Wörter', () => ev(() => {
     // auch mit Stufengrenze A1: fällig ist fällig, egal welche Stufe
     // ein fälliges Wort über A1 dazunehmen (die Saat nimmt die ersten Wörter – seit der Sortierung nach Stufe alle A1)

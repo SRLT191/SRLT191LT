@@ -29,7 +29,7 @@ const { chromium } = require('playwright');
     return { up: a1.querySelector('.home-up').textContent, upT: a1.querySelector('.home-up').title, upSum: sum.querySelector('.home-up').textContent,
       title: a1.title, text: document.querySelector('#home-stufen .home-lv-sum').textContent,
       verlauf: document.querySelector('#home-stufen .home-verlauf svg').getAttribute('aria-label'), vn: document.querySelector('.home-verlauf-n').textContent,
-      gZeilen: [...document.querySelectorAll('#home-gstufen .home-lvr')].map(x => x.querySelector('b').textContent + ' ' + x.querySelector('.home-n').textContent + ' ' + x.querySelector('.home-up').textContent),
+      gZeilen: [...document.querySelectorAll('#home-gstufen > .home-lv > .home-lvr')].map(x => x.querySelector('b').textContent + ' ' + x.querySelector('.home-n').textContent + ' ' + x.querySelector('.home-up').textContent),
       gText: document.querySelector('#home-gstufen .home-lv-sum').textContent };
   });
   ok('↑2 bei A1: zwei Wörter heute aufstiegsbereit, Tooltip erklärt', r.up === '↑2' && /2 Wörter können heute mit einer richtigen Antwort eine Stufe aufsteigen/.test(r.upT) && r.upSum === '↑2', JSON.stringify([r.up, r.upT, r.upSum]));
@@ -50,7 +50,7 @@ const { chromium } = require('playwright');
   ok('Handy: Antippen klappt die Zahlen auf (mit Link zur Stufenübersicht), öffnet nichts', auf.sicht && auf.aria === 'true' && auf.link && !auf.ov && /Wiederholung 5 \(sicher\): 3/.test(auf.text) && /aufstiegsbereit/.test(auf.text), JSON.stringify(auf));
   await m.locator('#home-stufen .home-lvr').first().tap();
   ok('Handy: erneutes Antippen klappt wieder zu', await m.evaluate(() => document.getElementById('home-det-lv-0').hidden));
-  await m.locator('#home-gstufen .home-lvr').first().tap();
+  await m.locator('#home-gstufen > .home-lv > .home-lvr').first().tap();
   ok('Handy: Grammatik-Zeile klappt ebenfalls auf', await m.evaluate(() => !document.getElementById('home-det-gr-0').hidden && /Wiederholung 5 \(sicher\): 1 · Wiederholung 2: 1/.test(document.getElementById('home-det-gr-0').textContent)));
   await m.setViewportSize({ width: 320, height: 1400 }); await m.waitForTimeout(150);
   ok('320 px: kein Überlauf', await m.evaluate(() => document.documentElement.scrollWidth <= 320));
