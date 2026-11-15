@@ -42,7 +42,7 @@ const { chromium } = require('playwright');
     out.stand = JSON.stringify(loadReading()['v-magazine'].s);
     // Übungsart DE → RU: eigene Texte
     closeText(); setReadModus('de');
-    out.deListe = [...body.querySelectorAll('.rd-card')].map(x => x.dataset.id).join() === readingTexteDerArt('de').map(t => t.id).join() && !body.querySelector('.rd-card[data-id="v-magazine"]');
+    out.deListe = [...body.querySelectorAll('.rd-card')].map(x => x.dataset.id).sort().join() === readingTexteDerArt('de').map(t => t.id).sort().join() && !body.querySelector('.rd-card[data-id="v-magazine"]');
     openText('probe-de');
     out.de = [readState.modus, localStorage.getItem(READING_MODE_KEY), body.querySelector('.rd-text').getAttribute('lang'), body.querySelector('.rd-cur').textContent.trim(), document.getElementById('rd-input').getAttribute('lang'), !body.querySelector('#reading-text .rd-modus'), /Übersetzen/.test(body.querySelector('.rd-art').textContent)];
     readZeigen(); out.deLoesung = [(body.querySelector('.rd-loesung-ru') || {}).textContent, body.querySelectorAll('.rd-loesung .rd-w').length > 0];
