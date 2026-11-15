@@ -18,7 +18,8 @@ Stand: 2026-11-15. Jeder Befehl löst eine vollständige Prüfroutine aus: Der B
 | Prüfe Speicher und Lernniveau | Alle elf Befehle der Tabelle *Speicher und Lernniveau* nacheinander |
 | Prüfe GitHub und Seite | Alle sieben Befehle der Tabelle *GitHub und Seite* nacheinander |
 | Prüfe das Textverständnis | Alle fünf Befehle der Tabelle *Textverständnis* nacheinander |
-| Mach eine Gesamtprüfung | Alle acht Tabellen, also jeden Befehl dieses Plans (81 Befehle) |
+| Prüfe die Vollständigkeit | Der Befehl der Tabelle *Vollständigkeit* |
+| Mach eine Gesamtprüfung | Alle neun Tabellen, also jeden Befehl dieses Plans (82 Befehle) |
 
 Bei einem Sammelbefehl wird jeder Einzelbefehl vollständig abgearbeitet; gemeldet wird am Ende eine Liste der Funde, nach Befehl gruppiert, mit je einem Korrekturvorschlag. „Überprüfe alle Übersetzungen“ und „Überprüfe die Texte inhaltlich“ werden Wort für Wort bzw. Satz für Satz gelesen und dauern entsprechend lange.
 
@@ -181,6 +182,16 @@ Sammelbefehl: **Prüfe das Textverständnis**
 | Überprüfe die Ansicht Textverständnis | Liste nach Stufe, Stand je Text, „über deinem Niveau“; im Text Satz markieren, eigene Übersetzung, ⏎/3 zeigt die Musterübersetzung, 1/2 bewerten, 4 liest vor (nicht im Feld), Satz antippen, ganze Übersetzung, ganzen Text anhören, Abschluss, „Nicht gewusste wiederholen“, „Nochmal von vorn“; Startseite „Weiterlernen“ und „Zuletzt geübt“; Handy (Leiste unten mit fünf Knöpfen, „Texte“), Schmal- und Dunkelansicht, längster Satz ohne Überlauf (Prüfung `textverstaendnis`); dazu die drei Übungsarten mit eigenen Texten, Wort antippen (stimmt die Grundform?), neue Wörter je Text, „Weiterlesen“, „Sätze wiederholen“ auf der Startseite und der Punkt im Stufenplan (Prüfung `textverstaendnis-ausbau`) | Taste 1 bewertet, während man im Feld tippt; Knopf „Texte“ fehlt in der Leiste unten |
 | Überprüfe den Lesestand der Texte | Kennungen eindeutig und stabil (umgeschriebener Text = neue Kennung `…-2`), verwaiste Lesestände alter Kennungen, Speicher `vokabeltrainer-texte` in Sicherung und GitHub-Abgleich, Zusammenführen (jüngerer Stand je Text, „gelesen“ das Höhere, zweimal = einmal), beschädigter oder präparierter Lesestand ohne Absturz und ohne eingeschleustes HTML, Zurücksetzen und Taste + lassen ihn stehen | Text umgeschrieben, Kennung behalten – alte Bewertungen hängen an falschen Sätzen |
 
+## Vollständigkeit
+
+Sammelbefehl: **Prüfe die Vollständigkeit**
+
+**Aufbau, gegen den geprüft wird:** Vollständigkeit wird gegen feste Bezugspunkte gemessen, nicht nach Gefühl: Wortschatz gegen die Mindestlisten (A1 FIPI „Уровень 1“, A2 Lexikalisches Minimum „Базовый уровень“; B1 erst mit einer ТРКИ-1-Liste), Grammatik gegen den Stufenkatalog (in `pruefungen/vollstaendigkeit.js` als KATALOG: je Thema Stufe und eine Prüfung im Code – gebaut, teilweise, fehlt; neue Themen dort eintragen), Fertigkeiten (Wortschatz, Grammatik, Lesen, Übersetzen DE → RU, Hören, freies Schreiben, Sprechen). Ziele je Stufe (wie viele Texte, welche Abdeckung) legt der Besitzer fest.
+
+| Befehl | Was geprüft wird | Typischer Fund |
+| --- | --- | --- |
+| Prüfe die Vollständigkeit | Bericht von `pruefungen/vollstaendigkeit.js`: Karten je Stufe und mit Beispielsatz, Werkzeuge und Teile je Stufe, Grammatik-Katalog je Stufe in Prozent mit der Liste des Fehlenden, Texte je Übungsart und Stufe, Anteil der A1/A2-Karten, die in einem Text vorkommen, Fertigkeiten; dazu von Hand der Stand der Mindestlisten (Vormerkung „Wortschatz-Lücken“). Ausgabe: Tabelle je Stufe (Wortschatz, Grammatik, Texte) und Vorschläge, was als Nächstes die größte Lücke schließt | B2-Grammatik zu 57 % gebaut; keine B1-Texte; nur 12 % der A2-Karten kommen in Texten vor |
+
 ## GitHub und Seite
 
 Sammelbefehl: **Prüfe GitHub und Seite**
@@ -226,6 +237,7 @@ Sammelbefehl: **Prüfe GitHub und Seite**
 - Nach Änderungen an Schutzregeln oder Repository-Einstellungen: Überprüfe die Schutzregeln.
 - Nach einer Umbenennung von Konto oder Repository: Überprüfe Adressen und Namen.
 - Alle paar Monate: Überprüfe Konto und Einstellungen.
+- Nach einem größeren Inhaltspaket (Wörter, Grammatik, Texte) und alle paar Monate: Prüfe die Vollständigkeit.
 - Alle paar Monate oder vor dem Weitergeben: Mach eine Gesamtprüfung.
 
 ## Vorgemerkt
