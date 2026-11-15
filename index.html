@@ -24374,7 +24374,7 @@ function restartWordgroup() {
   const sbId = sb ? sbItemId(sb) : null;
   const build = (sb && sb.ru) ? WG_BUILDERS.fixed : (WG_BUILDERS[wgState.type] || WG_BUILDERS.np);
   // Wortgruppen: Kategorie nach Lernstand (13.11.)
-  const task = wgState.tool === 'sentence' ? build(sb) : gtBesteAufgabe(() => build(sb), 'wordgroup', x => x.srsKey || null, 8);
+  const task = wgState.tool === 'sentence' ? build(sb) : gtBesteAufgabe(() => build(sb), 'wordgroup', x => x.srsKey || null, 20);
 
   // Freie Wortstellung: alle Reihenfolgen der Satzblöcke gelten als richtig
   let altAnswers = [];

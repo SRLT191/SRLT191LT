@@ -53,7 +53,7 @@ const { chromium } = require('playwright');
     const info = document.getElementById('transform-info-panel').textContent;
     out.info = /Gewusst/.test(info) && /vollendet \(Vergangenheit\)/.test(info) && /zählt nicht/.test(info);
     // Tipp erscheint im Werkzeug
-    setTransformScope('past'); const w = transformState.queue[0]; const falsch = w.answer.replace(/(л|ла|ли)(ся|сь)?$/, (m0, e, r) => (e === 'ли' ? 'ла' : 'ли') + (r || ''));
+    setTransformScope('past'); { const q = transformState.queue, j = Math.max(0, q.findIndex(t => /(л|ла|ли)(ся|сь)?$/.test(t.answer))); startTransformRound([q[j]].concat(q.filter((_, i) => i !== j))); } const w = transformState.queue[0]; const falsch = w.answer.replace(/(л|ла|ли)(ся|сь)?$/, (m0, e, r) => (e === 'ли' ? 'ла' : 'ли') + (r || ''));
     document.getElementById('transform-input').value = falsch; checkTransform(); out.tippUi = (document.querySelector('#transform-result .tf-tipp') || {}).textContent || '';
     return out;
   });
