@@ -882,6 +882,7 @@
   .rd-fehler [lang="ru"] { display: block; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 16.5px; }
   .rd-fehler span + span { color: var(--c-text-secondary); font-size: 14px; }
   .rd-back { flex: 0 0 auto; }
+  #pronform-q .pf-satz { font-size: clamp(20px, 3.2vw, 28px); line-height: 1.35; }
   /* Textverständnis-Ausbau (15.11.) */
   .rd-card { grid-template-columns: minmax(0, 1fr) auto; }
   .rd-card-st { grid-row: 1; }
@@ -2514,10 +2515,11 @@
 </table>
 <p><strong>Ausnahme 11 bis 14:</strong> Sie nehmen immer den Genitiv Plural, obwohl sie auf 1–4 enden: одиннадцать столов. Das gilt auch für 111–114 usw.</p>
 <p><strong>Bedienung:</strong> Das Substantiv steht oben, die Zahl vor dem Feld; du tippst das Substantiv in der passenden Form. Unter <em>Einstellungen</em> wählst du den Zahlbereich (bis 20, bis 100, große Zahlen wie 101, 112, 1021), einen oder mehrere Regelfälle und <em>Zahl ausschreiben</em>: dann tippst du die ganze Wendung in Worten (одна мать, две матери, двадцать один стол). <em>Hilfe</em> zeigt die Regel schon vor dem Antworten. Nach dem Prüfen steht die Regel in Klammern hinter der Lösung; ein zweites <em>Prüfen</em> führt weiter. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen, ё darfst du als е schreiben. <em>Lösung zeigen</em> (Taste 3) zeigt die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch.</p>
+<p><strong>Mit Fall (B1):</strong> Zahl und Substantiv stehen nach einer Präposition im Genitiv (без), Dativ (к), Instrumental (с) oder Präpositiv (о). Dann wird auch die Zahl gebeugt, und das Substantiv steht im Plural desselben Falls: с двумя друзьями, к пяти часам, о трёх книгах, без сорока минут. 2–4: двух, двум, двумя; 5–20 und 30 auf -и, im Instrumental -ью (пятью, восемью); сорок und сто haben in allen diesen Fällen сорока, ста. Dazu оба/обе (B2): обоих/обеих, обоим/обеим, обоими/обеими. Getippt wird die Wendung ohne Präposition (двумя друзьями). Zahlbereich, Regelfälle und Ausschreiben gelten dann nicht; diese Aufgaben zählen nicht zum Fortschritt des Werkzeugs.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="nn-hint-toggle" onclick="toggleNumNounHint()" title="Regel vor dem Antworten zeigen" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Zahlen</span><div class="tense-switcher" id="nn-range-switcher" role="group" aria-label="Zahlbereich"><button data-std="1" class="mode-btn active" data-sum="bis 20" data-v="20" onclick="setNumNounRange('20')" type="button">bis 20</button><button class="mode-btn" data-sum="bis 100" data-v="100" onclick="setNumNounRange('100')" type="button">bis 100</button><button class="mode-btn" data-sum="große Zahlen" data-v="gross" onclick="setNumNounRange('gross')" title="z. B. 101, 112, 1000, 1021" type="button">große Zahlen</button></div></span><span class="gt-field"><span class="gt-field-label">Regel</span><div class="tense-switcher" id="nn-rule-switcher" role="group" aria-label="Regelfall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setNumNounRule('all')" type="button">Alle</button><button class="mode-btn" data-v="r1" onclick="setNumNounRule('r1')" title="Endziffer 1 → Nom. Sg." type="button">1</button><button class="mode-btn" data-v="r24" onclick="setNumNounRule('r24')" title="Endziffer 2–4 → Gen. Sg." type="button">2–4</button><button class="mode-btn" data-v="r5" onclick="setNumNounRule('r5')" title="Endziffer 0, 5–9 → Gen. Pl." type="button">5–0</button><button class="mode-btn" data-v="r11" onclick="setNumNounRule('r11')" title="11–14 → Gen. Pl." type="button">11–14</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="in Worten" id="nn-write-toggle" onclick="toggleNumNounWrite()" title="Ganze Wendung in Worten tippen (две матери) – übt один/одна/одно und два/две" type="button"><i class="ti ti-eye-off"></i> <span>Zahl ausschreiben</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="nn-reg-toggle" onclick="toggleNumNounReg()" title="Ohne Sonderfälle und Zählformen (пять человек)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="nn-hint-toggle" onclick="toggleNumNounHint()" title="Regel vor dem Antworten zeigen" type="button"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Zahlen</span><div class="tense-switcher" id="nn-range-switcher" role="group" aria-label="Zahlbereich"><button data-std="1" class="mode-btn active" data-sum="bis 20" data-v="20" onclick="setNumNounRange('20')" type="button">bis 20</button><button class="mode-btn" data-sum="bis 100" data-v="100" onclick="setNumNounRange('100')" type="button">bis 100</button><button class="mode-btn" data-sum="große Zahlen" data-v="gross" onclick="setNumNounRange('gross')" title="z. B. 101, 112, 1000, 1021" type="button">große Zahlen</button></div></span><span class="gt-field"><span class="gt-field-label">Regel</span><div class="tense-switcher" id="nn-rule-switcher" role="group" aria-label="Regelfall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setNumNounRule('all')" type="button">Alle</button><button class="mode-btn" data-v="r1" onclick="setNumNounRule('r1')" title="Endziffer 1 → Nom. Sg." type="button">1</button><button class="mode-btn" data-v="r24" onclick="setNumNounRule('r24')" title="Endziffer 2–4 → Gen. Sg." type="button">2–4</button><button class="mode-btn" data-v="r5" onclick="setNumNounRule('r5')" title="Endziffer 0, 5–9 → Gen. Pl." type="button">5–0</button><button class="mode-btn" data-v="r11" onclick="setNumNounRule('r11')" title="11–14 → Gen. Pl." type="button">11–14</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="in Worten" id="nn-write-toggle" onclick="toggleNumNounWrite()" title="Ganze Wendung in Worten tippen (две матери) – übt один/одна/одно und два/две" type="button"><i class="ti ti-eye-off"></i> <span>Zahl ausschreiben</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="mit Fall" id="nn-fall-toggle" onclick="toggleNumNounFall()" title="Zahl und Substantiv im Genitiv, Dativ, Instrumental oder Präpositiv – с двумя друзьями, о пяти книгах" type="button"><i class="ti ti-eye-off"></i> <span>Mit Fall</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="nn-reg-toggle" onclick="toggleNumNounReg()" title="Ohne Sonderfälle und Zählformen (пять человек)" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="numnoun-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakNumNoun()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row cf-eingabe" style="grid-template-columns: 1fr;"><span class="cf-rahmen" id="numnoun-pre" lang="ru"></span>
 <input aria-label="Form nach der Zahl" autocomplete="off" class="conj-input" id="numnoun-input" onkeydown="if(event.key==='Enter') checkNumNoun()" placeholder="Substantivform eingeben…" type="text"/>
@@ -2627,7 +2629,8 @@
 <p>• <strong>Mit Präposition:</strong> Präposition und Pronomen zusammen: к + он = к нему. Nach einer Präposition bekommt die 3. Person ein н- (у неё, с ними), und manche Präpositionen werden länger: ко мне, со мной, обо мне, передо мной.</p>
 <p>• <strong>Possessiv:</strong> мой, твой, свой, наш, ваш nach Geschlecht und Fall: мой → weiblich, Genitiv = моей. Im Akkusativ männlich und Plural sagt die Aufgabe, ob ein Ding oder ein Lebewesen gemeint ist (мой дом, моего брата).</p>
 <p>• <strong>кто · весь:</strong> Fragewörter und себя in einen Fall setzen (кто → Dativ = кому, о + что = о чём, себя → Dativ = себе) sowie весь, этот, тот nach Geschlecht und Fall (весь → weiblich, Genitiv = всей).</p>
-<p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> blendet die deutsche Entsprechung ein (к нему – zu ihm). <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die Lösung.</p>
+<p>• <strong>который · никто (B1):</strong> ein Satz mit Lücke. который richtet sich in Geschlecht und Zahl nach dem Bezugswort, der Fall nach seiner Rolle im Nebensatz (Это книга, которую я читаю). Dazu unbestimmte und verneinte Pronomen: кто-то/что-нибудь (jemand, etwas), никого, ни с кем (die Präposition steht zwischen ни und dem Pronomen), некого/нечего + Infinitiv (niemand/nichts, um … zu). Diese Aufgaben kommen nur über die eigene Auswahl, nicht unter <em>Alle</em>.</p>
+<p><strong>Bedienung:</strong> <em>Alle</em> mischt die übrigen Typen. <em>Hilfe</em> blendet die deutsche Entsprechung ein (к нему – zu ihm). <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die Lösung.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="pronform-hint-toggle" onclick="togglePronFormHint()" title="Deutsche Entsprechung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher">
@@ -2636,6 +2639,7 @@
 <button class="mode-btn" id="pronform-scope-prep" onclick="setPronFormScope('prep')">Mit Präposition</button>
 <button class="mode-btn" id="pronform-scope-poss" onclick="setPronFormScope('poss')">Possessiv</button>
 <button class="mode-btn" id="pronform-scope-extra" lang="ru" onclick="setPronFormScope('extra')">кто · весь</button>
+<button class="mode-btn" id="pronform-scope-rel" lang="ru" onclick="setPronFormScope('rel')">который · никто</button>
 </div></span></div></div></div>
 <div class="gt-task"><div class="case-question" id="pronform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakPronForm()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -2864,9 +2868,12 @@
 <p>• <strong>Imperativ:</strong> die du-Befehlsform: говорить → говори!</p>
 <p>• <strong>vollendet (Futur):</strong> der vollendete Partner mit Präsensendungen – сделаю heißt schon „ich werde (fertig) machen“.</p>
 <p>• <strong>vollendet (Vergangenheit):</strong> der vollendete Partner in der Vergangenheit – он сказал, она написала.</p>
+<p>• <strong>Adverbialpartizip (B1):</strong> unvollendet vom Präsensstamm auf -я/-а (читая – beim Lesen), vollendet auf -в/-вшись (прочитав – nachdem er gelesen hatte).</p>
+<p>• <strong>Partizip (B1):</strong> Grundform (m.) eines Partizips: Präsens Aktiv -ущий/-ющий/-ащий/-ящий (читающий – lesend), Präteritum Aktiv -вший/-ший (читавший), Präteritum Passiv -нный/-тый (прочитанный, открытый), Präsens Passiv -емый/-имый (любимый).</p>
+<p>• <strong>Passiv mit -ся (B1):</strong> Der Aktivsatz steht oben, gesucht ist das Verb im Passivsatz: Магазин открывают → Магазин открывается.</p>
 <p>• <strong>Konjunktiv (B1):</strong> Vergangenheitsform + бы – я знал бы (ich wüsste), она пришла бы (sie würde kommen). бы kann auch vor dem Verb stehen (я бы знал); hier wird es hinter das Verb geschrieben. Gezählt wird je Verb einmal.</p>
 <p><strong>Gezählt</strong> wird die Vergangenheit je Form (он, она, они einzeln; in einer Runde kommt je Verb höchstens eine davon). Das Futur mit буду ist bei allen Verben gleich gebaut: übbar, aber es zählt nicht und kommt bei <em>Alle</em> höchstens zweimal pro Runde.</p>
-<p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em>, <em>Aspekt</em> und <em>Konjunktiv</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
+<p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em>, <em>Aspekt</em>, <em>Konjunktiv</em>, <em>Adverbialpartizip</em>, <em>Partizip</em> und <em>Passiv</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
 <p>Eine Runde hat 15 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
 <p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
 <p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 15 neue Aufgaben und setzt den Zähler zurück. <em>Nur regelmäßige</em> lässt Sonderfälle und Verben mit Stammwechsel weg.</p>
@@ -2878,6 +2885,9 @@
 <button class="mode-btn" id="transform-scope-btn-imperative" onclick="setTransformScope('imperative')">Imperativ</button>
 <button class="mode-btn" id="transform-scope-btn-aspect" onclick="setTransformScope('aspect')">Aspekt</button>
 <button class="mode-btn" id="transform-scope-btn-konj" onclick="setTransformScope('konj')">Konjunktiv</button>
+<button class="mode-btn" id="transform-scope-btn-gerund" onclick="setTransformScope('gerund')">Adverbialpartizip</button>
+<button class="mode-btn" id="transform-scope-btn-part" onclick="setTransformScope('part')">Partizip</button>
+<button class="mode-btn" id="transform-scope-btn-passiv" onclick="setTransformScope('passiv')">Passiv</button>
 </div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="transform-reg-toggle" onclick="toggleTransformReg()" title="Ohne Sonderfälle und Verben mit Stammwechsel" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="transform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakTransform()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -15243,8 +15253,8 @@ const GRAMMAR_PART_LEVEL = [
   ['#case-plural-toggle', 'A2'], ['#wg-num-btn-pl', 'A2'], ['#wg-type-numadjnoun', 'A2'],
   // кто/весь-Formen; Wechsel в/на (Ort/Richtung); Aufforderung
   ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#sb-type-place', 'A2'], ['#sb-type-imperative', 'A2'],
-  // B1 (15.11.): Konjunktiv mit бы
-  ['#transform-scope-btn-konj', 'B1'],
+  // B1 (15.11.): Konjunktiv mit бы, Adverbialpartizip, Partizip, Passiv mit -ся
+  ['#transform-scope-btn-konj', 'B1'], ['#pronform-scope-rel', 'B1'], ['#nn-fall-toggle', 'B1'], ['#transform-scope-btn-gerund', 'B1'], ['#transform-scope-btn-part', 'B1'], ['#transform-scope-btn-passiv', 'B1'],
 ];
 // Abzeichen an Chips, Titeln und höher liegenden Modi; über „Mein Niveau“ gedimmt
 function applyLevelMarks() {
@@ -18412,7 +18422,7 @@ function readingWortIndex() {
     if (typeof o === 'object') Object.keys(o).forEach(k => walk(o[k], lemma, k));
   };
   const tabellen = [typeof pronounDeclensionData !== 'undefined' && pronounDeclensionData, typeof possessiveData !== 'undefined' && possessiveData,
-    typeof pronounExtraData !== 'undefined' && pronounExtraData, typeof demonstrativeData !== 'undefined' && demonstrativeData,
+    typeof pronounExtraData !== 'undefined' && pronounExtraData, typeof demonstrativeData !== 'undefined' && demonstrativeData, typeof relativeData !== 'undefined' && relativeData,
     typeof nounDeclensionData !== 'undefined' && nounDeclensionData, typeof declensionData !== 'undefined' && declensionData, typeof ADJ_FORMS !== 'undefined' && ADJ_FORMS,
     typeof conjugationData !== 'undefined' && conjugationData, typeof aspectData !== 'undefined' && aspectData, typeof motionData !== 'undefined' && motionData];
   tabellen.forEach(D => { if (D) Object.keys(D).forEach(l => walk(D[l], l, '')); });
@@ -20541,6 +20551,7 @@ const TOOL_SETTINGS = [
   ['nnRange', ...tsProp(() => numNounState, 'range'), tsOneOf('20', '100', 'gross')],
   ['nnFaelle', ...tsProp(() => numNounState, 'faelle'), v => nnFaelleOk(v)],
   ['nnSchreiben', ...tsProp(() => numNounState, 'schreiben'), TS_BOOL],
+  ['nnFall', ...tsProp(() => numNounState, 'fall'), TS_BOOL],
   ['nnRegOnly', ...tsProp(() => numNounState, 'regOnly'), TS_BOOL],
   ['cfNumber', ...tsProp(() => caseFormState, 'number'), tsOneOf('mixed', 'sg', 'pl')],
   ['cfKasus', ...tsProp(() => caseFormState, 'kasus'), v => cfKasusOk(v)],
@@ -20550,7 +20561,7 @@ const TOOL_SETTINGS = [
   ['caKasus', ...tsProp(() => caseAdjState, 'kasus'), v => cfKasusOk(v)],
   ['caGenus', ...tsProp(() => caseAdjState, 'genus'), tsOneOf('all', 'masc', 'fem', 'neut')],
   ['caHintVisible', ...tsProp(() => caseAdjState, 'hintVisible'), TS_BOOL],
-  ['pfScope', ...tsProp(() => pronFormState, 'scope'), tsOneOf('all', 'case', 'prep', 'poss', 'extra')],
+  ['pfScope', ...tsProp(() => pronFormState, 'scope'), tsOneOf('all', 'case', 'prep', 'poss', 'extra', 'rel')],
   ['pfHintVisible', ...tsProp(() => pronFormState, 'hintVisible'), TS_BOOL],
   ['afScope', ...tsProp(() => adjFormState, 'scope'), tsOneOf('all', 'short', 'comp', 'sup')],
   ['afHintVisible', ...tsProp(() => adjFormState, 'hintVisible'), TS_BOOL],
@@ -24283,7 +24294,7 @@ function speakAspect() {
 }
 function speakTransform() {
   const item = transformState.queue[transformState.index];
-  if (item) speak(transformState.answered ? item.answer : item.from);
+  if (item) speak(item.kind === 'passiv' ? (transformState.answered ? item.satz.replace('___', item.answer) : item.from) : transformState.answered ? item.answer : item.from);
 }
 function speakCaseDrill() {
   // vor der Antwort nur Präposition und Grundform, danach der ganze Satz
@@ -24311,6 +24322,7 @@ function numWordRu(n, g) {
 function speakNumNoun() {
   // vor der Antwort Zahl und Grundform (sonst wäre die Lösung zu hören), danach die Lösung
   const c = numNounState.current;
+  if (c && c.fall) { speak(numNounState.answered ? c.praep + ' ' + c.answer : c.noun); return; }
   if (c) speak(numNounState.answered && c.schreiben ? c.answer : nnZahlwort(c.n, c.noun) + ' ' + (numNounState.answered ? c.form : c.noun));
 }
 
@@ -25095,7 +25107,7 @@ const PF_DE = {
 };
 const PF_GENUS = { masc: 'männlich', fem: 'weiblich', neut: 'sächlich', plural: 'Plural' };
 const pronFormState = {
-  scope: 'all',        // all | case | prep | poss | extra
+  scope: 'all',        // all | case | prep | poss | extra | rel (B1, nur über die eigene Auswahl)
   hintVisible: true,   // deutsche Entsprechung als Hilfe
   current: null,
   done: 0,
@@ -25126,6 +25138,7 @@ function buildPronFormTask() {
   const rand = arr => arr[Math.floor(Math.random() * arr.length)];
   const typ = pronFormState.scope === 'all' ? rand(['case', 'prep', 'poss', 'extra']) : pronFormState.scope;
   if (typ === 'extra') return rand(pfExtraTasks());
+  if (typ === 'rel') return rand(pfRelTasks());
   if (typ === 'case') {
     const pr = rand(PF_PERSONAL), k = rand(PF_CASES);
     const d = pronounDeclensionData[pr];
@@ -25197,11 +25210,37 @@ function pfExtraTasks() {
   });
   return out;
 }
+// B1 (15.11., bestätigt): который im Relativsatz, unbestimmte und verneinte Pronomen – feste Sätze
+const PF_REL = [
+  ['Это друг, ___ я давно знаю.', 'которого', 'который · Akk. m · Lebewesen', 'Das ist ein Freund, den ich schon lange kenne.'],
+  ['Это книга, ___ я читаю.', 'которую', 'который · Akk. f', 'Das ist das Buch, das ich lese.'],
+  ['Вот дом, в ___ я живу.', 'котором', 'который · Präp. m', 'Hier ist das Haus, in dem ich wohne.'],
+  ['Это девушка, с ___ я работаю.', 'которой', 'который · Instr. f', 'Das ist die junge Frau, mit der ich arbeite.'],
+  ['Это люди, ___ мы помогаем.', 'которым', 'который · Dat. Pl.', 'Das sind die Leute, denen wir helfen.'],
+  ['Это город, из ___ я приехал.', 'которого', 'который · Gen. m', 'Das ist die Stadt, aus der ich gekommen bin.'],
+  ['Вот письмо, ___ пришло вчера.', 'которое', 'который · Nom. n', 'Hier ist der Brief, der gestern kam.'],
+  ['Это фильм, о ___ все говорят.', 'котором', 'который · Präp. m', 'Das ist der Film, über den alle reden.'],
+  ['Это мои друзья, ___ живут в Москве.', 'которые', 'который · Nom. Pl.', 'Das sind meine Freunde, die in Moskau wohnen.'],
+  ['Это врач, к ___ я хожу.', 'которому', 'который · Dat. m', 'Das ist der Arzt, zu dem ich gehe.'],
+  ['Мне ___ не звонил.', 'никто', 'niemand', 'Niemand hat mich angerufen.'],
+  ['Я ___ не видел.', 'никого', 'niemanden', 'Ich habe niemanden gesehen.'],
+  ['Он ___ не говорит.', 'ни с кем', 'mit niemandem', 'Er spricht mit niemandem.'],
+  ['Она ___ не думает.', 'ни о чём', 'an nichts', 'Sie denkt an nichts.'],
+  ['Мне ___ спросить.', 'некого', 'niemand(en) – zum Fragen', 'Ich habe niemanden, den ich fragen kann.'],
+  ['Нам ___ делать.', 'нечего', 'nichts – zu tun', 'Wir haben nichts zu tun.'],
+  ['___ звонит в дверь.', 'кто-то', 'jemand', 'Jemand klingelt an der Tür.'],
+  ['Ты ___ хочешь?', 'что-нибудь', 'etwas (Frage)', 'Möchtest du etwas?'],
+  ['Он ___ пишет письмо.', 'кому-то', 'jemandem', 'Er schreibt jemandem einen Brief.'],
+  ['Расскажи ___ интересное.', 'что-нибудь', 'etwas (Bitte)', 'Erzähl etwas Interessantes.'],
+];
+function pfRelTasks() {
+  return PF_REL.map(([satz, answer, task, de], i) => ({ typ: 'rel', from: satz, say: satz.replace('___', '…'), satz, task, answer, de, id: 'rel:' + i }));
+}
 // Zahl aller möglichen Aufgaben (für den Fortschritt in der Kopfzeile)
 function pronFormTotal() {
   return PF_PERSONAL.length * PF_CASES.length + PF_PERSONAL.length * PF_PREPS.length
     + Object.keys(possessiveData).length * (4 * 6 + 2 - 2)   // + belebter Akk., − Formen gleich der Grundform
-    + pfExtraTasks().length;
+    + pfExtraTasks().length + PF_REL.length;
 }
 function togglePronFormInfo() {
   const el = document.getElementById('pronform-info-panel');
@@ -25222,7 +25261,7 @@ function togglePronFormHint() {
 }
 function setPronFormScope(v) {
   pronFormState.scope = v;
-  ['all', 'case', 'prep', 'poss', 'extra'].forEach(x => {
+  ['all', 'case', 'prep', 'poss', 'extra', 'rel'].forEach(x => {
     const b = document.getElementById('pronform-scope-' + x);
     if (b) b.classList.toggle('active', x === v);
   });
@@ -25245,10 +25284,10 @@ function restartPronForm() {
   const input = document.getElementById('pronform-input');
   if (input) { input.value = ''; input.className = 'conj-input'; clearPartialFeedback(input); }
   const q = document.getElementById('pronform-q');
-  if (q) q.innerHTML = '<span class="case-prep" lang="ru">' + t.from + '</span>'
+  if (q) q.innerHTML = '<span class="case-prep' + (t.typ === 'rel' ? ' pf-satz' : '') + '" lang="ru">' + htmlEsc(t.from) + '</span>'
     + '<span id="pronform-de">' + t.de + '</span>'
     + '<span class="cf-form-chip">' + t.task + '</span>';
-  if (input) input.placeholder = /^mit Präposition/.test(t.task) ? 'Form nach der Präposition…' : String(t.task).replace(/\s*\(.*$/, '') + ' eingeben…';
+  if (input) input.placeholder = t.typ === 'rel' ? 'Fehlendes Wort…' : /^mit Präposition/.test(t.task) ? 'Form nach der Präposition…' : String(t.task).replace(/\s*\(.*$/, '') + ' eingeben…';
   applyPronFormHint();
   document.getElementById('pronform-result').textContent = '';
   document.getElementById('pronform-score').textContent = st.done ? st.correct + ' von ' + st.done + ' richtig' : '';
@@ -25257,7 +25296,7 @@ function restartPronForm() {
 const PRONFORM_DRILL = {
   p: 'pronform', st: pronFormState, task: () => pronFormState.current,
   srs: () => 'pronform', id: t => t.id, restart: () => restartPronForm(), zufall: true,
-  runde: gtRundeRegistrieren('pronform', { gruppe: x => ({ case: 'Personal', prep: 'Mit Präposition', poss: 'Possessiv', extra: 'кто · весь' })[x.typ] || x.typ, restart: () => restartPronForm(), panel: 'overlay-pronform', q: 'pronform-q', score: 'pronform-score',
+  runde: gtRundeRegistrieren('pronform', { gruppe: x => ({ case: 'Personal', prep: 'Mit Präposition', poss: 'Possessiv', extra: 'кто · весь', rel: 'который · никто' })[x.typ] || x.typ, restart: () => restartPronForm(), panel: 'overlay-pronform', q: 'pronform-q', score: 'pronform-score',
     zeile: t => gtRundeZeile('<span lang="ru">' + htmlEsc(t.from) + '</span> → ' + t.task, t.answer) }) && 'pronform',
 };
 function checkPronForm() { gtCheck(PRONFORM_DRILL); }
@@ -25265,7 +25304,9 @@ function revealPronForm() { gtReveal(PRONFORM_DRILL); }
 function nextPronForm() { gtNext(PRONFORM_DRILL); }
 function speakPronForm() {
   const st = pronFormState;
-  if (st.current) speak(st.answered ? st.current.answer : st.current.say);
+  const t = st.current; if (!t) return;
+  if (t.typ === 'rel') { const satz = t.satz.replace('___', t.answer); speak(st.answered ? satz.charAt(0).toUpperCase() + satz.slice(1) : t.say); return; }
+  speak(st.answered ? t.answer : t.say);
 }
 
 // ── Adjektive · Kurzform & Steigerung ───────────────────────────
@@ -26365,6 +26406,7 @@ const numNounState = {
   range: '20',           // 20 | 100 | gross
   faelle: 'all',         // all oder „r1,r24“ (r1 · r24 · r5 · r11)
   schreiben: false,      // Zahl ausschreiben: ganze Wendung in Worten (A2)
+  fall: false,           // Mit Fall (B1, 15.11.): Zahlwort und Substantiv in Gen./Dat./Instr./Präp.
   regOnly: false,        // ohne Sonderfälle und Zählformen
   queue: [],
 };
@@ -26408,6 +26450,9 @@ function nnMarkButtons() {
   });
   setGtToggle(document.getElementById('nn-hint-toggle'), st.hintVisible);
   setGtToggle(document.getElementById('nn-write-toggle'), st.schreiben);
+  setGtToggle(document.getElementById('nn-fall-toggle'), st.fall);
+  // „Mit Fall“ hat eigene Zahlen: Zahlbereich, Regelfälle und Ausschreiben gelten dann nicht
+  document.querySelectorAll('#nn-range-switcher [data-v], #nn-rule-switcher [data-v], #nn-write-toggle').forEach(b => { if (st.fall) b.disabled = true; else if (!(st.schreiben && b.dataset.v === 'gross')) b.disabled = false; });
   setGtToggle(document.getElementById('nn-reg-toggle'), st.regOnly);
 }
 function nnNeu() { numNounState.queue = []; nnMarkButtons(); saveToolSettings(); restartNumNoun(); updateGtSettingsSummary(); }
@@ -26425,6 +26470,38 @@ function setNumNounRule(v) {
 function toggleNumNounHint() { numNounState.hintVisible = !numNounState.hintVisible; nnMarkButtons(); saveToolSettings(); const c = document.getElementById('numnoun-rule'); if (c) c.style.display = numNounState.hintVisible ? '' : 'none'; updateGtSettingsSummary(); }
 function toggleNumNounWrite() { numNounState.schreiben = !numNounState.schreiben; if (numNounState.schreiben && numNounState.range === 'gross') numNounState.range = '100'; nnNeu(); }
 function toggleNumNounReg() { numNounState.regOnly = !numNounState.regOnly; nnNeu(); }
+function toggleNumNounFall() { numNounState.fall = !numNounState.fall; nnNeu(); }
+// ── Mit Fall (B1, bestätigt 15.11.): Zahlwort dekliniert, Substantiv im Plural desselben Falls ──
+const NN_FALL_KASUS = [['Gen.', 'без', 'Genitiv'], ['Dat.', 'к', 'Dativ'], ['Instr.', 'с', 'Instrumental'], ['Präp.', 'о', 'Präpositiv']];
+const NN_FALL_ZAHLEN = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 30, 40, 100, 'оба'];
+const NN_FALL_FEST = { 2: ['двух', 'двум', 'двумя', 'двух'], 3: ['трёх', 'трём', 'тремя', 'трёх'], 4: ['четырёх', 'четырём', 'четырьмя', 'четырёх'],
+  40: ['сорока', 'сорока', 'сорока', 'сорока'], 100: ['ста', 'ста', 'ста', 'ста'] };
+const NN_OBA = { m: ['обоих', 'обоим', 'обоими', 'обоих'], f: ['обеих', 'обеим', 'обеими', 'обеих'] };
+function nnZahlFall(n, kasus, g) {
+  const i = NN_FALL_KASUS.findIndex(k => k[0] === kasus);
+  if (n === 'оба') return NN_OBA[g === 'f' ? 'f' : 'm'][i];
+  if (NN_FALL_FEST[n]) return NN_FALL_FEST[n][i];
+  const w = numWordRu(n);                                     // пять … двадцать, тридцать
+  if (kasus === 'Instr.') return w + 'ю';                     // пятью, восемью, двадцатью
+  return w === 'восемь' ? 'восьми' : w.replace(/ь$/, 'и');    // пяти, семи, восьми, двадцати
+}
+function nnFallPraep(kasus, zahlwort) {
+  const p = NN_FALL_KASUS.find(k => k[0] === kasus)[1];
+  if (p === 'о' && /^[аеиоуэ]/.test(zahlwort)) return 'об';  // об обоих
+  if (p === 'с' && zahlwort === 'ста') return 'со';            // со ста
+  return p;
+}
+function nnFallTask(noun, kasus, n) {
+  const nd = nounDeclensionData[noun], g = nounGender(noun, nd), zahl = nnZahlFall(n, kasus, g);
+  const form = kasus === 'Gen.' && nd.countGenPl ? nd.countGenPl : nd.pl[kasus];
+  const k = NN_FALL_KASUS.find(x => x[0] === kasus);
+  return { fall: true, n, noun, kasus, praep: nnFallPraep(kasus, zahl), zahl, form, answer: zahl + ' ' + form, why: k[2] + ' Plural', rule: 'fall', de: nd.de };
+}
+function nnFallRunde() {
+  const pool = [];
+  numNounNouns().forEach(n => { if (numNounState.regOnly && isIrregularNoun(n)) return; NN_FALL_KASUS.forEach(k => pool.push([n, k[0]])); });
+  return gtLernstandRunde(pool, 'numnoun:fall', x => x[0] + ':fall:' + x[1], x => x[0]);
+}
 
 // Zahl + Substantiv braucht Singular und Plural (ohne любовь, деньги)
 function numNounNouns() { return Object.keys(nounDeclensionData).filter(n => nounHas(n, 'sg') && nounHas(n, 'pl')); }
@@ -26451,8 +26528,13 @@ function restartNumNoun() {
   const st = numNounState;
   const z = gtRundeZwang('numnoun');
   let task = z;
+  if (!task && st.fall) {
+    if (!st.queue.length || !Array.isArray(st.queue[0]) || !/\.$/.test(st.queue[0][1])) st.queue = nnFallRunde();
+    const x = st.queue.shift() || [numNounNouns()[0], 'Gen.'];
+    task = nnFallTask(x[0], x[1], NN_FALL_ZAHLEN[Math.floor(Math.random() * NN_FALL_ZAHLEN.length)]);
+  }
   if (!task) {
-    if (!st.queue.length) st.queue = nnRunde();
+    if (!st.queue.length || /\.$/.test(String((st.queue[0] || [])[1]))) st.queue = nnRunde();
     const x = st.queue.shift(), zahlen = nnZahlen();
     if (x) {
       const passend = zahlen.filter(n => nnRule(n) === x[1]);
@@ -26469,14 +26551,14 @@ function restartNumNoun() {
   input.value = '';
   input.className = 'conj-input';
   input.disabled = false;
-  input.placeholder = task.schreiben ? 'Zahl und Substantiv in Worten…' : 'Form nach ' + task.n + ' eingeben…';
+  input.placeholder = task.fall ? 'Zahl und Substantiv in Worten…' : task.schreiben ? 'Zahl und Substantiv in Worten…' : 'Form nach ' + task.n + ' eingeben…';
   clearPartialFeedback(input);
-  const regel = NN_RULES.find(r => r[0] === task.rule);
+  const regel = task.fall ? [0, 0, task.why + ' · ' + (task.n === 'оба' ? 'оба/обе' : 'Zahl') + ' mitbeugen'] : NN_RULES.find(r => r[0] === task.rule);
   document.getElementById('numnoun-q').innerHTML =
     '<span class="case-prep" lang="ru">' + task.noun + '</span>' + task.de +
-    '<span class="cf-form-chip" id="numnoun-rule"' + (st.hintVisible ? '' : ' style="display:none"') + '>' + regel[2] + '</span>' +
+    '<span class="cf-form-chip" id="numnoun-rule"' + (st.hintVisible || task.fall ? '' : ' style="display:none"') + '>' + regel[2] + '</span>' +
     '<span class="conj-dots cf-dots" id="numnoun-dots"></span>';
-  document.getElementById('numnoun-pre').textContent = task.n + (task.schreiben ? ' →' : '');
+  document.getElementById('numnoun-pre').textContent = task.fall ? task.praep + ' ' + (task.n === 'оба' ? 'оба/обе' : task.n) + ' →' : task.n + (task.schreiben ? ' →' : '');
   nnDots(task);
   document.getElementById('numnoun-result').textContent = '';
   document.getElementById('numnoun-score').textContent =
@@ -26486,6 +26568,7 @@ function restartNumNoun() {
 // Punkte je Wort: ein Punkt je Regelfall, der aktuelle markiert
 function nnDots(t) {
   const el = document.getElementById('numnoun-dots'); if (!el || !t) return;
+  if (t.fall) { el.innerHTML = ''; el.removeAttribute('role'); el.removeAttribute('aria-label'); el.title = ''; return; }
   // ohne Regelfall „1“: der zählt nicht (Antwort = das Wort selbst)
   const regeln = NN_RULES.filter(r => r[0] !== 'r1'), m = loadGrammarSrs().numnoun || {}, fertig = regeln.filter(r => srsDone(m[t.noun + ':' + NN_WHY[r[0]]]));
   el.innerHTML = regeln.map(r => '<span class="conj-dot' + (fertig.includes(r) ? ' fertig' : '') + (r[0] === t.rule ? ' jetzt' : '') + '"></span>').join('');
@@ -26494,6 +26577,9 @@ function nnDots(t) {
 }
 // nach dem Prüfen: Regel, alle drei Formen (1 · 2 · 5) und der Weg zur Tabelle
 function nnNachher(t) {
+  if (t.fall) return ' <span style="opacity:0.75">(' + t.why + ')</span><span class="cf-nachher"><span class="cf-fall" lang="ru">' + htmlEsc(t.praep + ' ' + t.answer) + '</span>'
+    + '<span class="cf-fall"><b>Zahl:</b> <span lang="ru">' + (t.n === 'оба' ? 'оба/обе' : numWordRu(t.n)) + ' → ' + htmlEsc(t.zahl) + '</span> · <b>Substantiv:</b> <span lang="ru">' + htmlEsc(t.form) + '</span></span>'
+    + '<button class="tool-btn" onclick="cfZurTabelle(\'' + t.noun + '\')" type="button"><i class="ti ti-table"></i> In Deklination öffnen</button></span>';
   const d = nounDeclensionData[t.noun], fuenf = d.countGenPl || d.pl['Gen.'];
   const formen = [[1, d.sg['Nom.'], 'r1'], [2, d.sg['Gen.'], 'r24'], [5, fuenf, 'r5']];
   const jetzt = t.rule === 'r11' ? 'r5' : t.rule;
@@ -26506,11 +26592,11 @@ function nnNachher(t) {
 // Lernstand je Substantiv und Regelfall (Endziffer 1 / 2–4 / sonst / 11–14)
 const NUMNOUN_DRILL = {
   p: 'numnoun', st: numNounState, task: () => numNounState.current,
-  srs: () => 'numnoun', id: t => t.noun + ':' + t.why,
+  srs: t => t && t.fall ? 'numnoun:fall' : 'numnoun', id: t => t.fall ? t.noun + ':fall:' + t.kasus : t.noun + ':' + t.why,
   restart: () => restartNumNoun(), zufall: true,
   runde: gtRundeRegistrieren('numnoun', { restart: () => restartNumNoun(), panel: 'overlay-numnoun', q: 'numnoun-q', score: 'numnoun-score',
-    zeile: t => gtRundeZeile('<span lang="ru">' + t.n + ' + ' + htmlEsc(t.noun) + '</span>', t.schreiben ? t.answer : t.n + ' ' + t.answer),
-    gruppe: t => (NN_RULES.find(r => r[0] === t.rule) || ['', '?'])[1] }) && 'numnoun',
+    zeile: t => t.fall ? gtRundeZeile('<span lang="ru">' + t.praep + ' ' + t.n + ' + ' + htmlEsc(t.noun) + '</span>', t.praep + ' ' + t.answer) : gtRundeZeile('<span lang="ru">' + t.n + ' + ' + htmlEsc(t.noun) + '</span>', t.schreiben ? t.answer : t.n + ' ' + t.answer),
+    gruppe: t => t.fall ? t.why : (NN_RULES.find(r => r[0] === t.rule) || ['', '?'])[1] }) && 'numnoun',
   extra: t => nnNachher(t),
   after: t => nnDots(t),
 };
@@ -26599,18 +26685,29 @@ const demonstrativeData = {
     plural:{ "Nom.":"те","Gen.":"тех","Dat.":"тем","Akk.":"те","Instr.":"теми","Präp.":"тех" },
     note: "Akkusativ maskulin/Plural: bei Lebewesen wie der Genitiv (того мальчика)." },
 };
+// который (B1, 15.11.): Relativpronomen, dekliniert wie ein Adjektiv
+const relativeData = {
+  "который": { de: "der, die, das (Relativpronomen)",
+    masc:  { "Nom.":"который","Gen.":"которого","Dat.":"которому","Akk.":"который","Instr.":"которым","Präp.":"котором" },
+    fem:   { "Nom.":"которая","Gen.":"которой","Dat.":"которой","Akk.":"которую","Instr.":"которой","Präp.":"которой" },
+    neut:  { "Nom.":"которое","Gen.":"которого","Dat.":"которому","Akk.":"которое","Instr.":"которым","Präp.":"котором" },
+    plural:{ "Nom.":"которые","Gen.":"которых","Dat.":"которым","Akk.":"которые","Instr.":"которыми","Präp.":"которых" },
+    note: "Geschlecht und Zahl wie das Bezugswort, der Fall nach der Rolle im Nebensatz: друг, которого я знаю. Akkusativ maskulin/Plural: bei Lebewesen wie der Genitiv." },
+};
 // Gruppen der Pronomen-Auswahlliste
 const PRONOUN_GROUPS = [
   ['Personalpronomen', () => Object.keys(pronounDeclensionData)],
   ['Possessivpronomen', () => Object.keys(possessiveData)],
   ['Fragewörter · себя', () => Object.keys(pronounExtraData)],
   ['весь · этот · тот', () => Object.keys(demonstrativeData)],
+  ['который (B1)', () => Object.keys(relativeData)],
 ];
 function pronounEntry(p) {
   if (pronounDeclensionData[p]) return { kind: 'simple', d: pronounDeclensionData[p] };
   if (pronounExtraData[p]) return { kind: 'simple', d: pronounExtraData[p] };
   if (possessiveData[p]) return { kind: 'gender', d: possessiveData[p] };
   if (demonstrativeData[p]) return { kind: 'gender', d: demonstrativeData[p] };
+  if (relativeData[p]) return { kind: 'gender', d: relativeData[p] };
   return null;
 }
 function togglePronounInfo() {
@@ -27760,13 +27857,51 @@ function buildTransformItems() {
       });
     }
   });
+  TF_GERUND.forEach(([inf, f]) => items.push({ kind: 'gerund', from: inf, inf, pkey: '', prompt: 'Adverbialpartizip + ' + inf,
+    task: 'Adverbialpartizip (' + (tfVollendet(inf) ? 'vollendet' : 'unvollendet') + ')', answer: f, de: tfDe(inf) }));
+  Object.entries(TF_PARTIZIP).forEach(([art, liste]) => liste.forEach(([inf, f]) => items.push({ kind: 'part', from: inf, inf, pkey: '', prompt: art + ' + ' + inf, task: art, answer: f, de: tfDe(inf) })));
+  TF_PASSIV.forEach(x => items.push({ kind: 'passiv', from: x.aktiv, inf: x.inf, pkey: '', prompt: 'Passiv + ' + x.inf, task: 'Passiv mit -ся', answer: x.answer, satz: x.satz, de: x.de }));
   // Aufgaben verwerfen, bei denen Ausgangs- und Zielform identisch sind – das
   // passiert bei быть (Präsensspalte ist bereits das Futur) und bei bereits
   // vollendeten Verben wie сказать.
   return items.filter(i => normalizeYo(i.from.toLowerCase()) !== normalizeYo(i.answer.toLowerCase()));
 }
 
-const TRANSFORM_SCOPES = ['all', 'past', 'future', 'imperative', 'aspect', 'konj'];
+const TRANSFORM_SCOPES = ['all', 'past', 'future', 'imperative', 'aspect', 'konj', 'gerund', 'part', 'passiv'];
+// B1 (15.11., bestätigt): Adverbialpartizipien, Partizipien, Passiv mit -ся – feste Formen, nichts wird per Regel geraten
+const TF_GERUND = [['читать', 'читая'], ['прочитать', 'прочитав'], ['говорить', 'говоря'], ['сказать', 'сказав'], ['делать', 'делая'], ['сделать', 'сделав'],
+  ['смотреть', 'смотря'], ['посмотреть', 'посмотрев'], ['слушать', 'слушая'], ['думать', 'думая'], ['работать', 'работая'], ['написать', 'написав'],
+  ['отвечать', 'отвечая'], ['ответить', 'ответив'], ['гулять', 'гуляя'], ['отдыхать', 'отдыхая'], ['отдохнуть', 'отдохнув'], ['готовить', 'готовя'],
+  ['приготовить', 'приготовив'], ['сидеть', 'сидя'], ['стоять', 'стоя'], ['лежать', 'лёжа'], ['идти', 'идя'], ['покупать', 'покупая'], ['купить', 'купив'],
+  ['открывать', 'открывая'], ['открыть', 'открыв'], ['вставать', 'вставая'], ['давать', 'давая'], ['волноваться', 'волнуясь'], ['возвращаться', 'возвращаясь'],
+  ['вернуться', 'вернувшись']];
+const TF_PARTIZIP = {
+  'Partizip Präsens Aktiv': [['читать', 'читающий'], ['говорить', 'говорящий'], ['работать', 'работающий'], ['жить', 'живущий'], ['писать', 'пишущий'], ['идти', 'идущий'],
+    ['сидеть', 'сидящий'], ['стоять', 'стоящий'], ['лежать', 'лежащий'], ['знать', 'знающий'], ['любить', 'любящий'], ['делать', 'делающий']],
+  'Partizip Präteritum Aktiv': [['читать', 'читавший'], ['прочитать', 'прочитавший'], ['сказать', 'сказавший'], ['написать', 'написавший'], ['купить', 'купивший'],
+    ['сделать', 'сделавший'], ['жить', 'живший'], ['видеть', 'видевший'], ['прийти', 'пришедший'], ['уйти', 'ушедший']],
+  'Partizip Präteritum Passiv': [['прочитать', 'прочитанный'], ['написать', 'написанный'], ['сделать', 'сделанный'], ['купить', 'купленный'], ['открыть', 'открытый'],
+    ['закрыть', 'закрытый'], ['построить', 'построенный'], ['приготовить', 'приготовленный'], ['сказать', 'сказанный'], ['дать', 'данный'], ['взять', 'взятый'], ['забыть', 'забытый']],
+  'Partizip Präsens Passiv': [['любить', 'любимый'], ['получать', 'получаемый'], ['читать', 'читаемый']],
+};
+// Passiv mit -ся: Aktivsatz → Passivsatz, gesucht ist die Verbform
+const TF_PASSIV = [
+  { inf: 'открывать', aktiv: 'Магазин открывают в девять.', satz: 'Магазин ___ в девять.', answer: 'открывается', de: 'Der Laden wird um neun geöffnet.' },
+  { inf: 'строить', aktiv: 'Здесь строят новый дом.', satz: 'Здесь ___ новый дом.', answer: 'строится', de: 'Hier wird ein neues Haus gebaut.' },
+  { inf: 'закрывать', aktiv: 'Магазин закрывают в восемь.', satz: 'Магазин ___ в восемь.', answer: 'закрывается', de: 'Der Laden wird um acht geschlossen.' },
+  { inf: 'читать', aktiv: 'Эту книгу читают везде.', satz: 'Эта книга ___ везде.', answer: 'читается', de: 'Dieses Buch wird überall gelesen.' },
+  { inf: 'писать', aktiv: 'Это слово пишут с большой буквы.', satz: 'Это слово ___ с большой буквы.', answer: 'пишется', de: 'Dieses Wort wird großgeschrieben.' },
+  { inf: 'готовить', aktiv: 'Обед готовят в школе.', satz: 'Обед ___ в школе.', answer: 'готовится', de: 'Das Mittagessen wird in der Schule zubereitet.' },
+  { inf: 'продавать', aktiv: 'Билеты продают в кассе.', satz: 'Билеты ___ в кассе.', answer: 'продаются', de: 'Fahrkarten werden an der Kasse verkauft.' },
+];
+// deutsche Bedeutung eines Verbs: Konjugationstabelle, vollendeter Partner, sonst die Karte
+function tfDe(inf) {
+  if (conjugationData[inf]) return conjugationData[inf].de;
+  const ipf = Object.keys(aspectData).find(k => aspectData[k].pf === inf); if (ipf) return aspectData[ipf].de || (conjugationData[ipf] || {}).de || '';
+  try { const w = readKarte(inf); if (w) return (w.de || []).slice(0, 2).join(', '); } catch (e) {}
+  return '';
+}
+function tfVollendet(inf) { return Object.keys(aspectData).some(k => aspectData[k].pf === inf) || /^(прочитать|сказать|сделать|посмотреть|написать|ответить|отдохнуть|приготовить|купить|открыть|вернуться|прийти|уйти|закрыть|построить|дать|взять|забыть)$/.test(inf); }
 function setTransformScope(scope) {
   if (!TRANSFORM_SCOPES.includes(scope)) scope = 'all';
   transformState.scope = scope;
@@ -27860,17 +27995,27 @@ function transformNoteResult(t, ok) {
 }
 // gesuchte Form als Lücke: „они ___“, beim Imperativ „(ты) ___!“
 function transformPerson(item) { const p = item.prompt.split(' + ')[0]; return p === 'он / она / оно' ? 'он' : p; }
+const TF_OHNE_PERSON = ['gerund', 'part', 'passiv'];
 function transformGapHtml(item, fill) {
   const person = transformPerson(item);
   const luecke = fill
     ? '<span class="tf-blank tf-filled ' + fill.cls + '">' + htmlEsc(fill.text) + '</span>'
     : '<span class="tf-blank"><span class="sr-only">Lücke</span><span aria-hidden="true">___</span></span>';
+  if (item.kind === 'passiv') { const [a, b] = item.satz.split('___'); return htmlEsc(a) + luecke + htmlEsc(b); }
+  if (TF_OHNE_PERSON.includes(item.kind)) return luecke;
   return item.kind === 'imperative'
     ? '<span class="tf-person">(' + person + ')</span> ' + luecke + '!'
     : '<span class="tf-person">' + person + '</span> ' + luecke;
 }
 function transformPlaceholder(item) {
-  return item.task + ' für ' + transformPerson(item);
+  return TF_OHNE_PERSON.includes(item.kind) ? item.task : item.task + ' für ' + transformPerson(item);
+}
+// Zeile der Fehlerliste am Rundenende
+function transformFehlerZeile(t) {
+  if (t.kind === 'passiv') return '<span lang="ru">' + htmlEsc(t.satz.replace('___', '')).replace(/\s+/g, ' ') + '</span> → <span lang="ru"><b>' + htmlEsc(t.answer) + '</b></span>';
+  if (TF_OHNE_PERSON.includes(t.kind)) return '<span lang="ru">' + htmlEsc(t.from) + '</span> → <span lang="ru"><b>' + htmlEsc(t.answer) + '</b></span> · ' + htmlEsc(t.task);
+  return '<span lang="ru">' + (t.fromPron ? t.fromPron + ' ' : '') + htmlEsc(t.from) + '</span> → <span lang="ru">'
+        + (t.kind === 'imperative' ? '(ты) <b>' + htmlEsc(t.answer) + '</b>!' : transformPerson(t) + ' <b>' + htmlEsc(t.answer) + '</b>') + '</span>';
 }
 
 function renderTransform() {
@@ -27887,8 +28032,7 @@ function renderTransform() {
   if (!item) {
     const st = transformState;
     document.getElementById('transform-q').innerHTML = gtRoundEndHtml(st.correct, st.queue.length,
-      st.fehler.map(t => ({ satz: '<span lang="ru">' + (t.fromPron ? t.fromPron + ' ' : '') + htmlEsc(t.from) + '</span> → <span lang="ru">'
-        + (t.kind === 'imperative' ? '(ты) <b>' + htmlEsc(t.answer) + '</b>!' : transformPerson(t) + ' <b>' + htmlEsc(t.answer) + '</b>') + '</span>' })),
+      st.fehler.map(t => ({ satz: transformFehlerZeile(t) })),
       'transform', 'repeatTransformErrors()', 'restartTransform()', gtFehlerGruppen(st.fehler, t => t.task));
     document.getElementById('transform-score').textContent = '';
     input.disabled = true;
@@ -27949,6 +28093,15 @@ function transformTipp(t, eingabe) {
     if (v === 'бы ' + ohne) return 'richtig wäre auch „' + v + '“ – hier bitte бы hinter das Verb: ' + a + '.';
     if (v === ohne) return 'Konjunktiv = Vergangenheit + бы.';
     if (/ бы$/.test(v)) return 'Vergangenheitsform passend zur Person: он -л, она -ла, они -ли, dann бы.';
+  }
+  if (t.kind === 'gerund') {
+    if (/(в|вшись)$/.test(a) && /[яа](сь)?$/.test(v)) return 'vollendetes Verb: Adverbialpartizip auf -в (rückbezüglich -вшись).';
+    if (/[яа](сь)?$/.test(a) && /(в|вшись)$/.test(v)) return 'unvollendetes Verb: Adverbialpartizip vom Präsensstamm auf -я/-а.';
+  }
+  if (t.kind === 'part' && v.length > 3 && !/(ий|ый)$/.test(v)) return 'Partizipien enden in der Grundform wie Adjektive auf -ий/-ый.';
+  if (t.kind === 'passiv') {
+    if (!/(ся|сь)$/.test(v)) return 'Passiv mit -ся: Verbform + -ся.';
+    if (/(ю|я|у|а)тся$/.test(a) && /(е|ё|и)тся$/.test(v)) return 'Mehrzahl: они-Form + -ся.';
   }
   if (t.kind === 'imperative') {
     if (v === a + 'те' || v === a.replace(/(ся|сь)$/, '') + 'тесь') return 'gesucht ist die ты-Form, ohne -те.';
