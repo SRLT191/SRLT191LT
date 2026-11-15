@@ -1147,9 +1147,27 @@
   @media (max-width: 520px) { .ht-settings { grid-template-columns: 1fr; } .ht-play { flex: 1; justify-content: center; } }
   #hoertrainer-progress { text-align: center; font-size: 12px; color: var(--c-text-faint); margin-bottom: 10px; }
   #hoertrainer-card { text-align: center; padding: 28px 12px; background: var(--c-surface-alt); border-radius: 14px; margin-bottom: 16px; min-height: 90px; }
-  #hoertrainer-word { font-size: 26px; font-weight: 600; color: var(--c-text-primary); }
+  #hoertrainer-word { font-size: 30px; font-weight: 600; color: var(--c-text-primary); }
+  #hoertrainer-meta { font-size: 12px; color: var(--c-text-faint); margin-bottom: 10px; display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  #hoertrainer-sentence { margin-top: 14px; font-size: 15px; color: var(--c-text-label); }
+  #hoertrainer-sentence:empty { display: none; }
+  #hoertrainer-sentence .ht-satz-de { font-size: 13px; color: var(--c-text-muted); margin-top: 4px; }
+  .ht-order-row .tense-switcher { flex-wrap: wrap; max-width: 100%; }
+  @media (max-width: 520px) { .ht-order-row .mode-btn { white-space: normal; } }
+  #hoertrainer-keys { text-align: center; font-size: 11px; color: var(--c-text-faint); margin-top: 10px; }
+  @media (hover: none) { #hoertrainer-keys { display: none; } }
+  #hoertrainer-cat-body { scrollbar-width: thin; scrollbar-color: var(--c-border) transparent; }
+  #hoertrainer-cat-body .cat-group-title { color: var(--c-text-label); }
+  #hoertrainer-cat-body .cat-subgroup-title { opacity: 1; color: var(--c-text-muted); }
+  #hoertrainer-cat-body .cat-group-sel { margin-left: 4px; }
+  @media (min-width: 901px) and (hover: hover) {
+    #listening-view:has(#listening-hoertrainer.open) { max-width: 920px; }
+    #hoertrainer-cat-body { max-height: none; overflow: visible; columns: 2; column-gap: 28px; }
+    #hoertrainer-cat-body .cat-check-row { break-inside: avoid; }
+    #hoertrainer-cat-body .cat-group-title { break-inside: avoid; break-after: avoid; }
+  }
   #hoertrainer-translation { font-size: 16px; color: var(--c-text-muted); margin-top: 8px; min-height: 20px; }
-  #hoertrainer-controls { display: flex; gap: 10px; }
+  #hoertrainer-controls { display: flex; gap: 8px; flex-wrap: wrap; }
   #hoertrainer-controls button { flex: 1; justify-content: center; }
   .cat-check-row-new { background: var(--c-accent-soft-bg); border-radius: 8px; margin-bottom: 4px; border-bottom: none; }
   .cat-check-row-new:hover { background: var(--c-accent-soft-bg); }
@@ -2951,9 +2969,10 @@
       <div class="overlay-body">
       <div class="conj-info-panel" id="hoertrainer-info-panel" style="display:none">
         <p><strong>Worum es geht:</strong> Zuhören ohne Tippen. Der Trainer liest die gewählten Kategorien vor: erst das russische Wort, nach einer Pause die deutsche Bedeutung. Gedacht fürs Nebenbeilernen – unterwegs, beim Aufräumen, ohne Bildschirm.</p>
-        <p><strong>Einstellungen:</strong> <em>Pause zwischen Wort und Übersetzung</em> bestimmt die Zeit zum Mitdenken, <em>Abspielgeschwindigkeit</em> das Vorlesetempo. <em>Reihenfolge</em> spielt die Wörter wie in der Kategorie oder <em>gemischt</em>. <em>Nur Russisch</em> lässt die Übersetzung weg, <em>Nach dem letzten Wort von vorn beginnen</em> startet die Liste neu (gemischt jedes Mal neu gemischt).</p>
-        <p><strong>Sprachniveau:</strong> Ist in den Einstellungen <em>Wörter bis Stufe</em> gesetzt, liest der Trainer nur Wörter bis zu dieser Stufe vor. Bleibt dabei nichts übrig, kommen alle Wörter der Kategorien.</p>
-        <p><strong>Kategorien:</strong> Die gewählten stehen als Knöpfe über der Liste – ein Klick auf × nimmt eine wieder heraus. Die Gruppen in der Liste lassen sich auf- und zuklappen und zeigen, wie viele ihrer Kategorien gewählt sind; die Suche findet jede Kategorie direkt. <em>Aus Vokabeln übernehmen</em> holt die Kategorien, die gerade in der Vokabelabfrage ausgewählt sind. Die Auswahl wird sofort gespeichert. Der Lernstand der Vokabeln ändert sich hier nicht.</p>
+        <p><strong>Einstellungen:</strong> <em>Pause zwischen Wort und Übersetzung</em> bestimmt die Zeit zum Mitdenken, <em>Abspielgeschwindigkeit</em> das Vorlesetempo. <em>Reihenfolge</em> spielt die Wörter wie in der Kategorie oder <em>gemischt</em>. <em>Nur Russisch</em> lässt die Übersetzung weg, <em>Nach dem letzten Wort von vorn beginnen</em> startet die Liste neu (gemischt jedes Mal neu gemischt). <em>Deutsch → Russisch</em> liest zuerst die Bedeutung und nach der Pause das russische Wort – zum Mitdenken und Abrufen. <em>Beispielsatz mit vorlesen</em> hängt nach jedem Wort seinen Übungssatz an.</p>
+        <p><strong>Abspielen:</strong> Groß steht das aktuelle Wort mit Kategorie und Stufe. <em>Zurück</em> und <em>Vor</em> springen ein Wort, <em>Nochmal</em> wiederholt es. Tasten: Leertaste Pause/Weiter, Pfeil links/rechts, N.</p>
+        <p><strong>Sprachniveau:</strong> <em>Wörter bis Stufe</em> wählt hier direkt, bis zu welcher Stufe vorgelesen wird. Bei <em>Alle</em> gilt die Einstellung <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen. Neben dem Knopf steht, wie viele Wörter das sind und wie lange ein Durchgang ungefähr dauert.</p>
+        <p><strong>Kategorien:</strong> Die gewählten stehen als Knöpfe über der Liste – ein Klick auf × nimmt eine wieder heraus. Die Gruppen in der Liste lassen sich auf- und zuklappen und zeigen, wie viele ihrer Kategorien gewählt sind; die Suche findet jede Kategorie direkt. <em>Aus Vokabeln übernehmen</em> holt die Kategorien, die gerade in der Vokabelabfrage ausgewählt sind. Die Auswahl wird sofort gespeichert und beim nächsten Öffnen wiederhergestellt; ist noch nichts gewählt, übernimmt der Trainer die Kategorien der Vokabelansicht. Der Lernstand der Vokabeln ändert sich hier nicht.</p>
       </div>
       <div id="hoertrainer-setup">
         <div class="ht-start">
@@ -2964,14 +2983,14 @@
           <div class="hoertrainer-pause-row">
             <label for="hoertrainer-pause-range">Pause zwischen Wort und Übersetzung</label>
             <div class="hoertrainer-pause-control">
-              <input type="range" id="hoertrainer-pause-range" min="1" max="10" step="1" value="3" oninput="updateHoertrainerPauseLabel()">
+              <input type="range" id="hoertrainer-pause-range" min="1" max="10" step="1" value="3" oninput="updateHoertrainerPauseLabel(); updateHoertrainerCatCount()">
               <span id="hoertrainer-pause-value">3 s</span>
             </div>
           </div>
           <div class="hoertrainer-pause-row">
             <label for="hoertrainer-speed-range">Abspielgeschwindigkeit</label>
             <div class="hoertrainer-pause-control">
-              <input type="range" id="hoertrainer-speed-range" min="6" max="11" step="1" value="9" oninput="updateHoertrainerSpeedLabel()">
+              <input type="range" id="hoertrainer-speed-range" min="6" max="11" step="1" value="9" oninput="updateHoertrainerSpeedLabel(); updateHoertrainerCatCount()">
               <span id="hoertrainer-speed-value">0,9×</span>
             </div>
           </div>
@@ -2982,12 +3001,33 @@
               <button class="mode-btn" id="ht-order-shuffle" onclick="setHoertrainerOrder('shuffle')">Gemischt</button>
             </div>
           </div>
+          <div class="ht-order-row">
+            <span>Richtung</span>
+            <div class="tense-switcher" role="group" aria-label="Richtung">
+              <button class="mode-btn active" id="ht-dir-ru-de" onclick="setHoertrainerOpt('dir','ru-de')">Russisch → Deutsch</button>
+              <button class="mode-btn" id="ht-dir-de-ru" onclick="setHoertrainerOpt('dir','de-ru')">Deutsch → Russisch</button>
+            </div>
+          </div>
+          <div class="ht-order-row">
+            <span>Wörter bis Stufe</span>
+            <div class="tense-switcher" role="group" aria-label="Wörter bis Stufe" id="ht-level-switch">
+              <button class="mode-btn active" data-l="" onclick="setHoertrainerOpt('level','')">Alle</button>
+              <button class="mode-btn" data-l="A1" onclick="setHoertrainerOpt('level','A1')">A1</button>
+              <button class="mode-btn" data-l="A2" onclick="setHoertrainerOpt('level','A2')">A2</button>
+              <button class="mode-btn" data-l="B1" onclick="setHoertrainerOpt('level','B1')">B1</button>
+              <button class="mode-btn" data-l="B2" onclick="setHoertrainerOpt('level','B2')">B2</button>
+            </div>
+          </div>
+          <label class="hoertrainer-loop-row">
+            <input type="checkbox" id="hoertrainer-satz-toggle" onchange="setHoertrainerOpt('satz', this.checked)">
+            <span>Beispielsatz mit vorlesen</span>
+          </label>
           <label class="hoertrainer-loop-row">
             <input type="checkbox" id="hoertrainer-loop-toggle" checked onchange="saveToolSettings()">
             <span>Nach dem letzten Wort von vorn beginnen</span>
           </label>
           <label class="hoertrainer-loop-row">
-            <input type="checkbox" id="hoertrainer-ruonly-toggle" onchange="saveToolSettings()">
+            <input type="checkbox" id="hoertrainer-ruonly-toggle" onchange="saveToolSettings(); updateHoertrainerCatCount()">
             <span>Nur Russisch (ohne deutsche Übersetzung)</span>
           </label>
         </div>
@@ -3008,14 +3048,19 @@
       <div id="hoertrainer-player" style="display:none">
         <div id="hoertrainer-progress"></div>
         <div id="hoertrainer-card">
+          <div id="hoertrainer-meta"></div>
           <div id="hoertrainer-word">–</div>
           <div id="hoertrainer-translation"></div>
+          <div id="hoertrainer-sentence"></div>
         </div>
         <div id="hoertrainer-controls">
+          <button class="tool-btn" onclick="stepHoertrainer(-1)" title="Vorheriges Wort (Pfeil links)" aria-keyshortcuts="ArrowLeft"><i class="ti ti-arrow-right" style="transform:scaleX(-1)"></i> Zurück</button>
           <button class="tool-btn" onclick="stopHoertrainer()"><i class="ti ti-player-stop"></i> Stopp</button>
-          <button class="tool-btn" onclick="repeatHoertrainerWord()"><i class="ti ti-repeat"></i> Nochmal</button>
-          <button class="tool-btn tool-btn-primary" id="hoertrainer-play-btn" onclick="toggleHoertrainerPlay()"><i class="ti ti-player-pause"></i> Pause</button>
+          <button class="tool-btn tool-btn-primary" id="hoertrainer-play-btn" onclick="toggleHoertrainerPlay()" title="Pause / Weiter (Leertaste)" aria-keyshortcuts="Space"><i class="ti ti-player-pause"></i> Pause</button>
+          <button class="tool-btn" onclick="repeatHoertrainerWord()" title="Wort nochmal (N)" aria-keyshortcuts="N"><i class="ti ti-repeat"></i> Nochmal</button>
+          <button class="tool-btn" onclick="stepHoertrainer(1)" title="Nächstes Wort (Pfeil rechts)" aria-keyshortcuts="ArrowRight"><i class="ti ti-arrow-right"></i> Vor</button>
         </div>
+        <div id="hoertrainer-keys">Leertaste: Pause/Weiter · ← → Wort zurück/vor · N: nochmal</div>
       </div>
     </div>
     </div>
@@ -17751,12 +17796,14 @@ function buildCatPickerBody(body, isChecked, onChange, opts) {
     SUBSTANTIVE_GROUPS[groupName].forEach(cat => body.appendChild(makeRow(cat, groupName)));
   });
   const wortartCats = Object.values(WORTART_GROUPS).flat().concat(UNGROUPED_FLAT_CATS);
+  // im Hörtrainer (klappbar) stehen auch die ungruppierten Kategorien (Zahlen) in einer Gruppe
+  const wGroups = opts.collapsible ? Object.assign({}, WORTART_GROUPS, { 'Inhaltswörter': WORTART_GROUPS['Inhaltswörter'].concat(UNGROUPED_FLAT_CATS) }) : WORTART_GROUPS;
   body.appendChild(makeGroupTitle('Wortarten', wortartCats));
-  Object.keys(WORTART_GROUPS).forEach(groupName => {
-    body.appendChild(makeGroupTitle(groupName, WORTART_GROUPS[groupName], true));
-    WORTART_GROUPS[groupName].forEach(cat => body.appendChild(makeRow(cat, groupName)));
+  Object.keys(wGroups).forEach(groupName => {
+    body.appendChild(makeGroupTitle(groupName, wGroups[groupName], true));
+    wGroups[groupName].forEach(cat => body.appendChild(makeRow(cat, groupName)));
   });
-  UNGROUPED_FLAT_CATS.forEach(cat => body.appendChild(makeRow(cat)));
+  if (!opts.collapsible) UNGROUPED_FLAT_CATS.forEach(cat => body.appendChild(makeRow(cat)));
   updateCatPickerGroupChecks(body);
   if (opts.collapsible) applyCatPickerFilter(body, body._query || '');
 }
@@ -17776,7 +17823,13 @@ function updateCatPickerGroupChecks(body) {
     gc.checked = total > 0 && on === total;
     gc.indeterminate = on > 0 && on < total;
     const sel = t.querySelector('.cat-group-sel');
-    if (sel) { sel.textContent = on + ' von ' + total; sel.classList.toggle('some', on > 0); }
+    if (sel) {
+      // Kategorien und Wörter einheitlich zählen (wie die Zeilen: „N Wörter“)
+      let woerter = 0;
+      cats.forEach(c => { if (body.querySelector('input[data-cat="' + c + '"]')) woerter += getAllWordsOfCat(c).length; });
+      sel.textContent = on + ' von ' + total + (total === 1 ? ' Kategorie' : ' Kategorien') + ' · ' + woerter + ' Wörter';
+      sel.classList.toggle('some', on > 0);
+    }
   });
 }
 // Suche und zugeklappte Gruppen gemeinsam anwenden: bei aktiver Suche sind alle
@@ -29110,7 +29163,61 @@ const htState = {
   playing: false,
   timer: null,
   order: 'seq',        // seq | shuffle
+  step: 0,             // Schritt innerhalb des Worts (htSchritte)
+  catOf: new Map(),    // Wort → Kategorie (Anzeige)
 };
+// Optionen (15.11.): Richtung, Stufe, Beispielsatz – eigener Schlüssel
+const HOERTRAINER_OPTS_KEY = 'vokabeltrainer-hoertrainer-opts';
+const htOpts = { dir: 'ru-de', level: '', satz: false };
+function loadHoertrainerOpts() {
+  try {
+    const d = JSON.parse(localStorage.getItem(HOERTRAINER_OPTS_KEY) || 'null') || {};
+    if (d.dir === 'de-ru' || d.dir === 'ru-de') htOpts.dir = d.dir;
+    if (d.level === '' || LEVELS.includes(d.level)) htOpts.level = d.level;
+    htOpts.satz = d.satz === true;
+  } catch (e) {}
+}
+function markHoertrainerOpts() {
+  ['ru-de', 'de-ru'].forEach(d => { const b = document.getElementById('ht-dir-' + d); if (b) b.classList.toggle('active', htOpts.dir === d); });
+  document.querySelectorAll('#ht-level-switch .mode-btn').forEach(b => b.classList.toggle('active', b.dataset.l === htOpts.level));
+  const sz = document.getElementById('hoertrainer-satz-toggle'); if (sz) sz.checked = htOpts.satz;
+}
+function setHoertrainerOpt(k, v) {
+  htOpts[k] = v;
+  try { localStorage.setItem(HOERTRAINER_OPTS_KEY, JSON.stringify(htOpts)); } catch (e) {}
+  markHoertrainerOpts();
+  updateHoertrainerCatCount();
+}
+// Wörter der Auswahl nach Stufe: eigene Stufe des Hörtrainers, sonst die allgemeine Einstellung
+function htFilterLevel(words) {
+  if (!htOpts.level) return filterLevelOrAll(words, wordLevel);
+  const max = levelIdx(htOpts.level);
+  return words.filter(w => levelIdx(wordLevel(w)) <= max);
+}
+function htAuswahlWoerter() {
+  const out = [], seen = new Set();
+  htState.catOf = new Map();
+  htState.selectedCats.forEach(cat => getAllWordsOfCat(cat).forEach(w => {
+    if (seen.has(w.ru)) return;
+    seen.add(w.ru); out.push(w); htState.catOf.set(w.ru, cat);
+  }));
+  return htFilterLevel(out);
+}
+// Schritte je Wort: Richtung, „Nur Russisch“, Beispielsatz
+function htSchritte(w) {
+  const ruOnly = document.getElementById('hoertrainer-ruonly-toggle').checked;
+  const st = ruOnly ? ['ru'] : (htOpts.dir === 'de-ru' ? ['de', 'ru'] : ['ru', 'de']);
+  if (htOpts.satz && w && getWordSentence(w)) { st.push('satz-ru'); if (!ruOnly) st.push('satz-de'); }
+  return st;
+}
+// grobe Dauer eines Durchgangs in Minuten
+function htDauerMin(n) {
+  const rate = hoertrainerRate(), pause = parseInt(document.getElementById('hoertrainer-pause-range').value, 10) || 3;
+  const ruOnly = document.getElementById('hoertrainer-ruonly-toggle').checked;
+  let sek = (1.1 / rate + pause) + (ruOnly ? 0 : 1.4 / rate + pause);
+  if (htOpts.satz) sek += (2.8 / rate + pause) * (ruOnly ? 1 : 2);
+  return Math.max(1, Math.round(n * sek / 60));
+}
 function shuffleHoertrainerQueue() {
   const q = htState.queue;
   for (let i = q.length - 1; i > 0; i--) {
@@ -29155,6 +29262,10 @@ function openHoertrainer() {
     const savedCats = JSON.parse(localStorage.getItem(HOERTRAINER_CATS_KEY) || 'null');
     if (Array.isArray(savedCats)) htState.selectedCats = new Set(savedCats.map(migrateCatName).filter(c => vocab[c]));
   } catch (e) {}
+  // nichts gespeichert: Kategorien der Vokabelansicht übernehmen, damit „Abspielen“ sofort geht
+  if (!htState.selectedCats.size) { try { htState.selectedCats = new Set(vocabSelectionCats()); } catch (e) {} }
+  loadHoertrainerOpts();
+  markHoertrainerOpts();
   let savedPause = 3;
   try {
     const p = parseInt(localStorage.getItem(HOERTRAINER_PAUSE_KEY), 10);
@@ -29247,14 +29358,14 @@ function setHoertrainerOrder(v) {
 function updateHoertrainerCatCount() {
   const checks = [...document.querySelectorAll('#hoertrainer-cat-body input[data-cat]')];
   const chosen = checks.filter(cb => cb.checked);
-  let words = 0;
-  chosen.forEach(cb => { words += getAllWordsOfCat(cb.dataset.cat).length; });
+  htState.selectedCats = new Set(chosen.map(cb => cb.dataset.cat));
+  const words = chosen.length ? htAuswahlWoerter().length : 0;
   const el = document.getElementById('hoertrainer-cat-count');
-  if (el) el.textContent = chosen.length
-    ? (chosen.length === 1 ? '1 Kategorie' : chosen.length + ' Kategorien') + ' · ' + words + ' Wörter'
-    : 'Noch keine Kategorie gewählt';
+  if (el) el.textContent = !chosen.length ? 'Noch keine Kategorie gewählt'
+    : (chosen.length === 1 ? '1 Kategorie' : chosen.length + ' Kategorien') + ' · ' + words + ' Wörter'
+      + (htOpts.level ? ' bis ' + htOpts.level : '') + (words ? ' · ca. ' + htDauerMin(words) + ' Min.' : '');
   const play = document.getElementById('ht-play-btn');
-  if (play) play.disabled = !chosen.length;
+  if (play) play.disabled = !chosen.length || !words;
 }
 
 function setAllHoertrainerCatCheckboxes(state) {
@@ -29287,16 +29398,13 @@ function startHoertrainer() {
   const pauseSec = parseInt(document.getElementById('hoertrainer-pause-range').value, 10);
   try { localStorage.setItem(HOERTRAINER_PAUSE_KEY, String(pauseSec)); } catch (e) {}
 
-  htState.queue = [];
-  htState.selectedCats.forEach(cat => {
-    htState.queue = htState.queue.concat(getAllWordsOfCat(cat));
-  });
-  if (htState.queue.length === 0) { alert('Die gewählten Kategorien enthalten keine Wörter.'); return; }
-  htState.queue = filterLevelOrAll(htState.queue, wordLevel);
+  htState.queue = htAuswahlWoerter();
+  if (htState.queue.length === 0) { alert('Die gewählten Kategorien enthalten keine Wörter dieser Stufe.'); return; }
   if (htState.order === 'shuffle') shuffleHoertrainerQueue();
 
   htState.index = 0;
   htState.phase = 'word';
+  htState.step = 0;
   htState.playing = true;
   // Stimmen frisch bestimmen (unter Windows sind sie beim Öffnen oft noch leer)
   pickRussianVoice();
@@ -29318,46 +29426,67 @@ function startHoertrainer() {
   playHoertrainerStep();
 }
 
+function htZeigeWort(word, bisSchritt) {
+  const st = htSchritte(word);
+  const zeigt = st.slice(0, bisSchritt + 1);
+  const de = (word.de || []).join(', ');
+  const deZuerst = st[0] === 'de';
+  const ruSichtbar = zeigt.includes('ru'), deSichtbar = zeigt.includes('de');
+  document.getElementById('hoertrainer-word').textContent = deZuerst ? (deSichtbar ? de : '') : (ruSichtbar ? word.ru : '');
+  document.getElementById('hoertrainer-translation').textContent = deZuerst ? (ruSichtbar ? word.ru : '') : (deSichtbar ? de : '');
+  const satzEl = document.getElementById('hoertrainer-sentence');
+  const satz = zeigt.includes('satz-ru') ? getWordSentence(word) : null;
+  satzEl.innerHTML = '';
+  if (satz) {
+    satzEl.appendChild(document.createTextNode(satz.ru));
+    if (zeigt.includes('satz-de')) { const d = document.createElement('div'); d.className = 'ht-satz-de'; d.textContent = satz.de; satzEl.appendChild(d); }
+  }
+  const cat = htState.catOf.get(word.ru);
+  document.getElementById('hoertrainer-meta').innerHTML = (cat ? '<span>' + escapeHtmlText(cat) + '</span>' : '') + lvlBadge(wordLevel(word));
+  document.getElementById('hoertrainer-progress').textContent = 'Wort ' + (htState.index + 1) + ' von ' + htState.queue.length;
+}
+function escapeHtmlText(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
 function playHoertrainerStep() {
   if (!htState.playing) return;
   if (!htState.queue.length) { stopHoertrainer(); return; }
   if (htState.index >= htState.queue.length) {
     const loop = document.getElementById('hoertrainer-loop-toggle').checked;
-    if (loop) { htState.index = 0; if (htState.order === 'shuffle') shuffleHoertrainerQueue(); }
+    if (loop) { htState.index = 0; htState.step = 0; if (htState.order === 'shuffle') shuffleHoertrainerQueue(); }
     else { stopHoertrainer(); return; }
   }
+  if (htState.index < 0) htState.index = 0;
   const pauseSec = parseInt(document.getElementById('hoertrainer-pause-range').value, 10) || 3;
-  const ruOnly = document.getElementById('hoertrainer-ruonly-toggle').checked;
   const rate = hoertrainerRate();
   const word = htState.queue[htState.index];
-  document.getElementById('hoertrainer-progress').textContent =
-    'Wort ' + (htState.index + 1) + ' von ' + htState.queue.length;
+  const st = htSchritte(word);
+  if (htState.step >= st.length) htState.step = 0;
+  const art = st[htState.step];
+  htState.phase = art === 'ru' && htState.step === 0 ? 'word' : 'translation';
+  htZeigeWort(word, htState.step);
+  const satz = art.startsWith('satz') ? getWordSentence(word) : null;
+  const text = art === 'ru' ? word.ru : art === 'de' ? (word.de || []).join(', ') : art === 'satz-ru' ? (satz && satz.ru) : (satz && satz.de);
+  const ru = art === 'ru' || art === 'satz-ru';
+  speakHoertrainer(text, ru ? 'ru-RU' : 'de-DE', ru ? russianVoice : germanVoice, () => {
+    if (!htState.playing) return;
+    htState.timer = setTimeout(() => {
+      if (!htState.playing) return;
+      htState.step++;
+      if (htState.step >= st.length) { htState.index++; htState.step = 0; }
+      playHoertrainerStep();
+    }, pauseSec * 1000);
+  }, rate);
+}
 
-  if (htState.phase === 'word') {
-    document.getElementById('hoertrainer-word').textContent = word.ru;
-    document.getElementById('hoertrainer-translation').textContent = '';
-    speakHoertrainer(word.ru, 'ru-RU', russianVoice, () => {
-      if (!htState.playing) return;
-      htState.timer = setTimeout(() => {
-        if (!htState.playing) return;
-        if (ruOnly) { htState.index++; htState.phase = 'word'; }
-        else htState.phase = 'translation';
-        playHoertrainerStep();
-      }, pauseSec * 1000);
-    }, rate);
-  } else {
-    const deText = (word.de || []).join(', ');
-    document.getElementById('hoertrainer-translation').textContent = deText;
-    speakHoertrainer(deText, 'de-DE', germanVoice, () => {
-      if (!htState.playing) return;
-      htState.timer = setTimeout(() => {
-        if (!htState.playing) return;
-        htState.index++;
-        htState.phase = 'word';
-        playHoertrainerStep();
-      }, pauseSec * 1000);
-    }, rate);
-  }
+// ein Wort vor oder zurück (Knöpfe, Pfeiltasten); läuft weiter, wenn gerade abgespielt wird
+function stepHoertrainer(delta) {
+  if (!htState.queue.length) return;
+  clearTimeout(htState.timer);
+  try { speechSynthesis.cancel(); } catch (e) {}
+  htState.index = Math.max(0, Math.min(htState.queue.length - 1, htState.index + delta));
+  htState.step = 0;
+  if (htState.playing) playHoertrainerStep();
+  else { const w = htState.queue[htState.index]; htZeigeWort(w, htSchritte(w).length - 1); }
 }
 
 // spielt das aktuelle Wort erneut ab, ohne die Sequenz zu verschieben
@@ -29365,11 +29494,14 @@ function repeatHoertrainerWord() {
   if (!htState.queue.length) return;
   clearTimeout(htState.timer);
   try { speechSynthesis.cancel(); } catch (e) {}
-  const word = htState.queue[Math.min(htState.index, htState.queue.length - 1)];
+  htState.index = Math.min(htState.index, htState.queue.length - 1);
+  const word = htState.queue[htState.index];
   const wasPlaying = htState.playing;
   htState.playing = true;
+  htState.step = 0;
   speakHoertrainer(word.ru, 'ru-RU', russianVoice, () => {
     if (wasPlaying && htState.playing) { htState.phase = 'word'; playHoertrainerStep(); }
+    else htState.playing = false;
   }, hoertrainerRate());
 }
 
@@ -29401,12 +29533,29 @@ function stopHoertrainer() {
   try { speechSynthesis.cancel(); } catch (e) {}
   htState.index = 0;
   htState.phase = 'word';
+  htState.step = 0;
   document.getElementById('hoertrainer-word').textContent = '–';
   document.getElementById('hoertrainer-translation').textContent = '';
+  document.getElementById('hoertrainer-sentence').innerHTML = '';
+  document.getElementById('hoertrainer-meta').innerHTML = '';
   document.getElementById('hoertrainer-progress').textContent = '';
   document.getElementById('hoertrainer-setup').style.display = '';
   document.getElementById('hoertrainer-player').style.display = 'none';
 }
+
+// Tasten im laufenden Hörtrainer: Leertaste Pause/Weiter, Pfeile Wort zurück/vor, N nochmal
+document.addEventListener('keydown', e => {
+  if (appView !== 'listening' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const player = document.getElementById('hoertrainer-player');
+  const panel = document.getElementById('listening-hoertrainer');
+  if (!player || player.style.display === 'none' || !panel || !panel.classList.contains('open')) return;
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+  if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); toggleHoertrainerPlay(); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); stepHoertrainer(1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); stepHoertrainer(-1); }
+  else if (e.key === 'n' || e.key === 'N') { e.preventDefault(); repeatHoertrainerWord(); }
+});
 
 // ── Hörquiz (aktives Hörverstehen: Tippen / Raten / Auswahl) ────
 // Zustand: Hörquiz
