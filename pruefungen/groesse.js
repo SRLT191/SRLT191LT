@@ -44,7 +44,10 @@ const { chromium } = require('playwright');
   await check('Hören: eigene Breite', async () => {
     await p.evaluate(() => setAppView('listening')); const h0 = await breite('listening-view');
     await ziehe('listening-view', 60); const h1 = await breite('listening-view');
-    return { ok: h0 === 600 && Math.abs(h1 - 720) <= 4, info: h0 + ' → ' + h1 };
+    // mit offenem Hörtrainer ist die Grundbreite 920 px (15.11.), sonst 600 px; Ziehen um 60 px verbreitert beidseitig um 120 px
+    const ht = await p.evaluate(() => document.getElementById('listening-hoertrainer').classList.contains('open'));
+    const g = ht ? 920 : 600;
+    return { ok: h0 === g && Math.abs(h1 - (g + 120)) <= 4, info: h0 + ' → ' + h1 };
   });
   // Dialoge
   const box = id => p.evaluate(id => { const r = document.querySelector('#' + id + ' .overlay-box').getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height), x: r.right, y: r.bottom }; }, id);

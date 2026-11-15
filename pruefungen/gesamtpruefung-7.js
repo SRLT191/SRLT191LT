@@ -21,8 +21,10 @@ const { chromium } = require('playwright');
     const t = [...document.querySelectorAll('.cat-group-title[data-sub]')].find(e => e.offsetParent);
     if (!t) return { ok: false, info: 'keine Untergruppe' };
     const cats = t.dataset.cats.split('|'); const vorher = getComputedStyle(t.parentElement.querySelector('input[data-cat="' + cats[0] + '"]').closest('label, div')).display;
+    // Hörtrainer übernimmt beim Start ggf. schon eine Auswahl: erwartet wird der umgekehrte Stand des Gruppenhäkchens
+    const soll = !t.querySelector('.cat-group-check').checked;
     t.querySelector('.cat-group-hit').click();
-    const alle = cats.every(c => { const cb = t.parentElement.querySelector('input[data-cat="' + c + '"]'); return !cb || cb.checked; });
+    const alle = cats.every(c => { const cb = t.parentElement.querySelector('input[data-cat="' + c + '"]'); return !cb || cb.checked === soll; });
     const nachher = getComputedStyle(t.parentElement.querySelector('input[data-cat="' + cats[0] + '"]').closest('label, div')).display;
     t.querySelector('.cat-group-hit').click();
     return { ok: alle && vorher === nachher, info: 'alle ' + alle + ', Anzeige ' + vorher + ' → ' + nachher };
