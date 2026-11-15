@@ -882,6 +882,69 @@
   .rd-fehler [lang="ru"] { display: block; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 16.5px; }
   .rd-fehler span + span { color: var(--c-text-secondary); font-size: 14px; }
   .rd-back { flex: 0 0 auto; }
+  /* Textverständnis-Ausbau (15.11.) */
+  .rd-card { grid-template-columns: minmax(0, 1fr) auto; }
+  .rd-card-st { grid-row: 1; }
+  .rd-card-z { grid-column: 2; grid-row: 2; font-size: 12px; color: var(--c-text-muted); white-space: nowrap; text-align: right; }
+  .rd-bar { grid-column: 1 / -1; display: flex; height: 4px; border-radius: 3px; background: var(--c-surface-alt); overflow: hidden; margin-top: 6px; }
+  .rd-bar .ok { background: var(--c-st5); } .rd-bar .no { background: var(--c-warn); }
+  .rd-neu { color: var(--c-accent-strong); }
+  .rd-stufe[data-lv="A1"] .lvl-badge, .rd-stufe[data-lv="A2"] .lvl-badge { color: var(--c-success-text); border-color: var(--c-success-border-light); background: var(--c-success-bg); }
+  .rd-stufe[data-lv="B1"] .lvl-badge, .rd-stufe[data-lv="B2"] .lvl-badge { color: var(--c-accent-strong); border-color: var(--c-accent); background: var(--c-accent-soft-bg); }
+  .rd-spalten { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 0 22px; align-items: start; }
+  .rd-spalten .rd-stufe { margin-top: 12px; }
+  .rd-weiter { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 12px; width: 100%; margin: 12px 0 2px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--c-accent); background: var(--c-accent-soft-bg); color: var(--c-text-primary); font: inherit; text-align: left; cursor: pointer; }
+  .rd-weiter > i { color: var(--c-accent-strong); font-size: 20px; }
+  .rd-weiter span { display: flex; flex-direction: column; font-size: 12.5px; color: var(--c-text-secondary); }
+  .rd-weiter strong { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 17px; color: var(--c-text-primary); }
+  .rd-weiter small { font-size: 12.5px; color: var(--c-text-muted); white-space: nowrap; }
+  .rd-weiter:hover, .rd-weiter:focus-visible { border-color: var(--c-accent-strong); }
+  @media (max-width: 520px) { .rd-weiter { grid-template-columns: auto minmax(0, 1fr); } .rd-weiter small { grid-column: 2; white-space: normal; } }
+  .rd-info-btn { margin-left: 4px; }
+  .rd-modus { display: flex; flex-wrap: wrap; margin: 2px 0 10px; }
+  .rd-modus button { flex: 1 1 0; min-width: 0; font-size: 13.5px; padding: 7px 10px; min-height: 36px; }
+  @media (hover: none) { .rd-modus button { min-height: 44px; } }
+  .rd-modus small { color: var(--c-text-muted); font-size: 11px; }
+  .rd-modus button.on small { color: inherit; opacity: .85; }
+  @media (max-width: 520px) { .rd-modus small { display: none; } }
+  #reading-text .rd-modus { margin-bottom: 6px; }
+  .rd-text[data-de] { font-family: 'Noto Sans', system-ui, sans-serif; font-size: 17px; }
+  .rd-s.verdeckt { color: var(--c-text-muted); letter-spacing: 2px; background: var(--c-surface-alt); margin: 0 2px; }
+  .rd-s.cur.verdeckt { color: var(--c-on-accent); }
+  .rd-w { display: inline; border: 0; margin: 0; padding: 0 1px; background: none; color: inherit; font: inherit; line-height: inherit; cursor: pointer; border-radius: 4px; text-decoration: underline dotted transparent; text-underline-offset: 5px; }
+  .rd-w:hover, .rd-w:focus-visible { text-decoration-color: var(--c-text-muted); }
+  .rd-w.on { background: var(--c-accent-soft-bg); color: var(--c-accent-strong); }
+  .rd-w:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 1px; }
+  .rd-tr { text-align: center; font-size: 13.5px; color: var(--c-text-muted); margin: 0 0 4px; }
+  .rd-loesung .rd-tr { text-align: left; font-size: 13.5px; }
+  .rd-wort { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 6px 0 10px; padding: 8px 10px 8px 12px; border-radius: 10px; border: 0.5px solid var(--c-accent); background: var(--c-accent-soft-bg); font-size: 14.5px; }
+  .rd-wort b { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 17px; }
+  .rd-wort-l { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; color: var(--c-text-secondary); }
+  .rd-wort small { color: var(--c-text-muted); font-size: 12px; }
+  .rd-wort-x { margin-left: auto; border: 0; background: none; color: var(--c-text-muted); font-size: 20px; line-height: 1; cursor: pointer; min-width: 28px; min-height: 28px; }
+  .rd-cur-de { font-family: 'Noto Sans', system-ui, sans-serif; font-weight: 600; }
+  .rd-cur-hoer { gap: 10px; }
+  .rd-hoer-btn { font-size: 17px; min-height: 48px; padding: 0 18px; }
+  .rd-loesung-ru .gt-icon-btn { display: inline-flex; margin-left: 6px; vertical-align: middle; }
+  .rd-loesung .rd-loesung-ru { font-size: 18px; }
+  .rd-loesung-ru { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 18px; }
+  .rd-tools #rd-woerter-btn small { color: var(--c-accent-strong); margin-left: 2px; }
+  .rd-q-stand { margin-top: 4px; font-size: 14px; color: var(--c-text-secondary); }
+  .rd-quiz { text-align: center; }
+  .rd-q-f { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 20px; font-weight: 600; margin: 2px 0 2px; }
+  .rd-q-de { font-size: 13.5px; color: var(--c-text-muted); margin-bottom: 10px; }
+  .rd-q-a { display: grid; gap: 8px; text-align: left; }
+  .rd-q-a .tool-btn { justify-content: flex-start; min-height: 42px; font-size: 16px; }
+  .rd-q-a [lang="ru"] { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
+  .rd-q-a .richtig { border-color: var(--c-success-border); background: var(--c-success-bg); color: var(--c-success-text); }
+  .rd-q-a .falsch { border-color: var(--c-warn); text-decoration: line-through; }
+  .rd-q-a .tool-btn:disabled { opacity: 1; cursor: default; }
+  .rd-q-rm { margin-top: 10px; font-size: 15px; }
+  @media (min-width: 1600px) and (hover: hover) { #reading-view.rd-liste:not(.area-custom) { max-width: 1240px; } }
+  @media (min-width: 701px) {
+    html[data-cardsize="gross"] .rd-text { font-size: 22px; } html[data-cardsize="gross"] .rd-text[data-de] { font-size: 19px; } html[data-cardsize="gross"] .rd-cur { font-size: 25px; } html[data-cardsize="gross"] .rd-loesung div { font-size: 18.5px; }
+    html[data-cardsize="sehrgross"] .rd-text { font-size: 25px; } html[data-cardsize="sehrgross"] .rd-text[data-de] { font-size: 21px; } html[data-cardsize="sehrgross"] .rd-cur { font-size: 29px; } html[data-cardsize="sehrgross"] .rd-loesung div { font-size: 20.5px; }
+  }
   .rk-paar { display: table; margin: 0 auto 6px; padding: 1px 10px; border-radius: 999px; border: 1px solid var(--c-warn); color: var(--c-warn); font-size: 12px; font-weight: 600; }
   .rkl-v { font-weight: 700; font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 15px; }
   .rkl-bsp { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; }
@@ -3324,7 +3387,7 @@
         </div>
         <div class="set-row" id="cardsize-row">
           <i class="ti ti-cards" aria-hidden="true"></i>
-          <div class="set-text"><strong>Größe der Lernkarte</strong><span>Nur am PC, gilt für Lernkarte und Grammatikfenster: automatisch wachsen sie mit breiten Fenstern; groß und sehr groß für große Bildschirme</span></div>
+          <div class="set-text"><strong>Größe der Lernkarte</strong><span>Nur am PC, gilt für Lernkarte, Grammatikfenster und die Schrift der Texte: automatisch wachsen sie mit breiten Fenstern; groß und sehr groß für große Bildschirme</span></div>
           <div class="set-seg" role="group" aria-label="Größe der Lernkarte" id="cardsize-seg"><button type="button" data-mode="auto" onclick="setCardSize('auto')">Automatisch</button><button type="button" data-mode="gross" onclick="setCardSize('gross')">Groß</button><button type="button" data-mode="sehrgross" onclick="setCardSize('sehrgross')">Sehr groß</button></div>
         </div>
         <div class="set-row">
@@ -3352,7 +3415,7 @@
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Rückgängig</strong><span>Im Aufdecken-Modus der Vokabeln: nimmt die letzte Bewertung zurück, auch nach „Alles gelernt!“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Neu anfangen</strong><span>Im Aufdecken-Modus der Vokabeln bei „Alles gelernt!“: setzt den Fortschritt zurück</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Bewertung zurücknehmen</strong><span>Im Hörquiz-Aufdecken, wenn du dich verdrückt hast</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd><kbd class="kbd">3</kbd><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Textverständnis</strong><span>Enter oder 3 zeigt die Musterübersetzung (im Feld: Umschalt+Enter = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz vor (nicht im Feld)</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd><kbd class="kbd">3</kbd><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">4</kbd><kbd class="kbd">↑</kbd><kbd class="kbd">↓</kbd></span><div class="set-text"><strong>Textverständnis</strong><span>Enter oder 3 zeigt die Lösung (im Feld: Umschalt+Enter = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz vor (nicht im Feld); in der Liste ↑/↓ von Text zu Text; bei den Fragen zum Text 1–4 antworten, Enter weiter</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd><kbd class="kbd">5</kbd></span><div class="set-text"><strong>Einstufungstest</strong><span>1–4 wählt eine Antwort, 5 = weiß ich nicht</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Esc</kbd></span><div class="set-text"><strong>Dialog schließen</strong><span>Schließt Einstellungen, Listen, Auswahlfenster und das ⋯-Menü der Grammatik</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">+</kbd></span><div class="set-text"><strong>Fortschritt zurücksetzen</strong><span>Übungsstand von Vokabeln und Grammatik, sofort und ohne Rückfrage; auch im Antwortfeld</span></div></div>
@@ -8970,7 +9033,7 @@ function homePlanText(s) {
       return (last === 'grammar' ? 'Grammatik' : 'Hören') + (t ? ' · ' + t.replace(/^\S+ · /, '') : '') + (last === 'grammar' && s.dueGrammar ? ' · ' + s.dueGrammar + ' fällig' : '');
     }
     const name = activeMain === 'all' ? 'Alle Kategorien' : activeMain === 'multi' ? 'Auswahl (' + selectedCats.size + ')' : activeMain === 'bookmarks' ? 'Merkliste'
-      : activeMain === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : activeMain === 'session' ? 'Fehler dieser Runde' : activeMain === 'due' ? 'Fällige Wörter' : activeMain === 'hard' ? 'Oft falsch'
+      : activeMain === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : activeMain === 'session' ? 'Fehler dieser Runde' : activeMain === 'due' ? 'Fällige Wörter' : activeMain === 'hard' ? 'Oft falsch' : activeMain === 'textw' ? 'Wörter aus „' + textPoolTitel + '“'
       : activeMain + (activeSub ? ' · ' + activeSub : '');
     const pool = getPool(), now = Date.now();
     const faellig = pool.filter(w => { const e = lifeVocabEntry(w); return e && e.d > 0 && e.d < LIFE_RUNS_MAX && now >= lifeNextDue(e); }).length;
@@ -8993,7 +9056,7 @@ function homeGoLabel() {
       return (t ? t.replace(/^\S+ · /, '') : (last === 'grammar' ? 'Grammatik' : 'Hören'));
     }
     const name = activeMain === 'all' ? 'Alle Kategorien' : activeMain === 'multi' ? 'Auswahl' : activeMain === 'bookmarks' ? 'Merkliste'
-      : activeMain === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : activeMain === 'session' ? 'Fehler der Runde' : activeMain === 'due' ? 'Fällige' : activeMain === 'hard' ? 'Oft falsch'
+      : activeMain === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : activeMain === 'session' ? 'Fehler der Runde' : activeMain === 'due' ? 'Fällige' : activeMain === 'hard' ? 'Oft falsch' : activeMain === 'textw' ? textPoolTitel
       : (activeSub || activeMain);
     const offen = getPool().filter(w => !hasCorrectAnswer(w)).length;
     if (!offen) { const n = homeNextCat(); if (n) return n.cat + ' · ' + fmtN(n.offen) + ' offen'; }
@@ -9066,6 +9129,8 @@ function renderHome() {
   <div class="home-grid">
     ${(() => {
       const fmax = Math.max(1, ...s.forecast.map(d => d.n)), dsum = s.dueStufen.reduce((a, b) => a + b, 0);
+      let rdue = []; try { rdue = readingFaellig(); } catch (e) {}
+      const rsum = rdue.reduce((a, x) => a + x.n, 0);
       const vorschau = s.forecast.some(d => d.n) ? `<div class="home-fc" id="home-forecast" role="img" aria-label="Fällig in den kommenden Tagen: ${s.forecast.map((d, i) => (i === 0 ? 'später heute' : d.tag) + ' ' + d.n).join(', ')}">
         <div class="home-fc-bars">${s.forecast.map((d, i) => `<div title="${i === 0 ? 'später heute' : d.tag}: ${d.n} fällig"><small>${d.n ? fmtN(d.n) : ''}</small><span class="${d.n ? '' : 'leer'}" style="height:${d.n ? Math.max(10, Math.round(d.n / fmax * 100)) : 6}%"></span></div>`).join('')}</div>
         <div class="home-wl">${s.forecast.map((d, i) => `<span${i === 0 ? ' title="später heute"' : ''}>${i === 0 ? 'heute' : d.tag}</span>`).join('')}</div></div>` : '';
@@ -9073,9 +9138,9 @@ function renderHome() {
         <div class="home-s home-due-st-t" title="fällig je Wiederholungsstufe">${s.dueStufen.map((n, i) => n ? '<span class="home-due-st-i" title="Wiederholung ' + (i + 1) + '"><span class="home-lg s' + (i + 1) + '"></span>' + (i + 1) + ' <b>' + fmtN(n) + '</b></span>' : '').filter(Boolean).join('')}</div>` : '';
       return `<div class="home-card home-pair" id="home-due"${due ? ' onclick="if (!event.target.closest(\'button\')) homeStartPool(\'due\')"' : ''}><div class="home-k"><i class="ti ti-repeat"></i>Fällig<span class="home-lang"> zur Wiederholung</span></div>
       <div class="home-big home-warm">${fmtN(s.dueWords)} <small>${s.dueWords === 1 ? 'Wort' : 'Wörter'}</small></div>
-      <div class="home-s">${s.dueGrammar ? 'dazu ' + fmtN(s.dueGrammar) + (s.dueGrammar === 1 ? ' Grammatikaufgabe' : ' Grammatikaufgaben') : ''}${!due ? (naechste ? 'Nächste: ' + (naechste === s.forecast[0] ? 'später heute' : naechste.tag) + ' · ' + naechste.n : 'Noch nichts in Wiederholung') : ''}</div>
+      <div class="home-s">${s.dueGrammar ? 'dazu ' + fmtN(s.dueGrammar) + (s.dueGrammar === 1 ? ' Grammatikaufgabe' : ' Grammatikaufgaben') : ''}${rsum ? (s.dueGrammar ? ' · ' : due ? 'dazu ' : '') + fmtN(rsum) + (rsum === 1 ? ' Satz' : ' Sätze') + ' aus Texten' + (due ? '' : ' zum Wiederholen') : ''}${!due && !rsum ? (naechste ? 'Nächste: ' + (naechste === s.forecast[0] ? 'später heute' : naechste.tag) + ' · ' + naechste.n : 'Noch nichts in Wiederholung') : ''}</div>
       ${stufenBalken}
-      ${due ? `<div class="home-due-btns">${s.dueWords ? `<button type="button" class="home-btn" onclick="homeStartPool('due')" aria-label="Fällige wiederholen: ${s.dueWords}"><i class="ti ti-player-play"></i>Wiederholen</button><button type="button" class="home-btn home-btn-2" onclick="homeStartPool('due', 'alt')" title="Zuerst die Wörter, deren Wartezeit am längsten abgelaufen ist"><i class="ti ti-clock"></i>Älteste zuerst</button>` : ''}${s.dueGrammar ? `<button type="button" class="home-btn home-btn-2" id="home-gram-due" onclick="homeGrammarDue()" title="Öffnet das Grammatikwerkzeug mit den meisten fälligen Aufgaben"><i class="ti ti-book-2"></i>Grammatik wiederholen</button>` : ''}</div>` : ''}
+      ${due || rsum ? `<div class="home-due-btns">${s.dueWords ? `<button type="button" class="home-btn" onclick="homeStartPool('due')" aria-label="Fällige wiederholen: ${s.dueWords}"><i class="ti ti-player-play"></i>Wiederholen</button><button type="button" class="home-btn home-btn-2" onclick="homeStartPool('due', 'alt')" title="Zuerst die Wörter, deren Wartezeit am längsten abgelaufen ist"><i class="ti ti-clock"></i>Älteste zuerst</button>` : ''}${s.dueGrammar ? `<button type="button" class="home-btn home-btn-2" id="home-gram-due" onclick="homeGrammarDue()" title="Öffnet das Grammatikwerkzeug mit den meisten fälligen Aufgaben"><i class="ti ti-book-2"></i>Grammatik wiederholen</button>` : ''}${rsum ? `<button type="button" class="home-btn home-btn-2" id="home-read-due" onclick="homeReadingDue()" title="Nicht gewusste Sätze aus „${htmlEsc(rdue[0].t.titel)}“, zuletzt vor mindestens ${READ_WIEDERHOLEN_TAGE} Tagen gelesen"><i class="ti ti-book"></i>Sätze wiederholen</button>` : ''}</div>` : ''}
       ${vorschau}</div>`;
     })()}
     <div class="home-card home-row home-pair home-click" id="home-today" role="button" tabindex="0" onclick="homeOpenGoal()" onkeydown="homeKey(event)" title="${s.goal ? 'Tagesziel ändern' : 'Tagesziel festlegen'}">${s.goal > 0 ? `<div class="home-ring${s.today.a >= s.goal ? ' voll' : ''}" style="--p:${ziel}%" role="img" aria-label="${s.today.a} von ${s.goal}"><span>${s.today.a >= s.goal ? '<i class="ti ti-check"></i>' : ziel + ' %'}</span></div>` : ''}
@@ -9769,7 +9834,7 @@ const BACKUP_KEYS = ['vokabeltrainer-grammar-info-open','vokabeltrainer-grammar-
   'vokabeltrainer-hearquiz-settings','vokabeltrainer-hoertrainer-cats','vokabeltrainer-hoertrainer-pause',
   'vokabeltrainer-autoplay','vokabeltrainer-block-size','vokabeltrainer-direction',
   'vokabeltrainer-skip-cognates','vokabeltrainer-theme','vokabeltrainer-session-goal',
-  'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-width-reading','vokabeltrainer-texte','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-alphabet-order','vokabeltrainer-card-size'];
+  'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-width-reading','vokabeltrainer-texte','vokabeltrainer-texte-modus','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-alphabet-order','vokabeltrainer-card-size'];
 function exportBackup() {
   flushSaves();
   const data = { app: APP_ID, version: 1, saved: new Date().toISOString(), data: {} };
@@ -10322,7 +10387,7 @@ function resetSession() {
 let sessionPrev = null;
 function auswahlName(main, sub) {
   return main === 'all' ? 'Alle Kategorien' : main === 'multi' ? 'Auswahl (' + selectedCats.size + ')' : main === 'bookmarks' ? 'Merkliste'
-    : main === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : main === 'due' ? 'Fällige Wörter' : main === 'hard' ? 'Oft falsch' : (sub || main);
+    : main === 'exam' && levelExam ? 'Abschluss ' + levelExam.level : main === 'due' ? 'Fällige Wörter' : main === 'hard' ? 'Oft falsch' : main === 'textw' ? 'Wörter aus „' + textPoolTitel + '“' : (sub || main);
 }
 function updateSessionBar() {
   const bar = document.getElementById('session-bar'); if (!bar) return;
@@ -10338,7 +10403,7 @@ function sessionZurueck() {
   const p = sessionPrev || { main: 'all', sub: null };
   // gibt es die Auswahl noch? sonst „Alle Kategorien“
   const ok = ['all', 'bookmarks'].includes(p.main) || (p.main === 'multi' && selectedCats.size) || (p.main === 'exam' && levelExam)
-    || (['due', 'hard'].includes(p.main) && typeof homePool !== 'undefined' && homePool && homePool.length) || isCatGroup(p.main) || !!vocab[p.main];
+    || (['due', 'hard', 'textw'].includes(p.main) && typeof homePool !== 'undefined' && homePool && homePool.length) || isCatGroup(p.main) || !!vocab[p.main];
   activeMain = ok ? p.main : 'all'; activeSub = ok ? p.sub : null;
   if (ok) { expandedMain = p.expMain; expandedTheme = p.expTheme; }
   sessionPrev = null;
@@ -10382,7 +10447,7 @@ function loadSelection() {
     if (raw) {
       const d = JSON.parse(raw) || {};
       // 'session', 'due' und 'hard' sind nur für die laufende Runde gedacht und werden nicht wiederhergestellt
-      if (d.activeMain && !['session', 'due', 'hard'].includes(d.activeMain) && (d.activeMain !== 'exam' || levelExam)) activeMain = d.activeMain;
+      if (d.activeMain && !['session', 'due', 'hard', 'textw'].includes(d.activeMain) && (d.activeMain !== 'exam' || levelExam)) activeMain = d.activeMain;
       if (d.activeSub) activeSub = d.activeSub;
       if (Array.isArray(d.selectedCats)) selectedCats = new Set(d.selectedCats.filter(c => vocab[c]));
       if (d.blocks) Object.keys(d.blocks).forEach(c => {
@@ -15497,10 +15562,14 @@ function renderLevelPlan(l) {
     h += '<li><label class="lvl-manual"><input type="checkbox"' + (plan[key] ? ' checked' : '') + ' onchange="toggleLevelPlanPart(' + JSON.stringify(key).replace(/"/g, '&quot;') + ', this.checked)"> '
       + '<span>' + partLabel(sel) + ' <em>(von Hand abhaken)</em></span></label></li>';
   });
+  const texte = TEXTE.filter(t => t.lvl === l);
+  if (texte.length) { const gl = texte.filter(t => readingGelesen(t)).length;
+    h += '<li>' + hak(gl / texte.length >= LEVEL_PLAN_DONE) + '<span><button class="lvl-link" type="button" onclick="openReadingFromLevels()">Texte ' + l + '</button>: ' + gl + ' von ' + texte.length + (texte.length === 1 ? ' Text' : ' Texten') + ' gelesen</span></li>'; }
   if (!tools.length) h += '<li class="lvl-none">Für ' + l + ' gibt es im Trainer noch keine eigenen Grammatikwerkzeuge – hier zählen die Wörter.</li>';
   h += '</ul><p class="lvl-legend">Abgehakt wird automatisch ab ' + pct(LEVEL_PLAN_DONE, 1) + ' % im Gesamtstand; Grammatik-Teile ohne eigene Zählung hakst du selbst ab.</p>';
   document.getElementById('lvl-plan').innerHTML = h;
 }
+function openReadingFromLevels() { closeOverlay('overlay-levels'); readState.id = null; setAppView('reading'); }
 function openToolFromLevels(tool) {
   closeOverlay('overlay-levels');
   setAppView('grammar');
@@ -15518,13 +15587,13 @@ function practiceLevel(l) {
 }
 
 function getPool() {
-  if (activeMain === 'exam' || activeMain === 'due' || activeMain === 'hard') return getPoolRaw();
+  if (activeMain === 'exam' || activeMain === 'due' || activeMain === 'hard' || activeMain === 'textw') return getPoolRaw();
   return filterLevel(filterCognates(getPoolRaw()));
 }
 function getPoolRaw() {
   if (activeMain === 'bookmarks') return computeBookmarkedWords();
   if (activeMain === 'session') return sessionWrong;
-  if (activeMain === 'due' || activeMain === 'hard') return homePool;
+  if (activeMain === 'due' || activeMain === 'hard' || activeMain === 'textw') return homePool;
   if (activeMain === 'exam') return levelExam ? allVocabWords().filter(w => wordLevel(w) === levelExam.level) : [];
   if (activeMain === 'multi') {
     if (selectedCats.size === 0) return [];
@@ -16011,6 +16080,7 @@ function setTranscriptionMode(mode) {
   saveSelection();
   applyTranscriptionButton();
   renderTranscription();
+  if (appView === 'reading' && readState.id) renderReading();
   const al = document.getElementById('overlay-alphabet'); if (al && al.classList.contains('open')) renderAlphabet();
 }
 // Zustand des Transliterations-Knopfs in der Werkzeugleiste
@@ -18141,9 +18211,19 @@ const TEXTE = [
   ] },
 ];
 const READING_KEY = 'vokabeltrainer-texte';
+const READING_MODE_KEY = 'vokabeltrainer-texte-modus';
 setTimeout(() => { try { pruneReading(); } catch (e) {} }, 0);
-const readState = { id: null, i: 0, offen: false, ende: false, ganz: false, eigene: {} };
-// Lesestand: { <id>: { s: { <Satz>: 1 gewusst | 0 nicht }, z: zuletzt, d: wie oft ganz durch } }
+// Übungsarten (15.11.): ru = lesen (RU → DE), de = übersetzen (DE → RU), hoer = hören; je Art ein eigener Lesestand
+const READ_MODI = { ru: { name: 'Lesen', lang: 'RU → DE', icon: 'ti-book' }, de: { name: 'Übersetzen', lang: 'DE → RU', icon: 'ti-language' }, hoer: { name: 'Hören', lang: 'Hörverständnis', icon: 'ti-headphones' } };
+function readModusLaden() { try { const v = localStorage.getItem(READING_MODE_KEY); return v === 'de' || (v === 'hoer' && AUDIO_SUPPORTED) ? v : 'ru'; } catch (e) { return 'ru'; } }
+const readState = { id: null, i: 0, offen: false, ende: false, ganz: false, eigene: {}, modus: 'ru', info: false, wort: null, quiz: null };
+try { readState.modus = readModusLaden(); } catch (e) {}
+// Schlüssel des Lesestands: Kennung des Texts, bei DE → RU und Hören mit Zusatz (moj-den~de)
+function readKey(id, modus) { return modus && modus !== 'ru' ? id + '~' + modus : id; }
+function readBaseId(k) { return String(k).replace(/~(de|hoer)$/, ''); }
+const READ_SEK_JE_SATZ = 25;            // grobe Dauer je Satz für „~ Min.“
+const READ_WIEDERHOLEN_TAGE = 2;        // nicht gewusste Sätze kommen nach so vielen Tagen auf die Startseite
+// Lesestand: { <Schlüssel>: { s: { <Satz>: 1 gewusst | 0 nicht }, z: zuletzt, d: wie oft ganz durch, q/qn: Verständnisfragen richtig/gestellt } }
 function cleanReading(o) {
   const out = {};
   if (!o || typeof o !== 'object' || Array.isArray(o)) return out;
@@ -18151,9 +18231,11 @@ function cleanReading(o) {
     const e = o[id]; if (!e || typeof e !== 'object' || Array.isArray(e)) return;
     const s = {};
     if (e.s && typeof e.s === 'object' && !Array.isArray(e.s)) Object.keys(e.s).slice(0, 500).forEach(k => { if (/^\d{1,3}$/.test(k)) s[k] = e.s[k] ? 1 : 0; });
-    const z = Number(e.z), d = Number(e.d);
-    out[String(id).slice(0, 80)] = { s, z: Number.isFinite(z) && z > 0 ? z : 0, d: Number.isFinite(d) && d > 0 ? Math.min(999, Math.floor(d)) : 0 };
-    if (e.w) out[String(id).slice(0, 80)].w = 1;   // läuft gerade „Nicht gewusste wiederholen“ – zählt nicht noch einmal als gelesen
+    const z = Number(e.z), d = Number(e.d), k = String(id).slice(0, 80);
+    out[k] = { s, z: Number.isFinite(z) && z > 0 ? z : 0, d: Number.isFinite(d) && d > 0 ? Math.min(999, Math.floor(d)) : 0 };
+    if (e.w) out[k].w = 1;   // läuft gerade „Nicht gewusste wiederholen“ – zählt nicht noch einmal als gelesen
+    const q = Number(e.q), qn = Number(e.qn);
+    if (Number.isFinite(qn) && qn > 0 && qn <= 50) { out[k].qn = Math.floor(qn); out[k].q = Number.isFinite(q) ? Math.max(0, Math.min(out[k].qn, Math.floor(q))) : 0; }
   });
   return out;
 }
@@ -18162,11 +18244,11 @@ function loadReading() { try { return cleanReading(JSON.parse(localStorage.getIt
 function pruneReading() {
   if (!TEXTE.length) return;
   try { const raw = localStorage.getItem(READING_KEY); if (!raw) return;
-    const m = loadReading(), ids = new Set(TEXTE.map(t => t.id)), alt = Object.keys(m).filter(id => !ids.has(id));
-    if (alt.length) { alt.forEach(id => delete m[id]); saveReading(m); } } catch (e) {}
+    const m = loadReading(), ids = new Set(TEXTE.map(t => t.id)), alt = Object.keys(m).filter(k => !ids.has(readBaseId(k)));
+    if (alt.length) { alt.forEach(k => delete m[k]); saveReading(m); } } catch (e) {}
 }
 function saveReading(m) { try { localStorage.setItem(READING_KEY, JSON.stringify(m)); } catch (e) {} }
-// Zusammenführen: je Text gilt der zuletzt gelesene Stand, „ganz durch“ das Höhere
+// Zusammenführen: je Text und Übungsart gilt der zuletzt gelesene Stand, „ganz durch“ das Höhere
 function mergeReading(aRaw, bRaw) {
   let a = {}, b = null;
   try { a = cleanReading(JSON.parse(aRaw || '{}')); } catch (e) {}
@@ -18177,72 +18259,210 @@ function mergeReading(aRaw, bRaw) {
   return JSON.stringify(out);
 }
 function readingText(id) { return TEXTE.find(t => t.id === id) || null; }
-function readingStand(t, m) {
-  const e = (m || loadReading())[t.id] || { s: {}, z: 0, d: 0 };
+function readingStand(t, m, modus) {
+  const e = (m || loadReading())[readKey(t.id, modus || readState.modus)] || { s: {}, z: 0, d: 0 };
   const idx = t.saetze.map((_, i) => i), bew = idx.filter(i => i in e.s), gew = bew.filter(i => e.s[i] === 1);
   return { e, n: t.saetze.length, bew: bew.length, gew: gew.length, d: e.d };
 }
-// zuletzt gelesener Text (für „Weiterlernen“ und „Zuletzt geübt“)
+function readingGelesen(t, m) { m = m || loadReading(); return Object.keys(READ_MODI).some(x => ((m[readKey(t.id, x)] || {}).d || 0) > 0); }
+// zuletzt gelesener Text (für „Weiterlernen“ und „Zuletzt geübt“) – über alle Übungsarten
 function readingLetzter() {
-  const m = loadReading(); let best = null;
-  TEXTE.forEach(t => { const e = m[t.id]; if (e && e.z && (!best || e.z > m[best.id].z)) best = t; });
+  const m = loadReading(); let best = null, bz = 0;
+  Object.keys(m).forEach(k => { const t = readingText(readBaseId(k)); if (t && m[k].z > bz) { bz = m[k].z; best = t; } });
   return best;
 }
+// ── Wörter der Texte: Form → Karte (für „Wort antippen“ und „neue Wörter“) ──
+let readWortIndex = null;
+function readNorm(w) { return String(w).toLowerCase().replace(/ё/g, 'е'); }
+function readingWortIndex() {
+  if (readWortIndex) return readWortIndex;
+  const karte = new Map(), form = new Map();
+  allVocabWords().forEach(w => {
+    [w.ru].concat(MERGED_CARDS[w.ru] || [], w.ruAlt || [], String(w.ru).split(/\s*\/\s*/)).forEach(x => {
+      x = readNorm(x).trim(); if (!x) return; const alt = karte.get(x);
+      if (!alt || LEVELS.indexOf(wordLevel(w)) < LEVELS.indexOf(wordLevel(alt))) karte.set(x, w);
+    });
+  });
+  // future = „буду …“ (буду gehört nicht zum Verb); Pronomen zuerst, damit мою, мне nicht bei einem Verb landen
+  const ohne = /^(de|note|notes|typeLabel|[a-zA-Z]*Label|ex|example|hint|info|tip|future)$/;
+  const walk = (o, lemma, key) => {
+    if (o == null || ohne.test(key || '')) return;
+    if (typeof o === 'string') { (readNorm(o).match(/[а-я]+(?:-[а-я]+)*/g) || []).forEach(f => { if (!form.has(f)) form.set(f, lemma); }); return; }
+    if (Array.isArray(o)) { o.forEach(x => walk(x, lemma, '')); return; }
+    if (typeof o === 'object') Object.keys(o).forEach(k => walk(o[k], lemma, k));
+  };
+  const tabellen = [typeof pronounDeclensionData !== 'undefined' && pronounDeclensionData, typeof possessiveData !== 'undefined' && possessiveData,
+    typeof pronounExtraData !== 'undefined' && pronounExtraData, typeof demonstrativeData !== 'undefined' && demonstrativeData,
+    typeof nounDeclensionData !== 'undefined' && nounDeclensionData, typeof declensionData !== 'undefined' && declensionData, typeof ADJ_FORMS !== 'undefined' && ADJ_FORMS,
+    typeof conjugationData !== 'undefined' && conjugationData, typeof aspectData !== 'undefined' && aspectData, typeof motionData !== 'undefined' && motionData];
+  tabellen.forEach(D => { if (D) Object.keys(D).forEach(l => walk(D[l], l, '')); });
+  const finde = l => { l = readNorm(l); if (karte.has(l)) return karte.get(l); const teil = l.split(/\s*\/\s*/).find(x => karte.has(x)); return teil ? karte.get(teil) : null; };
+  readWortIndex = { karte, form, finde };
+  return readWortIndex;
+}
+// Endungen für Formen, die in keiner Tabelle stehen: [Endung, mögliche Grundform-Endungen, Mindestlänge des Stamms]
+// (Adjektive, dann Verben, dann Substantive; es zählt nur ein Treffer im Wortschatz)
+const READ_ENDUNGEN = [
+  ['ого', 'ый|ий|ой', 2], ['его', 'ий|ый', 2], ['ому', 'ый|ий|ой', 2], ['ему', 'ий', 2], ['ыми', 'ый', 2], ['ими', 'ий|ой', 2], ['ая', 'ый|ий|ой', 2], ['яя', 'ий', 2],
+  ['ое', 'ый|ой', 2], ['ее', 'ий', 3], ['ую', 'ый|ой|ий', 2], ['юю', 'ий', 2], ['ые', 'ый', 2], ['ие', 'ий|ой', 2], ['ых', 'ый', 2], ['их', 'ий|ой', 2], ['ым', 'ый', 2], ['им', 'ий|ой|ить|еть', 2],
+  ['алась', 'аться', 2], ['ался', 'аться', 2], ['ались', 'аться', 2], ['илась', 'иться', 2], ['ился', 'иться', 2], ['ились', 'иться', 2], ['улась', 'уться', 2], ['улся', 'уться', 2], ['улись', 'уться', 2],
+  ['ается', 'аться', 2], ['ится', 'иться', 2], ['ала', 'ать', 3], ['али', 'ать', 3], ['ал', 'ать', 3], ['яла', 'ять', 3], ['яли', 'ять', 3], ['ял', 'ять', 3], ['ила', 'ить', 3], ['или', 'ить', 3], ['ил', 'ить', 3],
+  ['ела', 'еть', 3], ['ели', 'еть', 3], ['ел', 'еть', 3], ['аю', 'ать', 2], ['аешь', 'ать', 2], ['ает', 'ать', 2], ['аем', 'ать', 2], ['аете', 'ать', 2], ['ают', 'ать', 2],
+  ['яю', 'ять', 2], ['яет', 'ять', 2], ['яют', 'ять', 2], ['ует', 'овать', 2], ['уют', 'овать', 2], ['ит', 'ить|еть', 3], ['ят', 'ить|еть', 3], ['ат', 'ать|ить', 3],
+  ['ами', 'а|о||ь', 2], ['ями', 'я|е|ь', 2], ['ах', 'а|о|', 2], ['ях', 'я|е|ь', 2], ['ам', 'а|о|', 2], ['ям', 'я|е|ь', 2], ['ов', '|о', 2], ['ев', 'й|ь', 2],
+  ['ом', '|о', 2], ['ем', 'е|ь|й', 2], ['ой', 'а|ый|ой', 2], ['ей', 'я|ь|ий|', 2], ['ою', 'а', 2],
+  ['у', '|а|о', 2], ['ю', 'я|ь|й', 2], ['е', '|а|о|я|ь|й', 2], ['и', 'а|я|ь|й|', 2], ['ы', 'а|', 2], ['а', '|о', 2], ['я', 'ь|й|е', 2], ['', 'а|о', 3]
+];
+// unregelmäßige Formen, die weder in einer Tabelle stehen noch sich über die Endung finden lassen (sonst сел → село)
+const READ_FORMEN = { 'сел': 'сесть', 'села': 'сесть', 'сели': 'сесть', 'лег': 'лечь', 'легла': 'лечь', 'легли': 'лечь', 'пришел': 'прийти', 'пришла': 'прийти', 'пришли': 'прийти', 'приду': 'прийти',
+  'ушел': 'уйти', 'ушла': 'уйти', 'ушли': 'уйти', 'выхожу': 'выходить', 'понравилось': 'понравиться', 'понравилась': 'понравиться', 'спела': 'петь', 'спел': 'петь', 'деревьев': 'дерево', 'деревья': 'дерево',
+  'цветы': 'цветок', 'цветов': 'цветок', 'рынке': 'рынок', 'рынка': 'рынок', 'продавца': 'продавец', 'третьем': 'третий', 'прошлом': 'прошлый', 'мужем': 'муж', 'родителям': 'родители',
+  'путешествии': 'путешествие', 'довольна': 'довольный', 'поселке': 'поселок', 'свидания': 'свидание' };
+// Karte zu einer Wortform im Text (oder null)
+function readKarte(f) {
+  const ix = readingWortIndex(); let n = readNorm(f).replace(/^-+|-+$/g, '');
+  if (!n) return null;
+  if (typeof SB_PREP_FORM !== 'undefined' && SB_PREP_FORM[n] && !ix.karte.has(n)) n = SB_PREP_FORM[n];
+  if (ix.karte.has(n)) return ix.karte.get(n);
+  if (READ_FORMEN[n]) { const w = ix.finde(READ_FORMEN[n]); if (w) return w; }
+  const l = ix.form.get(n); if (l) { const w = ix.finde(l); if (w) return w; }
+  for (const [end, ersatz, min] of READ_ENDUNGEN) {
+    if (!n.endsWith(end) || n.length - end.length < min) continue;
+    const stamm = n.slice(0, n.length - end.length);
+    for (const e of ersatz.split('|')) { const k = stamm + e; if (k !== n && ix.karte.has(k)) return ix.karte.get(k); }
+  }
+  return null;
+}
+// alle Karten eines Texts (einmal je Karte, Eigennamen und Wörter ohne Karte fallen heraus)
+function readKartenText(t) {
+  const seen = new Set(), out = [];
+  t.saetze.forEach(s => (s.ru.match(/[А-Яа-яЁё]+(?:-[А-Яа-яЁё]+)*/g) || []).forEach(f => { const w = readKarte(f); if (w && !seen.has(w.ru)) { seen.add(w.ru); out.push(w); } }));
+  return out;
+}
+function readNeueWoerter(t) { return readKartenText(t).filter(w => !everLearned(w)); }
 function renderReading() {
   const el = document.getElementById('reading-body'); if (!el) return;
   const t = readState.id ? readingText(readState.id) : null;
+  const rv = document.getElementById('reading-view'); if (rv) rv.classList.toggle('rd-liste', !t);
   if (!t) { readState.id = null; el.innerHTML = readingListHtml(); return; }
   el.innerHTML = readingTextHtml(t);
+  if (readState.modus === 'hoer' && readState.autoHoer && !readState.offen && !readState.ende && !readState.quiz) { readState.autoHoer = false; setTimeout(readSpeak, 120); }
 }
+function readModusSeg(ort) {
+  return '<div class="set-seg rd-modus" role="group" aria-label="Übungsart">' + Object.keys(READ_MODI).map(k => {
+    const x = READ_MODI[k], aus = k === 'hoer' && !AUDIO_SUPPORTED;
+    return '<button type="button" class="' + (readState.modus === k ? 'on' : '') + '" aria-pressed="' + (readState.modus === k) + '" data-modus="' + k + '"' + (aus ? ' disabled title="Keine Sprachausgabe verfügbar"' : ' title="' + x.lang + '"')
+      + ' onclick="setReadModus(\'' + k + '\', \'' + ort + '\')"><i class="ti ' + x.icon + '" aria-hidden="true"></i> ' + x.name + ' <small>' + x.lang + '</small></button>'; }).join('') + '</div>';
+}
+function setReadModus(k, ort) {
+  if (!READ_MODI[k] || (k === 'hoer' && !AUDIO_SUPPORTED)) return;
+  haltAllAudio(); readState.modus = k;
+  try { if (k === 'ru') localStorage.removeItem(READING_MODE_KEY); else localStorage.setItem(READING_MODE_KEY, k); } catch (e) {}
+  if (ort === 'text' && readState.id) openText(readState.id); else renderReading();
+}
+function readMinuten(n) { return '~' + Math.max(1, Math.round(n * READ_SEK_JE_SATZ / 60)) + ' Min.'; }
 function readingListHtml() {
-  const m = loadReading(), mein = LEVELS.indexOf(myLevel);
+  const m = loadReading(), mein = LEVELS.indexOf(myLevel), modus = readState.modus;
   const stufen = LEVELS.map(l => ({ l, ts: TEXTE.filter(t => t.lvl === l) })).filter(g => g.ts.length);
-  const karte = t => { const st = readingStand(t, m);
+  const karte = t => { const st = readingStand(t, m), offen = st.n - st.bew;
     const stand = st.d ? '<i class="ti ti-check" aria-hidden="true"></i> gelesen' + (st.d > 1 ? ' (' + st.d + '×)' : '') : st.bew ? st.bew + ' von ' + st.n + ' Sätzen' : 'neu';
-    return '<button type="button" class="rd-card" data-id="' + htmlEsc(t.id) + '" onclick="openText(this.dataset.id)"><span class="rd-card-t" lang="ru">' + htmlEsc(t.titel) + '</span>'
-      + '<span class="rd-card-st' + (st.d ? ' fertig' : '') + '">' + stand + '<br>' + st.n + (st.n === 1 ? ' Satz' : ' Sätze') + '</span>'
-      + '<span class="rd-card-de">' + htmlEsc(t.de || '') + '</span></button>'; };
-  return '<div class="grammar-panel open" id="reading-list"><div class="grammar-panel-header"><span class="overlay-title-group"><span class="overlay-title"><i class="ti ti-book"></i> Textverständnis</span></span>'
-    + '<span class="rd-prog">' + (TEXTE.length ? TEXTE.filter(t => (m[t.id] || {}).d).length + ' von ' + TEXTE.length + ' gelesen' : '') + '</span></div><div class="overlay-body">'
-    + '<p class="rd-intro">Kurze Texte, nach Sprachniveau geordnet. Du übersetzt Satz für Satz, vergleichst mit der Musterübersetzung und bewertest dich selbst.</p>'
-    + (stufen.length ? stufen.map(g => '<h3 class="rd-stufe">' + lvlBadge(g.l) + '<small>' + g.ts.length + (g.ts.length === 1 ? ' Text' : ' Texte') + '</small>'
-        + (mein >= 0 && LEVELS.indexOf(g.l) > mein ? '<span class="rd-ausblick">über deinem Niveau</span>' : '') + '</h3>' + g.ts.map(karte).join('')).join('')
+    const meta = st.d ? st.n + (st.n === 1 ? ' Satz' : ' Sätze') : (st.bew ? readMinuten(offen) + ' übrig' : st.n + ' Sätze · ' + readMinuten(st.n));
+    let neu = 0; try { neu = readNeueWoerter(t).length; } catch (e) {}
+    const balken = st.bew ? '<span class="rd-bar" aria-hidden="true"><span class="ok" style="width:' + (st.gew / st.n * 100) + '%"></span><span class="no" style="width:' + ((st.bew - st.gew) / st.n * 100) + '%"></span></span>' : '';
+    return '<button type="button" class="rd-card" data-id="' + htmlEsc(t.id) + '" onclick="openText(this.dataset.id)" aria-label="' + htmlEsc(t.titel + ' – ' + (t.de || '') + ', ' + stand.replace(/<[^>]+>/g, '').trim() + ', ' + meta + (neu ? ', ' + neu + (neu === 1 ? ' neues Wort' : ' neue Wörter') : '')) + '">'
+      + '<span class="rd-card-t" lang="ru">' + htmlEsc(t.titel) + '</span>'
+      + '<span class="rd-card-st' + (st.d ? ' fertig' : '') + '">' + stand + ' · ' + meta + '</span>'
+      + '<span class="rd-card-de">' + htmlEsc(t.de || '') + (neu ? ' · <span class="rd-neu" title="Wörter dieses Texts, die du noch nie gelernt hast">' + neu + (neu === 1 ? ' neues Wort' : ' neue Wörter') + '</span>' : '') + '</span>'
+      + '<span class="rd-card-z">' + (st.e.z ? 'zuletzt ' + homeRelDay(st.e.z) : '') + '</span>' + balken + '</button>'; };
+  // Weiterlesen: angefangener Text der gewählten Übungsart, zuletzt gelesen zuerst
+  const angefangen = TEXTE.map(t => ({ t, st: readingStand(t, m) })).filter(x => x.st.bew && x.st.bew < x.st.n && !x.st.d).sort((a, b) => b.st.e.z - a.st.e.z)[0]
+    || TEXTE.map(t => ({ t, st: readingStand(t, m) })).filter(x => x.st.bew && x.st.bew < x.st.n).sort((a, b) => b.st.e.z - a.st.e.z)[0];
+  const weiter = angefangen ? '<button type="button" class="rd-weiter" data-id="' + htmlEsc(angefangen.t.id) + '" onclick="openText(this.dataset.id)"><i class="ti ti-player-play" aria-hidden="true"></i><span>Weiterlesen<strong lang="ru">' + htmlEsc(angefangen.t.titel) + '</strong></span><small>' + angefangen.st.bew + ' von ' + angefangen.st.n + ' Sätzen · ' + readMinuten(angefangen.st.n - angefangen.st.bew) + ' übrig</small></button>' : '';
+  const info = readState.info || !Object.keys(m).length;
+  const gelesen = TEXTE.filter(t => readingStand(t, m).d).length;
+  return '<div class="grammar-panel open" id="reading-list"><div class="grammar-panel-header"><span class="overlay-title-group"><span class="overlay-title"><i class="ti ti-book"></i> Textverständnis</span>'
+    + '<button type="button" class="conj-info-btn rd-info-btn" onclick="readState.info = !readState.info; renderReading()" aria-expanded="' + info + '" aria-controls="rd-intro" title="Was ist das?" aria-label="Erklärung ' + (info ? 'ausblenden' : 'zeigen') + '"><i class="ti ti-info-circle"></i></button></span>'
+    + '<span class="rd-prog">' + (TEXTE.length ? gelesen + ' von ' + TEXTE.length + ' gelesen' : '') + '</span></div><div class="overlay-body">'
+    + (info ? '<p class="rd-intro" id="rd-intro">Kurze Texte, nach Sprachniveau geordnet. <strong>Lesen:</strong> du übersetzt Satz für Satz ins Deutsche, <strong>Übersetzen:</strong> vom Deutschen ins Russische, <strong>Hören:</strong> du hörst den Satz, ohne ihn zu sehen. Danach vergleichst du mit der Lösung und bewertest dich selbst. Wörter im aktuellen Satz kannst du antippen.</p>' : '')
+    + readModusSeg('liste') + weiter
+    + (stufen.length ? '<div class="rd-spalten">' + stufen.map(g => { const gl = g.ts.filter(t => readingStand(t, m).d).length;
+        return '<section class="rd-gruppe"><h3 class="rd-stufe" data-lv="' + g.l + '">' + lvlBadge(g.l) + '<small>' + gl + ' von ' + g.ts.length + (g.ts.length === 1 ? ' Text' : ' Texten') + ' gelesen</small>'
+        + (mein >= 0 && LEVELS.indexOf(g.l) > mein ? '<span class="rd-ausblick">über deinem Niveau</span>' : '') + '</h3>' + g.ts.map(karte).join('') + '</section>'; }).join('') + '</div>'
       : '<p class="rd-leer">Noch keine Texte vorhanden.</p>')
     + '</div></div>';
 }
+// russischer Satz mit antippbaren Wörtern
+function readWoerterHtml(ru) {
+  return htmlEsc(ru).replace(/[А-Яа-яЁё]+(?:-[А-Яа-яЁё]+)*/g, f => '<button type="button" class="rd-w' + (readState.wort === f ? ' on' : '') + '" data-w="' + f + '" onclick="readWort(this.dataset.w)">' + f + '</button>');
+}
+function readUmschrift(ru) { return transcriptionMode === 'off' ? '' : '<div class="rd-tr" aria-label="Umschrift">' + htmlEsc(transcriptionMode === 'letters' ? trLetters(ru) : trSpeech(ru)) + '</div>'; }
+function readWort(f) { readState.wort = readState.wort === f ? null : f; renderReading(); }
+function readWortHtml() {
+  const f = readState.wort; if (!f) return '';
+  const w = readKarte(f);
+  if (!w) return '<div class="rd-wort" id="rd-wort" aria-live="polite"><b lang="ru">' + htmlEsc(f) + '</b><span>keine Karte im Wortschatz (Eigenname oder Form unbekannt)</span><button type="button" class="rd-wort-x" onclick="readWort(null)" aria-label="Schließen">×</button></div>';
+  const gelernt = everLearned(w);
+  return '<div class="rd-wort" id="rd-wort" aria-live="polite"><b lang="ru">' + htmlEsc(f) + '</b>' + (readNorm(f) !== readNorm(w.ru) ? '<span class="rd-wort-l" lang="ru">→ ' + htmlEsc(w.ru) + '</span>' : '')
+    + '<span>' + htmlEsc((w.de || []).slice(0, 3).join(', ')) + '</span>' + lvlBadge(wordLevel(w)) + '<small>' + (gelernt ? 'schon gelernt' : 'noch nicht gelernt') + '</small>'
+    + (AUDIO_SUPPORTED ? '<button type="button" class="tool-btn gt-icon-btn" onclick="speak(' + htmlEsc(JSON.stringify(w.ru)) + ')" aria-label="Wort anhören"><i class="ti ti-volume"></i></button>' : '')
+    + '<button type="button" class="rd-wort-x" onclick="readWort(null)" aria-label="Schließen">×</button></div>';
+}
 function readingTextHtml(t) {
-  const st = readingStand(t), rs = readState, s = t.saetze[rs.i] || t.saetze[0];
+  const st = readingStand(t), rs = readState, s = t.saetze[rs.i] || t.saetze[0], modus = rs.modus;
   const absaetze = []; t.saetze.forEach((x, i) => { if (i === 0 || x.p) absaetze.push([]); absaetze[absaetze.length - 1].push(i); });
   const kl = i => 'rd-s' + (!rs.ende && i === rs.i ? ' cur' : '') + (i in st.e.s ? (st.e.s[i] ? ' ok' : ' no') : '');
-  // Sätze als Knöpfe (15.11.): per Tastatur anwählbar, Stand für Vorleseprogramme in der Beschriftung
   const standTxt = i => i in st.e.s ? (st.e.s[i] ? ', gewusst' : ', nicht gewusst') : '';
-  const text = absaetze.map(a => '<p>' + a.map(i => '<button type="button" class="' + kl(i) + '" data-i="' + i + '" onclick="readGoto(' + i + ')" aria-label="Satz ' + (i + 1) + standTxt(i) + (!rs.ende && i === rs.i ? ', aktuell' : '') + ': ' + htmlEsc(t.saetze[i].ru) + '"' + (!rs.ende && i === rs.i ? ' aria-current="true"' : '') + '>' + htmlEsc(t.saetze[i].ru) + '</button>').join(' ') + '</p>').join('');
+  // was im Text oben steht: Lesen russisch, Übersetzen deutsch, Hören nur die schon bewerteten Sätze (Rest verdeckt)
+  const verdeckt = i => modus === 'hoer' && !(i in st.e.s) && !rs.ende && !(i === rs.i && rs.offen);
+  const zeile = i => modus === 'de' ? t.saetze[i].de : t.saetze[i].ru;
+  const text = absaetze.map(a => '<p>' + a.map(i => '<button type="button" class="' + kl(i) + (verdeckt(i) ? ' verdeckt' : '') + '" data-i="' + i + '" onclick="readGoto(' + i + ')" aria-label="Satz ' + (i + 1) + standTxt(i) + (!rs.ende && i === rs.i ? ', aktuell' : '') + (verdeckt(i) ? ', verdeckt' : ': ' + htmlEsc(zeile(i))) + '"' + (!rs.ende && i === rs.i ? ' aria-current="true"' : '') + '>' + (verdeckt(i) ? '<span aria-hidden="true">' + '· '.repeat(Math.min(12, Math.max(3, Math.round(t.saetze[i].ru.length / 6)))).trim() + '</span>' : htmlEsc(zeile(i))) + '</button>').join(' ') + '</p>').join('');
   const laut = (fn, titel) => AUDIO_SUPPORTED ? '<button type="button" class="tool-btn gt-icon-btn" onclick="' + fn + '" title="' + titel + '" aria-label="' + titel + '"><i class="ti ti-volume"></i></button>' : '';
   let box;
-  if (rs.ende) {
-    const falsch = t.saetze.map((x, i) => i).filter(i => st.e.s[i] === 0);
-    box = '<div class="rd-ende"><h3>Text gelesen</h3><div>' + st.gew + ' von ' + st.n + (st.n === 1 ? ' Satz' : ' Sätzen') + ' gewusst</div>'
+  if (rs.quiz) box = readQuizHtml(t);
+  else if (rs.ende) {
+    const falsch = t.saetze.map((x, i) => i).filter(i => st.e.s[i] === 0), fq = t.fragen && t.fragen.length;
+    box = '<div class="rd-ende"><h3>Text ' + (modus === 'hoer' ? 'gehört' : 'gelesen') + '</h3><div>' + st.gew + ' von ' + st.n + (st.n === 1 ? ' Satz' : ' Sätzen') + ' gewusst</div>'
+      + (fq ? '<div class="rd-q-stand">' + (st.e.qn ? 'Fragen zum Text: ' + st.e.q + ' von ' + st.e.qn + ' richtig' : t.fragen.length + ' Fragen zum Text') + '</div>' : '')
       + (falsch.length ? '<ul class="rd-fehler">' + falsch.map(i => '<li><span lang="ru">' + htmlEsc(t.saetze[i].ru) + '</span><span>' + htmlEsc(t.saetze[i].de) + '</span></li>').join('') + '</ul>' : '')
-      + '<div class="gt-end-actions">' + (falsch.length ? '<button type="button" class="tool-btn" onclick="readWiederholen()"><i class="ti ti-repeat"></i> Nicht gewusste wiederholen</button>' : '')
+      + '<div class="gt-end-actions">' + (fq ? '<button type="button" class="tool-btn gt-primary" onclick="readQuizStart()"><i class="ti ti-list-check"></i> Fragen zum Text</button>' : '')
+      + (falsch.length ? '<button type="button" class="tool-btn" onclick="readWiederholen()"><i class="ti ti-repeat"></i> Nicht gewusste wiederholen</button>' : '')
       + '<button type="button" class="tool-btn" onclick="readNeu()"><i class="ti ti-refresh"></i> Nochmal von vorn</button><button type="button" class="tool-btn" onclick="closeText()">← Alle Texte</button></div></div>';
   } else {
     const eigene = rs.eigene[rs.i] || '';
-    box = '<div class="rd-cur"><span lang="ru">' + htmlEsc(s.ru) + '</span>' + laut('readSpeak()', 'Satz anhören') + '</div><div class="rd-nr">Satz ' + (rs.i + 1) + ' von ' + st.n + '</div>'
+    const frage = modus === 'de'
+      ? '<div class="rd-cur rd-cur-de" lang="de"><span>' + htmlEsc(s.de) + '</span></div>'
+      : modus === 'hoer'
+        ? '<div class="rd-cur rd-cur-hoer"><button type="button" class="tool-btn rd-hoer-btn" onclick="readSpeak()" aria-label="Satz anhören"><i class="ti ti-volume" aria-hidden="true"></i> Satz anhören <kbd aria-hidden="true" class="gt-kbd">4</kbd></button>'
+          + '<button type="button" class="tool-btn" onclick="readSpeak(true)" title="Langsamer vorlesen">langsam</button></div>'
+        : '<div class="rd-cur"><span lang="ru">' + readWoerterHtml(s.ru) + '</span>' + laut('readSpeak()', 'Satz anhören') + '</div>' + readUmschrift(s.ru);
+    const loesungRu = '<div lang="ru" class="rd-loesung-ru">' + readWoerterHtml(s.ru) + laut('readSpeak()', 'Satz anhören') + '</div>' + readUmschrift(s.ru);
+    const loesung = modus === 'de'
+      ? '<b>Original</b>' + loesungRu
+      : modus === 'hoer' ? '<b>Gehört</b>' + loesungRu + '<b>Übersetzung</b><div id="rd-muster">' + htmlEsc(s.de) + '</div>'
+      : '<b>Musterübersetzung</b><div id="rd-muster">' + htmlEsc(s.de) + '</div>';
+    const ph = modus === 'de' ? 'Deine Übersetzung ins Russische (freiwillig)' : modus === 'hoer' ? 'Was hast du gehört? (freiwillig, Russisch)' : 'Deine Übersetzung (freiwillig)';
+    box = frage + '<div class="rd-nr">Satz ' + (rs.i + 1) + ' von ' + st.n + '</div>' + (modus === 'ru' ? readWortHtml() : '')
       + (rs.offen
-        ? '<div class="rd-loesung" aria-live="polite">' + (eigene.trim() ? '<b>Deine Übersetzung</b><div>' + htmlEsc(eigene) + '</div>' : '') + '<b>Musterübersetzung</b><div id="rd-muster">' + htmlEsc(s.de) + '</div></div>'
-          + '<div class="gt-rate" role="group" aria-label="Selbst bewerten"><span class="gt-rate-q">Gewusst?</span>'
+        ? '<div class="rd-loesung" aria-live="polite">' + (eigene.trim() ? '<b>Deine ' + (modus === 'hoer' ? 'Eingabe' : 'Übersetzung') + '</b><div' + (modus === 'ru' ? '' : ' lang="ru"') + '>' + htmlEsc(eigene) + '</div>' : '') + loesung + '</div>'
+          + (modus !== 'ru' ? readWortHtml() : '')
+          + '<div class="gt-rate" role="group" aria-label="Selbst bewerten"><span class="gt-rate-q">' + (modus === 'hoer' ? 'Verstanden?' : 'Gewusst?') + '</span>'
           + '<button class="tool-btn gt-rate-yes" type="button" onclick="readRate(true)" aria-keyshortcuts="1"><i class="ti ti-check" aria-hidden="true"></i> Gewusst <kbd aria-hidden="true" class="gt-kbd">1</kbd></button>'
           + '<button class="tool-btn gt-rate-no" type="button" onclick="readRate(false)" aria-keyshortcuts="2"><i class="ti ti-x" aria-hidden="true"></i> Nicht gewusst <kbd aria-hidden="true" class="gt-kbd">2</kbd></button></div>'
-        : '<textarea id="rd-input" rows="2" lang="de" placeholder="Deine Übersetzung (freiwillig)" aria-label="Deine Übersetzung" oninput="readState.eigene[readState.i] = this.value">' + htmlEsc(eigene) + '</textarea>'
-          + '<div class="rd-actions"><button type="button" class="tool-btn gt-primary" id="rd-show" onclick="readZeigen()"><i class="ti ti-eye"></i> Übersetzung zeigen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button>'
+        : '<textarea id="rd-input" rows="2" lang="' + (modus === 'ru' ? 'de' : 'ru') + '" placeholder="' + ph + '" aria-label="' + ph + '" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="readState.eigene[readState.i] = this.value">' + htmlEsc(eigene) + '</textarea>'
+          + '<div class="rd-actions"><button type="button" class="tool-btn gt-primary" id="rd-show" onclick="readZeigen()"><i class="ti ti-eye"></i> ' + (modus === 'ru' ? 'Übersetzung' : 'Lösung') + ' zeigen <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button>'
           + '<button type="button" class="tool-btn" onclick="readWeiter()">Überspringen <i class="ti ti-arrow-right"></i></button></div>');
   }
+  const ganzName = modus === 'de' ? 'Ganzes Original' : 'Ganze Übersetzung';
+  const ganzText = i => modus === 'de' ? t.saetze[i].ru : t.saetze[i].de;
+  let neu = []; try { neu = readNeueWoerter(t); } catch (e) {}
   return '<div class="grammar-panel open" id="reading-text"><div class="grammar-panel-header"><span class="overlay-title-group"><button type="button" class="tool-btn rd-back" onclick="closeText()" title="Zurück zur Liste der Texte">← Texte</button>'
     + '<span class="overlay-title"><span lang="ru">' + htmlEsc(t.titel) + '</span> ' + lvlBadge(t.lvl) + '</span></span><span class="rd-prog" id="rd-prog">' + st.bew + ' von ' + st.n + ' Sätzen</span></div>'
-    + '<div class="overlay-body"><div class="rd-text" lang="ru">' + text + '</div><div class="rd-box">' + box + '</div>'
+    + '<div class="overlay-body">' + readModusSeg('text')
+    + '<div class="rd-text" lang="' + (modus === 'de' ? 'de' : 'ru') + '"' + (modus === 'de' ? ' data-de="1"' : '') + '>' + text + '</div><div class="rd-box">' + box + '</div>'
     + '<div class="rd-tools">' + (AUDIO_SUPPORTED ? '<button type="button" class="tool-btn" onclick="readSpeakAll()"><i class="ti ti-volume"></i> Ganzen Text anhören</button>' : '')
-    + '<button type="button" class="tool-btn" id="rd-ganz-btn" aria-pressed="' + (rs.ganz ? 'true' : 'false') + '" onclick="toggleReadGanz()"><i class="ti ti-language"></i> Ganze Übersetzung ' + (rs.ganz ? 'ausblenden' : 'zeigen') + '</button></div>'
-    + (rs.ganz ? '<div class="rd-ganz" id="rd-ganz">' + absaetze.map(a => '<p>' + a.map(i => htmlEsc(t.saetze[i].de)).join(' ') + '</p>').join('') + '</div>' : '')
+    + '<button type="button" class="tool-btn" id="rd-ganz-btn" aria-pressed="' + (rs.ganz ? 'true' : 'false') + '" onclick="toggleReadGanz()"><i class="ti ti-language"></i> ' + ganzName + ' ' + (rs.ganz ? 'ausblenden' : 'zeigen') + '</button>'
+    + '<button type="button" class="tool-btn" id="rd-woerter-btn" onclick="readWoerterUeben()" title="Die Karten dieses Texts als Runde in den Vokabeln"><i class="ti ti-cards"></i> Wörter dieses Texts üben' + (neu.length ? ' <small>' + neu.length + ' neu</small>' : '') + '</button></div>'
+    + (rs.ganz ? '<div class="rd-ganz" id="rd-ganz"' + (modus === 'de' ? ' lang="ru"' : '') + '>' + absaetze.map(a => '<p>' + a.map(i => htmlEsc(ganzText(i))).join(' ') + '</p>').join('') + '</div>' : '')
     + '</div></div>';
 }
 function readFokus() { const f = document.getElementById('rd-input'); if (f && window.matchMedia('(hover: hover)').matches) { try { f.focus({ preventScroll: true }); } catch (e) {} } }
@@ -18250,51 +18470,120 @@ function openText(id) {
   const t = readingText(id); if (!t || !t.saetze.length) return;
   haltAllAudio();
   const st = readingStand(t), offen = t.saetze.findIndex((_, i) => !(i in st.e.s));
-  Object.assign(readState, { id, i: offen >= 0 ? offen : 0, offen: false, ende: false, ganz: false, eigene: {} });
-  const m = loadReading(); m[id] = Object.assign({ s: {}, d: 0 }, m[id], { z: Date.now() }); saveReading(m);
+  Object.assign(readState, { id, i: offen >= 0 ? offen : 0, offen: false, ende: false, ganz: false, eigene: {}, wort: null, quiz: null, autoHoer: true });
+  const m = loadReading(), k = readKey(id, readState.modus); m[k] = Object.assign({ s: {}, d: 0 }, m[k], { z: Date.now() }); saveReading(m);
   renderReading(); readFokus();
 }
-function closeText() { haltAllAudio(); readState.id = null; renderReading(); }
+function closeText() { haltAllAudio(); readState.id = null; readState.quiz = null; readState.wort = null; renderReading(); }
 function readGoto(i) {
   const t = readingText(readState.id); if (!t || !t.saetze[i]) return;
-  Object.assign(readState, { i, offen: false, ende: false }); renderReading(); readFokus();
+  haltAllAudio();
+  Object.assign(readState, { i, offen: false, ende: false, wort: null, quiz: null, autoHoer: true }); renderReading(); readFokus();
 }
-function readZeigen() { if (!readingText(readState.id) || readState.ende || readState.offen) return; readState.offen = true; renderReading(); }
+function readZeigen() { if (!readingText(readState.id) || readState.ende || readState.offen || readState.quiz) return; readState.offen = true; renderReading(); }
 // nächster noch nicht bewerteter Satz (ab dem aktuellen, dann von vorn); keiner mehr: Abschluss
 function readWeiter() {
   const t = readingText(readState.id); if (!t) return;
   const st = readingStand(t), n = t.saetze.length;
   for (let k = 1; k <= n; k++) { const j = (readState.i + k) % n; if (!(j in st.e.s)) { if (j === readState.i) break; return readGoto(j); } }
   if (st.bew < n) return readGoto(readState.i);
-  Object.assign(readState, { offen: false, ende: true }); renderReading();
+  Object.assign(readState, { offen: false, ende: true, wort: null }); renderReading();
 }
 function readRate(ok) {
   const t = readingText(readState.id); if (!t || !readState.offen) return;
-  const m = loadReading(), e = m[t.id] = Object.assign({ s: {}, d: 0 }, m[t.id]);
+  const m = loadReading(), k = readKey(t.id, readState.modus), e = m[k] = Object.assign({ s: {}, d: 0 }, m[k]);
   const vorher = t.saetze.every((_, i) => i in e.s);
   e.s[readState.i] = ok ? 1 : 0; e.z = Date.now();
   if (!vorher && t.saetze.every((_, i) => i in e.s)) { if (e.w) delete e.w; else e.d = (e.d || 0) + 1; }
-  saveReading(m); readWeiter();
+  saveReading(m);
+  try { dayNote(ok); } catch (err) {}   // zählt zum Tagesziel und zu „Tage in Folge“ (15.11.)
+  readWeiter();
 }
 function readNeu() {
   const t = readingText(readState.id); if (!t) return;
-  const m = loadReading(); m[t.id] = Object.assign({ d: 0 }, m[t.id], { s: {}, z: Date.now() }); delete m[t.id].w; saveReading(m);
-  Object.assign(readState, { i: 0, offen: false, ende: false, eigene: {} }); renderReading(); readFokus();
+  const m = loadReading(), k = readKey(t.id, readState.modus); m[k] = Object.assign({ d: 0 }, m[k], { s: {}, z: Date.now() }); delete m[k].w; saveReading(m);
+  Object.assign(readState, { i: 0, offen: false, ende: false, eigene: {}, wort: null, quiz: null, autoHoer: true }); renderReading(); readFokus();
 }
 function readWiederholen() {
   const t = readingText(readState.id); if (!t) return;
-  const m = loadReading(), e = m[t.id]; if (!e) return;
+  const m = loadReading(), e = m[readKey(t.id, readState.modus)]; if (!e) return;
   Object.keys(e.s).forEach(k => { if (!e.s[k]) delete e.s[k]; }); e.z = Date.now(); e.w = 1; saveReading(m);
   const i = t.saetze.findIndex((_, k) => !(k in e.s));
-  Object.assign(readState, { i: i >= 0 ? i : 0, offen: false, ende: false, eigene: {} }); renderReading(); readFokus();
+  Object.assign(readState, { i: i >= 0 ? i : 0, offen: false, ende: false, eigene: {}, wort: null, quiz: null, autoHoer: true }); renderReading(); readFokus();
 }
 function toggleReadGanz() { readState.ganz = !readState.ganz; renderReading(); }
-function readSpeak() { const t = readingText(readState.id); if (t && t.saetze[readState.i]) speak(t.saetze[readState.i].ru); }
+function readSpeak(langsam) { const t = readingText(readState.id); if (t && t.saetze[readState.i]) speak(t.saetze[readState.i].ru, langsam === true ? Math.max(0.5, speakRate * 0.7) : undefined); }
 function readSpeakAll() { const t = readingText(readState.id); if (t) speak(t.saetze.map(x => x.ru).join(' ')); }
-// Tasten: ⏎ zeigt die Übersetzung (im Feld: Umschalt+⏎ = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz
+// Wörter dieses Texts als eigene Runde in den Vokabeln (wie „Fällige“ und „Oft falsch“)
+let textPoolTitel = '';
+function readWoerterUeben(id) {
+  const t = readingText(id || readState.id); if (!t) return;
+  const list = readKartenText(t); if (!list.length) return;
+  haltAllAudio();
+  homePool = list; textPoolTitel = t.titel;
+  setAppView('vocab');
+  activeMain = 'textw'; activeSub = null;
+  closeMobileSidebar(); updateMobileSidebarLabel('Wörter aus „' + t.titel + '“');
+  buildNav(); updateProgress(); updateInfoPanel(); nextWord();
+}
+// ── Verständnisfragen (nur bei Texten mit bestätigten Fragen: fragen: [{ f, fde, a: [...], r }]) ──
+function readQuizStart() {
+  const t = readingText(readState.id); if (!t || !t.fragen || !t.fragen.length) return;
+  readState.quiz = { i: 0, wahl: null, ok: 0 }; readState.wort = null; renderReading();
+}
+function readQuizHtml(t) {
+  const q = readState.quiz, n = t.fragen.length;
+  if (q.i >= n) return '<div class="rd-ende rd-quiz"><h3>Fragen zum Text</h3><div>' + q.ok + ' von ' + n + ' richtig</div><div class="gt-end-actions">'
+    + '<button type="button" class="tool-btn" onclick="readQuizStart()"><i class="ti ti-refresh"></i> Nochmal</button><button type="button" class="tool-btn" onclick="readState.quiz = null; renderReading()">Zurück zum Text</button><button type="button" class="tool-btn" onclick="closeText()">← Alle Texte</button></div></div>';
+  const f = t.fragen[q.i], fertig = q.wahl != null;
+  return '<div class="rd-quiz"><div class="rd-nr">Frage ' + (q.i + 1) + ' von ' + n + '</div><div class="rd-q-f" lang="ru">' + htmlEsc(f.f) + '</div>' + (f.fde ? '<div class="rd-q-de">' + htmlEsc(f.fde) + '</div>' : '')
+    + '<div class="rd-q-a" role="group" aria-label="Antworten">' + f.a.map((a, i) => '<button type="button" class="tool-btn' + (fertig && i === f.r ? ' richtig' : '') + (fertig && i === q.wahl && i !== f.r ? ' falsch' : '') + '"' + (fertig ? ' disabled' : '') + ' onclick="readQuizWahl(' + i + ')" aria-keyshortcuts="' + (i + 1) + '"><kbd aria-hidden="true" class="gt-kbd">' + (i + 1) + '</kbd> <span lang="ru">' + htmlEsc(a) + '</span></button>').join('') + '</div>'
+    + (fertig ? '<div class="rd-q-rm" aria-live="polite">' + (q.wahl === f.r ? '<i class="ti ti-check"></i> Richtig' : '<i class="ti ti-x"></i> Richtig wäre: <span lang="ru">' + htmlEsc(f.a[f.r]) + '</span>') + '</div><div class="rd-actions"><button type="button" class="tool-btn gt-primary" id="rd-q-weiter" onclick="readQuizWeiter()">Weiter <kbd aria-hidden="true" class="gt-kbd">⏎</kbd></button></div>' : '')
+    + '</div>';
+}
+function readQuizWahl(i) {
+  const t = readingText(readState.id), q = readState.quiz; if (!t || !q || q.wahl != null) return;
+  const f = t.fragen[q.i]; if (!f || !f.a[i]) return;
+  q.wahl = i; if (i === f.r) q.ok++;
+  try { dayNote(i === f.r); } catch (e) {}
+  if (q.i === t.fragen.length - 1) { const m = loadReading(), k = readKey(t.id, readState.modus); m[k] = Object.assign({ s: {}, d: 0, z: Date.now() }, m[k], { q: q.ok, qn: t.fragen.length }); saveReading(m); }
+  renderReading(); const w = document.getElementById('rd-q-weiter'); if (w && window.matchMedia('(hover: hover)').matches) try { w.focus({ preventScroll: true }); } catch (e) {}
+}
+function readQuizWeiter() { const q = readState.quiz; if (!q || q.wahl == null) return; q.i++; q.wahl = null; renderReading(); }
+// nicht gewusste Sätze, die seit ein paar Tagen liegen (Startseite)
+function readingFaellig(now) {
+  now = now || Date.now(); const m = loadReading(), out = [];
+  Object.keys(m).forEach(k => { const t = readingText(readBaseId(k)), e = m[k]; if (!t || !e.z || now - e.z < READ_WIEDERHOLEN_TAGE * 864e5) return;
+    const n = Object.keys(e.s).filter(i => e.s[i] === 0 && t.saetze[i]).length; if (n) out.push({ t, k, n, modus: (k.match(/~(de|hoer)$/) || [])[1] || 'ru', z: e.z }); });
+  return out.sort((a, b) => b.n - a.n || a.z - b.z);
+}
+function homeReadingDue() {
+  const x = readingFaellig()[0]; if (!x) return;
+  if (x.modus === 'hoer' && !AUDIO_SUPPORTED) return;
+  readState.modus = x.modus; try { if (x.modus === 'ru') localStorage.removeItem(READING_MODE_KEY); else localStorage.setItem(READING_MODE_KEY, x.modus); } catch (e) {}
+  setAppView('reading'); openText(x.t.id); readWiederholen();
+}
+// Tasten: ⏎ zeigt die Lösung (im Feld: Umschalt+⏎ = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz;
+// in der Liste ↑/↓ von Text zu Text; bei den Fragen 1–4 und ⏎
 function keyReading(e) {
-  if (appView !== 'reading' || !readState.id || readState.ende || document.querySelector('.overlay.open') || e.ctrlKey || e.metaKey || e.altKey) return false;
+  if (appView !== 'reading' || document.querySelector('.overlay.open') || e.ctrlKey || e.metaKey || e.altKey) return false;
   const el = e.target, tag = ((el && el.tagName) || '').toLowerCase(), imFeld = tag === 'textarea' || tag === 'input' || tag === 'select';
+  if (!readState.id) {
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !imFeld) {
+      const ks = [...document.querySelectorAll('#reading-list .rd-weiter, #reading-list .rd-card')]; if (!ks.length) return false;
+      const i = ks.indexOf(document.activeElement), j = i < 0 ? 0 : Math.max(0, Math.min(ks.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)));
+      e.preventDefault(); ks[j].focus(); return true;
+    }
+    return false;
+  }
+  const q = readState.quiz;
+  if (q) {
+    const t = readingText(readState.id); if (!t || imFeld) return false;
+    if (q.wahl == null && /^[1-9]$/.test(e.key) && t.fragen[q.i] && Number(e.key) <= t.fragen[q.i].a.length) { e.preventDefault(); if (!e.repeat) readQuizWahl(Number(e.key) - 1); return true; }
+    if (q.wahl != null && e.key === 'Enter') { e.preventDefault(); if (!e.repeat) readQuizWeiter(); return true; }
+    return false;
+  }
+  if (readState.ende) return false;
   if (e.key === 'Enter' && !e.shiftKey && !readState.offen && (tag === 'textarea' || tag === 'body' || !el || !el.closest || !el.closest('button, a'))) { e.preventDefault(); if (!e.repeat) readZeigen(); return true; }
   if (imFeld) return false;
   if (readState.offen && (e.key === '1' || e.key === '2')) { e.preventDefault(); if (!e.repeat) readRate(e.key === '1'); return true; }
@@ -18302,6 +18591,7 @@ function keyReading(e) {
   if (e.key === '4' && AUDIO_SUPPORTED) { e.preventDefault(); if (!e.repeat) readSpeak(); return true; }
   return false;
 }
+
 
 function showListeningPanel(name) {
   haltAllAudio();
