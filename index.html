@@ -2864,8 +2864,9 @@
 <p>• <strong>Imperativ:</strong> die du-Befehlsform: говорить → говори!</p>
 <p>• <strong>vollendet (Futur):</strong> der vollendete Partner mit Präsensendungen – сделаю heißt schon „ich werde (fertig) machen“.</p>
 <p>• <strong>vollendet (Vergangenheit):</strong> der vollendete Partner in der Vergangenheit – он сказал, она написала.</p>
+<p>• <strong>Konjunktiv (B1):</strong> Vergangenheitsform + бы – я знал бы (ich wüsste), она пришла бы (sie würde kommen). бы kann auch vor dem Verb stehen (я бы знал); hier wird es hinter das Verb geschrieben. Gezählt wird je Verb einmal.</p>
 <p><strong>Gezählt</strong> wird die Vergangenheit je Form (он, она, они einzeln; in einer Runde kommt je Verb höchstens eine davon). Das Futur mit буду ist bei allen Verben gleich gebaut: übbar, aber es zählt nicht und kommt bei <em>Alle</em> höchstens zweimal pro Runde.</p>
-<p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em> und <em>Aspekt</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
+<p><strong>Bedienung:</strong> Groß steht die gesuchte Form als Lücke (они ___), darüber die Ausgangsform und die Art der Umformung. <em>Alle</em> mischt alle Typen, <em>Vergangenheit</em>, <em>Futur</em>, <em>Imperativ</em>, <em>Aspekt</em> und <em>Konjunktiv</em> üben nur diesen einen Typ. Es kommen nur Verben vor, deren Formen vollständig hinterlegt sind.</p>
 <p>Eine Runde hat 15 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
 <p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
 <p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 15 neue Aufgaben und setzt den Zähler zurück. <em>Nur regelmäßige</em> lässt Sonderfälle und Verben mit Stammwechsel weg.</p>
@@ -2876,6 +2877,7 @@
 <button class="mode-btn" id="transform-scope-btn-future" onclick="setTransformScope('future')">Futur</button>
 <button class="mode-btn" id="transform-scope-btn-imperative" onclick="setTransformScope('imperative')">Imperativ</button>
 <button class="mode-btn" id="transform-scope-btn-aspect" onclick="setTransformScope('aspect')">Aspekt</button>
+<button class="mode-btn" id="transform-scope-btn-konj" onclick="setTransformScope('konj')">Konjunktiv</button>
 </div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="transform-reg-toggle" onclick="toggleTransformReg()" title="Ohne Sonderfälle und Verben mit Stammwechsel" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="transform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakTransform()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -15241,6 +15243,8 @@ const GRAMMAR_PART_LEVEL = [
   ['#case-plural-toggle', 'A2'], ['#wg-num-btn-pl', 'A2'], ['#wg-type-numadjnoun', 'A2'],
   // кто/весь-Formen; Wechsel в/на (Ort/Richtung); Aufforderung
   ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#sb-type-place', 'A2'], ['#sb-type-imperative', 'A2'],
+  // B1 (15.11.): Konjunktiv mit бы
+  ['#transform-scope-btn-konj', 'B1'],
 ];
 // Abzeichen an Chips, Titeln und höher liegenden Modi; über „Mein Niveau“ gedimmt
 function applyLevelMarks() {
@@ -27726,6 +27730,10 @@ function buildTransformItems() {
         items.push({ kind: 'past', from: pres, fromPron: 'он', inf, pkey: key, prompt: pron + ' + ' + inf, task: 'Vergangenheit', answer: d.past[key], de: d.de });
       }
     });
+    // Konjunktiv (B1, 15.11.): Vergangenheit + бы – я знал бы, она знала бы; zählt je Verb einmal
+    PAST_PERSONS.forEach(([pron, key]) => {
+      if (d.past[key]) items.push({ kind: 'konj', from: inf, inf, pkey: key, prompt: pron + ' + ' + inf, task: 'Konjunktiv (бы)', answer: d.past[key] + ' бы', de: d.de });
+    });
     // Präsens → Futur (unvollendet, буду-Form)
     if (d.future && d.future['я']) {
       items.push({ kind: 'future', from: d.nonPast['я'], fromPron: 'я', inf, pkey: 'я', prompt: 'я + ' + inf, task: 'Futur (unvollendet)', answer: d.future['я'], de: d.de });
@@ -27758,7 +27766,7 @@ function buildTransformItems() {
   return items.filter(i => normalizeYo(i.from.toLowerCase()) !== normalizeYo(i.answer.toLowerCase()));
 }
 
-const TRANSFORM_SCOPES = ['all', 'past', 'future', 'imperative', 'aspect'];
+const TRANSFORM_SCOPES = ['all', 'past', 'future', 'imperative', 'aspect', 'konj'];
 function setTransformScope(scope) {
   if (!TRANSFORM_SCOPES.includes(scope)) scope = 'all';
   transformState.scope = scope;
@@ -27781,6 +27789,7 @@ function transformUnitId(t) {
   // Vergangenheit zählt je Form (12.11.): он behält die alte Kennung, она/они eigene
   if (t.kind === 'past') return 'past:' + t.inf + (t.pkey === 'он' ? '' : ':' + t.pkey);
   if (t.task === 'vollendet (Vergangenheit)') return 'apast:' + t.inf;
+  if (t.kind === 'konj') return 'konj:' + t.inf;
   return transformId(t);
 }
 function transformSrsKey(t) { return t.kind === 'future' ? 'transform:future' : 'transform'; }
@@ -27811,7 +27820,7 @@ function transformRoundPick(pool, now) {
   for (const t of [].concat(...g)) {
     if (runde.length >= TRANSFORM_ROUND) break;
     // Vergangenheit: je Verb höchstens eine Form je Runde (он/она/они zählen seit 12.11. einzeln)
-    if (t.kind === 'past' && runde.some(x => x.kind === 'past' && x.inf === t.inf)) continue;
+    if ((t.kind === 'past' || t.kind === 'konj') && runde.some(x => x.kind === t.kind && x.inf === t.inf)) continue;
     if (t.kind === 'future' && transformState.scope === 'all') { if (futur >= 2) continue; futur++; }
     runde.push(t);
   }
@@ -27934,6 +27943,12 @@ function transformTipp(t, eingabe) {
   if (t.kind === 'past' || t.task === 'vollendet (Vergangenheit)') {
     const stamm = x => x.replace(/(л|ла|ло|ли)(ся|сь)?$/, '');
     if (/(л|ла|ло|ли)(ся|сь)?$/.test(v) && stamm(v) === stamm(a)) return 'Endung der Vergangenheit: он -л, она -ла, они -ли.';
+  }
+  if (t.kind === 'konj') {
+    const ohne = a.replace(/ бы$/, '');
+    if (v === 'бы ' + ohne) return 'richtig wäre auch „' + v + '“ – hier bitte бы hinter das Verb: ' + a + '.';
+    if (v === ohne) return 'Konjunktiv = Vergangenheit + бы.';
+    if (/ бы$/.test(v)) return 'Vergangenheitsform passend zur Person: он -л, она -ла, они -ли, dann бы.';
   }
   if (t.kind === 'imperative') {
     if (v === a + 'те' || v === a.replace(/(ся|сь)$/, '') + 'тесь') return 'gesucht ist die ты-Form, ohne -те.';
