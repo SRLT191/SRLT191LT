@@ -6090,7 +6090,7 @@ const vocab = {
     newBlock: [],
   },
 
-  "Wetter & Natur": {
+  "Natur & Wetter (Adj.)": {
     blocks: [
       // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
       [
@@ -15985,7 +15985,7 @@ const CAT_ICONS = {
   'Zeit & Häufigkeit': 'ti-clock-hour-4',
   'Material & Stoff': 'ti-cube',
   'Menge & Maß': 'ti-chart-bar',
-  'Wetter & Natur': 'ti-cloud-rain',
+  'Natur & Wetter (Adj.)': 'ti-cloud-rain',
   'Gesellschaft & Politik': 'ti-building',
   'Zugehörigkeit & Bereich': 'ti-home',
   'Sinne & Beschaffenheit': 'ti-hand-grab',
@@ -16077,7 +16077,7 @@ const WORTART_GROUPS = {
              'Handlungsverben','Zustand & Leben','Sport & Freizeit','Handelsverben','Schule & Arbeit','Küche & Essen','Technik & Medien','Natur & Wetter'],
   // 16.11.: leichteste zuerst; Farben und Nationalitäten gehören zu den Adjektiven
   'Adjektive': ['Bewertung & Qualität','Zustand & Person','Zeit & Häufigkeit','Sinne & Beschaffenheit','Zugehörigkeit & Bereich','Gesellschaft & Politik',
-                'Größe & Form','Menge & Maß','Farben','Raum & Lage','Charakter & Gefühl','Nationalitäten','Wetter & Natur','Material & Stoff'],
+                'Größe & Form','Menge & Maß','Farben','Raum & Lage','Charakter & Gefühl','Nationalitäten','Natur & Wetter (Adj.)','Material & Stoff'],
   'Grammatikwörter': ['Pronomen','Funktionswörter','Präpositionen','Konjunktionen','Partikel','Modalwörter'],
   'Sprechakte & Umgangssprache': ['Interjektionen','Begrüßungen','Umgangssprache'],
 };
@@ -16126,7 +16126,7 @@ function updateBlocksToolBtn() {
   btn.setAttribute('aria-label', btn.title);
 }
 // umbenannte Kategorien: alte gespeicherte Namen auf neue abbilden
-const RENAMED_CATS = { 'Verben': 'Grundverben', 'Adverben': 'Adverbien' };
+const RENAMED_CATS = { 'Verben': 'Grundverben', 'Adverben': 'Adverbien', 'Wetter & Natur': 'Natur & Wetter (Adj.)' };
 function migrateCatName(c) { return RENAMED_CATS[c] || c; }
 const FAVORITE_CATS_STORAGE_KEY = 'vokabeltrainer-favorite-cats';
 let favoriteCats = new Set();
@@ -26664,7 +26664,7 @@ function speakAdjForm() {
 // ergibt sich aus der Endung; wo die Endung nichts sagt (-ь, Ausnahmen), steht
 // es in GENDER_LIST. Was keine Regel und keinen Eintrag hat, bleibt draußen.
 const GENDER_SKIP_CATS = new Set(['Begrüßungen', 'Umgangssprache', 'Zugehörigkeit & Bereich', 'Material & Stoff',
-  'Wetter & Natur', 'Sport & Freizeit', 'Tagesablauf-Verben', 'Wahrnehmung & Gefühle', 'Grundverben']);
+  'Natur & Wetter (Adj.)', 'Sport & Freizeit', 'Tagesablauf-Verben', 'Wahrnehmung & Gefühle', 'Grundverben']);
 // Wörter mit -ь ohne Faustregel sowie Ausnahmen zur Endungsregel
 const GENDER_LIST = {
   m: ('рыцарь князь рубль парень шампунь штабель пароль баррель кашель дождь ливень штиль уровень корабль зять картофель февраль апрель июнь июль '
