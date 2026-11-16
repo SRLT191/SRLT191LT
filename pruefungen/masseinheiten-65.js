@@ -12,15 +12,16 @@ const { chromium } = require('playwright');
       'длина': ['Länge', 'C1', 'f'], 'ширина': ['Breite', 'C1', 'f'], 'мера': ['Maß', 'C1', 'f'], 'радиус': ['Radius', 'C1', 'm'], 'точность': ['Genauigkeit', 'C1', 'f'] };
     const kl = getAllWordsOfCat('Maßeinheiten');
     Object.entries(NEU).forEach(([ru, [de, lv, g]]) => {
-      const w = kl.find(x => x.ru === ru), s = w && getWordSentence(w);
-      ok(ru + ': in Maßeinheiten, Umschrift nach Regel, nur bestätigte Übersetzung', w && w.tr === trLetters(ru) && w.de.join('|') === de, w ? w.tr + ' · ' + w.de.join(', ') : 'fehlt');
-      ok(ru + ': Stufe ' + lv + ', Satz mit Wort und Übersetzung, nicht schwerer als das Wort', w && wordLevel(w) === lv && s
-        && s.ru.toLowerCase().includes(ru.toLowerCase()) && w.de.some(d => s.de.includes(d.replace(/\s*\(.*\)$/, ''))) && LEVELS.indexOf(sentenceLevel(s.ru)) <= LEVELS.indexOf(lv) && sentenceLevel(s.ru, [ru]) === lv, s ? s.ru + ' / ' + s.de + ' · ' + sentenceLevel(s.ru) : 'kein Satz');
+      // 16.11.: verschobene Wörter auch in ihrer neuen Kategorie, zusammengelegte auf ihrer Paarkarte (Z = beide Wörter)
+      const w = kl.find(x => x.ru === ru) || allVocabWords().find(x => x.ru === ru || (MERGED_CARDS[x.ru] || []).includes(ru)), s = w && getWordSentence(w), Z = w && MERGED_CARDS[w.ru];
+      ok(ru + ': in Maßeinheiten, Umschrift nach Regel, nur bestätigte Übersetzung', w && (w.tr === trLetters(ru) || (Z && String(w.tr).split(' / ').includes(trLetters(ru)))) && (w.de.join('|') === de || (Z && w.de.includes(de))), w ? w.tr + ' · ' + w.de.join(', ') : 'fehlt');
+      ok(ru + ': Stufe ' + lv + ', Satz mit Wort und Übersetzung, nicht schwerer als das Wort', w && (wordLevel(w) === lv || (Z && LEVELS.indexOf(wordLevel(w)) <= LEVELS.indexOf(lv))) && s
+        && (Z || [ru]).some(t => s.ru.toLowerCase().includes(t.toLowerCase())) && w.de.some(d => s.de.includes(d.replace(/\s*\(.*\)$/, ''))) && LEVELS.indexOf(sentenceLevel(s.ru)) <= LEVELS.indexOf(lv) && (Z || sentenceLevel(s.ru, [ru]) === lv), s ? s.ru + ' / ' + s.de + ' · ' + sentenceLevel(s.ru) : 'kein Satz');
       if (g === '-') ok(ru + ': kein Substantiv mit großgeschriebener Übersetzung – nicht im Werkzeug Geschlecht', !genderPool().some(x => x.ru === ru));
       else ok(ru + ': Geschlecht ' + g, (genderOf(ru) || {}).g === g && genderPool().some(x => x.ru === ru), JSON.stringify(genderOf(ru)));
     });
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Maßeinheiten 65', kl.length === 65, String(kl.length));
+    ok('Maßeinheiten 64 (16.11.: Wörter verschoben/zusammengelegt)', kl.length === 64, String(kl.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);
