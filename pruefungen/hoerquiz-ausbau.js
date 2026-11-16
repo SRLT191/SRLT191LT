@@ -22,7 +22,7 @@ const { chromium } = require('playwright');
       window.__spoken.length = 0; setAppView('listening'); showListeningPanel('hearquiz'); });
     await p.waitForTimeout(400);
     return ev(() => { const t = document.getElementById('hq-runde').textContent;
-    return { ok: hqState.runde.length === 15 && t === 'Wort 1 von 15' && window.__spoken.some(x => x[0] === hqState.current.ru), info: t + ' ' + JSON.stringify(window.__spoken) }; });
+    return { ok: hqState.runde.length === 15 && t === 'Wort 1 von 15' && window.__spoken.some(x => x[0] === hqState.current.ru.replace(/ \/ /g, ', ')), info: t + ' ' + JSON.stringify(window.__spoken) }; });
   });
   await check('Werkzeugleiste in einer Zeile, „Antwort: Russisch / Deutsch“, kein Runde-Knopf', () => ev(() => {
     const tb = document.querySelector('#listening-hearquiz .hq-toolbar'); const kinder = [...tb.children].map(c => c.getBoundingClientRect().top);
@@ -73,7 +73,7 @@ const { chromium } = require('playwright');
   await check('Strg+Leertaste spielt ab, mit Umschalt langsam', async () => {
     await ev(() => { window.__spoken.length = 0; });
     await p.keyboard.press('Control+Space'); await p.keyboard.press('Control+Shift+Space');
-    return ev(() => ({ ok: window.__spoken.length === 2 && window.__spoken[1][1] === 0.5 && window.__spoken[0][0] === hqState.current.ru, info: JSON.stringify(window.__spoken) }));
+    return ev(() => ({ ok: window.__spoken.length === 2 && window.__spoken[1][1] === 0.5 && window.__spoken[0][0] === hqState.current.ru.replace(/ \/ /g, ', '), info: JSON.stringify(window.__spoken) }));
   });
   await check('Rundenende: Bilanz, Fehlerliste, „Fehler wiederholen“ spielt genau die Fehler', () => ev(() => {
     setHearquizMode('type');
