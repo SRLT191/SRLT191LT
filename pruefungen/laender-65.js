@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
   const R = await p.evaluate(() => {
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
     const NEU = { 'Америка': ['Amerika', 'B1', ''], 'Англия': ['England', 'B2', ''], 'Сирия': ['Syrien', 'C1', ''], 'Колумбия': ['Kolumbien', 'C1', ''], 'Ирак': ['Irak', 'C1', ''],
-      'Европа': ['Europa', 'C1', ''], 'Африка': ['Afrika', 'C1', ''], 'Иран': ['Iran', 'C1', ''], 'Куба': ['Kuba', 'C1', ''], 'Азия': ['Asien', 'C1', ''], 'Венгрия': ['Ungarn', 'C1', ''],
+      'Европа': ['Europa', 'A2', ''], 'Африка': ['Afrika', 'A2', ''], 'Иран': ['Iran', 'C1', ''], 'Куба': ['Kuba', 'C1', ''], 'Азия': ['Asien', 'A2', ''], 'Венгрия': ['Ungarn', 'C1', ''],
       'Болгария': ['Bulgarien', 'C1', ''], 'Хорватия': ['Kroatien', 'C1', ''], 'Румыния': ['Rumänien', 'C1', ''], 'Сербия': ['Serbien', 'C1', ''] };
     const kl = getAllWordsOfCat('Länder');
     Object.entries(NEU).forEach(([ru, [de, lv, g]]) => {

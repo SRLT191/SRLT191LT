@@ -13,7 +13,8 @@ const { chromium } = require('playwright');
       'родственница': ['Verwandte', 'B1'], 'свёкор': ['Schwiegervater|Vater des Mannes', 'B2'], 'мачеха': ['Stiefmutter', 'B2'], 'отчим': ['Stiefvater', 'B2'] };
     const fam = getAllWordsOfCat('Familie');
     Object.entries(NEU).forEach(([ru, [de, lv]]) => {
-      const w = fam.find(x => x.ru === ru), s = w && getWordSentence(w);
+      const UMZUG = { 'соседка': 'Wohnen' }; // Gesamtprüfung 16.11.: in eine passendere Kategorie verschoben
+      const w = fam.find(x => x.ru === ru) || (UMZUG[ru] && getAllWordsOfCat(UMZUG[ru]).find(x => x.ru === ru)), s = w && getWordSentence(w);
       ok(ru + ': in Familie, Umschrift nach Regel, nur bestätigte Übersetzung', w && w.tr === trLetters(ru) && w.de.join('|') === de, w ? w.tr + ' · ' + w.de.join(', ') : 'fehlt');
       ok(ru + ': Stufe ' + lv + ', Satz mit Wort und Übersetzung, nicht schwerer als das Wort', w && wordLevel(w) === lv && s
         && s.ru.toLowerCase().includes(ru) && s.de.includes(w.de[0].replace(/\s*\(.*\)$/, '')) && LEVELS.indexOf(sentenceLevel(s.ru)) <= LEVELS.indexOf(lv), s ? s.ru + ' / ' + s.de + ' · ' + sentenceLevel(s.ru) : 'kein Satz');
@@ -21,7 +22,7 @@ const { chromium } = require('playwright');
     ok('nur Substantive mit Geschlecht im Werkzeug; дети und день рождения nicht abgefragt',
       genderOf('дети') === null && genderOf('день рождения') === null && genderOf('имя').g === 'n' && genderOf('свёкор').g === 'm' && genderOf('старость').g === 'f');
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Familie 65', fam.length === 65, String(fam.length));
+    ok('Familie 64 (16.11.: Wörter verschoben)', fam.length === 64, String(fam.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);
