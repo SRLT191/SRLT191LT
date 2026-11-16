@@ -1,5 +1,5 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Seitenleiste: Oberkategorien (Substantive, Mensch & Alltag, Verben …) klappen mit einem Klick auf und zu,
+// Seitenleiste: Oberkategorien (Substantive, Alltag, Verben …) klappen mit einem Klick auf und zu,
 // ein Doppelklick übt alle Wörter aller Unterkategorien; Unterkategorien (z. B. Kleidung) mit einem Klick ganz.
 const { chromium } = require('playwright');
 (async () => {
@@ -21,11 +21,11 @@ const { chromium } = require('playwright');
   await warte(); await tile('Substantive').dblclick(); s = await st();
   ok('Substantive: Doppelklick übt alle Substantive und bleibt aufgeklappt', s.a === 'Substantive' && s.em === 'Substantive' && s.n > 1000 && s.n < alle, JSON.stringify(s));
   await warte(); await p.evaluate(() => selectMainCat('all')); await tile('Substantive').click(); await warte();
-  await sub('Mensch & Alltag').click(); s = await st();
-  ok('Mensch & Alltag: ein Klick klappt nur auf', s.et === 'Mensch & Alltag' && s.a === 'all', JSON.stringify(s));
-  await warte(); await sub('Mensch & Alltag').dblclick(); s = await st();
-  const soll = await p.evaluate(() => catGroupCats('Mensch & Alltag').reduce((a, c) => a + getAllWordsOfCat(c).length, 0));
-  ok('Mensch & Alltag: Doppelklick übt alle Wörter der 11 Unterkategorien', s.a === 'Mensch & Alltag' && s.et === 'Mensch & Alltag' && s.n === soll, JSON.stringify(s) + ' soll ' + soll);
+  await sub('Alltag').click(); s = await st();
+  ok('Alltag: ein Klick klappt nur auf', s.et === 'Alltag' && s.a === 'all', JSON.stringify(s));
+  await warte(); await sub('Alltag').dblclick(); s = await st();
+  const soll = await p.evaluate(() => catGroupCats('Alltag').reduce((a, c) => a + getAllWordsOfCat(c).length, 0));
+  ok('Alltag: Doppelklick übt alle Wörter der 6 Unterkategorien', s.a === 'Alltag' && s.et === 'Alltag' && s.n === soll, JSON.stringify(s) + ' soll ' + soll);
   await warte();
   // Teilauswahl vorher setzen, dann ein Klick auf Kleidung → ganze Kategorie
   await p.evaluate(() => { selectedBlocksByCat['Kleidung'] = new Set([0]); buildNav(); });

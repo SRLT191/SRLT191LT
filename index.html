@@ -177,6 +177,7 @@
   .tile-fav-btn.active:hover { color: #c98a00; }
   [data-theme="dark"] .tile-fav-btn.active { color: #f0c050; }
   .sub-inline { display: none; flex-direction: column; gap: 1px; margin: 1px 0 3px 0; }
+  .sub-trenner { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--c-text-faint); padding: 8px 8px 2px; }
   .sub-inline-nested { margin-left: 14px; border-left: 1.5px solid var(--c-border-light); padding-left: 6px; }
   .sub-inline.open { display: flex; }
   .sub-btn { display: flex; align-items: center; gap: 7px; padding: 5px 10px 5px 26px; border-radius: 8px; font-size: 12px; border: none; background: none; color: var(--c-text-tertiary); cursor: pointer; width: 100%; min-width: 0; text-align: left; }
@@ -6536,7 +6537,7 @@ const vocab = {
     newBlock: [],
   },
 
-  Adverben: {
+  Adverbien: {
     blocks: [
       // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
       [
@@ -8784,7 +8785,7 @@ function homeContinue() {
 // große Zahlen mit Tausenderpunkt (27.523)
 function fmtN(n) { return Number(n || 0).toLocaleString('de-DE'); }
 // Reihenfolge der Kategorien wie in der Seitenleiste
-function homeCatOrder() { return [...Object.values(SUBSTANTIVE_GROUPS).flat(), ...Object.values(WORTART_GROUPS).flat(), ...UNGROUPED_FLAT_CATS].filter(c => vocab[c]); }
+function homeCatOrder() { return [...Object.values(SUBSTANTIVE_GROUPS).flat(), ...wortartFolge(), ...UNGROUPED_FLAT_CATS].filter(c => vocab[c]); }
 // Nächste Kategorie mit offenen Wörtern – nur wenn in der aktuellen Auswahl nichts mehr offen ist
 function homeNextCat() {
   try {
@@ -10766,9 +10767,10 @@ function loadSelection() {
       // 'session', 'due' und 'hard' sind nur für die laufende Runde gedacht und werden nicht wiederhergestellt
       if (d.activeMain && !['session', 'due', 'hard', 'textw'].includes(d.activeMain) && (d.activeMain !== 'exam' || levelExam)) activeMain = d.activeMain;
       if (d.activeSub) activeSub = d.activeSub;
-      if (Array.isArray(d.selectedCats)) selectedCats = new Set(d.selectedCats.filter(c => vocab[c]));
+      if (activeMain && !isCatGroup(activeMain) && RENAMED_CATS[activeMain]) activeMain = migrateCatName(activeMain);
+      if (Array.isArray(d.selectedCats)) selectedCats = new Set(d.selectedCats.map(migrateCatName).filter(c => vocab[c]));
       if (d.blocks) Object.keys(d.blocks).forEach(c => {
-        if (vocab[c]) selectedBlocksByCat[c] = new Set(d.blocks[c]);
+        const m = migrateCatName(c); if (vocab[m] && Array.isArray(d.blocks[c])) selectedBlocksByCat[m] = new Set(d.blocks[c]);
       });
       if (['mc','free','flip'].includes(d.quizMode)) quizMode = d.quizMode;
       if (typeof d.showTranscription === 'boolean') showTranscription = d.showTranscription;
@@ -11399,7 +11401,7 @@ const SENTENCE_OVERRIDES = {
   // Geographie
   // Funktionswörter
   "никто":      [ { ru: '___ не знает ответ.',            de: '___ kennt die Antwort.', isAI: true } ],
-  // Adverben
+  // Adverbien
   "здесь":      [ { ru: 'Я живу ___.',                    de: 'Ich wohne ___.', isAI: true } ],
   "там":        [ { ru: 'Он стоит ___.',                  de: 'Er steht ___.', isAI: true } ],
   "сейчас":     [ { ru: '___ я иду домой.',               de: '___ gehe ich nach Hause.', isAI: true } ],
@@ -11491,7 +11493,7 @@ const SENTENCE_OVERRIDES = {
   "всякий":     [ { ru: '___ случай важен.',              de: 'Jeder Fall ist wichtig.', isAI: true } ],
   "столько": [ { ru: 'Он купил ___ хлеба, что не смог всё унести.', de: 'Er kaufte ___ Brot, dass er nicht alles tragen konnte.', isAI: true } ],
   "иной":       [ { ru: 'Это совсем ___ вопрос.',               de: 'Das ist eine ganz andere Frage.', isAI: true } ],
-  // Adverben
+  // Adverbien
   "потом":      [ { ru: 'Я ___ позвоню тебе.',           de: 'Ich rufe dich ___ an.', isAI: true } ],
   "сегодня":    [ { ru: '___ хорошая погода.',           de: '___ ist das Wetter gut.', isAI: true } ],
   "завтра":     [ { ru: '___ у меня экзамен.',           de: '___ habe ich eine Prüfung.', isAI: true } ],
@@ -11570,7 +11572,7 @@ const SENTENCE_OVERRIDES = {
   "сустав":     [ { ru: '___ болит при движении.',        de: 'Das ___ tut bei Bewegung weh.', isAI: true } ],
   "вена":       [ { ru: '___ видна на руке.',             de: 'Die ___ ist am Arm sichtbar.', isAI: true } ],
 
-  // Adverben (Lückenschluss)
+  // Adverbien (Lückenschluss)
   "конечно":    [ { ru: '___, я помогу тебе.',            de: '___ helfe ich dir.', isAI: true } ],
   "уже":        [ { ru: 'Я ___ дома.',                    de: 'Ich bin ___ zu Hause.', isAI: true } ],
   "только":     [ { ru: 'Это ___ начало.',                de: 'Das ist ___ der Anfang.', isAI: true } ],
@@ -15950,7 +15952,6 @@ const CAT_ICONS = {
   multi:       'ti-checkbox',
   bookmarks:   'ti-bookmark',
   Substantive: 'ti-cube',
-  'Inhaltswörter': 'ti-stack-2',
   'Grammatikwörter': 'ti-puzzle',
   'Sprechakte & Umgangssprache': 'ti-message-circle',
   Zahlen:      'ti-calculator',
@@ -16001,7 +16002,7 @@ const CAT_ICONS = {
   Modalwörter: 'ti-gavel',
   Funktionswörter: 'ti-arrows-shuffle',
   Präpositionen: 'ti-arrows-join',
-  Adverben:    'ti-arrows-exchange',
+  Adverbien:   'ti-arrows-exchange',
   Zeit:        'ti-clock',
   Tiere:       'ti-paw',
   Körperteile: 'ti-walk',
@@ -16042,18 +16043,26 @@ const SUBSTANTIVE_THEMEN = ['Familie','Alltagsobjekte','Essen','Berufe','Politik
 // Gruppiert die 32 Substantiv-Themen in 5 Oberkategorien für eine übersichtlichere
 // zweistufige Navigation innerhalb von "Substantive" (Sidebar + Kategorien-Picker).
 const SUBSTANTIVE_GROUPS = {
-  'Mensch & Alltag': ['Familie','Körperteile','Kleidung','Alltagsobjekte','Medizin','Sport','Essen','Berufe','Freizeit & Kultur','Soziales & Beziehungen','Menschen'],
-  'Gesellschaft & Staat': ['Politik','Ökonomie','Kommunismus','Krieg','Geschichte','Religion'],
-  'Natur & Umwelt': ['Natur','Pflanzen','Tiere','Wetter','Geographie','Geologie','Landwirtschaft','Weltraum & Astronomie'],
-  'Orte & Organisation': ['Wohnen','Büro','Bildung','Reisen','Lagerlogistik','Länder','Verkehr'],
-  'Abstrakt & Sonstiges': ['Zeit','Allgemeine Begriffe','Maßeinheiten','Wissenschaft & Forschung','Technik','Handwerk & Werkzeug'],
+  // 16.11.: 8 Gruppen vom Alltäglichen zum Speziellen, innerhalb einer Gruppe die leichtesten
+  // Kategorien zuerst (Anteil A1/A2-Wörter)
+  'Grundbegriffe': ['Allgemeine Begriffe','Zeit','Maßeinheiten'],
+  'Alltag': ['Essen','Wohnen','Freizeit & Kultur','Kleidung','Sport','Alltagsobjekte'],
+  'Mensch': ['Familie','Soziales & Beziehungen','Menschen','Medizin','Körperteile'],
+  'Arbeit & Bildung': ['Bildung','Berufe','Büro','Lagerlogistik','Handwerk & Werkzeug'],
+  'Reisen & Welt': ['Verkehr','Reisen','Geographie','Länder'],
+  'Gesellschaft & Geschichte': ['Ökonomie','Politik','Krieg','Religion','Geschichte','Kommunismus'],
+  'Wissenschaft & Technik': ['Wissenschaft & Forschung','Technik','Weltraum & Astronomie'],
+  'Natur': ['Natur','Tiere','Pflanzen','Wetter','Landwirtschaft','Geologie'],
 };
 const SUBSTANTIVE_GROUP_ICONS = {
-  'Mensch & Alltag': 'ti-users',
-  'Gesellschaft & Staat': 'ti-building-bank',
-  'Natur & Umwelt': 'ti-leaf',
-  'Orte & Organisation': 'ti-map-pin',
-  'Abstrakt & Sonstiges': 'ti-bulb',
+  'Grundbegriffe': 'ti-bulb',
+  'Alltag': 'ti-home',
+  'Mensch': 'ti-users',
+  'Arbeit & Bildung': 'ti-briefcase',
+  'Reisen & Welt': 'ti-plane',
+  'Gesellschaft & Geschichte': 'ti-building-bank',
+  'Wissenschaft & Technik': 'ti-flask',
+  'Natur': 'ti-leaf',
 };
 // "Zahlen" fasst analog alle Zahlenbereiche (je 100er-Schritte) als zweite Stufe zusammen.
 const FLAT_CATS = Object.keys(vocab).filter(c => !SUBSTANTIVE_THEMEN.includes(c));
@@ -16063,17 +16072,28 @@ const FLAT_CATS = Object.keys(vocab).filter(c => !SUBSTANTIVE_THEMEN.includes(c)
 // "Zahlen" bleibt bewusst außen vor (eigene Logik/eigenes Icon, keine Wortart
 // im klassischen Sinn).
 const WORTART_GROUPS = {
-  'Verben': ['Bewegungsverben','Tagesablauf-Verben','Kommunikationsverben','Wahrnehmung & Gefühle','Sozialverben','Handlungsverben','Handelsverben','Alltagsverben','Denkverben','Zustand & Leben','Schule & Arbeit','Küche & Essen','Natur & Wetter','Technik & Medien','Sport & Freizeit','Grundverben'],
-  'Adjektive': ['Größe & Form','Sinne & Beschaffenheit','Charakter & Gefühl','Zustand & Person','Bewertung & Qualität',
-                'Raum & Lage','Zeit & Häufigkeit','Material & Stoff','Menge & Maß','Wetter & Natur',
-                'Gesellschaft & Politik','Zugehörigkeit & Bereich'],
-  'Inhaltswörter': ['Farben','Nationalitäten','Adverben'],
+  // 16.11.: Grundwortschatz-Verben zuerst, dann Themenverben (Trenner in der Seitenleiste: VERB_THEMEN_AB)
+  'Verben': ['Grundverben','Bewegungsverben','Denkverben','Kommunikationsverben','Wahrnehmung & Gefühle','Alltagsverben','Sozialverben','Tagesablauf-Verben',
+             'Handlungsverben','Zustand & Leben','Sport & Freizeit','Handelsverben','Schule & Arbeit','Küche & Essen','Technik & Medien','Natur & Wetter'],
+  // 16.11.: leichteste zuerst; Farben und Nationalitäten gehören zu den Adjektiven
+  'Adjektive': ['Bewertung & Qualität','Zustand & Person','Zeit & Häufigkeit','Sinne & Beschaffenheit','Zugehörigkeit & Bereich','Gesellschaft & Politik',
+                'Größe & Form','Menge & Maß','Farben','Raum & Lage','Charakter & Gefühl','Nationalitäten','Wetter & Natur','Material & Stoff'],
   'Grammatikwörter': ['Pronomen','Funktionswörter','Präpositionen','Konjunktionen','Partikel','Modalwörter'],
   'Sprechakte & Umgangssprache': ['Interjektionen','Begrüßungen','Umgangssprache'],
 };
+// Wortarten, die nur aus einer Kategorie bestehen: stehen als eigene Kachel zwischen den Gruppen
+// (Adverbien nach den Adjektiven), sind aber keine Gruppe (der Name ist zugleich die Kategorie)
+const EIGENE_WORTARTEN = { 'Adverbien': 'Adjektive' };   // Kategorie → steht nach dieser Gruppe
+const VERB_THEMEN_AB = 'Handlungsverben';
+// Reihenfolge aller Wortart-Kategorien wie in der Seitenleiste
+function wortartFolge() {
+  const out = [];
+  Object.keys(WORTART_GROUPS).forEach(g => { out.push(...WORTART_GROUPS[g]); Object.keys(EIGENE_WORTARTEN).filter(c => EIGENE_WORTARTEN[c] === g && vocab[c]).forEach(c => out.push(c)); });
+  return out;
+}
 // Kategorien, die zu keiner der 4 Gruppen gehören (aktuell nur Zahlen),
 // werden weiterhin flach direkt unter "Wortarten" angezeigt.
-const UNGROUPED_FLAT_CATS = FLAT_CATS.filter(c => !Object.values(WORTART_GROUPS).flat().includes(c));
+const UNGROUPED_FLAT_CATS = FLAT_CATS.filter(c => !Object.values(WORTART_GROUPS).flat().includes(c) && !EIGENE_WORTARTEN[c]);
 // Oberkategorien, die selbst ein Vokabelpool sind: ein Klick übt alle ihre
 // Unterkategorien gemeinsam — wie seit je bei „Substantive“.
 const CAT_GROUP_POOLS = Object.assign({ Substantive: SUBSTANTIVE_THEMEN }, SUBSTANTIVE_GROUPS, WORTART_GROUPS);
@@ -16106,7 +16126,7 @@ function updateBlocksToolBtn() {
   btn.setAttribute('aria-label', btn.title);
 }
 // umbenannte Kategorien: alte gespeicherte Namen auf neue abbilden
-const RENAMED_CATS = { 'Verben': 'Grundverben' };
+const RENAMED_CATS = { 'Verben': 'Grundverben', 'Adverben': 'Adverbien' };
 function migrateCatName(c) { return RENAMED_CATS[c] || c; }
 const FAVORITE_CATS_STORAGE_KEY = 'vokabeltrainer-favorite-cats';
 let favoriteCats = new Set();
@@ -16203,10 +16223,18 @@ function makeCatRow(cat) {
 }
 
 // Aufgeklappte Liste von Kategoriezeilen (Favoriten zuerst).
-function makeCatList(cats, extraClass) {
+function makeCatList(cats, extraClass, themenAb) {
   const wrap = document.createElement('div');
   wrap.className = 'sub-inline open' + (extraClass ? ' ' + extraClass : '');
-  sortByFavorite(cats).forEach(cat => wrap.appendChild(makeCatRow(cat)));
+  const liste = sortByFavorite(cats);
+  // Verben (16.11.): Zwischenzeilen „Grundwortschatz“ / „Themen“ – nur ohne umsortierte Favoriten
+  const trenner = themenAb && liste.every((c, i) => c === cats[i]);
+  const zeile = t => { const d = document.createElement('div'); d.className = 'sub-trenner'; d.textContent = t; wrap.appendChild(d); };
+  liste.forEach(cat => {
+    if (trenner && cat === liste[0]) zeile('Grundwortschatz');
+    if (trenner && cat === themenAb) zeile('Themen');
+    wrap.appendChild(makeCatRow(cat));
+  });
   return wrap;
 }
 
@@ -16326,22 +16354,25 @@ function buildNav() {
       activeMain === groupName || expandedTheme === groupName || groupCats.includes(activeMain), () => navGroupTap(groupName,
         () => { expandedTheme = expandedTheme === groupName ? null : groupName; buildNav(); },
         () => practiseCatGroup(groupName, () => { expandedTheme = groupName; })), true));
-    if (expandedTheme === groupName) mr.appendChild(makeCatList(groupCats, 'sub-inline-nested'));
+    if (expandedTheme === groupName) mr.appendChild(makeCatList(groupCats, 'sub-inline-nested', groupName === 'Verben' ? VERB_THEMEN_AB : null));
+    Object.keys(EIGENE_WORTARTEN).filter(c => EIGENE_WORTARTEN[c] === groupName && vocab[c]).forEach(c => mr.appendChild(makeFlatCatTile(c)));
   });
 
   // ── Ungruppierte Reste (aktuell nur Zahlen) ──
-  sortByFavorite(UNGROUPED_FLAT_CATS).forEach(cat => {
-    const shortLabel = cat.length > 9 ? cat.slice(0, 8) + '…' : cat;
-    // wie bei den Unterkategorien: erledigt / gesamt (vorher stand hier die Zahl der gewählten Blöcke)
-    const alle = getAllWordsOfCat(cat), total = alle.length, fertig = alle.filter(hasCorrectAnswer).length;
-    const label = `${shortLabel} (${fertig}/${total})`;
-    const t = makeNavTile(cat, label, activeMain === cat, () => selectWholeCat(cat), true, true);
-    t.querySelector('.tile').title = cat + ' · ' + fertig + ' von ' + total + ' erledigt · Klick: alle Wörter üben';
-    t.querySelector('.tile').dataset.cat = cat; t.querySelector('.tile').dataset.short = shortLabel;
-    if (vocab[cat] && vocab[cat].blocks) t.insertBefore(makeBlockPickBtn(cat), t.lastChild);
-    if (activeMain === cat) t.classList.add('tile-wrap-active');
-    mr.appendChild(t);
-  });
+  sortByFavorite(UNGROUPED_FLAT_CATS).forEach(cat => mr.appendChild(makeFlatCatTile(cat)));
+}
+// Kachel für eine Kategorie direkt unter den Wortarten (Adverbien, Zahlen)
+function makeFlatCatTile(cat) {
+  const shortLabel = cat.length > 9 ? cat.slice(0, 8) + '…' : cat;
+  // wie bei den Unterkategorien: erledigt / gesamt (vorher stand hier die Zahl der gewählten Blöcke)
+  const alle = getAllWordsOfCat(cat), total = alle.length, fertig = alle.filter(hasCorrectAnswer).length;
+  const label = `${shortLabel} (${fertig}/${total})`;
+  const t = makeNavTile(cat, label, activeMain === cat, () => selectWholeCat(cat), true, true);
+  t.querySelector('.tile').title = cat + ' · ' + fertig + ' von ' + total + ' erledigt · Klick: alle Wörter üben';
+  t.querySelector('.tile').dataset.cat = cat; t.querySelector('.tile').dataset.short = shortLabel;
+  if (vocab[cat] && vocab[cat].blocks) t.insertBefore(makeBlockPickBtn(cat), t.lastChild);
+  if (activeMain === cat) t.classList.add('tile-wrap-active');
+  return t;
 }
 
 // ── Transliteration: nach der Aussprache oder Buchstabe für Buchstabe ──
@@ -17971,7 +18002,7 @@ function openCategoryPicker() {
 function buildCatPickerBody(body, isChecked, onChange, opts) {
   opts = opts || {};
   body.innerHTML = '';
-  if (opts.collapsible && !body._collapsed) body._collapsed = new Set(Object.keys(SUBSTANTIVE_GROUPS).concat(Object.keys(WORTART_GROUPS)));
+  if (opts.collapsible && !body._collapsed) body._collapsed = new Set(Object.keys(SUBSTANTIVE_GROUPS).concat(Object.keys(WORTART_GROUPS), Object.keys(EIGENE_WORTARTEN), UNGROUPED_FLAT_CATS));
   const sync = () => { updateCatPickerGroupChecks(body); if (onChange) onChange(); };
 
   const makeRow = (cat, sub) => {
@@ -18026,15 +18057,16 @@ function buildCatPickerBody(body, isChecked, onChange, opts) {
     body.appendChild(makeGroupTitle(groupName, SUBSTANTIVE_GROUPS[groupName], true));
     SUBSTANTIVE_GROUPS[groupName].forEach(cat => body.appendChild(makeRow(cat, groupName)));
   });
-  const wortartCats = Object.values(WORTART_GROUPS).flat().concat(UNGROUPED_FLAT_CATS);
-  // im Hörtrainer (klappbar) stehen auch die ungruppierten Kategorien (Zahlen) in einer Gruppe
-  const wGroups = opts.collapsible ? Object.assign({}, WORTART_GROUPS, { 'Inhaltswörter': WORTART_GROUPS['Inhaltswörter'].concat(UNGROUPED_FLAT_CATS) }) : WORTART_GROUPS;
+  const wortartCats = wortartFolge().concat(UNGROUPED_FLAT_CATS);
   body.appendChild(makeGroupTitle('Wortarten', wortartCats));
-  Object.keys(wGroups).forEach(groupName => {
-    body.appendChild(makeGroupTitle(groupName, wGroups[groupName], true));
-    wGroups[groupName].forEach(cat => body.appendChild(makeRow(cat, groupName)));
+  // eigene Wortarten (Adverbien) und ungruppierte (Zahlen): in klappbaren Listen als eigene Gruppe, sonst als Zeile
+  const einzeln = cat => { if (opts.collapsible) { body.appendChild(makeGroupTitle(cat, [cat], true)); body.appendChild(makeRow(cat, cat)); } else body.appendChild(makeRow(cat)); };
+  Object.keys(WORTART_GROUPS).forEach(groupName => {
+    body.appendChild(makeGroupTitle(groupName, WORTART_GROUPS[groupName], true));
+    WORTART_GROUPS[groupName].forEach(cat => body.appendChild(makeRow(cat, groupName)));
+    Object.keys(EIGENE_WORTARTEN).filter(c => EIGENE_WORTARTEN[c] === groupName && vocab[c]).forEach(einzeln);
   });
-  if (!opts.collapsible) UNGROUPED_FLAT_CATS.forEach(cat => body.appendChild(makeRow(cat)));
+  UNGROUPED_FLAT_CATS.forEach(einzeln);
   updateCatPickerGroupChecks(body);
   if (opts.collapsible) applyCatPickerFilter(body, body._query || '');
 }
@@ -30001,7 +30033,7 @@ function loadHearquizSettings() {
       if (['type','choice','flip'].includes(d.mode)) hqState.mode = d.mode;
       if (d.lang === 'ru' || d.lang === 'de') hqState.lang = d.lang;
       if (d.level === '' || LEVELS.includes(d.level)) hqState.level = d.level;
-      if (Array.isArray(d.cats)) hqState.selectedCats = new Set(d.cats.filter(c => typeof c === 'string' && vocab[c]));
+      if (Array.isArray(d.cats)) hqState.selectedCats = new Set(d.cats.filter(c => typeof c === 'string').map(migrateCatName).filter(c => vocab[c]));
       const el = document.getElementById('hearquiz-speed-range');
       if (el && d.speed && /^\d+$/.test(String(d.speed))) { el.value = d.speed; updateHearquizSpeedLabel(); }
     }

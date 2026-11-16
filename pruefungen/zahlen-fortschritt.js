@@ -33,7 +33,7 @@ const { chromium } = require('playwright');
   ok('DE → RU zählt eigenen Stand (1/54), zurück bei RU → DE wieder 4/54', de === 1 && k.text === 'Zahlen (1/54)' && zurueck === 4 && k2.text === 'Zahlen (4/54)', [de, k.text, zurueck, k2.text].join(' · '));
   // Unterkategorie: Linie und Tooltip ohne Neuaufbau nachgeführt; Blockmarke nur bei Teilauswahl
   const sub = await p.evaluate(() => {
-    setDirection('ru-de'); expandedMain = 'Substantive'; expandedTheme = 'Mensch & Alltag'; selectWholeCat('Kleidung');
+    setDirection('ru-de'); expandedMain = 'Substantive'; expandedTheme = 'Alltag'; selectWholeCat('Kleidung');
     const btn = () => document.querySelector('#main-row .sub-btn[data-cat="Kleidung"]');
     const vorher = btn().style.getPropertyValue('--sub-p'), marke = !!btn().querySelector('.sub-btn-sel');
     for (let i = 0; i < 13; i++) { const w = currentWord; document.getElementById('answer-input').value = w.de[0]; checkAnswer(); nextWord(); }

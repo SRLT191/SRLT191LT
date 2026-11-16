@@ -1,5 +1,5 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Hörtrainer-Ausbau (15.11.): Auswahl beim Start, Stufe, Dauer, Gruppen mit Wortzahl, Zahlen in Inhaltswörter,
+// Hörtrainer-Ausbau (15.11.): Auswahl beim Start, Stufe, Dauer, Gruppen mit Wortzahl, Zahlen als eigene Gruppe,
 // Richtung DE→RU, Beispielsatz, Wortanzeige mit Kategorie/Stufe, Zurück/Vor, Tasten
 const { chromium } = require('playwright');
 (async () => {
@@ -50,10 +50,11 @@ const { chromium } = require('playwright');
     const t = document.querySelector('#hoertrainer-cat-body .cat-group-sel').textContent;
     return { ok: /^\d+ von \d+ Kategorien? · \d+ Wörter$/.test(t), info: t };
   }));
-  await check('Zahlen steht in „Inhaltswörter“, nicht mehr allein', () => ev(() => {
-    const row = document.querySelector('#hoertrainer-cat-body input[data-cat="Zahlen"]').closest('.cat-check-row');
-    const grp = document.querySelector('#hoertrainer-cat-body .cat-group-title[data-sub="Inhaltswörter"]');
-    return { ok: row.dataset.sub === 'Inhaltswörter' && grp.dataset.cats.split('|').includes('Zahlen'), info: row.dataset.sub };
+  await check('Zahlen und Adverbien stehen als eigene klappbare Gruppe (16.11.)', () => ev(() => {
+    const z = document.querySelector('#hoertrainer-cat-body input[data-cat="Zahlen"]').closest('.cat-check-row');
+    const a = document.querySelector('#hoertrainer-cat-body input[data-cat="Adverbien"]').closest('.cat-check-row');
+    const gz = document.querySelector('#hoertrainer-cat-body .cat-group-title[data-sub="Zahlen"]');
+    return { ok: z.dataset.sub === 'Zahlen' && a.dataset.sub === 'Adverbien' && !!gz && !document.querySelector('[data-sub="Inhaltswörter"]'), info: z.dataset.sub + ' / ' + a.dataset.sub };
   }));
   await check('andere Auswahllisten unverändert (Zahlen dort weiter ungruppiert)', () => ev(() => {
     const div = document.createElement('div'); buildCatPickerBody(div, () => false, null);
