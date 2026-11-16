@@ -1512,6 +1512,7 @@
   .card-act i { font-size: 16px; }
   .card-act:hover { border-color: var(--c-accent); color: var(--c-accent); background: var(--c-surface); }
   #speak-btn.card-act { color: var(--c-accent); border-color: var(--c-accent); background: var(--c-accent-soft-bg); font-size: 12.5px; width: auto; height: 32px; border-radius: 999px; }
+  #pf-btn.card-act.active { color: var(--c-accent); border-color: var(--c-accent); }
   #bookmark-btn.card-act, #detail-btn.card-act, #transcription-btn.card-act { font-size: 12.5px; width: auto; height: 32px; border-radius: 999px; border: 0.5px solid var(--c-border); color: var(--c-text-secondary); }
   #bookmark-btn.card-act:hover, #detail-btn.card-act:hover { color: var(--c-accent); border-color: var(--c-accent); background: var(--c-surface); }
   #bookmark-btn.card-act.active { color: var(--c-accent); border-color: var(--c-accent); }
@@ -1640,7 +1641,7 @@
     #trainer, #sidebar { min-height: 0; }
     #sidebar-tools .tile-tool[onclick^="openSettings"] { display: none; }
     #russian-word { font-size: 42px; }
-    #bookmark-btn.card-act span, #detail-btn.card-act span { display: none; }
+    #bookmark-btn.card-act span, #detail-btn.card-act span, #pf-btn.card-act span { display: none; }
     .card-act { padding: 0 11px; }
     #sidebar-tools .tile-tool[onclick^="openVocabList"] { border-radius: 8px 0 0 8px; border-left: 0; }
     #vocab-status { flex-wrap: wrap; row-gap: 8px; }
@@ -1931,6 +1932,7 @@
                 title="Transliteration: nach der Aussprache → Buchstabe für Buchstabe → aus" aria-label="Transliteration: Aussprache (weiter mit Klick)">
           <i class="ti ti-eye" id="transcription-btn-icon"></i><span id="transcription-btn-label">Aussprache</span>
         </button>
+        <button class="card-act" id="pf-btn" onclick="togglePfVisible()" style="display:none" aria-pressed="false" title="Vollendeten Partner auf Verbkarten ausblenden" aria-label="Vollendeten Partner ausblenden"><i class="ti ti-eye" id="pf-btn-icon"></i><span>Vollendet</span></button>
         <button class="card-act" id="bookmark-btn" onclick="toggleCurrentBookmark()" title="Zur Merkliste" aria-label="Zur Merkliste"><i class="ti ti-bookmark"></i><span>Merken</span></button>
         <button class="card-act" id="detail-btn" onclick="openWordDetail(currentWord)" title="Wortdetails" aria-label="Wortdetails"><i class="ti ti-info-circle"></i><span>Details</span></button>
       </div>
@@ -10756,7 +10758,7 @@ function saveSelection() {
   try {
     localStorage.setItem(SELECTION_KEY, JSON.stringify({
       activeMain, activeSub, selectedCats: [...selectedCats], blocks,
-      quizMode, showTranscription, transcriptionMode
+      quizMode, showTranscription, transcriptionMode, hidePf
     }));
   } catch (e) {}
 }
@@ -10775,6 +10777,7 @@ function loadSelection() {
       });
       if (['mc','free','flip'].includes(d.quizMode)) quizMode = d.quizMode;
       if (typeof d.showTranscription === 'boolean') showTranscription = d.showTranscription;
+      hidePf = d.hidePf === true;
       // ältere Stände kennen nur an/aus: an = nach der Aussprache
       transcriptionMode = ['speech', 'letters', 'off'].includes(d.transcriptionMode) ? d.transcriptionMode : (showTranscription ? 'speech' : 'off');
       showTranscription = transcriptionMode !== 'off';
@@ -16529,7 +16532,8 @@ function renderTranscription(forceShow) {
   const show = showTranscription && (forceShow || quizDirection === 'ru-de');
   const el = document.getElementById('transcription');
   if (!show || !currentWord) { el.textContent = ''; return; }
-  el.textContent = '[ ' + trFor(currentWord) + ' ]';
+  const kurz = cardRu(currentWord) !== currentWord.ru;
+  el.textContent = '[ ' + trFor(kurz ? { ru: cardRu(currentWord), tr: currentWord.tr && String(currentWord.tr).split(' / ')[0] } : currentWord) + ' ]';
 }
 
 function weightedPick(pool, weightFn) {
@@ -16629,10 +16633,42 @@ function pickNextWord() {
 }
 
 // Baut die Karte für ein Wort auf: Anzeige, Aussprache, Eingabebereich je Modus.
+// Vollendete Partner ausblenden (16.11.): Auf Verbkarten mit Aspektpaar („просить / попросить“)
+// zeigt die Karte dann nur das unvollendete Verb – Anzeige, Lösung, Umschrift, Vorlesen und
+// Mehrfachauswahl. Als Antwort gilt weiter jede Form (ruAlt). Bewegungsverb-Paare (идти / ходить) bleiben ganz.
+let hidePf = false;
+function isAspectPairCard(w) {
+  const t = w && MERGED_CARDS[w.ru];
+  if (!t || t.length !== 2) return false;
+  try { if (MOTION_INDET.includes(t[1])) return false; } catch (e) { return false; }
+  return WORTART_GROUPS['Verben'].includes(getWordCategory(w));
+}
+// russische Anzeige einer Karte nach dem Schalter
+function cardRu(w) { return w && hidePf && isAspectPairCard(w) ? MERGED_CARDS[w.ru][0] : (w ? w.ru : ''); }
+function applyPfButton() {
+  const btn = document.getElementById('pf-btn'); if (!btn) return;
+  btn.style.display = isAspectPairCard(currentWord) ? '' : 'none';
+  btn.classList.toggle('active', hidePf);
+  btn.setAttribute('aria-pressed', hidePf ? 'true' : 'false');
+  const t = hidePf ? 'Vollendeten Partner auf Verbkarten wieder zeigen' : 'Vollendeten Partner auf Verbkarten ausblenden';
+  btn.title = t; btn.setAttribute('aria-label', t);
+  const ic = document.getElementById('pf-btn-icon'); if (ic) ic.className = 'ti ' + (hidePf ? 'ti-eye-off' : 'ti-eye');
+}
+function togglePfVisible() {
+  hidePf = !hidePf; saveSelection(); applyPfButton();
+  if (!currentWord) return;
+  const useRu = quizDirection === 'de-ru';
+  if (!useRu) { const el = document.getElementById('russian-word'); el.textContent = cardRu(currentWord); }
+  const rv = document.getElementById('correct-reveal-text');
+  if (rv && useRu && document.getElementById('correct-reveal').style.display === 'block') rv.textContent = cardRu(currentWord);
+  if (quizMode === 'mc' && !answered) renderMC();
+  renderTranscription(answered);
+}
 function renderCard(word) {
   currentWord = word;
   const wordEl = document.getElementById('russian-word');
-  wordEl.textContent = quizDirection === 'de-ru' ? getDeDisplay(currentWord) : currentWord.ru;
+  wordEl.textContent = quizDirection === 'de-ru' ? getDeDisplay(currentWord) : cardRu(currentWord);
+  applyPfButton();
   // Sprache auszeichnen, damit Screenreader russische Wörter russisch lesen
   wordEl.lang = quizDirection === 'de-ru' ? 'de' : 'ru';
   { const n = wordEl.textContent.length; wordEl.dataset.len = n > 22 ? 'sehrlang' : n > 13 ? 'lang' : ''; }
@@ -16644,7 +16680,7 @@ function renderCard(word) {
   // Auto-Vorlesen nur, wenn die Vokabeln zu sehen sind – sonst beim Wechsel dorthin nachholen
   cardSpeakPending = false;
   if (autoplayAudio && quizDirection === 'ru-de') {
-    if (appView === 'vocab') speak(currentWord.ru); else cardSpeakPending = true;
+    if (appView === 'vocab') speak(cardRu(currentWord)); else cardSpeakPending = true;
   }
   updateBookmarkBtnIcon();
   const lvEl = document.getElementById('card-level');
@@ -16701,12 +16737,12 @@ function nextWord(forceWord) {
 // DE → RU: Auto-Vorlesen spricht das russische Wort erst, wenn die Antwort feststeht
 // (Prüfen, Auswahl, Aufdecken, Auflösen) – vorher würde es die Lösung verraten.
 function speakAnswerAuto() {
-  if (autoplayAudio && quizDirection === 'de-ru' && currentWord) speak(currentWord.ru);
+  if (autoplayAudio && quizDirection === 'de-ru' && currentWord) speak(cardRu(currentWord));
 }
 function flipReveal() {
   if (!currentWord || answered) return;
   const useRu = quizDirection === 'de-ru';
-  document.getElementById('correct-reveal-text').textContent = useRu ? currentWord.ru : getDeDisplay(currentWord);
+  document.getElementById('correct-reveal-text').textContent = useRu ? cardRu(currentWord) : getDeDisplay(currentWord);
   document.getElementById('correct-reveal').className = '';
   document.getElementById('correct-reveal').style.display = 'block';
   renderTranscription(true);
@@ -17280,7 +17316,7 @@ function renderMC() {
   const useRu = quizDirection === 'de-ru';
   // richtige Antwort: bei RU→DE die erste deutsche Übersetzung, bei DE→RU das russische Wort
   const correctText = useRu ? currentWord.ru : currentWord.de[0];
-  const correctDisplay = useRu ? ruMcDisplay(currentWord) : currentWord.de[0];
+  const correctDisplay = useRu ? (cardRu(currentWord) !== currentWord.ru ? cardRu(currentWord) : ruMcDisplay(currentWord)) : currentWord.de[0];
   // 3 zufällige, eindeutige Distraktoren (keine Wortdopplungen, kein Treffer mit der richtigen Antwort).
   // Wichtig: kein Distraktor darf eine deutsche Übersetzung mit dem gesuchten Wort
   // teilen — sonst tauchen bei Synonym-Paaren (болельщик/фанат = "Fan",
@@ -17302,7 +17338,7 @@ function renderMC() {
       const text = useRu ? w.ru : w.de[0];
       if (usedTexts.has(text.toLowerCase())) continue;
       usedTexts.add(text.toLowerCase());
-      distractors.push({ match: text, display: useRu ? ruMcDisplay(w) : text });
+      distractors.push({ match: text, display: useRu ? (cardRu(w) !== w.ru ? cardRu(w) : ruMcDisplay(w)) : text });
       if (distractors.length === 3) break;
     }
   }
@@ -17342,7 +17378,7 @@ function checkMC(idx) {
   renderTranscription(true);
   document.getElementById('speak-btn').style.display = '';
   speakAnswerAuto();
-  const summaryText = useRu ? getDeDisplay(currentWord) + ' = ' + currentWord.ru : currentWord.ru + ' = ' + getDeDisplay(currentWord);
+  const summaryText = useRu ? getDeDisplay(currentWord) + ' = ' + cardRu(currentWord) : cardRu(currentWord) + ' = ' + getDeDisplay(currentWord);
   if (isCorrect) {
     correct++; streak++;
     card.className = 'correct';
@@ -17366,7 +17402,7 @@ function revealCurrentWord() {
   if (answered || !currentWord) return;
   answered = true;
   const useRu = quizDirection === 'de-ru';
-  const correctDisplay = useRu ? currentWord.ru : getDeDisplay(currentWord);
+  const correctDisplay = useRu ? cardRu(currentWord) : getDeDisplay(currentWord);
   updateScore(currentWord, false);
   wrong++; streak = 0; noteSessionWrong(currentWord);
   renderTranscription(true);
@@ -17534,8 +17570,8 @@ async function checkAnswer() {
     const ruCandidates = [currentWord.ru, ...(currentWord.ruAlt || [])];
     isCorrect = ruCandidates.some(c => isFuzzyMatch(userInput, stripClarification(c)));
     isTypo = isCorrect && !ruCandidates.some(c => normalizeYo(userInput) === normalizeYo(stripClarification(c)));
-    correctDisplay = currentWord.ru;
-    summaryText = getDeDisplay(currentWord) + ' = ' + currentWord.ru;
+    correctDisplay = cardRu(currentWord);
+    summaryText = getDeDisplay(currentWord) + ' = ' + cardRu(currentWord);
     if (!isCorrect) {
       // Eingabe könnte ein anderes Wort mit derselben deutschen Übersetzung sein
       // (Synonym-Paare wie болельщик/фанат) — das zählt als richtig.
@@ -17552,7 +17588,7 @@ async function checkAnswer() {
     isCorrect = !!matchedAnswer;
     isTypo = isCorrect && matchedAnswer && normalizeYo(userInput) !== normalizeYo(stripClarification(matchedAnswer));
     correctDisplay = getDeDisplay(currentWord);
-    summaryText = currentWord.ru + ' = ' + getDeDisplay(currentWord);
+    summaryText = cardRu(currentWord) + ' = ' + getDeDisplay(currentWord);
     matchedAnswerForTypo = matchedAnswer ? stripClarification(matchedAnswer) : matchedAnswer;
   }
   updateScore(currentWord, isCorrect);
@@ -17740,7 +17776,7 @@ function setSpeakRate(value) {
   const v = parseFloat(value);
   speakRate = (v >= 0.5 && v <= 1.5) ? v : 0.9;
   try { localStorage.setItem(SPEAK_RATE_KEY, String(speakRate)); } catch (e) { console.warn('Sprachtool: Vorlese-Tempo konnte nicht gespeichert werden.', e); }
-  if (currentWord && quizDirection === 'ru-de') speak(currentWord.ru);
+  if (currentWord && quizDirection === 'ru-de') speak(cardRu(currentWord));
 }
 function applySpeakRateSelect() {
   const el = document.getElementById('speakrate-select');
@@ -17784,7 +17820,7 @@ function speak(text, rate) {
   } catch (e) { console.warn('Sprachtool: Sprachausgabe-Fehler.', e); }
 }
 function speakCurrentWord() {
-  if (currentWord) speak(currentWord.ru);
+  if (currentWord) speak(cardRu(currentWord));
 }
 function toggleAutoplay() {
   autoplayAudio = document.getElementById('autoplay-toggle').checked;
@@ -18395,7 +18431,7 @@ function setAppView(view) {
   appView = view;
   applyViewVisibility(view);
   if (view === 'home') renderHome();
-  if (view === 'vocab' && cardSpeakPending && currentWord && !answered && autoplayAudio && quizDirection === 'ru-de') { cardSpeakPending = false; speak(currentWord.ru); }
+  if (view === 'vocab' && cardSpeakPending && currentWord && !answered && autoplayAudio && quizDirection === 'ru-de') { cardSpeakPending = false; speak(cardRu(currentWord)); }
   if (view === 'grammar' && !document.querySelector('#grammar-view .grammar-panel.open')) {
     const last = readStoredPanel(GRAMMAR_PANEL_KEY, 'grammarPanel');
     if (last && GRAMMAR_PANEL_OPENERS[last]) GRAMMAR_PANEL_OPENERS[last]();
