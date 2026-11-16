@@ -38,7 +38,10 @@ const r = await p.evaluate(() => {
       if (!inp) { out.push('?? ' + name + ': Eingabefeld ' + inId + ' nicht gefunden'); continue; }
       const s0 = st();
       inp.value = ''; eval(chk); const s1 = st();
-      const leer = JSON.stringify(s0) === JSON.stringify(s1) ? 'leer: nichts' : 'leer: ÄNDERT ' + JSON.stringify(s0) + '→' + JSON.stringify(s1);
+      // Hörquiz Tippen (16.11., gewünscht): leeres Feld überspringt das Wort, ohne zu werten
+      const leerSprung = /^Hörquiz Tippen/.test(name);
+      const leer = leerSprung ? (s1.done === s0.done && s1.correct === s0.correct && s1.item !== s0.item ? 'leer: überspringt' : 'leer: ÄNDERT ' + JSON.stringify(s0) + '→' + JSON.stringify(s1))
+        : JSON.stringify(s0) === JSON.stringify(s1) ? 'leer: nichts' : 'leer: ÄNDERT ' + JSON.stringify(s0) + '→' + JSON.stringify(s1);
       inp.value = 'qqq'; eval(chk); const s2 = st();
       const bewertet = s2.done !== s1.done || s2.item === s1.item ? 'falsch: bewertet' : 'falsch: ?';
       eval(chk); const s3 = st(); const weiter = s3.item !== s2.item ? '2. Druck: weiter' : '2. Druck: BLEIBT';

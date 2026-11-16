@@ -18,7 +18,11 @@ const { chromium } = require('playwright');
     'Gesamtstand ist Text': [K + 'lifetime', '"text"'], 'Gesamtstand ohne Teile': [K + 'lifetime', '{}'], 'Gesamtstand mit Fremdtypen': [K + 'lifetime', JSON.stringify({ v: 5, g: { conj: 'x', muster: null }, lv: [], run: 'x' })],
     'Vokabelstand null': [K + 'scores', 'null'], 'Vokabelstand mit Fremdtypen': [K + 'scores', JSON.stringify({ 'мама': 5, 'папа': null, 'дом': 'x' })],
     'Merkliste ist ein Objekt': [K + 'bookmarks', '{"a":1}'], 'Tagesprotokoll mit Fremdtypen': [K + 'daylog', JSON.stringify({ heute: 'x', '2026-01-01': null })],
-    'Hörtrainer mit unbekannter Kategorie': [K + 'hoertrainer-cats', '["gibtesnicht"]'], 'Blockgröße Text': [K + 'block-size', 'abc'], 'Sitzungsziel negativ': [K + 'session-goal', '-5'], 'Tempo Text': [K + 'speak-rate', 'abc'], 'Farbschema unbekannt': [K + 'theme', 'lila'],
+    'Hörtrainer mit unbekannter Kategorie': [K + 'hoertrainer-cats', '["gibtesnicht"]'],
+    'Hörtrainer-Optionen mit Fremdwerten': [K + 'hoertrainer-opts', JSON.stringify({ dir: 'x', level: 'Z9', satz: 'ja' })], 'Hörtrainer-Optionen kaputt': [K + 'hoertrainer-opts', '{kaputt'],
+    'Diktat-Optionen mit Fremdwerten': [K + 'dictation-opts', JSON.stringify({ level: 5, cats: ['gibtesnicht', null], gelernt: 'ja', texte: [] })], 'Diktat-Optionen sind ein Feld': [K + 'dictation-opts', '[1]'],
+    'Hörquiz mit Fremdwerten': [K + 'hearquiz-settings', JSON.stringify({ mode: 'x', lang: 5, level: 'Z9', cats: 'x', speed: '<b>' })],
+    'Tagesstatistik mit Fremdtypen': [K + 'daystats', JSON.stringify({ last: 'x', '2026-01-01': { ms: 'x', vocab: 'x' }, kaputt: 1 })], 'Tagesstatistik kaputt': [K + 'daystats', '{kaputt'], 'Blockgröße Text': [K + 'block-size', 'abc'], 'Sitzungsziel negativ': [K + 'session-goal', '-5'], 'Tempo Text': [K + 'speak-rate', 'abc'], 'Farbschema unbekannt': [K + 'theme', 'lila'],
   };
   const funde = [];
   for (const [name, [k, v]] of Object.entries(faelle)) {
