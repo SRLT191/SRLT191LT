@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
     await p.evaluate(s => { if (s) localStorage.setItem('vokabeltrainer-dialog-sizes', JSON.stringify({ 'overlay-vocab': s })); }, size);
     if (size) { await p.reload(); await p.waitForTimeout(300); }
     const r = await p.evaluate(() => {
-      setAppView('vocab'); activateCatGroup('Mensch & Alltag'); openVocabList();
+      setAppView('vocab'); activateCatGroup('Alltag'); openVocabList();
       const body = document.querySelector('#overlay-vocab .overlay-body'); body.scrollLeft = 300;   // alte Rollposition
       closeOverlay('overlay-vocab'); openVocabList();
       const box = document.querySelector('#overlay-vocab .overlay-box');

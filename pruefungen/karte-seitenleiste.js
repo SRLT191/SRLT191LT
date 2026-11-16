@@ -26,7 +26,7 @@ const { chromium } = require('playwright');
   const nach = await p.evaluate(() => document.documentElement.getAttribute('data-cardsize'));
   ok('5 Größe bleibt nach Neuladen', nach === 'sehrgross', String(nach));
 
-  await p.evaluate(() => setAppView('vocab')); await p.click('text=Substantive'); await p.waitForTimeout(200); await p.click('text=Gesellschaft & Staat'); await p.waitForTimeout(300);
+  await p.evaluate(() => setAppView('vocab')); await p.click('text=Substantive'); await p.waitForTimeout(200); await p.click('text=Gesellschaft & Geschichte'); await p.waitForTimeout(300);
   const s = await p.evaluate(() => { const b = document.querySelector('.sub-btn[data-cat]'); return parseFloat(getComputedStyle(b).fontSize); });
   await p.setViewportSize({ width: 1280, height: 900 }); await p.waitForTimeout(100);
   const s2 = await p.evaluate(() => parseFloat(getComputedStyle(document.querySelector('.sub-btn[data-cat]')).fontSize));

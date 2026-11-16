@@ -1,4 +1,5 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
+// seit 16.11. stehen Farben (20 feste Farbwörter) und Nationalitäten in der Gruppe Adjektive – sie zählen hier nicht mit
 // Wortschatzrunde 26.10.2026: alle Adjektivkategorien mit mindestens 30 Wörtern (A1 zuerst, dann A2, dann schwerer),
 // jedes neue Wort mit Transliteration, Stufe und Beispielsatz
 const { chromium } = require('playwright');
@@ -9,7 +10,7 @@ const NEU = ['крупный','гигантский','прямоугольный
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(300);
   const R = []; const check = async (n, f) => { try { const r = await f(); const ok = typeof r === 'object' ? r.ok : r; R.push([ok ? 'OK ' : 'XX ', n, r && r.info || '']); } catch (e) { R.push(['XX ', n, e.message]); } };
   await check('jede Adjektivkategorie hat mindestens 30 Wörter', () => p.evaluate(() => {
-    const klein = WORTART_GROUPS['Adjektive'].map(c => [c, getAllWordsOfCat(c).length]).filter(([, n]) => n < 30);
+    const klein = WORTART_GROUPS['Adjektive'].filter(c => !['Farben', 'Nationalitäten'].includes(c)).map(c => [c, getAllWordsOfCat(c).length]).filter(([, n]) => n < 30);
     return { ok: klein.length === 0, info: klein.map(x => x.join(' ')).join(', ') };
   }));
   await check('neue Wörter: Transliteration, Stufe, Satz, keine Dublette', () => p.evaluate(NEU => {
