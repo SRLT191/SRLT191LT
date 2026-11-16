@@ -13,7 +13,8 @@ const { chromium } = require('playwright');
     const bewDrin = bewegung.filter(([d, i]) => P[d] && P[d].pf === i).map(t => t.join(' / '));
     const fehlt = aspekt.filter(w => { const [i, pf] = MERGED_CARDS[w.ru]; return !P[i] || P[i].pf !== pf; }).map(w => w.ru);
     const alt = Object.keys(aspectData).filter(k => aspectData[k].pf && (!P[k] || P[k].pf !== aspectData[k].pf || P[k].de !== aspectData[k].de));
-    const form = Object.entries(P).filter(([i, d]) => !/(ть|ти|чь)(ся|сь)?$/.test(i) || !/(ть|ти|чь)(ся|сь)?$/.test(d.pf) || !d.de).map(x => x[0]);
+    const inf = x => /(ть|ти|чь)(ся|сь)?$/.test(x.split(' ')[0]); // Wendungen wie „выносить мусор“: das Verb steht vorn
+    const form = Object.entries(P).filter(([i, d]) => !inf(i) || !inf(d.pf) || !d.de).map(x => x[0]);
     setAppView('grammar'); openAspect(); setAspectMode('list'); const zeilen = document.querySelectorAll('#aspect-list-body tr').length; setAspectMode('practice');
     // gezielt ein neues Paar abfragen
     aspectState.current = { ipf: 'просить', given: 'просить', answer: 'попросить', de: P['просить'].de, note: '' }; aspectState.answered = false;
