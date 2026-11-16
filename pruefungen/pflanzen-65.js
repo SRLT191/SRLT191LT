@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
   const R = await p.evaluate(() => {
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
     const NEU = { 'ёлка': ['Tannenbaum', 'A2', 'f'], 'мак': ['Mohn', 'B1', 'm'], 'шишка': ['Zapfen', 'B2', 'f'], 'букет': ['Blumenstrauß', 'C1', 'm'],
-      'жасмин': ['Jasmin', 'C1', 'm'], 'растение': ['Pflanze', 'C1', 'n'], 'листок': ['Blättchen', 'C1', 'm'], 'плесень': ['Schimmel', 'C1', 'f'], 'газон': ['Rasen', 'C1', 'm'],
+      'жасмин': ['Jasmin', 'C1', 'm'], 'растение': ['Pflanze', 'A2', 'n'], 'листок': ['Blättchen', 'C1', 'm'], 'плесень': ['Schimmel', 'C1', 'f'], 'газон': ['Rasen', 'C1', 'm'],
       'сакура': ['Kirschblüte', 'C1', 'f'], 'хлопок': ['Baumwolle', 'C1', 'm'], 'венок': ['Kranz', 'C1', 'm'], 'липа': ['Linde', 'C1', 'f'], 'лилия': ['Lilie', 'C1', 'f'],
       'магнолия': ['Magnolie', 'C1', 'f'], 'вишня': ['Kirsche', 'C1', 'f'] };
     const kl = getAllWordsOfCat('Pflanzen');
