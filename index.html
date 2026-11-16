@@ -3143,7 +3143,7 @@
         <p><strong>Worum es geht:</strong> Du hörst einen russischen Satz und tippst ihn so genau wie möglich. Das übt Hörverstehen und Rechtschreibung zugleich.</p>
         <p>Die Sätze stammen aus den Beispielsätzen der Vokabeln – das Zielwort kennst du also aus dem Wortschatz.</p>
         <p><strong>Sprachniveau:</strong> Jeder Satz trägt die Stufe seines schwersten Worts (Abzeichen neben der Aufgabe, ein Richtwert). Ist in den Einstellungen <em>Wörter bis Stufe</em> gesetzt, kommen nur Sätze bis zu dieser Stufe.</p>
-        <p><strong>Bedienung:</strong> Der Satz wird bei jedem neuen Satz gleich vorgelesen. <em>Vorlesen</em> wiederholt ihn, <em>Langsam</em> liest ihn einmal mit halbem Tempo, <em>2. Hälfte</em> nur den hinteren Teil; das Grundtempo stellst du mit dem Regler ein. Über dem Feld steht, wie viele Wörter der Satz hat; <em>Tipp</em> deckt nacheinander je ein Wort auf. <em>Übersetzung</em> blendet die deutsche Bedeutung ein. <em>Lösung zeigen</em> zeigt den Satz – danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>). Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam, Enter prüfen und danach weiter.</p>
+        <p><strong>Bedienung:</strong> Der Satz wird bei jedem neuen Satz gleich vorgelesen. <em>Vorlesen</em> wiederholt ihn, <em>Langsam</em> liest ihn einmal mit halbem Tempo, <em>2. Hälfte</em> nur den hinteren Teil; das Grundtempo stellst du mit dem Regler ein. Über dem Feld steht, wie viele Wörter der Satz hat; <em>Tipp</em> deckt nacheinander je ein Wort auf. <em>Übersetzung</em> blendet die deutsche Bedeutung ein. <em>Lösung zeigen</em> zeigt den Satz – danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>, Tasten 1 / 2; Enter zählt als nicht gewusst). Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam, Enter prüfen und danach weiter.</p>
         <p><strong>Runden:</strong> Eine Runde hat 15 Sätze („Satz 3 von 15“), zuerst neue und zuletzt falsche. Am Ende siehst du die Fehler und kannst sie wiederholen. Richtig gelöste Sätze zählen in den Lernstand.</p>
         <p><strong>Einstellungen:</strong> <em>Sätze bis Stufe</em> wählt die Stufe direkt (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen). Mit den <em>Kategorien</em> kommen nur Sätze zu Wörtern daraus; <em>Nur Sätze zu gelernten Wörtern</em> übt Hören mit bekanntem Wortschatz; <em>Auch Sätze aus den Texten</em> nimmt die zusammenhängenden Sätze aus dem Textverständnis dazu.</p>
         <p>Nach dem Prüfen siehst du deine Eingabe Wort für Wort mit dem Original verglichen. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen.</p>
@@ -3207,7 +3207,7 @@
       </div>
       <div class="conj-result" id="dictation-score"></div>
       <div id="dictation-ende" style="display:none"></div>
-      <div id="dictation-keys">Strg+Leertaste: vorlesen · Strg+Umschalt+Leertaste: langsam · Enter: prüfen, dann weiter</div>
+      <div id="dictation-keys">Strg+Leertaste: vorlesen · Strg+Umschalt+Leertaste: langsam · Enter: prüfen, dann weiter · nach „Lösung zeigen“: 1 gewusst, 2 nicht gewusst</div>
     </div>
   </div>
 
@@ -3222,7 +3222,7 @@
     <div class="conj-info-panel" id="hearquiz-info-panel" style="display:none">
       <p><strong>Worum es geht:</strong> Du hörst ein russisches Wort und musst es erkennen – aktiv statt nur zuhören.</p>
       <p><strong>Drei Modi:</strong></p>
-      <p>• <strong>Tippen:</strong> Wort anhören und die Antwort schreiben. <em>Lösung zeigen</em> (oder Taste 3 im leeren Feld) deckt auf, danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>).</p>
+      <p>• <strong>Tippen:</strong> Wort anhören und die Antwort schreiben; Enter im leeren Feld überspringt das Wort. <em>Lösung zeigen</em> (oder Taste 3 im leeren Feld) deckt auf, danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>, Tasten 1 / 2).</p>
       <p>• <strong>Auswahl:</strong> Wort anhören und aus vier Antworten die richtige wählen – mit der Maus oder den Tasten 1–4.</p>
       <p>• <strong>Aufdecken:</strong> Wort anhören, selbst beantworten, aufdecken und ehrlich bewerten. Enter deckt auf, 1 = gewusst, 2 = nicht gewusst, 3 liest erneut vor, 4 nimmt eine versehentliche Bewertung zurück.</p>
       <p><strong>Antwort: Russisch / Deutsch</strong> legt fest, worauf du antwortest: <strong>Russisch</strong> = das gehörte Wort selbst (schreiben bzw. Schriftbild erkennen), <strong>Deutsch</strong> = seine Bedeutung. Jede Kombination hat ihren eigenen Lernfortschritt.</p>
@@ -3626,13 +3626,16 @@
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Leer</kbd></span><div class="set-text"><strong>Vorlesen</strong><span>Russisches Wort anhören, im Hörquiz erneut abspielen</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Lösung zeigen</strong><span>In den Grammatik- und Hörwerkzeugen; nicht beim Auswählen mit Zifferntasten (Kasus-Drill „Fall wählen“, Rektion „Fall wählen“, Bewegungsverben „Vorsilben“) – dort per Knopf; im Hörquiz-Aufdecken liest 3 erneut vor</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Wort-Tipp</strong><span>Im Satzbau: deckt das nächste Wort der Lösung auf</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Antwort wählen</strong><span>Im Auswahl-Modus der Vokabeln die passende Option</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Antwort wählen</strong><span>Im Auswahl-Modus der Vokabeln und im Hörquiz „Auswahl“ die passende Option</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">–</kbd><kbd class="kbd">9</kbd></span><div class="set-text"><strong>Antwort wählen (Grammatik)</strong><span>Kasus-Drill „Fall wählen“ 1–5, Rektion „Fall wählen“ 1–9 und 0 (с, по, перед nur per Klick), Bewegungsverben „Wahl“ 1/2 und „Vorsilben“ 1–4 – die Zahl steht auf jedem Knopf</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Anhören</strong><span>In Wortgruppen und Satzbau: Lösung bzw. die schon aufgedeckten Wörter vorlesen, auch im Eingabefeld</span></div></div>
-      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Gewusst / Nicht gewusst</strong><span>Im Aufdecken-Modus (Vokabeln und Hörquiz), nach dem Aufdecken; in der Grammatik nach „Lösung zeigen“ (1 zählt als richtig, 2 als falsch)</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd></span><div class="set-text"><strong>Gewusst / Nicht gewusst</strong><span>Im Aufdecken-Modus (Vokabeln und Hörquiz), nach dem Aufdecken; in der Grammatik nach „Lösung zeigen“ (1 zählt als richtig, 2 als falsch), ebenso im Satzdiktat und im Hörquiz „Tippen“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">3</kbd></span><div class="set-text"><strong>Rückgängig</strong><span>Im Aufdecken-Modus der Vokabeln: nimmt die letzte Bewertung zurück, auch nach „Alles gelernt!“</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Neu anfangen</strong><span>Im Aufdecken-Modus der Vokabeln bei „Alles gelernt!“: setzt den Fortschritt zurück</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">4</kbd></span><div class="set-text"><strong>Bewertung zurücknehmen</strong><span>Im Hörquiz-Aufdecken, wenn du dich verdrückt hast</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Strg</kbd><kbd class="kbd">Leer</kbd></span><div class="set-text"><strong>Anhören (Hören)</strong><span>Im Satzdiktat und im Hörquiz, auch im Eingabefeld; mit Umschalt langsam (0,5×)</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Leer</kbd><kbd class="kbd">←</kbd><kbd class="kbd">→</kbd><kbd class="kbd">N</kbd></span><div class="set-text"><strong>Hörtrainer</strong><span>Während des Abspielens: Pause/Weiter, ein Wort zurück/vor, nochmal</span></div></div>
+      <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd></span><div class="set-text"><strong>Weiter (Hören)</strong><span>Satzdiktat und Hörquiz: prüfen, beim zweiten Drücken weiter; im Hörquiz überspringt Enter im leeren Feld das Wort; am Rundenende neue Runde bzw. Fehler wiederholen</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Enter</kbd><kbd class="kbd">3</kbd><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">4</kbd><kbd class="kbd">↑</kbd><kbd class="kbd">↓</kbd></span><div class="set-text"><strong>Textverständnis</strong><span>Enter oder 3 zeigt die Lösung (im Feld: Umschalt+Enter = neue Zeile), danach 1 = gewusst, 2 = nicht gewusst; 4 liest den Satz vor (nicht im Feld); in der Liste ↑/↓ von Text zu Text</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">1</kbd><kbd class="kbd">2</kbd><kbd class="kbd">3</kbd><kbd class="kbd">4</kbd><kbd class="kbd">5</kbd></span><div class="set-text"><strong>Einstufungstest</strong><span>1–4 wählt eine Antwort, 5 = weiß ich nicht</span></div></div>
       <div class="set-row"><span class="kbd-group"><kbd class="kbd">Esc</kbd></span><div class="set-text"><strong>Dialog schließen</strong><span>Schließt Einstellungen, Listen, Auswahlfenster und das ⋯-Menü der Grammatik</span></div></div>
@@ -5469,13 +5472,13 @@ const vocab = {
         {ru:"приглашать / пригласить", tr:"priglaschat' / priglassit'", de:["einladen"], ruAlt:["приглашать", "пригласить", "приглашать/пригласить"]},
         {ru:"обещать / пообещать", tr:"obeschtschat' / poobeschtschat'", de:["versprechen","zusagen"], ruAlt:["обещать", "пообещать", "обещать/пообещать"]},
         {ru:"благодарить / поблагодарить", tr:"blagodarit' / poblagodarit'", de:["danken"], ruAlt:["благодарить", "поблагодарить", "благодарить/поблагодарить"]},
-        {ru:"врать", tr:"wrat'", de:["lügen"]},
-        {ru:"защищать", tr:"saschtschischtschat'", de:["verteidigen","schützen"]},
-        {ru:"доверять", tr:"dowerjat'", de:["vertrauen"]},
         {ru:"шутить", tr:"schutit'", de:["scherzen","Witze machen"]},
         {ru:"помогать / помочь", tr:"pomogat' / pomotsch'", de:["helfen"], ruAlt:["помогать", "помочь", "помогать/помочь"]},
         {ru:"встречаться / встретиться", tr:"wstretschat'sja / wstretit'sja", de:["sich treffen"], ruAlt:["встречаться", "встретиться", "встречаться/встретиться"]},
         {ru:"жениться", tr:"schenit'sja", de:["heiraten"]},
+        {ru:"врать", tr:"wrat'", de:["lügen"]},
+        {ru:"защищать", tr:"saschtschischtschat'", de:["verteidigen","schützen"]},
+        {ru:"доверять", tr:"dowerjat'", de:["vertrauen"]},
         {ru:"знакомиться / познакомиться", tr:"snakomit'sja / posnakomit'sja", de:["kennenlernen"], ruAlt:["знакомиться", "познакомиться", "знакомиться/познакомиться"]},
         {ru:"извиняться", tr:"iswinjat'sja", de:["sich entschuldigen"]},
         {ru:"уважать", tr:"uwaschat'", de:["respektieren","achten"]},
@@ -5913,9 +5916,9 @@ const vocab = {
         {ru:"опасный", tr:"opasnyj", de:["gefährlich"]},
         {ru:"страшный", tr:"straschnyj", de:["schrecklich","angsteinflößend"]},
         {ru:"отличный", tr:"otlitschnyj", de:["ausgezeichnet"]},
-        {ru:"ужасный", tr:"uschasnyj", de:["furchtbar"]},
         {ru:"прекрасный", tr:"prekrasnyj", de:["wunderbar"]},
         {ru:"нормальный", tr:"normal'nyj", de:["normal"]},
+        {ru:"ужасный", tr:"uschasnyj", de:["furchtbar"]},
         {ru:"скучный", tr:"skutschnyj", de:["langweilig"]},
         {ru:"дешёвый", tr:"deschjowyj", de:["billig","günstig"]},
         {ru:"удобный", tr:"udobnyj", de:["bequem","praktisch"]},
@@ -6336,10 +6339,10 @@ const vocab = {
       [
         {ru:"да", tr:"da", de:["ja"]},
         {ru:"нет", tr:"net", de:["nein"]},
+        {ru:"ну", tr:"nu", de:["na","also"]},
         {ru:"ой", tr:"oj", de:["oh","aua"]},
         {ru:"ах", tr:"ach", de:["ach","ah"]},
         {ru:"эй", tr:"ej", de:["hey","hej"]},
-        {ru:"ну", tr:"nu", de:["na","also"]},
         {ru:"ура", tr:"ura", de:["hurra"]},
         {ru:"увы", tr:"uwy", de:["leider","ach"]},
         {ru:"фу", tr:"fu", de:["pfui"]},
@@ -6414,18 +6417,18 @@ const vocab = {
         {ru:"вот", tr:"wot", de:["hier ist","da ist"]},
         {ru:"разве", tr:"raswe", de:["etwa","wirklich"]},
         {ru:"ведь", tr:"wed'", de:["doch","schließlich"]},
-        {ru:"неужели", tr:"neuscheli", de:["wirklich?","ist es möglich?"]},
         {ru:"именно", tr:"imenno", de:["genau","eben","nämlich"]},
         {ru:"лишь", tr:"lisch'", de:["nur","bloß"]},
         {ru:"вообще", tr:"woobschtsche", de:["überhaupt"]},
         {ru:"кстати", tr:"kstati", de:["übrigens"]},
         {ru:"пусть", tr:"pust'", de:["soll ruhig"]},
         {ru:"уж", tr:"usch", de:["ja","doch","schon"]},
-        {ru:"якобы", tr:"jakoby", de:["angeblich"]},
+        {ru:"неужели", tr:"neuscheli", de:["wirklich?","ist es möglich?"]},
         {ru:"всё-таки", tr:"wsjo-taki", de:["trotzdem","doch","immerhin"]},
-        {ru:"вряд ли", tr:"wrjad li", de:["kaum","wohl kaum"]},
         {ru:"хоть", tr:"chot'", de:["wenigstens","zumindest"]},
-        {ru:"как раз", tr:"kak ras", de:["gerade","genau (im richtigen Moment)"]}
+        {ru:"как раз", tr:"kak ras", de:["gerade","genau (im richtigen Moment)"]},
+        {ru:"якобы", tr:"jakoby", de:["angeblich"]},
+        {ru:"вряд ли", tr:"wrjad li", de:["kaum","wohl kaum"]}
       ]
     ],
     newBlock: [],
@@ -6447,9 +6450,9 @@ const vocab = {
         {ru:"хочется", tr:"chotschetsja", de:["man möchte gern"]},
         {ru:"видно", tr:"widno", de:["man kann sehen","offensichtlich"]},
         {ru:"возможно", tr:"wosmoschno", de:["möglicherweise","es ist möglich"]},
+        {ru:"кажется", tr:"kaschetsja", de:["anscheinend","es scheint"]},
         {ru:"необходимо", tr:"neobchodimo", de:["es ist notwendig","man muss unbedingt"]},
-        {ru:"следует", tr:"sledujet", de:["man sollte","es gehört sich"]},
-        {ru:"кажется", tr:"kaschetsja", de:["anscheinend","es scheint"]}
+        {ru:"следует", tr:"sledujet", de:["man sollte","es gehört sich"]}
       ]
     ],
     newBlock: [],
@@ -6473,12 +6476,12 @@ const vocab = {
         {ru:"оба", tr:"oba", de:["beide"]},
         {ru:"всякий", tr:"wsjakij", de:["jeglicher"]},
         {ru:"столько", tr:"stol'ko", de:["so viel"]},
+        {ru:"самый", tr:"samyj", de:["der (Superlativform Adjektiv)"]},
         {ru:"ничто", tr:"nitschto", de:["nichts"]},
         {ru:"чей", tr:"tschej", de:["wessen"]},
         {ru:"нечто", tr:"netschto", de:["etwas"]},
         {ru:"иной", tr:"inoj", de:["andersartig","anders"]},
-        {ru:"ничей", tr:"nitschej", de:["niemandes"]},
-        {ru:"самый", tr:"samyj", de:["der (Superlativform Adjektiv)"]}
+        {ru:"ничей", tr:"nitschej", de:["niemandes"]}
       ]
     ],
     newBlock: [],
@@ -6509,7 +6512,6 @@ const vocab = {
         {ru:"вокруг", tr:"wokrug", de:["ringsherum","rundum"]},
         {ru:"через", tr:"tscheres", de:["durch"]},
         {ru:"ради", tr:"radi", de:["zuliebe"]},
-        {ru:"насчёт", tr:"nastschjot", de:["bezüglich"]},
         {ru:"под", tr:"pod", de:["unter"]},
         {ru:"над", tr:"nad", de:["über","oberhalb"]},
         {ru:"из-за", tr:"is-sa", de:["wegen"]},
@@ -6517,6 +6519,7 @@ const vocab = {
         {ru:"около", tr:"okolo", de:["ungefähr","nahe bei"]},
         {ru:"по", tr:"po", de:["entlang","über"]},
         {ru:"внутри", tr:"wnutri", de:["innerhalb"]},
+        {ru:"насчёт", tr:"nastschjot", de:["bezüglich"]},
         {ru:"благодаря", tr:"blagodarja", de:["dank"]},
         {ru:"напротив", tr:"naprotiw", de:["gegenüber"]},
         {ru:"среди", tr:"sredi", de:["inmitten"]},
@@ -6592,6 +6595,16 @@ const vocab = {
         {ru:"затем", tr:"satem", de:["danach"]},
         {ru:"значит", tr:"snatschit", de:["folglich"]},
         {ru:"например", tr:"naprimer", de:["zum Beispiel"]},
+        {ru:"дома", tr:"doma", de:["zu Hause"]},
+        {ru:"днём", tr:"dnjom", de:["tagsüber"]},
+        {ru:"раньше", tr:"ran'sche", de:["früher"]},
+        {ru:"летом", tr:"letom", de:["im Sommer"]},
+        {ru:"зимой", tr:"simoj", de:["im Winter"]},
+        {ru:"весной", tr:"wesnoj", de:["im Frühling"]},
+        {ru:"осенью", tr:"ossen'ju", de:["im Herbst"]},
+        {ru:"холодно", tr:"cholodno", de:["kalt"]},
+        {ru:"жарко", tr:"scharko", de:["heiß"]},
+        {ru:"по-русски", tr:"po-russki", de:["auf Russisch"]},
         {ru:"часто", tr:"tschasto", de:["oft"]},
         {ru:"особенно", tr:"ossobenno", de:["besonders"]},
         {ru:"далеко", tr:"daleko", de:["weit","weit weg"]},
@@ -6636,17 +6649,7 @@ const vocab = {
         {ru:"молча", tr:"moltscha", de:["schweigend"]},
         {ru:"позавчера", tr:"posawtschera", de:["vorgestern"]},
         {ru:"послезавтра", tr:"poslesawtra", de:["übermorgen"]},
-        {ru:"пасмурно", tr:"pasmurno", de:["bewölkt","trüb"]},
-        {ru:"дома", tr:"doma", de:["zu Hause"]},
-        {ru:"днём", tr:"dnjom", de:["tagsüber"]},
-        {ru:"раньше", tr:"ran'sche", de:["früher"]},
-        {ru:"летом", tr:"letom", de:["im Sommer"]},
-        {ru:"зимой", tr:"simoj", de:["im Winter"]},
-        {ru:"весной", tr:"wesnoj", de:["im Frühling"]},
-        {ru:"осенью", tr:"ossen'ju", de:["im Herbst"]},
-        {ru:"холодно", tr:"cholodno", de:["kalt"]},
-        {ru:"жарко", tr:"scharko", de:["heiß"]},
-        {ru:"по-русски", tr:"po-russki", de:["auf Russisch"]}
+        {ru:"пасмурно", tr:"pasmurno", de:["bewölkt","trüb"]}
       ]
     ],
     newBlock: [],
@@ -8729,6 +8732,22 @@ function dayStatNote(ok) {
   const tage = Object.keys(st).filter(x => x !== 'last').sort(); tage.slice(0, Math.max(0, tage.length - 60)).forEach(x => delete st[x]);
   try { localStorage.setItem(DAYSTATS_KEY, JSON.stringify(st)); } catch (err) {}
 }
+// Zusammenführen (Sicherung, GitHub): je Tag und Bereich das Höhere, Lernzeit das Höhere
+function mergeDaystats(aRaw, bRaw) {
+  let a, b; try { a = cleanDaystats(JSON.parse(aRaw || '{}')); } catch (e) { a = {}; }
+  try { b = JSON.parse(bRaw); } catch (e) { return null; }
+  if (!b || typeof b !== 'object' || Array.isArray(b)) return null;
+  b = cleanDaystats(b);
+  const out = Object.assign({}, a);
+  Object.keys(b).forEach(k => {
+    if (k === 'last') { out.last = Math.max(a.last || 0, b.last); return; }
+    const x = out[k] || { ms: 0 }, y = b[k], z = { ms: Math.max(x.ms || 0, y.ms || 0) };
+    LERN_ANSICHTEN.forEach(v => { const p = x[v] || [0, 0], q = y[v] || [0, 0]; const n = p[0] >= q[0] ? p : q; if (n[0]) z[v] = n.slice(); });
+    out[k] = z;
+  });
+  const tage = Object.keys(out).filter(x => x !== 'last').sort(); tage.slice(0, Math.max(0, tage.length - 60)).forEach(x => delete out[x]);
+  return JSON.stringify(out);
+}
 // „ca. 1 h 10 min“
 function fmtDauer(ms) {
   const min = Math.round((ms || 0) / 60000);
@@ -9375,33 +9394,19 @@ function homeWeekCard(s) {
       <div class="home-s home-weektag" id="home-weektag" hidden></div>`
       : '<div class="home-s home-empty" id="home-weeksum">Diese Woche noch nichts geübt.</div>'}</div>`;
 }
-function renderHome() {
-  const el = document.getElementById('home-view'); if (!el) return;
-  const s = homeStats(), h = new Date().getHours();
+// Startseite in Teilen (Gesamtprüfung 16.11.): renderHome setzt nur noch die Karten zusammen
+function homeKopfHtml(s) {
+  const h = new Date().getHours();
   const gruss = h < 5 ? 'Доброй ночи!' : h < 11 ? 'Доброе утро!' : h < 18 ? 'Добрый день!' : h < 23 ? 'Добрый вечер!' : 'Доброй ночи!';
   const datum = new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
-  const due = s.dueWords + s.dueGrammar;
-  const ziel = s.goal > 0 ? Math.min(100, Math.round(s.today.a / s.goal * 100)) : 0;
-  const ansicht = { vocab: ['ti-cards', 'Vokabeln'], grammar: ['ti-book-2', 'Grammatik'], listening: ['ti-headphones', 'Hören'], reading: ['ti-book', 'Textverständnis'] };
-  const panelName = v => {
-    try {
-      const text = el => { if (!el) return ''; const c = el.cloneNode(true); c.querySelectorAll('.lvl-badge').forEach(x => x.remove()); return c.textContent.replace(/\s+/g, ' ').trim(); };
-      if (v === 'grammar') { const p = readStoredPanel(GRAMMAR_PANEL_KEY, 'grammarPanel'); return text(p && document.querySelector('#overlay-' + p + ' .overlay-title')); }
-      if (v === 'listening') { const p = readStoredPanel(LISTENING_PANEL_KEY, 'listeningPanel'); return text(p && document.getElementById('lchip-' + p)); }
-      if (v === 'reading') { const t = readingLetzter(); return t ? t.titel : ''; }
-    } catch (e) {}
-    return '';
-  };
-  const zuletzt = LERN_ANSICHTEN.filter(v => s.times[v]).sort((a, b) => s.times[b] - s.times[a]);
   const plan = homePlanText(s), goLabel = homeGoLabel();
-  const naechste = s.forecast.find(d => d.n);
-  el.innerHTML = `
-  <div class="home-hello"><div><h1 lang="ru">${gruss}</h1><p>${htmlEsc(datum)}${s.streak ? ' · <i class="ti ti-flame"></i> ' + s.streak + (s.streak === 1 ? ' Tag' : ' Tage') + ' in Folge geübt' : ''}</p></div>
+  return `<div class="home-hello"><div><h1 lang="ru">${gruss}</h1><p>${htmlEsc(datum)}${s.streak ? ' · <i class="ti ti-flame"></i> ' + s.streak + (s.streak === 1 ? ' Tag' : ' Tage') + ' in Folge geübt' : ''}</p></div>
     <div class="home-go-wrap"><div class="home-go-row">${s.dueWords ? `<button class="home-go-due" id="home-go-due" type="button" onclick="homeStartPool('due')"><i class="ti ti-repeat"></i>Wiederholen<span>· ${fmtN(s.dueWords)} fällig</span></button>` : ''}<button class="home-go${s.dueWords ? ' home-go-2' : ''}" type="button" onclick="homeContinue()"${s.dueWords ? ' title="Weiterlernen' + (goLabel ? ' · ' + htmlEsc(goLabel) : '') + '"' : ''}><i class="ti ti-player-play"></i>Weiterlernen${goLabel ? '<span>· ' + htmlEsc(goLabel) + '</span>' : ''}</button></div>
     ${plan ? `<div class="home-plan" id="home-plan">${htmlEsc(plan)}</div>` : ''}</div></div>
-  <div class="home-sync" id="home-sync" role="status" hidden><i class="ti ti-upload"></i><span>Lernstand noch nicht auf GitHub gespeichert</span><button type="button" onclick="ghSync()">Jetzt speichern</button></div>
-  <div class="home-grid">
-    ${(() => {
+  <div class="home-sync" id="home-sync" role="status" hidden><i class="ti ti-upload"></i><span>Lernstand noch nicht auf GitHub gespeichert</span><button type="button" onclick="ghSync()">Jetzt speichern</button></div>`;
+}
+function homeDueCard(s) {
+  const due = s.dueWords + s.dueGrammar, naechste = s.forecast.find(d => d.n);
       const fmax = Math.max(1, ...s.forecast.map(d => d.n)), dsum = s.dueStufen.reduce((a, b) => a + b, 0);
       let rdue = []; try { rdue = readingFaellig(); } catch (e) {}
       const rsum = rdue.reduce((a, x) => a + x.n, 0);
@@ -9416,8 +9421,10 @@ function renderHome() {
       ${stufenBalken}
       ${due || rsum ? `<div class="home-due-btns">${s.dueWords ? `<button type="button" class="home-btn" onclick="homeStartPool('due')" aria-label="Fällige wiederholen: ${s.dueWords}"><i class="ti ti-player-play"></i>Wiederholen</button><button type="button" class="home-btn home-btn-2" onclick="homeStartPool('due', 'alt')" title="Zuerst die Wörter, deren Wartezeit am längsten abgelaufen ist"><i class="ti ti-clock"></i>Älteste zuerst</button>` : ''}${s.dueGrammar ? `<button type="button" class="home-btn home-btn-2" id="home-gram-due" onclick="homeGrammarDue()" title="Öffnet das Grammatikwerkzeug mit den meisten fälligen Aufgaben"><i class="ti ti-book-2"></i>Grammatik wiederholen</button>` : ''}${rsum ? `<button type="button" class="home-btn home-btn-2" id="home-read-due" onclick="homeReadingDue()" title="Nicht gewusste Sätze aus „${htmlEsc(rdue[0].t.titel)}“, zuletzt vor mindestens ${READ_WIEDERHOLEN_TAGE} Tagen gelesen"><i class="ti ti-book"></i>Sätze wiederholen</button>` : ''}</div>` : ''}
       ${vorschau}</div>`;
-    })()}
-    <div class="home-card home-row home-pair home-click" id="home-today" role="button" tabindex="0" onclick="homeOpenGoal()" onkeydown="homeKey(event)" title="${s.goal ? 'Tagesziel ändern' : 'Tagesziel festlegen'}">${s.goal > 0 ? `<div class="home-ring${s.today.a >= s.goal ? ' voll' : ''}" style="--p:${ziel}%" role="img" aria-label="${s.today.a} von ${s.goal}"><span>${s.today.a >= s.goal ? '<i class="ti ti-check"></i>' : ziel + ' %'}</span></div>` : ''}
+}
+function homeTodayCard(s) {
+  const ziel = s.goal > 0 ? Math.min(100, Math.round(s.today.a / s.goal * 100)) : 0;
+  return `<div class="home-card home-row home-pair home-click" id="home-today" role="button" tabindex="0" onclick="homeOpenGoal()" onkeydown="homeKey(event)" title="${s.goal ? 'Tagesziel ändern' : 'Tagesziel festlegen'}">${s.goal > 0 ? `<div class="home-ring${s.today.a >= s.goal ? ' voll' : ''}" style="--p:${ziel}%" role="img" aria-label="${s.today.a} von ${s.goal}"><span>${s.today.a >= s.goal ? '<i class="ti ti-check"></i>' : ziel + ' %'}</span></div>` : ''}
       <div><div class="home-k"><i class="ti ti-target-arrow"></i>Heute</div><div class="home-big">${fmtN(s.today.a)} <small>${s.goal > 0 ? (s.today.a >= s.goal ? (s.today.a >= 2 * s.goal ? (s.today.a / s.goal).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' × Tagesziel ✓' : 'von ' + fmtN(s.goal) + ' ✓') : 'von ' + fmtN(s.goal)) : (s.today.a === 1 ? 'Antwort' : 'Antworten')}</small></div>
       <div class="home-s">${fmtN(s.today.r)} richtig · ${fmtN(s.today.a - s.today.r)} falsch</div>
       ${(() => { const h = s.heuteTeile; const sum = h.v + h.g; if (!sum) return '';
@@ -9427,9 +9434,10 @@ function renderHome() {
         return `<div class="home-s home-bereiche" id="home-bereiche" title="Antworten heute je Bereich (richtig/gesamt)">${t.map(x => `<span><b>${BEREICH_NAME[x.v]}</b> ${fmtN(x.r)}/${fmtN(x.a)}</span>`).join('')}<span class="home-zeit"><i class="ti ti-clock"></i>${fmtDauer(d.ms)}</span></div>`; })()}
       ${s.gewinn.neu + s.gewinn.auf + s.gewinn.gNeu + s.gewinn.gAuf ? `<div class="home-s home-gewinn" id="home-gewinn"><i class="ti ti-chart-line"></i>${[s.gewinn.neu ? s.gewinn.neu + ' neu gelernt' : '', s.gewinn.auf ? s.gewinn.auf + ' aufgestiegen' : '', s.gewinn.gNeu + s.gewinn.gAuf ? 'Grammatik ' + (s.gewinn.gNeu + s.gewinn.gAuf) : ''].filter(Boolean).join(' · ')}</div>` : ''}
       ${s.goal > 0 && s.today.a >= 2 * s.goal && DAY_GOALS.some(n => n > s.goal) ? `<div class="home-goal-pick" id="home-goal-up" role="group" aria-label="Höheres Tagesziel wählen"><span class="home-s">Höheres Ziel:</span>${DAY_GOALS.filter(n => n > s.goal).slice(0, 3).map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>` : ''}
-      ${s.goal > 0 ? '' : `<div class="home-goal-pick" role="group" aria-label="Tagesziel festlegen"><span class="home-s">Tagesziel:</span>${DAY_GOALS.map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>`}</div></div>
-    ${homeWeekCard(s)}
-    ${(() => { const summe = homeLevelSumme(s.levels), gram = homeGrammarRows(Date.now()), gsum = homeLevelSumme(gram); gsum.anteil = homeGrammarSumAnteil(Date.now());
+      ${s.goal > 0 ? '' : `<div class="home-goal-pick" role="group" aria-label="Tagesziel festlegen"><span class="home-s">Tagesziel:</span>${DAY_GOALS.map(n => `<button type="button" onclick="event.stopPropagation(); setDayGoal(${n})">${n}</button>`).join('')}</div>`}</div></div>`;
+}
+function homeStandCards(s) {
+     const summe = homeLevelSumme(s.levels), gram = homeGrammarRows(Date.now()), gsum = homeLevelSumme(gram); gsum.anteil = homeGrammarSumAnteil(Date.now());
       return `<div class="home-card home-wide" id="home-stufen"><div class="home-k"><i class="ti ti-school"></i>Stand je Sprachstufe<span class="home-legend">Wiederholung${[1, 2, 3, 4, 5].map(i => `<span class="home-lgi" tabindex="0" data-st="${i}" title="${homeStufeInfo(i)}"><span class="home-lg s${i}"></span>${i === 5 ? '5 sicher' : i}</span>`).join('')}</span></div>
       <div class="home-lv">${homeStufenRows([...s.levels, summe], { id: 'lv', klick: 'openLevelOverview', klickText: 'Stufenübersicht' })}</div>
       <div class="home-s home-lv-sum">${fmtN(summe.total)} Vokabeln insgesamt · ${fmtN(summe.sicher)} sicher · ${fmtN(summe.arbeit)} in Wiederholung · ${fmtN(summe.total - summe.sicher - summe.arbeit)} noch nicht geübt${summe.bereit ? ' · ' + fmtN(summe.bereit) + ' heute aufstiegsbereit' : ''}${summe.sicherAb.length ? ' · ' + homeSicherAbText(summe.sicherAb) : ''}</div>
@@ -9439,8 +9447,10 @@ function renderHome() {
       <div class="home-card home-wide" id="home-gstufen"><div class="home-k"><i class="ti ti-book"></i>Stand Grammatik</div>
       <div class="home-lv">${homeStufenRows([...gram, gsum], { id: 'gr', wort: ['Aufgabe', 'Aufgaben'] })}</div>
       <div class="home-s home-lv-sum">${fmtN(gsum.total)} Grammatikaufgaben · ${fmtN(gsum.sicher)} sicher · ${fmtN(gsum.arbeit)} in Wiederholung · ${fmtN(gsum.total - gsum.sicher - gsum.arbeit)} noch nicht geübt${gsum.bereit ? ' · ' + fmtN(gsum.bereit) + ' heute aufstiegsbereit' : ''}</div>
-      <div class="home-s">Prozent: Fortschritt über die Wiederholungsstufen, Durchschnitt der Werkzeuge – jedes zählt gleich viel. Ein Klick auf einen Bereich zeigt die Werkzeuge einzeln.</div></div>`; })()}
-    ${(() => { const gh = Object.values(homeGrammarTools()).flatMap(x => x.hard).sort((a, b) => b.f - a.f); s.gHard = gh; return ''; })()}
+      <div class="home-s">Prozent: Fortschritt über die Wiederholungsstufen, Durchschnitt der Werkzeuge – jedes zählt gleich viel. Ein Klick auf einen Bereich zeigt die Werkzeuge einzeln.</div></div>`; 
+}
+function homeHardCard(s) {
+  return `${(() => { const gh = Object.values(homeGrammarTools()).flatMap(x => x.hard).sort((a, b) => b.f - a.f); s.gHard = gh; return ''; })()}
     ${s.hardAll.length || s.gHard.length ? (() => {
       const liste = homeHardList(s.hardAll), mehr = liste.length - 5, eff = homeHardMin(s.hardAll);
       const gram = s.gHard.length ? `<div class="home-hard-g" id="home-hard-g"><div class="home-s home-hard-g-k">Grammatik</div>${s.gHard.slice(0, 5).map(x => `<button type="button" class="home-hard-g-row" onclick="homeOpenTool('${x.t}')" title="${htmlEsc(homeToolName(x.t))} öffnen"><b lang="ru">${htmlEsc(homeGrammarTaskText(x.id))}</b><span>${htmlEsc(homeToolName(x.t))}</span><small>${x.f}× falsch</small></button>`).join('')}${s.gHard.length > 5 ? `<div class="home-s">und ${s.gHard.length - 5} weitere</div>` : ''}<div class="home-hard-sw"><button type="button" class="home-btn" id="home-hard-g-btn" onclick="homeGrammarHard()" title="Öffnet das Grammatikwerkzeug mit den meisten oft falschen Aufgaben"><i class="ti ti-player-play"></i>Grammatikfehler üben</button></div></div>` : '';
@@ -9450,13 +9460,39 @@ function renderHome() {
       ${mehr > 0 ? `<div class="home-s home-hard-mehr">und ${mehr} ${mehr === 1 ? 'weiteres' : 'weitere'}</div>` : ''}
       <div class="home-hard-sw"><div class="set-seg" role="group" aria-label="Wörter üben ab so vielen Fehlern">${HARD_MINS.map(n => { const k = s.hardAll.filter(x => x.falsch >= n).length; return `<button type="button" class="${n === eff ? 'on' : ''}" aria-pressed="${n === eff}" ${k ? '' : 'disabled'} onclick="setHardMin(${n})" title="${k} ${k === 1 ? 'Wort' : 'Wörter'} mit mindestens ${n} Fehlern">ab ${n}× <small>${k}</small></button>`; }).join('')}</div>
       <button type="button" class="home-btn" onclick="homeStartPool('hard')"><i class="ti ti-player-play"></i>${liste.length === 1 ? 'Dieses Wort' : 'Alle ' + liste.length} üben</button>${liste.length > 5 ? `<button type="button" class="home-btn home-btn-2" id="home-hard-top5" onclick="homeStartPool('hard', null, 5)" title="Nur die fünf Wörter mit den meisten Fehlern"><i class="ti ti-player-play"></i>Top 5 üben</button>` : ''}</div>${gram}</div>`;
-    })() : ''}
-    <div class="home-card"><div class="home-k"><i class="ti ti-history"></i>Zuletzt geübt</div><div class="home-res">
+    })() : ''}`;
+}
+function homeZuletztCard(s) {
+  const ansicht = { vocab: ['ti-cards', 'Vokabeln'], grammar: ['ti-book-2', 'Grammatik'], listening: ['ti-headphones', 'Hören'], reading: ['ti-book', 'Textverständnis'] };
+  const panelName = v => {
+    try {
+      const text = el => { if (!el) return ''; const c = el.cloneNode(true); c.querySelectorAll('.lvl-badge').forEach(x => x.remove()); return c.textContent.replace(/\s+/g, ' ').trim(); };
+      if (v === 'grammar') { const p = readStoredPanel(GRAMMAR_PANEL_KEY, 'grammarPanel'); return text(p && document.querySelector('#overlay-' + p + ' .overlay-title')); }
+      if (v === 'listening') { const p = readStoredPanel(LISTENING_PANEL_KEY, 'listeningPanel'); return text(p && document.getElementById('lchip-' + p)); }
+      if (v === 'reading') { const t = readingLetzter(); return t ? t.titel : ''; }
+    } catch (e) {}
+    return '';
+  };
+  const zuletzt = LERN_ANSICHTEN.filter(v => s.times[v]).sort((a, b) => s.times[b] - s.times[a]);
+  return `<div class="home-card"><div class="home-k"><i class="ti ti-history"></i>Zuletzt geübt</div><div class="home-res">
       ${zuletzt.map(v => { const tag = dayKey(new Date(s.times[v])), d = (loadDaystats()[tag] || {})[v];
         const wann = tag === dayKey() ? new Date(s.times[v]).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : homeRelDay(s.times[v]);
         const menge = d ? `<em class="home-res-n">${fmtN(d[0])} ${d[0] === 1 ? 'Antwort' : 'Antworten'} · ${fmtN(d[1])} richtig</em>` : '';
         return `<button type="button" onclick="setAppView('${v}')" title="Dort weitermachen, wo du aufgehört hast"><i class="ti ${ansicht[v][0]}"></i><span>${ansicht[v][1]}${panelName(v) ? ' · ' + htmlEsc(panelName(v).replace(/^\S+ · /, '')) : ''}${menge}</span><small>${wann}</small></button>`; }).join('') || '<div class="home-s">Noch nichts geübt – los geht’s mit „Weiterlernen“.</div>'}
-      ${s.bookmarks ? `<button type="button" onclick="setAppView('vocab'); selectMainCat('bookmarks')"><i class="ti ti-bookmark"></i><span>Merkliste · ${s.bookmarks}</span><small></small></button>` : ''}</div></div>
+      ${s.bookmarks ? `<button type="button" onclick="setAppView('vocab'); selectMainCat('bookmarks')"><i class="ti ti-bookmark"></i><span>Merkliste · ${s.bookmarks}</span><small></small></button>` : ''}</div></div>`;
+}
+function renderHome() {
+  const el = document.getElementById('home-view'); if (!el) return;
+  const s = homeStats();
+  el.innerHTML = `
+  ${homeKopfHtml(s)}
+  <div class="home-grid">
+    ${homeDueCard(s)}
+    ${homeTodayCard(s)}
+    ${homeWeekCard(s)}
+    ${homeStandCards(s)}
+    ${homeHardCard(s)}
+    ${homeZuletztCard(s)}
   </div>`;
   try { if (typeof ghUpdateIndicator === 'function') ghUpdateIndicator(); } catch (e) {}
 }
@@ -10111,6 +10147,7 @@ try { localStorage.removeItem('vokabeltrainer-strict-mode'); } catch (e) {}
 const BACKUP_KEYS = ['vokabeltrainer-grammar-info-open','vokabeltrainer-grammar-cat-last','vokabeltrainer-scores','vokabeltrainer-bookmarks','vokabeltrainer-grammar-srs','vokabeltrainer-scores-de-ru','vokabeltrainer-level-plan','vokabeltrainer-level-exam',
   'vokabeltrainer-favorite-cats','vokabeltrainer-selection','vokabeltrainer-tool-settings',
   'vokabeltrainer-hearquiz-settings','vokabeltrainer-hoertrainer-cats','vokabeltrainer-hoertrainer-pause',
+  'vokabeltrainer-hoertrainer-opts','vokabeltrainer-dictation-opts','vokabeltrainer-daystats',
   'vokabeltrainer-autoplay','vokabeltrainer-block-size','vokabeltrainer-direction',
   'vokabeltrainer-skip-cognates','vokabeltrainer-theme','vokabeltrainer-session-goal',
   'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-width-reading','vokabeltrainer-texte','vokabeltrainer-texte-modus','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-alphabet-order','vokabeltrainer-card-size'];
@@ -10186,6 +10223,7 @@ function mergeBackupValue(key, localRaw, backupRaw) {
     return JSON.stringify(out);
   }
   if (key === 'vokabeltrainer-daylog') return mergeDaylog(localRaw, backupRaw);
+  if (key === DAYSTATS_KEY) return mergeDaystats(localRaw, backupRaw);
   if (key === 'vokabeltrainer-texte') return mergeReading(localRaw, backupRaw);
   if (key === 'vokabeltrainer-bookmarks') {
     const a = parse(localRaw), b = parse(backupRaw);
@@ -18453,7 +18491,7 @@ const TEXTE = [
     { ru: 'Особенно всем понравился сладкий торт.', de: 'Besonders gut schmeckte allen die süße Torte.' },
     { ru: 'Дедушка рассказал весёлую историю.', de: 'Der Großvater erzählte eine lustige Geschichte.' },
     { ru: 'Все громко смеялись.', de: 'Alle lachten laut.' },
-    { ru: 'Потом позвонил мой двоюродный брат из Канады.', de: 'Dann rief mein Cousin aus Kanada an.' },
+    { ru: 'Потом позвонил мой дядя из Канады.', de: 'Dann rief mein Onkel aus Kanada an.' },
     { ru: 'Он тоже поздравил бабушку и сказал, что приедет летом.', de: 'Er gratulierte der Großmutter auch und sagte, dass er im Sommer kommt.' },
     { ru: 'Бабушка была очень счастлива.', de: 'Die Großmutter war sehr glücklich.' },
     { ru: 'После ужина бабушка показала старые фотографии.', de: 'Nach dem Abendessen zeigte die Großmutter alte Fotos.', p: true },
@@ -29286,6 +29324,7 @@ function dictZeigeSatz() {
   document.getElementById('dictation-check-btn').innerHTML = '<i class="ti ti-check"></i> Prüfen';
   document.getElementById('dictation-score').textContent =
     dictState.done ? dictState.correct + ' von ' + dictState.done + ' richtig' : '';
+  if (dictState.idx > 0 && window.matchMedia && matchMedia('(hover: hover)').matches) { try { input.focus({ preventScroll: true }); } catch (e) {} }
   playDictation();
 }
 function dictWoerterListe() { return tokenizeSentence(dictState.current.ru).filter(t => /[а-яёa-z0-9]/i.test(t)); }
@@ -29379,6 +29418,7 @@ function checkDictation() {
   const input = document.getElementById('dictation-input');
   const val = input.value.trim();
   // bereits geprüft oder aufgedeckt: „Prüfen“ holt den nächsten Satz
+  if (dictState.aufgedeckt) { dictSelbst(false); return; }   // aufgedeckt, nicht bewertet: zählt als „nicht gewusst“
   if (input.disabled) { restartDictation(); return; }
   if (!val) return;
   const ok = isSentenceMatch(val, dictState.current.ru);
@@ -29391,6 +29431,7 @@ function checkDictation() {
   diffEl.style.display = 'block';
   document.getElementById('dictation-result').textContent = ok ? 'Richtig' : '';
   dictZeigeLoesung();
+  dictFokusFrei();
 }
 
 function revealDictation() {
@@ -29402,6 +29443,7 @@ function revealDictation() {
   dictState.bewertet = true; dictState.aufgedeckt = true;
   dictZeigeLoesung();
   document.getElementById('dictation-selbst').style.display = '';
+  dictFokusFrei();
 }
 // Selbstbewertung nach „Lösung zeigen“ (wie im Aufdecken-Modus der Vokabeln)
 function dictSelbst(gewusst) {
@@ -29411,14 +29453,24 @@ function dictSelbst(gewusst) {
   dictWerte(gewusst);
   restartDictation();
 }
-// Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam
+// Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam; nach dem Prüfen Enter = weiter
+// (das Feld ist dann gesperrt und hat keinen Fokus mehr), nach „Lösung zeigen“ 1 = gewusst, 2 = nicht gewusst
 document.addEventListener('keydown', e => {
-  if (appView !== 'listening' || !(e.ctrlKey || e.metaKey) || !(e.key === ' ' || e.code === 'Space')) return;
+  if (appView !== 'listening' || document.querySelector('.overlay.open')) return;
   const p = document.getElementById('overlay-dictation');
   if (!p || !p.classList.contains('open')) return;
-  e.preventDefault();
-  playDictation(e.shiftKey ? 0.5 : undefined);
+  if ((e.ctrlKey || e.metaKey) && (e.key === ' ' || e.code === 'Space')) { e.preventDefault(); playDictation(e.shiftKey ? 0.5 : undefined); return; }
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+  const tag = ((e.target && e.target.tagName) || '').toLowerCase();
+  if (tag === 'textarea' || tag === 'select' || tag === 'input') return;   // das Feld wertet Enter selbst aus
+  if (dictState.aufgedeckt && (e.key === '1' || e.key === '2')) { e.preventDefault(); dictSelbst(e.key === '1'); return; }
+  if (e.key === 'Enter' && tag !== 'button' && (dictState.ende || dictState.bewertet)) { e.preventDefault(); checkDictation(); }
 });
+// nach dem Prüfen/Aufdecken: Fokus vom gesperrten Feld bzw. Knopf nehmen, damit Enter und 1/2 ankommen
+function dictFokusFrei() {
+  const a = document.activeElement;
+  if (a && a !== document.body && document.getElementById('overlay-dictation').contains(a) && a.id !== 'dictation-check-btn') a.blur();
+}
 
 // ── Kyrillisches Alphabet ───────────────────────────────────────
 const ALPHABET_LETTERS = [
@@ -30306,9 +30358,8 @@ function checkHearquiz() {
   // nach falscher Antwort führt Prüfen/Enter ebenfalls weiter — es sei denn,
   // die Eingabe wurde inzwischen geändert, dann wird sie noch einmal geprüft
   if (hqState.answered && !hqState.lastCorrect && val === hqState.lastInput) { nextHearquiz(); return; }
-  // leeres Feld: Enter tut nichts — weiter geht es erst mit einer Eingabe
-  // oder über „Lösung zeigen"
-  if (!val) return;
+  // leeres Feld: überspringen (gewünscht; zählt in der Runde als Fehler, im Lernstand nur als gesehen)
+  if (!val) { nextHearquiz(); return; }
   hqState.lastInput = val;
   const w = hqState.current;
   let ok, typoHint = '';
@@ -30384,6 +30435,10 @@ document.addEventListener('keydown', e => {
   const imFeld = tag === 'input' || tag === 'textarea' || tag === 'select';
   if ((e.ctrlKey || e.metaKey) && (e.key === ' ' || e.code === 'Space')) { e.preventDefault(); speakHearquiz(e.shiftKey ? 0.5 : undefined); return; }
   if (imFeld || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (hqState.mode === 'type' && hqState.revealed && !hqState.answered && !e.repeat) {
+    if (e.key === '1' || e.key === '2') { e.preventDefault(); rateHearquizType(e.key === '1'); return; }
+    if (e.key === 'Enter' && tag !== 'button') { e.preventDefault(); rateHearquizType(false); return; }
+  }
   if (e.key === 'Enter' && (hqState.ende || (hqState.mode === 'choice' && hqState.answered))) {
     if (tag === 'button') return;   // Knopf im Fokus löst selbst aus
     e.preventDefault();

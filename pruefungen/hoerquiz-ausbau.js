@@ -92,6 +92,13 @@ const { chromium } = require('playwright');
     undoHearquizRate();
     return { ok: amEnde && !hqState.ende && hqState.revealed && hqState.idx === hqState.runde.length - 1 && document.getElementById('hq-spiel').style.display !== 'none', info: amEnde + ' ' + hqState.idx };
   }));
+  await check('Tippen (16.11.): leeres Feld + Enter überspringt; nach „Lösung zeigen“ 1 = gewusst', async () => {
+    await ev(() => { setHearquizMode('type'); });
+    await p.click('#hq-input'); const i0 = await ev(() => [hqState.idx, hqState.done]);
+    await p.keyboard.press('Enter'); const i1 = await ev(() => [hqState.idx, hqState.done]);
+    await p.click('#hq-reveal-btn'); await p.keyboard.press('1'); const i2 = await ev(() => [hqState.idx, hqState.done]);
+    return { ok: i1[0] === i0[0] + 1 && i1[1] === i0[1] && i2[0] === i1[0] + 1 && i2[1] === i1[1] + 1, info: JSON.stringify([i0, i1, i2]) };
+  });
   await check('Infotext nennt Runden, Lösung zeigen, Tasten und Stufe', () => ev(() => { const t = document.getElementById('hearquiz-info-panel').textContent; return /Runde/.test(t) && /Lösung zeigen/.test(t) && /Strg\+Leertaste/.test(t) && /Wörter bis Stufe/.test(t) && /1–4/.test(t); }));
   await check('keine JS-Fehler', () => ({ ok: errs.length === 0, info: errs.slice(0, 3).join(' | ') }));
   R.forEach(r => console.log(r[0], r[1], r[2] ? '· ' + r[2] : ''));

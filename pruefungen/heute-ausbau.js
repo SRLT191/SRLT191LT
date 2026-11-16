@@ -65,6 +65,12 @@ const { chromium } = require('playwright');
     const d = loadDaystats(); dayNote(true); renderHome();
     return { ok: !d['<img>'] && d['2026-01-01'].ms === 0 && !d['2026-01-01'].vocab, info: JSON.stringify(d) };
   }));
+  await check('Tagesstatistik in der Sicherung, Zusammenführen nimmt je Tag und Bereich das Höhere', () => ev(() => {
+    const a = JSON.stringify({ '2026-01-01': { ms: 100, vocab: [5, 4] } }), b2 = JSON.stringify({ '2026-01-01': { ms: 300, vocab: [3, 3], reading: [2, 1] }, '2026-01-02': { ms: 50, grammar: [1, 1] } });
+    const m = JSON.parse(mergeBackupValue(DAYSTATS_KEY, a, b2));
+    return { ok: BACKUP_KEYS.includes(DAYSTATS_KEY) && BACKUP_KEYS.includes('vokabeltrainer-dictation-opts') && BACKUP_KEYS.includes('vokabeltrainer-hoertrainer-opts')
+      && m['2026-01-01'].ms === 300 && m['2026-01-01'].vocab.join() === '5,4' && m['2026-01-01'].reading.join() === '2,1' && m['2026-01-02'].grammar.join() === '1,1', info: JSON.stringify(m) };
+  }));
   await check('320 px: kein Überlauf mit fälligen Wörtern', async () => {
     await p.setViewportSize({ width: 320, height: 800 }); await p.waitForTimeout(150);
     return ev(() => { renderHome(); return { ok: document.documentElement.scrollWidth <= 320, info: document.documentElement.scrollWidth + '' }; });

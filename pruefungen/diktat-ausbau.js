@@ -88,6 +88,17 @@ const { chromium } = require('playwright');
     const a = dictPoolGefiltert().length; setDictOpt('texte', true); const c = dictPoolGefiltert(); setDictOpt('texte', false);
     return { ok: c.length > a && c.some(x => x.text), info: a + ' → ' + c.length };
   }));
+  await check('Tastatur (16.11.): Enter prüft, zweites Enter geht weiter; nach „Lösung zeigen“ 2 = nicht gewusst', async () => {
+    await ev(() => { setDictOpt('level', ''); });
+    await p.click('#dictation-input'); await p.keyboard.type('qqq'); await p.keyboard.press('Enter');
+    const a = await ev(() => [dictState.idx, dictState.bewertet]);
+    await p.keyboard.press('Enter');
+    const c = await ev(() => dictState.idx);
+    await p.click('button[onclick="revealDictation()"]'); const f = await ev(() => dictState.fehler.length);
+    await p.keyboard.press('2');
+    const d = await ev(() => [dictState.idx, dictState.fehler.length]);
+    return { ok: a[1] && c === a[0] + 1 && d[0] === c + 1 && d[1] === f + 1, info: JSON.stringify([a, c, d]) };
+  });
   await check('Infotext nennt Runden, Tipp, Selbstbewertung, Tasten und Stufe', () => ev(() => { const t = document.getElementById('dictation-info-panel').textContent; return /Runde/.test(t) && /Tipp/.test(t) && /Gewusst/.test(t) && /Strg\+Leertaste/.test(t) && /Wörter bis Stufe/.test(t); }));
   await check('keine JS-Fehler', () => ({ ok: errs.length === 0, info: errs.slice(0, 3).join(' | ') }));
   R.forEach(r => console.log(r[0], r[1], r[2] ? '· ' + r[2] : ''));
