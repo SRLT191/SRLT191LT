@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
   const R = await p.evaluate(() => {
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
     const NEU = { 'поликлиника': ['Poliklinik|Ärztehaus', 'A1', 'f'], 'кабинет': ['Sprechzimmer|Arbeitszimmer', 'A1', 'm'], 'запись': ['Anmeldung|Termin', 'A1', 'f'],
-      'талон': ['Terminschein', 'A1', 'm'], 'медкомиссия': ['Gesundheitsprüfung', 'A1', 'f'], 'полис': ['Versicherungspolice', 'A1', 'm'],
+      'талон': ['Wartenummer', 'A1', 'm'], 'медкомиссия': ['Gesundheitsprüfung', 'A1', 'f'], 'полис': ['Versichertenkarte', 'A1', 'm'],
       'грипп': ['Grippe', 'A2', 'm'], 'медицина': ['Medizin', 'A2', 'f'], 'лечение': ['Behandlung|Heilung', 'B1', 'n'], 'рана': ['Wunde', 'B2', 'f'],
       'травма': ['Verletzung', 'B2', 'f'], 'осмотр': ['Untersuchung|Besichtigung', 'B2', 'm'], 'палата': ['Krankenzimmer', 'C1', 'f'],
       'шприц': ['Spritze|Injektionsspritze', 'C1', 'm'], 'синяк': ['blauer Fleck|Bluterguss', 'C1', 'm'] };
