@@ -29,6 +29,8 @@ const { chromium } = require('playwright');
   });
   ok('Seitenleiste: Adverbien als eigene Kachel zwischen Adjektiven und Grammatikwörtern', s.ia >= 0 && s.iv > s.ia && s.ig > s.iv, s.k);
   ok('Verben mit Zwischenzeilen „Grundwortschatz“ und „Themen“', s.tr.join() === 'Grundwortschatz,Themen', s.tr.join());
+  const n = await p.evaluate(() => ({ alt: !!vocab['Wetter & Natur'], neu: getAllWordsOfCat('Natur & Wetter (Adj.)').length, gr: WORTART_GROUPS['Adjektive'].includes('Natur & Wetter (Adj.)'), mig: migrateCatName('Wetter & Natur') }));
+  ok('Adjektive „Natur & Wetter (Adj.)“ (vorher „Wetter & Natur“, gleiche Reihenfolge wie bei den Verben), alter Name wird übernommen', !n.alt && n.neu === 30 && n.gr && n.mig === 'Natur & Wetter (Adj.)', JSON.stringify(n));
   ok('keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
   console.log('\n' + R.filter(x => x[0] === 'OK ').length + ' von ' + R.length + ' bestanden');
