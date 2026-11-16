@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   const R = await p.evaluate(() => {
     const R = []; const ok = (n, c, i) => R.push([c ? 'OK ' : 'XX ', n, i || '']);
-    const NEU = { 'пирожок': ['piroschok', 'Pirogge|Teigtasche'], 'булочка': ['bulotschka', 'Brötchen'], 'пицца': ['pizza', 'Pizza'],
+    const NEU = { 'пирожок': ['piroschok', 'Piroschka|Teigtasche'], 'булочка': ['bulotschka', 'Brötchen'], 'пицца': ['pizza', 'Pizza'],
       'борщ': ['borschtsch', 'Borschtsch'], 'щи': ['schtschi', 'Kohlsuppe'], 'шаурма': ['schaurma', 'Schawarma|Döner'] };
     const essen = getAllWordsOfCat('Essen');
     Object.entries(NEU).forEach(([ru, [tr, de]]) => {
