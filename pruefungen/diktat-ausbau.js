@@ -21,7 +21,7 @@ const { chromium } = require('playwright');
   await check('Öffnen: Runde mit 15 Sätzen, „Satz 1 von 15“, Satz wird sofort vorgelesen', () => ev(() => {
     window.__spoken.length = 0; setAppView('listening'); showListeningPanel('dictation');
     const t = document.getElementById('dictation-runde').textContent;
-    return { ok: dictState.runde.length === 15 && t === 'Satz 1 von 15' && window.__spoken.some(x => x[0] === dictState.current.ru), info: t };
+    return { ok: dictState.runde.length === 15 && t === 'Satz 1 von 15' && window.__spoken.some(x => x[0] === dictState.current.ru.replace(/ \/ /g, ', ')), info: t };
   }));
   await check('Wörterzahl und Tipp deckt je ein Wort auf', () => ev(() => {
     const n = dictWoerterListe().length; const vor = document.querySelectorAll('#dictation-woerter .dw.offen').length;
