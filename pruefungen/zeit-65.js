@@ -11,14 +11,15 @@ const { chromium } = require('playwright');
       'годовщина': ['Jahrestag', 'B2', 'f'], 'канун': ['Vorabend', 'C1', 'm'], 'юбилей': ['Jubiläum', 'C1', 'm'], 'промежуток': ['Zeitspanne', 'C1', 'm'] };
     const kl = getAllWordsOfCat('Zeit');
     Object.entries(NEU).forEach(([ru, [de, lv, g]]) => {
-      const w = kl.find(x => x.ru === ru), s = w && getWordSentence(w);
-      ok(ru + ': in Zeit, Umschrift nach Regel, nur bestätigte Übersetzung', w && w.tr === trLetters(ru) && w.de.join('|') === de, w ? w.tr + ' · ' + w.de.join(', ') : 'fehlt');
-      ok(ru + ': Stufe ' + lv + ', Satz mit Wort und Übersetzung, nicht schwerer als das Wort', w && wordLevel(w) === lv && s
-        && s.ru.toLowerCase().includes(ru.toLowerCase()) && w.de.some(d => s.de.includes(d.replace(/\s*\(.*\)$/, ''))) && LEVELS.indexOf(sentenceLevel(s.ru)) <= LEVELS.indexOf(lv) && sentenceLevel(s.ru, [ru]) === lv, s ? s.ru + ' / ' + s.de + ' · ' + sentenceLevel(s.ru) : 'kein Satz');
+      // 16.11.: verschobene Wörter auch in ihrer neuen Kategorie, zusammengelegte auf ihrer Paarkarte (Z = beide Wörter)
+      const w = kl.find(x => x.ru === ru) || allVocabWords().find(x => x.ru === ru || (MERGED_CARDS[x.ru] || []).includes(ru)), s = w && getWordSentence(w), Z = w && MERGED_CARDS[w.ru];
+      ok(ru + ': in Zeit, Umschrift nach Regel, nur bestätigte Übersetzung', w && (w.tr === trLetters(ru) || (Z && String(w.tr).split(' / ').includes(trLetters(ru)))) && (w.de.join('|') === de || (Z && w.de.includes(de))), w ? w.tr + ' · ' + w.de.join(', ') : 'fehlt');
+      ok(ru + ': Stufe ' + lv + ', Satz mit Wort und Übersetzung, nicht schwerer als das Wort', w && (wordLevel(w) === lv || (Z && LEVELS.indexOf(wordLevel(w)) <= LEVELS.indexOf(lv))) && s
+        && (Z || [ru]).some(t => s.ru.toLowerCase().includes(t.toLowerCase())) && w.de.some(d => s.de.includes(d.replace(/\s*\(.*\)$/, ''))) && LEVELS.indexOf(sentenceLevel(s.ru)) <= LEVELS.indexOf(lv) && (Z || sentenceLevel(s.ru, [ru]) === lv), s ? s.ru + ' / ' + s.de + ' · ' + sentenceLevel(s.ru) : 'kein Satz');
       ok(ru + ': Geschlecht ' + (g || 'nicht abgefragt (pol-)'), g ? (genderOf(ru) || {}).g === g && genderPool().some(x => x.ru === ru) : genderOf(ru) === null, JSON.stringify(genderOf(ru)));
     });
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Zeit 66 (16.11.: Wörter verschoben)', kl.length === 66, String(kl.length));
+    ok('Zeit 65 (16.11.: Wörter verschoben/zusammengelegt)', kl.length === 65, String(kl.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);

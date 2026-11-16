@@ -13,7 +13,7 @@ const RUNDEN = {
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(400);
   for (const [n, woerter] of Object.entries(RUNDEN)) {
     const r = await p.evaluate(woerter => Object.entries(woerter).map(([ru, satz]) => {
-      const w = allVocabWords().find(x => x.ru === ru), s = w && getWordSentence(w);
+      const w = allVocabWords().find(x => x.ru === ru || (MERGED_CARDS[x.ru] || [])[0] === ru), s = w && getWordSentence(w); // 16.11.: двигатель steht auf „двигатель / мотор“
       const L = l => LEVELS.indexOf(l);
       const gut = !!s && s.ru === satz && s.ru.toLowerCase().includes(ru) && w.de.some(d => s.de.includes(d.replace(/\s*\(.*\)$/, '')))
         && L(sentenceLevel(s.ru)) <= L(wordLevel(w)) && !SENTENCE_PAIRS.some(x => (x.targets || []).includes(ru) && x.targets.length > 1);

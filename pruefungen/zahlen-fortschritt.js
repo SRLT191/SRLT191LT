@@ -12,25 +12,25 @@ const { chromium } = require('playwright');
   await p.reload(); await p.waitForTimeout(300);
   await p.evaluate(() => { setAppView('vocab'); setMode('free'); selectWholeCat('Zahlen'); });
   let k = await kachel();
-  ok('Start: Kachel „Zahlen (0/54)“ – nicht die Zahl der Blöcke (11)', k.text === 'Zahlen (0/54)', k.text);
+  ok('Start: Kachel „Zahlen (0/55)“ – nicht die Zahl der Blöcke (11)', k.text === 'Zahlen (0/55)', k.text);
   const r = await p.evaluate(() => { const out = []; for (let i = 0; i < 4; i++) { const w = currentWord; document.getElementById('answer-input').value = w.de[0]; checkAnswer(); out.push(w.ru); nextWord(); } return out; });
   k = await kachel();
-  ok('nach 4 richtigen Antworten sofort „Zahlen (4/54)“, Tooltip passt', k.text === 'Zahlen (4/54)' && /4 von 54 erledigt/.test(k.title), JSON.stringify(k));
+  ok('nach 4 richtigen Antworten sofort „Zahlen (4/55)“, Tooltip passt', k.text === 'Zahlen (4/55)' && /4 von 55 erledigt/.test(k.title), JSON.stringify(k));
   // falsche Antwort zählt nicht als erledigt
   await p.evaluate(() => { document.getElementById('answer-input').value = 'falsch falsch'; checkAnswer(); nextWord(); });
   k = await kachel();
-  ok('falsche Antwort ändert die Zahl nicht', k.text === 'Zahlen (4/54)', k.text);
+  ok('falsche Antwort ändert die Zahl nicht', k.text === 'Zahlen (4/55)', k.text);
   await p.reload(); await p.waitForTimeout(400);
   const nach = await p.evaluate(w => { setAppView('vocab'); return { done: getAllWordsOfCat('Zahlen').filter(hasCorrectAnswer).length, alle: w.every(r => hasCorrectAnswer(allVocabWords().find(x => x.ru === r))) }; }, r);
   k = await kachel();
-  ok('nach Neuladen gespeichert: dieselben 4 Zahlen erledigt, Kachel 4/54', nach.done === 4 && nach.alle && k.text === 'Zahlen (4/54)', JSON.stringify(nach) + ' ' + k.text);
+  ok('nach Neuladen gespeichert: dieselben 4 Zahlen erledigt, Kachel 4/55', nach.done === 4 && nach.alle && k.text === 'Zahlen (4/55)', JSON.stringify(nach) + ' ' + k.text);
   // DE → RU zählt ebenfalls
   // jede Richtung hat ihren eigenen Stand (wie bei allen Vokabeln)
   const de = await p.evaluate(() => { setDirection('de-ru'); selectWholeCat('Zahlen'); const w = currentWord; document.getElementById('answer-input').value = w.ru; checkAnswer(); nextWord(); return getAllWordsOfCat('Zahlen').filter(hasCorrectAnswer).length; });
   k = await kachel();
   const zurueck = await p.evaluate(() => { setDirection('ru-de'); return getAllWordsOfCat('Zahlen').filter(hasCorrectAnswer).length; });
   const k2 = await kachel();
-  ok('DE → RU zählt eigenen Stand (1/54), zurück bei RU → DE wieder 4/54', de === 1 && k.text === 'Zahlen (1/54)' && zurueck === 4 && k2.text === 'Zahlen (4/54)', [de, k.text, zurueck, k2.text].join(' · '));
+  ok('DE → RU zählt eigenen Stand (1/55), zurück bei RU → DE wieder 4/55', de === 1 && k.text === 'Zahlen (1/55)' && zurueck === 4 && k2.text === 'Zahlen (4/55)', [de, k.text, zurueck, k2.text].join(' · '));
   // Unterkategorie: Linie und Tooltip ohne Neuaufbau nachgeführt; Blockmarke nur bei Teilauswahl
   const sub = await p.evaluate(() => {
     setDirection('ru-de'); expandedMain = 'Substantive'; expandedTheme = 'Alltag'; selectWholeCat('Kleidung');
@@ -46,7 +46,7 @@ const { chromium } = require('playwright');
   // Zurücksetzen setzt auch die Kachel zurück
   await p.evaluate(() => { resetProgress(); buildNav(); });
   k = await kachel();
-  ok('Zurücksetzen: Kachel wieder 0/54', k.text === 'Zahlen (0/54)', k.text);
+  ok('Zurücksetzen: Kachel wieder 0/55', k.text === 'Zahlen (0/55)', k.text);
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
   R.forEach(x => console.log(x[0], x[1], x[2] ? '· ' + x[2] : ''));
   console.log('\n' + R.filter(x => x[0] === 'OK ').length + ' von ' + R.length + ' bestanden');
