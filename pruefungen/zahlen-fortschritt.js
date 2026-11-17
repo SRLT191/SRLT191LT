@@ -41,7 +41,7 @@ const { chromium } = require('playwright');
     selectedBlocksByCat['Kleidung'] = new Set([0]); buildNav();
     return { vorher, nachher, title, marke, teil: (btn().querySelector('.sub-btn-sel') || {}).textContent };
   });
-  ok('Kleidung: Fortschrittslinie 0 % → 20 % nach 13 Antworten, Tooltip „13 von 65“', sub.vorher === '0%' && sub.nachher === '20%' && /13 von 65 erledigt/.test(sub.title), JSON.stringify(sub));
+  ok('Kleidung: Fortschrittslinie 0 % → 19 % nach 13 Antworten, Tooltip „13 von 70“', sub.vorher === '0%' && sub.nachher === '19%' && /13 von 70 erledigt/.test(sub.title), JSON.stringify(sub));
   ok('Blockmarke nur bei Teilauswahl (alle gewählt: keine, ein Block: „1“)', !sub.marke && sub.teil === '1', JSON.stringify(sub));
   // Zurücksetzen setzt auch die Kachel zurück
   await p.evaluate(() => { resetProgress(); buildNav(); });

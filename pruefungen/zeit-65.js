@@ -19,7 +19,7 @@ const { chromium } = require('playwright');
       ok(ru + ': Geschlecht ' + (g || 'nicht abgefragt (pol-)'), g ? (genderOf(ru) || {}).g === g && genderPool().some(x => x.ru === ru) : genderOf(ru) === null, JSON.stringify(genderOf(ru)));
     });
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Zeit 65 (16.11.: Wörter verschoben/zusammengelegt)', kl.length === 65, String(kl.length));
+    ok('Zeit 70 (17.11.: auf 70 erweitert)', kl.length === 70, String(kl.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);

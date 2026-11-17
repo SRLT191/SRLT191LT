@@ -38,7 +38,7 @@ const { chromium } = require('playwright');
     const gruppe = [...document.querySelectorAll('.sub-btn')].find(x => !x.dataset.cat); const gbg = gruppe ? getComputedStyle(gruppe, '::after').backgroundImage : 'none';
     return { title: btn.title, spur: (bg.match(/rgb/g) || []).length >= 2, hoehe: getComputedStyle(btn, '::after').height, gruppe: gbg };
   });
-  ok('8 Fortschrittsstrich mit sichtbarer Spur, 3 px, Hinweis „13 von 65 erledigt“', f.spur && f.hoehe === '3px' && /13 von 65 erledigt/.test(f.title), JSON.stringify(f));
+  ok('8 Fortschrittsstrich mit sichtbarer Spur, 3 px, Hinweis „13 von 70 erledigt“', f.spur && f.hoehe === '3px' && /13 von 70 erledigt/.test(f.title), JSON.stringify(f));
   ok('8 Gruppenzeilen ohne Fortschritt zeigen keine Spur', f.gruppe === 'none' || /rgba\(0, 0, 0, 0\) 0%\)$/.test(f.gruppe), f.gruppe);
 
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e => errs.push(e.message));
