@@ -1,6 +1,6 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
 // Verbkategorie „Lagerverben“ (17.11.): fünf Verben, als letzte Themenkategorie der Verben, Symbol wie Lagerlogistik,
-// je Stufe, Umschrift, eigener Satz (nicht leichter als das Wort), Bildungsart bei den Aspektpaaren
+// seit 17.11. abends 30 Verben (lagerverben-30 prüft die 25 neuen); je Stufe, Umschrift, eigener Satz (nicht leichter als das Wort), Bildungsart bei den Aspektpaaren
 const { chromium } = require('playwright');
 const NEU = [['хранить', '', 'lagern', 'A2'], ['грузить', 'погрузить', 'laden', 'B2'], ['упаковывать', 'упаковать', 'verpacken', 'B2'],
   ['разгружать', 'разгрузить', 'entladen', 'C1'], ['взвешивать', 'взвесить', 'wiegen', 'C1']];
@@ -22,7 +22,7 @@ const NEU = [['хранить', '', 'lagern', 'A2'], ['грузить', 'пог�
     const v = WORTART_GROUPS['Verben']; out.platz = v[v.length - 1] === 'Lagerverben' && VERB_CATEGORIES.includes('Lagerverben') && CAT_ICONS['Lagerverben'] === CAT_ICONS['Lagerlogistik'];
     return out;
   }, NEU);
-  ok('Lagerverben mit 5 Verben', r.n === 5, String(r.n));
+  ok('Lagerverben mit 30 Verben (17.11.: +25 hinten angehängt)', r.n === 30, String(r.n));
   ok('Umschrift, Übersetzung, Stufe, Satz, Paar und Bildungsart', r.fehler.length === 0, r.fehler.join(' | '));
   ok('letzte Themenkategorie der Verben, in VERB_CATEGORIES, Symbol wie Lagerlogistik', r.platz);
   ok('Keine JS-Fehler', errs.length === 0, errs.slice(0, 2).join(' | '));
