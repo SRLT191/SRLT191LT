@@ -19,7 +19,7 @@ const { chromium } = require('playwright');
     ok('щи nicht als „nur Plural“ abgefragt, пирожок/борщ männlich, булочка/пицца/шаурма weiblich',
       genderOf('щи') === null && ['пирожок', 'борщ'].every(r => genderOf(r).g === 'm') && ['булочка', 'пицца', 'шаурма'].every(r => genderOf(r).g === 'f'));
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Essen 65', essen.length === 65, String(essen.length));
+    ok('Essen 70 (17.11.: auf 70 erweitert)', essen.length === 70, String(essen.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);

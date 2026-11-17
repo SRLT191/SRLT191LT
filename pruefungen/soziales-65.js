@@ -21,7 +21,7 @@ const { chromium } = require('playwright');
       if (g) ok(ru + ': Geschlecht ' + g, (genderOf(ru) || {}).g === g, JSON.stringify(genderOf(ru)));
     });
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Soziales & Beziehungen 65 (16.11.: Wörter verschoben/zusammengelegt)', kl.length === 65, String(kl.length));
+    ok('Soziales & Beziehungen 70 (17.11.: auf 70 erweitert)', kl.length === 70, String(kl.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);

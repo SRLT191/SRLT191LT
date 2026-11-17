@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
       ok(ru + ': Geschlecht ' + g, (genderOf(ru) || {}).g === g);
     });
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Körperteile 65', kt.length === 65, String(kt.length));
+    ok('Körperteile 70 (17.11.: auf 70 erweitert)', kt.length === 70, String(kt.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);

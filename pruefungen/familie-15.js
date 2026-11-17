@@ -22,7 +22,7 @@ const { chromium } = require('playwright');
     ok('nur Substantive mit Geschlecht im Werkzeug; дети und день рождения nicht abgefragt',
       genderOf('дети') === null && genderOf('день рождения') === null && genderOf('имя').g === 'n' && genderOf('свёкор').g === 'm' && genderOf('старость').g === 'f');
     ok('Kein Wort doppelt im Wortschatz', (() => { const all = allVocabWords().map(w => w.ru); return all.length === new Set(all).size; })());
-    ok('Familie 64 (16.11.: Wörter verschoben)', fam.length === 64, String(fam.length));
+    ok('Familie 70 (17.11.: auf 70 erweitert)', fam.length === 70, String(fam.length));
     return R;
   });
   R.push([errs.length ? 'XX ' : 'OK ', 'Keine JS-Fehler', errs.slice(0, 2).join(' | ')]);
