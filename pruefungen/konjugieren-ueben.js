@@ -40,7 +40,7 @@ const { chromium } = require('playwright');
   ok('nach dem Lösen: „Tabelle anhören“ und Beispielsatz (vorher leer); auch nach dem Aufdecken', r.leer && /^Tabelle anhören\n.+\n.+/.test(r.after) && r.nachAufdecken, JSON.stringify([r.leer, r.after, r.nachAufdecken]));
   ok('Tabelle anhören liest Pronomen + Form', r.gesagt === 'я строю. ты строишь. он строит. мы строим. вы строите. они строят.', r.gesagt);
   ok('jedes Verb mit Tabelle hat einen Beispielsatz', r.satzFehlt.length === 0, r.satzFehlt.join(', '));
-  ok('Gemischt: offene Zeit (Präsens schon erledigt), Abzeichen „→ …“, Knopf aktiv', r.mix[0] && ['past', 'imperative'].includes(r.mix[1]) && r.mix[2] && r.mix[3] === false && /^→ /.test(r.mix[4]), JSON.stringify(r.mix));
+  ok('Gemischt: offene Zeit (Präsens schon erledigt), Abzeichen „→ …“, Knopf aktiv (19.11.: die gemischten Zeiten sind mitmarkiert)', r.mix[0] && ['past', 'imperative'].includes(r.mix[1]) && r.mix[2] && r.mix[3] === true && /^→ /.test(r.mix[4]), JSON.stringify(r.mix));
   ok('Gemischt: beim Weiterblättern wechseln die Zeiten, nie Futur', r.zeiten === 'imperative,nonpast,past', r.zeiten);
   ok('feste Zeit wählen schaltet Gemischt aus', r.aus.join() === 'false,false', JSON.stringify(r.aus));
   await p.reload(); await p.waitForTimeout(400);
