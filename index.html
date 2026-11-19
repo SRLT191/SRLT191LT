@@ -2487,6 +2487,7 @@
 <p>• Einige verlangen einen anderen Fall, oft anders als im Deutschen: помогать + Dativ (helfen), звонить + Dativ (jemanden anrufen – Я звоню брат<b>у</b>), благодарить + Akkusativ (jemandem danken – Я благодарю учител<b>я</b>), бояться + Genitiv (Angst haben vor).</p>
 <p><strong>Akkusativ kurz:</strong> weiblich -а/-я → -у/-ю (книгу), männlich unbelebt wie der Nominativ (дом), männlich belebt wie der Genitiv (друга). Das Adjektiv zieht mit: новую, новый, нового.</p>
 <p><strong>Vergangenheit:</strong> Das Verb richtet sich nach dem Geschlecht des Subjekts: он читал, она читала, мы читали.</p>
+<p><strong>Zukunft:</strong> буду, будешь, будет, будем, будете, будут + Infinitiv – Я буду читать новую книгу. Der Infinitiv bleibt immer gleich.</p>
 </div>
 <div class="sb-type-info" data-sbtype="prepsentence">
 <p class="sb-type-head">Satz + Präposition</p>
@@ -2496,6 +2497,7 @@
 <p>• смотреть на + Akkusativ (wohin geht der Blick?): Они смотрят на светл<b>ое</b> окно.</p>
 <p><strong>Faustregel:</strong> в/на mit der Frage „wo?“ → Präpositiv, mit „wohin?“ → Akkusativ.</p>
 <p><strong>Vergangenheit:</strong> Das Verb richtet sich nach dem Geschlecht des Subjekts: он жил, она жила, они жили.</p>
+<p><strong>Zukunft:</strong> буду, будешь … + Infinitiv – Мы будем жить в большом городе.</p>
 </div>
 <div class="sb-type-info" data-sbtype="place">
 <p class="sb-type-head">Ort / Richtung</p>
@@ -2510,7 +2512,8 @@
 <p>• Geht es darum, <em>ob</em> man etwas hat, steht есть: У меня есть машина.</p>
 <p>• Geht es um eine Eigenschaft (mit Adjektiv), fällt есть weg: У меня нов<b>ая</b> машина. So sind die Aufgaben hier gebaut; mit есть (У меня есть новая машина) zählt die Antwort aber auch.</p>
 <p><strong>Vergangenheit:</strong> был/была/было/были richtet sich nach der <strong>Sache</strong>, nicht nach der Person: У него была машина.</p>
-<p><strong>Zukunft:</strong> будет, bei einer Sache im Plural будут: У меня будет машина.</p>
+<p><strong>Zukunft:</strong> будет, bei einer Sache im Plural будут: У меня будет машина. У меня будут новые книги.</p>
+<p><strong>Plural (Schalter Zahl):</strong> Die Sache steht im Nominativ Plural: У меня новые книги. Stoffwörter wie хлеб oder вода kommen nur im Singular.</p>
 </div>
 <div class="sb-type-info" data-sbtype="negation">
 <p class="sb-type-head">Verneinung</p>
@@ -2520,6 +2523,7 @@
 <p>• <strong>Doppelte Verneinung:</strong> Mit никто (niemand), ничего (nichts), никогда (nie), нигде (nirgends) steht <em>zusätzlich</em> не vor dem Verb: Я ничего не вижу – wörtlich „ich nichts nicht sehe“. Mehrere ни-Wörter sind möglich: Никто ничего не знает. никто wird gebeugt: никого (Akk/Gen), никому (Dat).</p>
 <p>• <strong>Besitz verneint:</strong> у + Person im Genitiv + нет + Sache im <strong>Genitiv</strong>: У меня нет нов<b>ой</b> книг<b>и</b>. Anders als beim Besitz steht auch die Sache im Genitiv.</p>
 <p><strong>Vergangenheit und Zukunft:</strong> Bei нет-Sätzen wird нет zu не было bzw. не будет – beide ändern sich nie, egal welche Sache folgt: Здесь не было музея. У меня не будет машины. Bei не + Verb ändert sich nur das Verb: не работал, не будет работать.</p>
+<p><strong>Plural (Schalter Zahl):</strong> Nach нет steht die Sache im Genitiv Plural: У меня нет новых книг. Stoffwörter wie хлеб oder вода kommen nur im Singular.</p>
 </div>
 <div class="sb-type-info" data-sbtype="dative">
 <p class="sb-type-head">Dativ-Satz</p>
@@ -2592,7 +2596,11 @@
 <button class="mode-btn" id="sb-type-place" onclick="setWgType('place')" title="wo? в/на + Präpositiv · wohin? в/на + Akkusativ">Ort / Richtung</button>
 <button class="mode-btn" id="sb-type-nebensatz" onclick="setWgType('nebensatz')" title="чтобы, если, когда, хотя, ли">Nebensatz</button>
 <button class="mode-btn" id="sb-type-rede" onclick="setWgType('rede')" title="Он сказал, что …">Indirekte Rede</button>
-</div></span></div><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher" id="sb-tense-switcher" role="group" aria-label="Zeit">
+</div></span></div><div class="gt-settings-row"><span class="gt-field" id="sb-num-field" style="display:none"><span class="gt-field-label">Zahl</span><div class="tense-switcher" role="group" aria-label="Zahl">
+<button data-std="1" class="mode-btn active" id="sb-num-sg" onclick="setSbNumber('sg')">Singular</button>
+<button class="mode-btn" id="sb-num-pl" onclick="setSbNumber('pl')">Plural</button>
+<button class="mode-btn" id="sb-num-both" onclick="setSbNumber('both')">Beide</button>
+</div></span><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher" id="sb-tense-switcher" role="group" aria-label="Zeit">
 <button data-std="1" class="mode-btn active" id="sb-tense-present" onclick="setWgTense('present')">Präsens</button>
 <button class="mode-btn" id="sb-tense-past" onclick="setWgTense('past')">Vergangenheit</button>
 <button class="mode-btn" id="sb-tense-future" onclick="setWgTense('future')">Zukunft</button>
@@ -16145,7 +16153,7 @@ const GRAMMAR_TOOL_LEVEL = {
   pronoun: 'A1', pronform: 'A1', casedrill: 'A1', wordgroup: 'A1', sentencebuild: 'A1',
 };
 // nur Abzeichen, kein eigener Punkt im Stufenplan (Imperativ zählt dort schon über Konjugieren; „Beide“/„Alle“ enthalten den Plural)
-const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2'], ['#nn-write-toggle', 'A2'],
+const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2'], ['#sb-num-both', 'A2'], ['#nn-write-toggle', 'A2'],
   ['#noun-num-btn-both', 'A2'], ['#cf-num-mixed', 'A2'], ['#ca-num-mixed', 'A2'], ['#decl-gender-btn-all', 'A2']];
 const GRAMMAR_PART_LEVEL = [
   // Verben: Imperativ, vollendete Formen (Aspekt)
@@ -16154,7 +16162,7 @@ const GRAMMAR_PART_LEVEL = [
   ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'], ['#decl-gender-btn-plural', 'A2'], ['#pronoun-gender-plural', 'A2'],
   ['#case-plural-toggle', 'A2'], ['#wg-num-btn-pl', 'A2'], ['#wg-type-numadjnoun', 'A2'],
   // кто/весь-Formen; Wechsel в/на (Ort/Richtung); Aufforderung
-  ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#sb-type-place', 'A2'], ['#sb-type-imperative', 'A2'],
+  ['#pronform-scope-extra', 'A2'], ['#case-scope-btn-dual', 'A2'], ['#sb-type-place', 'A2'], ['#sb-num-pl', 'A2'], ['#sb-type-imperative', 'A2'],
   // B1 (15.11.): Konjunktiv mit бы, Adverbialpartizip, Partizip, Passiv mit -ся
   ['#transform-scope-btn-konj', 'B1'], ['#sb-type-nebensatz', 'B1'], ['#sb-type-rede', 'B2'], ['#adjform-scope-ppp', 'B2'], ['#aspect-mode-satz', 'B1'], ['#pronform-scope-rel', 'B1'], ['#nn-fall-toggle', 'B1'], ['#transform-scope-btn-gerund', 'B1'], ['#transform-scope-btn-part', 'B1'], ['#transform-scope-btn-passiv', 'B1'],
 ];
@@ -22094,6 +22102,7 @@ const TOOL_SETTINGS = [
   ['wgType', ...tsProp(() => wgState, 'type'), TS_STR],
   ['wgTool', ...tsProp(() => wgState, 'tool'), tsOneOf('sentence', 'wordgroup')],
   ['wgNumber', ...tsProp(() => wgState, 'number'), tsOneOf('sg', 'pl')],
+  ['sbNumber', ...tsProp(() => wgState, 'sbNumber'), tsOneOf('sg', 'pl', 'both')],
   ['wgTense', ...tsProp(() => wgState, 'tense'), tsOneOf('present', 'past', 'future')],
   ['wgCaseScope', ...tsProp(() => wgState, 'caseScope'), TS_STR],
   ['wgHintVisible', ...tsProp(() => wgState, 'hintVisible'), TS_BOOL],
@@ -24868,6 +24877,7 @@ function isAnimate(data, ru) {
 // Zustand: Wortgruppen/Satzbau
 const wgState = {
   number: 'sg',
+  sbNumber: 'sg',        // Satzbau: Zahl bei Besitz/Verneinung – sg | pl | both (19.11.)
   sbHintVisible: true,   // Satzbau: Kasus-Hinweis unter dem Satz (10.11.) – alt, seit 12.11. sbHintMode
   sbHintMode: null,      // immer | fehler | nie (null = aus sbHintVisible abgeleitet)
   autoSpeak: true,       // Wortgruppen/Satzbau: Lösung und Wort-Tipps automatisch vorlesen (10.11.)
@@ -25387,62 +25397,62 @@ function wgRenderPanelBodies() {
 // diese handverlesenen Kombinationen; die Formen rechnet weiterhin der
 // Deklinations-/Konjugationsapparat aus, damit sie garantiert stimmen.
 const SB_ITEMS = [
-  { type:"sentence", subj:"я", verb:"читать", adj:"новый", noun:"книга", de:"Ich lese ein neues Buch.", dePast:"Ich habe ein neues Buch gelesen." },
-  { type:"sentence", subj:"он", verb:"видеть", adj:"большой", noun:"дом", de:"Er sieht ein großes Haus.", dePast:"Er hat ein großes Haus gesehen." },
+  { type:"sentence", subj:"я", verb:"читать", adj:"новый", noun:"книга", de:"Ich lese ein neues Buch.", dePast:"Ich habe ein neues Buch gelesen.", deFut:"Ich werde ein neues Buch lesen." },
+  { type:"sentence", subj:"он", verb:"видеть", adj:"большой", noun:"дом", de:"Er sieht ein großes Haus.", dePast:"Er hat ein großes Haus gesehen.", deFut:"Er wird ein großes Haus sehen." },
   { type:"sentence", subj:"мы", verb:"любить", adj:"старый", noun:"город", de:"Wir lieben die alte Stadt.", dePast:"Wir liebten die alte Stadt." },
-  { type:"sentence", subj:"она", verb:"покупать", adj:"вкусный", noun:"хлеб", de:"Sie kauft leckeres Brot.", dePast:"Sie hat leckeres Brot gekauft." },
-  { type:"sentence", subj:"ты", verb:"помогать", adj:"больной", noun:"брат", de:"Du hilfst dem kranken Bruder.", dePast:"Du hast dem kranken Bruder geholfen." },
-  { type:"sentence", subj:"я", verb:"звонить", adj:"хороший", noun:"врач", de:"Ich rufe den guten Arzt an.", dePast:"Ich habe den guten Arzt angerufen." },
-  { type:"sentence", subj:"они", verb:"ждать", adj:"быстрый", noun:"поезд", de:"Sie warten auf den schnellen Zug.", dePast:"Sie haben auf den schnellen Zug gewartet." },
+  { type:"sentence", subj:"она", verb:"покупать", adj:"вкусный", noun:"хлеб", de:"Sie kauft leckeres Brot.", dePast:"Sie hat leckeres Brot gekauft.", deFut:"Sie wird leckeres Brot kaufen." },
+  { type:"sentence", subj:"ты", verb:"помогать", adj:"больной", noun:"брат", de:"Du hilfst dem kranken Bruder.", dePast:"Du hast dem kranken Bruder geholfen.", deFut:"Du wirst dem kranken Bruder helfen." },
+  { type:"sentence", subj:"я", verb:"звонить", adj:"хороший", noun:"врач", de:"Ich rufe den guten Arzt an.", dePast:"Ich habe den guten Arzt angerufen.", deFut:"Ich werde den guten Arzt anrufen." },
+  { type:"sentence", subj:"они", verb:"ждать", adj:"быстрый", noun:"поезд", de:"Sie warten auf den schnellen Zug.", dePast:"Sie haben auf den schnellen Zug gewartet.", deFut:"Sie werden auf den schnellen Zug warten." },
   { type:"sentence", subj:"вы", verb:"знать", adj:"правильный", noun:"ответ", de:"Ihr kennt die richtige Antwort.", dePast:"Ihr kanntet die richtige Antwort." },
-  { type:"sentence", subj:"он", verb:"читать", adj:"длинный", noun:"письмо", de:"Er liest einen langen Brief.", dePast:"Er hat einen langen Brief gelesen." },
-  { type:"sentence", subj:"мы", verb:"слушать", adj:"интересный", noun:"урок", de:"Wir hören dem interessanten Unterricht zu.", dePast:"Wir haben dem interessanten Unterricht zugehört." },
-  { type:"sentence", subj:"она", verb:"искать", adj:"маленький", noun:"ключ", de:"Sie sucht den kleinen Schlüssel.", dePast:"Sie hat den kleinen Schlüssel gesucht." },
+  { type:"sentence", subj:"он", verb:"читать", adj:"длинный", noun:"письмо", de:"Er liest einen langen Brief.", dePast:"Er hat einen langen Brief gelesen.", deFut:"Er wird einen langen Brief lesen." },
+  { type:"sentence", subj:"мы", verb:"слушать", adj:"интересный", noun:"урок", de:"Wir hören dem interessanten Unterricht zu.", dePast:"Wir haben dem interessanten Unterricht zugehört.", deFut:"Wir werden dem interessanten Unterricht zuhören." },
+  { type:"sentence", subj:"она", verb:"искать", adj:"маленький", noun:"ключ", de:"Sie sucht den kleinen Schlüssel.", dePast:"Sie hat den kleinen Schlüssel gesucht.", deFut:"Sie wird den kleinen Schlüssel suchen." },
   { type:"sentence", subj:"я", verb:"любить", adj:"холодный", noun:"вода", de:"Ich mag kaltes Wasser.", dePast:"Ich mochte kaltes Wasser." },
-  { type:"sentence", subj:"ты", verb:"видеть", adj:"высокий", noun:"мост", de:"Du siehst die hohe Brücke.", dePast:"Du hast die hohe Brücke gesehen." },
-  { type:"sentence", subj:"они", verb:"покупать", adj:"новый", noun:"квартира", de:"Sie kaufen eine neue Wohnung.", dePast:"Sie haben eine neue Wohnung gekauft." },
-  { type:"sentence", subj:"мы", verb:"встречать", adj:"добрый", noun:"брат", de:"Wir treffen den netten Bruder.", dePast:"Wir haben den netten Bruder getroffen." },
+  { type:"sentence", subj:"ты", verb:"видеть", adj:"высокий", noun:"мост", de:"Du siehst die hohe Brücke.", dePast:"Du hast die hohe Brücke gesehen.", deFut:"Du wirst die hohe Brücke sehen." },
+  { type:"sentence", subj:"они", verb:"покупать", adj:"новый", noun:"квартира", de:"Sie kaufen eine neue Wohnung.", dePast:"Sie haben eine neue Wohnung gekauft.", deFut:"Sie werden eine neue Wohnung kaufen." },
+  { type:"sentence", subj:"мы", verb:"встречать", adj:"добрый", noun:"брат", de:"Wir treffen den netten Bruder.", dePast:"Wir haben den netten Bruder getroffen.", deFut:"Wir werden den netten Bruder treffen." },
   { type:"sentence", subj:"я", verb:"знать", adj:"умный", noun:"студент", de:"Ich kenne den klugen Studenten.", dePast:"Ich kannte den klugen Studenten." },
-  { type:"sentence", subj:"она", verb:"помогать", adj:"добрый", noun:"мама", de:"Sie hilft der guten Mama.", dePast:"Sie hat der guten Mama geholfen." },
-  { type:"sentence", subj:"вы", verb:"благодарить", adj:"добрый", noun:"врач", de:"Ihr dankt dem guten Arzt.", dePast:"Ihr habt dem guten Arzt gedankt." },
-  { type:"sentence", subj:"он", verb:"бояться", adj:"тёмный", noun:"ночь", de:"Er fürchtet die dunkle Nacht.", dePast:"Er fürchtete die dunkle Nacht." },
-  { type:"sentence", subj:"мы", verb:"звонить", adj:"добрый", noun:"сестра", de:"Wir rufen die gute Schwester an.", dePast:"Wir haben die gute Schwester angerufen." },
-  { type:"sentence", subj:"я", verb:"ждать", adj:"быстрый", noun:"ответ", de:"Ich warte auf eine schnelle Antwort.", dePast:"Ich habe auf eine schnelle Antwort gewartet." },
-  { type:"sentence", subj:"ты", verb:"искать", adj:"свободный", noun:"место", de:"Du suchst einen freien Platz.", dePast:"Du hast einen freien Platz gesucht." },
-  { type:"sentence", subj:"они", verb:"видеть", adj:"глубокий", noun:"озеро", de:"Sie sehen den tiefen See.", dePast:"Sie haben den tiefen See gesehen." },
-  { type:"sentence", subj:"она", verb:"читать", adj:"новый", noun:"словарь", de:"Sie liest das neue Wörterbuch.", dePast:"Sie hat das neue Wörterbuch gelesen." },
+  { type:"sentence", subj:"она", verb:"помогать", adj:"добрый", noun:"мама", de:"Sie hilft der guten Mama.", dePast:"Sie hat der guten Mama geholfen.", deFut:"Sie wird der guten Mama helfen." },
+  { type:"sentence", subj:"вы", verb:"благодарить", adj:"добрый", noun:"врач", de:"Ihr dankt dem guten Arzt.", dePast:"Ihr habt dem guten Arzt gedankt.", deFut:"Ihr werdet dem guten Arzt danken." },
+  { type:"sentence", subj:"он", verb:"бояться", adj:"тёмный", noun:"ночь", de:"Er fürchtet die dunkle Nacht.", dePast:"Er fürchtete die dunkle Nacht.", deFut:"Er wird die dunkle Nacht fürchten." },
+  { type:"sentence", subj:"мы", verb:"звонить", adj:"добрый", noun:"сестра", de:"Wir rufen die gute Schwester an.", dePast:"Wir haben die gute Schwester angerufen.", deFut:"Wir werden die gute Schwester anrufen." },
+  { type:"sentence", subj:"я", verb:"ждать", adj:"быстрый", noun:"ответ", de:"Ich warte auf eine schnelle Antwort.", dePast:"Ich habe auf eine schnelle Antwort gewartet.", deFut:"Ich werde auf eine schnelle Antwort warten." },
+  { type:"sentence", subj:"ты", verb:"искать", adj:"свободный", noun:"место", de:"Du suchst einen freien Platz.", dePast:"Du hast einen freien Platz gesucht.", deFut:"Du wirst einen freien Platz suchen." },
+  { type:"sentence", subj:"они", verb:"видеть", adj:"глубокий", noun:"озеро", de:"Sie sehen den tiefen See.", dePast:"Sie haben den tiefen See gesehen.", deFut:"Sie werden den tiefen See sehen." },
+  { type:"sentence", subj:"она", verb:"читать", adj:"новый", noun:"словарь", de:"Sie liest das neue Wörterbuch.", dePast:"Sie hat das neue Wörterbuch gelesen.", deFut:"Sie wird das neue Wörterbuch lesen." },
   { type:"sentence", subj:"мы", verb:"любить", adj:"весёлый", noun:"праздник", de:"Wir lieben das fröhliche Fest.", dePast:"Wir liebten das fröhliche Fest." },
-  { type:"sentence", subj:"я", verb:"покупать", adj:"дешёвый", noun:"билет", de:"Ich kaufe eine günstige Fahrkarte.", dePast:"Ich habe eine günstige Fahrkarte gekauft." },
-  { type:"sentence", subj:"вы", verb:"слушать", adj:"короткий", noun:"ответ", de:"Ihr hört die kurze Antwort.", dePast:"Ihr habt die kurze Antwort gehört." },
-  { type:"sentence", subj:"он", verb:"помогать", adj:"старый", noun:"мать", de:"Er hilft der alten Mutter.", dePast:"Er hat der alten Mutter geholfen." },
-  { type:"sentence", subj:"ты", verb:"звонить", adj:"маленький", noun:"дочь", de:"Du rufst die kleine Tochter an.", dePast:"Du hast die kleine Tochter angerufen." },
+  { type:"sentence", subj:"я", verb:"покупать", adj:"дешёвый", noun:"билет", de:"Ich kaufe eine günstige Fahrkarte.", dePast:"Ich habe eine günstige Fahrkarte gekauft.", deFut:"Ich werde eine günstige Fahrkarte kaufen." },
+  { type:"sentence", subj:"вы", verb:"слушать", adj:"короткий", noun:"ответ", de:"Ihr hört die kurze Antwort.", dePast:"Ihr habt die kurze Antwort gehört.", deFut:"Ihr werdet die kurze Antwort hören." },
+  { type:"sentence", subj:"он", verb:"помогать", adj:"старый", noun:"мать", de:"Er hilft der alten Mutter.", dePast:"Er hat der alten Mutter geholfen.", deFut:"Er wird der alten Mutter helfen." },
+  { type:"sentence", subj:"ты", verb:"звонить", adj:"маленький", noun:"дочь", de:"Du rufst die kleine Tochter an.", dePast:"Du hast die kleine Tochter angerufen.", deFut:"Du wirst die kleine Tochter anrufen." },
   { type:"sentence", subj:"они", verb:"знать", adj:"короткий", noun:"дорога", de:"Sie kennen den kurzen Weg.", dePast:"Sie kannten den kurzen Weg." },
-  { type:"sentence", subj:"мы", verb:"видеть", adj:"высокий", noun:"гора", de:"Wir sehen den hohen Berg.", dePast:"Wir haben den hohen Berg gesehen." },
-  { type:"sentence", subj:"я", verb:"встречать", adj:"весёлый", noun:"сестра", de:"Ich treffe die fröhliche Schwester.", dePast:"Ich habe die fröhliche Schwester getroffen." },
-  { type:"prepsentence", subj:"я", verb:"думать", adj:"важный", noun:"день", de:"Ich denke an den wichtigen Tag.", dePast:"Ich habe an den wichtigen Tag gedacht." },
-  { type:"prepsentence", subj:"он", verb:"говорить", adj:"хороший", noun:"погода", de:"Er spricht über das gute Wetter.", dePast:"Er hat über das gute Wetter gesprochen." },
-  { type:"prepsentence", subj:"мы", verb:"жить", adj:"большой", noun:"город", de:"Wir wohnen in der großen Stadt.", dePast:"Wir haben in der großen Stadt gewohnt." },
-  { type:"prepsentence", subj:"она", verb:"работать", adj:"новый", noun:"школа", de:"Sie arbeitet in der neuen Schule.", dePast:"Sie hat in der neuen Schule gearbeitet." },
-  { type:"prepsentence", subj:"они", verb:"смотреть", adj:"светлый", noun:"окно", de:"Sie schauen auf das helle Fenster.", dePast:"Sie haben auf das helle Fenster geschaut." },
-  { type:"prepsentence", subj:"ты", verb:"думать", adj:"трудный", noun:"вопрос", de:"Du denkst an die schwierige Frage.", dePast:"Du hast an die schwierige Frage gedacht." },
-  { type:"prepsentence", subj:"вы", verb:"говорить", adj:"известный", noun:"концерт", de:"Ihr sprecht über das bekannte Konzert.", dePast:"Ihr habt über das bekannte Konzert gesprochen." },
-  { type:"prepsentence", subj:"я", verb:"жить", adj:"маленький", noun:"квартира", de:"Ich wohne in der kleinen Wohnung.", dePast:"Ich habe in der kleinen Wohnung gewohnt." },
-  { type:"prepsentence", subj:"он", verb:"работать", adj:"старый", noun:"музей", de:"Er arbeitet im alten Museum.", dePast:"Er hat im alten Museum gearbeitet." },
-  { type:"prepsentence", subj:"мы", verb:"смотреть", adj:"тёмный", noun:"море", de:"Wir schauen auf das dunkle Meer.", dePast:"Wir haben auf das dunkle Meer geschaut." },
-  { type:"prepsentence", subj:"она", verb:"думать", adj:"молодой", noun:"отец", de:"Sie denkt an den jungen Vater.", dePast:"Sie hat an den jungen Vater gedacht." },
-  { type:"prepsentence", subj:"они", verb:"говорить", adj:"сложный", noun:"язык", de:"Sie sprechen über die komplizierte Sprache.", dePast:"Sie haben über die komplizierte Sprache gesprochen." },
-  { type:"prepsentence", subj:"я", verb:"смотреть", adj:"пустой", noun:"площадь", de:"Ich schaue auf den leeren Platz.", dePast:"Ich habe auf den leeren Platz geschaut." },
-  { type:"prepsentence", subj:"ты", verb:"жить", adj:"уютный", noun:"дом", de:"Du wohnst im gemütlichen Haus.", dePast:"Du hast im gemütlichen Haus gewohnt." },
-  { type:"prepsentence", subj:"вы", verb:"работать", adj:"маленький", noun:"магазин", de:"Ihr arbeitet im kleinen Geschäft.", dePast:"Ihr habt im kleinen Geschäft gearbeitet." },
-  { type:"prepsentence", subj:"мы", verb:"думать", adj:"свободный", noun:"время", de:"Wir denken an die freie Zeit.", dePast:"Wir haben an die freie Zeit gedacht." },
-  { type:"prepsentence", subj:"она", verb:"смотреть", adj:"чистый", noun:"зеркало", de:"Sie schaut auf den sauberen Spiegel.", dePast:"Sie hat auf den sauberen Spiegel geschaut." },
-  { type:"prepsentence", subj:"он", verb:"говорить", adj:"современный", noun:"город", de:"Er spricht über die moderne Stadt.", dePast:"Er hat über die moderne Stadt gesprochen." },
-  { type:"prepsentence", subj:"они", verb:"жить", adj:"тёплый", noun:"комната", de:"Sie wohnen im warmen Zimmer.", dePast:"Sie haben im warmen Zimmer gewohnt." },
-  { type:"prepsentence", subj:"я", verb:"работать", adj:"местный", noun:"школа", de:"Ich arbeite in der hiesigen Schule.", dePast:"Ich habe in der hiesigen Schule gearbeitet." },
-  { type:"prepsentence", subj:"ты", verb:"смотреть", adj:"широкий", noun:"река", de:"Du schaust auf den breiten Fluss.", dePast:"Du hast auf den breiten Fluss geschaut." },
-  { type:"prepsentence", subj:"вы", verb:"думать", adj:"большой", noun:"семья", de:"Ihr denkt an die große Familie.", dePast:"Ihr habt an die große Familie gedacht." },
-  { type:"prepsentence", subj:"мы", verb:"говорить", adj:"плохой", noun:"погода", de:"Wir sprechen über das schlechte Wetter.", dePast:"Wir haben über das schlechte Wetter gesprochen." },
-  { type:"prepsentence", subj:"она", verb:"жить", adj:"красивый", noun:"город", de:"Sie wohnt in der schönen Stadt.", dePast:"Sie hat in der schönen Stadt gewohnt." },
+  { type:"sentence", subj:"мы", verb:"видеть", adj:"высокий", noun:"гора", de:"Wir sehen den hohen Berg.", dePast:"Wir haben den hohen Berg gesehen.", deFut:"Wir werden den hohen Berg sehen." },
+  { type:"sentence", subj:"я", verb:"встречать", adj:"весёлый", noun:"сестра", de:"Ich treffe die fröhliche Schwester.", dePast:"Ich habe die fröhliche Schwester getroffen.", deFut:"Ich werde die fröhliche Schwester treffen." },
+  { type:"prepsentence", subj:"я", verb:"думать", adj:"важный", noun:"день", de:"Ich denke an den wichtigen Tag.", dePast:"Ich habe an den wichtigen Tag gedacht.", deFut:"Ich werde an den wichtigen Tag denken." },
+  { type:"prepsentence", subj:"он", verb:"говорить", adj:"хороший", noun:"погода", de:"Er spricht über das gute Wetter.", dePast:"Er hat über das gute Wetter gesprochen.", deFut:"Er wird über das gute Wetter sprechen." },
+  { type:"prepsentence", subj:"мы", verb:"жить", adj:"большой", noun:"город", de:"Wir wohnen in der großen Stadt.", dePast:"Wir haben in der großen Stadt gewohnt.", deFut:"Wir werden in der großen Stadt wohnen." },
+  { type:"prepsentence", subj:"она", verb:"работать", adj:"новый", noun:"школа", de:"Sie arbeitet in der neuen Schule.", dePast:"Sie hat in der neuen Schule gearbeitet.", deFut:"Sie wird in der neuen Schule arbeiten." },
+  { type:"prepsentence", subj:"они", verb:"смотреть", adj:"светлый", noun:"окно", de:"Sie schauen auf das helle Fenster.", dePast:"Sie haben auf das helle Fenster geschaut.", deFut:"Sie werden auf das helle Fenster schauen." },
+  { type:"prepsentence", subj:"ты", verb:"думать", adj:"трудный", noun:"вопрос", de:"Du denkst an die schwierige Frage.", dePast:"Du hast an die schwierige Frage gedacht.", deFut:"Du wirst an die schwierige Frage denken." },
+  { type:"prepsentence", subj:"вы", verb:"говорить", adj:"известный", noun:"концерт", de:"Ihr sprecht über das bekannte Konzert.", dePast:"Ihr habt über das bekannte Konzert gesprochen.", deFut:"Ihr werdet über das bekannte Konzert sprechen." },
+  { type:"prepsentence", subj:"я", verb:"жить", adj:"маленький", noun:"квартира", de:"Ich wohne in der kleinen Wohnung.", dePast:"Ich habe in der kleinen Wohnung gewohnt.", deFut:"Ich werde in der kleinen Wohnung wohnen." },
+  { type:"prepsentence", subj:"он", verb:"работать", adj:"старый", noun:"музей", de:"Er arbeitet im alten Museum.", dePast:"Er hat im alten Museum gearbeitet.", deFut:"Er wird im alten Museum arbeiten." },
+  { type:"prepsentence", subj:"мы", verb:"смотреть", adj:"тёмный", noun:"море", de:"Wir schauen auf das dunkle Meer.", dePast:"Wir haben auf das dunkle Meer geschaut.", deFut:"Wir werden auf das dunkle Meer schauen." },
+  { type:"prepsentence", subj:"она", verb:"думать", adj:"молодой", noun:"отец", de:"Sie denkt an den jungen Vater.", dePast:"Sie hat an den jungen Vater gedacht.", deFut:"Sie wird an den jungen Vater denken." },
+  { type:"prepsentence", subj:"они", verb:"говорить", adj:"сложный", noun:"язык", de:"Sie sprechen über die komplizierte Sprache.", dePast:"Sie haben über die komplizierte Sprache gesprochen.", deFut:"Sie werden über die komplizierte Sprache sprechen." },
+  { type:"prepsentence", subj:"я", verb:"смотреть", adj:"пустой", noun:"площадь", de:"Ich schaue auf den leeren Platz.", dePast:"Ich habe auf den leeren Platz geschaut.", deFut:"Ich werde auf den leeren Platz schauen." },
+  { type:"prepsentence", subj:"ты", verb:"жить", adj:"уютный", noun:"дом", de:"Du wohnst im gemütlichen Haus.", dePast:"Du hast im gemütlichen Haus gewohnt.", deFut:"Du wirst im gemütlichen Haus wohnen." },
+  { type:"prepsentence", subj:"вы", verb:"работать", adj:"маленький", noun:"магазин", de:"Ihr arbeitet im kleinen Geschäft.", dePast:"Ihr habt im kleinen Geschäft gearbeitet.", deFut:"Ihr werdet im kleinen Geschäft arbeiten." },
+  { type:"prepsentence", subj:"мы", verb:"думать", adj:"свободный", noun:"время", de:"Wir denken an die freie Zeit.", dePast:"Wir haben an die freie Zeit gedacht.", deFut:"Wir werden an die freie Zeit denken." },
+  { type:"prepsentence", subj:"она", verb:"смотреть", adj:"чистый", noun:"зеркало", de:"Sie schaut auf den sauberen Spiegel.", dePast:"Sie hat auf den sauberen Spiegel geschaut.", deFut:"Sie wird auf den sauberen Spiegel schauen." },
+  { type:"prepsentence", subj:"он", verb:"говорить", adj:"современный", noun:"город", de:"Er spricht über die moderne Stadt.", dePast:"Er hat über die moderne Stadt gesprochen.", deFut:"Er wird über die moderne Stadt sprechen." },
+  { type:"prepsentence", subj:"они", verb:"жить", adj:"тёплый", noun:"комната", de:"Sie wohnen im warmen Zimmer.", dePast:"Sie haben im warmen Zimmer gewohnt.", deFut:"Sie werden im warmen Zimmer wohnen." },
+  { type:"prepsentence", subj:"я", verb:"работать", adj:"местный", noun:"школа", de:"Ich arbeite in der hiesigen Schule.", dePast:"Ich habe in der hiesigen Schule gearbeitet.", deFut:"Ich werde in der hiesigen Schule arbeiten." },
+  { type:"prepsentence", subj:"ты", verb:"смотреть", adj:"широкий", noun:"река", de:"Du schaust auf den breiten Fluss.", dePast:"Du hast auf den breiten Fluss geschaut.", deFut:"Du wirst auf den breiten Fluss schauen." },
+  { type:"prepsentence", subj:"вы", verb:"думать", adj:"большой", noun:"семья", de:"Ihr denkt an die große Familie.", dePast:"Ihr habt an die große Familie gedacht.", deFut:"Ihr werdet an die große Familie denken." },
+  { type:"prepsentence", subj:"мы", verb:"говорить", adj:"плохой", noun:"погода", de:"Wir sprechen über das schlechte Wetter.", dePast:"Wir haben über das schlechte Wetter gesprochen.", deFut:"Wir werden über das schlechte Wetter sprechen." },
+  { type:"prepsentence", subj:"она", verb:"жить", adj:"красивый", noun:"город", de:"Sie wohnt in der schönen Stadt.", dePast:"Sie hat in der schönen Stadt gewohnt.", deFut:"Sie wird in der schönen Stadt wohnen." },
   { type:"negation", owner:"У меня", adj:"сладкий", noun:"сок", de:"Ich habe keinen süßen Saft." },
   { type:"negation", owner:"У тебя", adj:"горячий", noun:"суп", de:"Du hast keine heiße Suppe." },
   { type:"negation", owner:"У него", adj:"большой", noun:"машина", de:"Er hat kein großes Auto." },
@@ -25612,8 +25622,8 @@ Object.keys(SB_ORTE).forEach(n => [false, true].forEach(wohin => SB_ITEMS.push({
 // Kontext der Aufgabe; ein Eintrag in SB_ITEMS kann mit „hint" überschreiben.
 const SB_HINTS = {
   sentence:     c => 'Objekt im ' + c.kasus
-                     + (c.zeit === 'Vergangenheit' ? ', Verb nach Subjekt-Genus' : ''),
-  prepsentence: c => c.prep + ' verlangt ' + c.kasus,
+                     + (c.zeit === 'Vergangenheit' ? ', Verb nach Subjekt-Genus' : c.zeit === 'Zukunft' ? ', буду + Infinitiv' : ''),
+  prepsentence: c => c.prep + ' verlangt ' + c.kasus + (c.zeit === 'Zukunft' ? ', буду + Infinitiv' : ''),
   negation:     c => c.zeit === 'past' ? 'Verneinung in der Vergangenheit: не было bleibt unverändert, dahinter der Genitiv'
                    : c.zeit === 'future' ? 'Verneinung in der Zukunft: не будет bleibt unverändert, dahinter der Genitiv'
                    : 'Verneinung: nach нет steht der Genitiv',
@@ -25641,12 +25651,31 @@ const sbState = {
   help: 'blocks',
 };
 function sbItemId(i) { return i.type + '#' + SB_ITEMS.indexOf(i); }
+// Zahl bei Besitz und Verneinung (19.11.): Singular · Plural · Beide; Stoffwörter nur im Singular
+function sbZahlAktiv(type) { return type === 'possession' || type === 'negation'; }
+// Wörter, die beim Besitz nur einzeln Sinn ergeben („Er hat strenge Väter“) oder als Gericht gemeint sind (суп)
+const SB_NUR_SG = new Set(['отец', 'суп']);
+function sbPluralOk(i) { return !!i.noun && !WG_MASS.has(i.noun) && !SB_NUR_SG.has(i.noun) && nounHas(i.noun, 'pl') && nounHas(i.noun, 'sg'); }
+function sbNumberFor(sb) {
+  const n = sbZahlAktiv(wgState.type) ? (wgState.sbNumber || 'sg') : 'sg';
+  if (n === 'sg' || !sbPluralOk(sb)) return 'sg';
+  return n === 'pl' ? 'pl' : (Math.random() < 0.5 ? 'pl' : 'sg');
+}
+function setSbNumber(n) {
+  wgState.sbNumber = n;
+  saveToolSettings();
+  ['sg', 'pl', 'both'].forEach(x => wgToggle('num-' + x, x === n));
+  restartWordgroup();
+}
 function sbSrsKey() { return 'sb:' + wgState.type; }
 function sbPick(type) {
   // Besitz und Verneinung teilen sich die Satzbausteine (у меня … / у меня нет …),
   // haben aber getrennte Lernstände.
   const poolType = (type === 'possession') ? 'negation' : type;
-  const pool = SB_ITEMS.filter(i => i.type === poolType && (type !== 'possession' || i.owner));
+  let pool = SB_ITEMS.filter(i => i.type === poolType && (type !== 'possession' || i.owner));
+  // Zukunft gibt es nur für Sätze mit deutscher Zukunftsform, Plural nur für zählbare Wörter (19.11.)
+  if (wgState.tense === 'future' && (type === 'sentence' || type === 'prepsentence')) pool = pool.filter(i => i.deFut);
+  if (sbZahlAktiv(type) && wgState.sbNumber === 'pl') pool = pool.filter(sbPluralOk);
   const ids = pool.map(sbItemId);
   const nextId = progressNext(sbSrsKey(), ids, sbState.currentId);
   sbState.currentId = nextId;
@@ -25680,9 +25709,13 @@ function setWgType(t) {
   // Zeitstufen gibt es für Satz, Satz mit Präposition sowie Besitz und Verneinung
   const mitZeit = ['sentence', 'prepsentence', 'possession', 'negation'].includes(t);
   if (tenseSwitcher) tenseSwitcher.style.display = mitZeit ? '' : 'none';
-  // Zukunft nur bei Besitz und Verneinung (у меня будет / не будет)
+  // Zukunft bei Satz, Satz mit Präposition, Besitz und Verneinung (seit 19.11. alle vier mit Zeit)
   const futureBtn = document.getElementById('sb-tense-future');
-  const mitZukunft = (t === 'possession' || t === 'negation');
+  const mitZukunft = mitZeit;
+  // Zahl nur bei Besitz und Verneinung
+  const sbZahl = document.getElementById('sb-num-field');
+  if (sbZahl) sbZahl.style.display = sbZahlAktiv(t) ? '' : 'none';
+  ['sg', 'pl', 'both'].forEach(x => wgToggle('num-' + x, x === (wgState.sbNumber || 'sg')));
   if (futureBtn) futureBtn.style.display = mitZukunft ? '' : 'none';
   if (!mitZukunft && wgState.tense === 'future') wgState.tense = 'present';
   if (!mitZeit && wgState.tense !== 'present') wgState.tense = 'present';
@@ -25778,6 +25811,14 @@ function wgDeclineNP({ det, adj, noun, kasus, number }) {
 const NOUN_LOCATIVE = { 'лес': { 'в': 'лесу' }, 'сад': { 'в': 'саду' }, 'год': { 'в': 'году' }, 'мост': { 'на': 'мосту' } };
 // Bei я und ты ist das Geschlecht offen: In der Vergangenheit gilt auch die
 // weibliche Verbform (я читал → я читала). Liefert [männlich, weiblich] oder null.
+// Futur mit буду + Infinitiv (19.11.: Zukunft bei „Ganzer Satz“ und „Satz + Präposition“)
+const SB_BUDU = { 'я': 'буду', 'ты': 'будешь', 'он / она / оно': 'будет', 'мы': 'будем', 'вы': 'будете', 'они': 'будут' };
+function sbVerbForm(verbRu, subj, zeit) {
+  if (zeit === 'past') return wgPastForm(verbRu, subj.pg);
+  if (zeit === 'future') return SB_BUDU[subj.key] + ' ' + verbRu;
+  return conjugationData[verbRu].nonPast[subj.key];
+}
+const SB_ZEIT_DE = { present: 'Präsens', past: 'Vergangenheit', future: 'Zukunft' };
 function sbFemSwap(subj, past, verbRu, verbForm) {
   if (!past || (subj.ru !== 'я' && subj.ru !== 'ты')) return null;
   const f = wgPastForm(verbRu, 'f');
@@ -25868,16 +25909,17 @@ const WG_BUILDERS = {
     const verbRu = sb.verb;
     const verb = WG_VERBS[verbRu];
     const adj = sb.adj, noun = sb.noun;
-    const past = wgState.tense === 'past';
-    const verbForm = past ? wgPastForm(verbRu, subj.pg) : conjugationData[verbRu].nonPast[subj.key];
+    const zeitKey = wgState.tense === 'future' && sb.deFut ? 'future' : wgState.tense === 'past' ? 'past' : 'present';
+    const past = zeitKey === 'past';
+    const verbForm = sbVerbForm(verbRu, subj, zeitKey);
     const obj = wgDeclineNP({ adj, noun, kasus: verb.case, number: 'sg' });
-    const zeit = past ? 'Vergangenheit' : 'Präsens';
+    const zeit = SB_ZEIT_DE[zeitKey];
     return {
       answer: subj.ru + ' ' + verbForm + ' ' + obj.ru,
-      tokens: [subj.ru, verbForm, ...obj.tokens],
+      tokens: [subj.ru, ...verbForm.split(' '), ...obj.tokens],
       blocks: [subj.ru, verbForm, obj.ru],
       promptTop: subj.ru + ' + ' + verbRu + ' + ' + adj + ' ' + noun,
-      promptDe: past ? sb.dePast : sb.de,
+      promptDe: zeitKey === 'future' ? sb.deFut : past ? sb.dePast : sb.de,
       hint: sbHint('sentence', { zeit, kasus: verb.case.replace('.', '') }, sb),
       femSwap: sbFemSwap(subj, past, verbRu, verbForm),
     };
@@ -25908,18 +25950,19 @@ const WG_BUILDERS = {
     const verbRu = sb.verb;
     const verb = WG_PREP_VERBS[verbRu];
     const adj = sb.adj, noun = sb.noun;
-    const past = wgState.tense === 'past';
-    const verbForm = past ? wgPastForm(verbRu, subj.pg) : conjugationData[verbRu].nonPast[subj.key];
+    const zeitKey = wgState.tense === 'future' && sb.deFut ? 'future' : wgState.tense === 'past' ? 'past' : 'present';
+    const past = zeitKey === 'past';
+    const verbForm = sbVerbForm(verbRu, subj, zeitKey);
     const obj = wgDeclineNP({ adj, noun, kasus: verb.case, number: 'sg' });
     if (verb.case === 'Präp.') { applyLocative(verb.prep, noun, 'sg', obj.tokens); obj.ru = obj.tokens.join(' '); }
     const prep = wgPrepForm(verb.prep, obj.ru);
-    const zeit = past ? 'Vergangenheit' : 'Präsens';
+    const zeit = SB_ZEIT_DE[zeitKey];
     return {
       answer: subj.ru + ' ' + verbForm + ' ' + prep + ' ' + obj.ru,
-      tokens: [subj.ru, verbForm, prep, ...obj.tokens],
+      tokens: [subj.ru, ...verbForm.split(' '), prep, ...obj.tokens],
       blocks: [subj.ru, verbForm, prep + ' ' + obj.ru],
       promptTop: subj.ru + ' + ' + verbRu + ' ' + prep + ' + ' + adj + ' ' + noun,
-      promptDe: past ? sb.dePast : sb.de,
+      promptDe: zeitKey === 'future' ? sb.deFut : past ? sb.dePast : sb.de,
       hint: sbHint('prepsentence', { zeit, prep, kasus: verb.case.replace('.', '') }, sb),
       femSwap: sbFemSwap(subj, past, verbRu, verbForm),
     };
@@ -25929,12 +25972,13 @@ const WG_BUILDERS = {
   negation(sb) {
     const adj = sb.adj, noun = sb.noun;
     const zeit = wgState.tense;
-    const obj = wgDeclineNP({ adj, noun, kasus: 'Gen.', number: 'sg' });
+    const number = sbNumberFor(sb);
+    const obj = wgDeclineNP({ adj, noun, kasus: 'Gen.', number });
     // нет / не было / не будет — die mittleren Teile ändern sich nie
     const mitte = zeit === 'past' ? 'не было' : zeit === 'future' ? 'не будет' : 'нет';
     // im Präsens bleibt der kuratierte deutsche Satz, sonst wird er gebildet
-    const de = (zeit === 'present') ? sb.de
-      : sbOwnerSentence(sb.owner, adj, noun, 'sg', zeit, true);
+    const de = (zeit === 'present' && number === 'sg') ? sb.de
+      : sbOwnerSentence(sb.owner, adj, noun, number, zeit, true);
     return {
       answer: sb.owner + ' ' + mitte + ' ' + obj.ru,
       tokens: [...sb.owner.split(' '), ...mitte.split(' '), ...obj.tokens],
@@ -25950,14 +25994,15 @@ const WG_BUILDERS = {
   possession(sb) {
     const adj = sb.adj, noun = sb.noun;
     const zeit = wgState.tense;
-    const obj = wgDeclineNP({ adj, noun, kasus: 'Nom.', number: 'sg' });
-    const mitte = zeit === 'past' ? sbBytForm(noun, 'sg') : zeit === 'future' ? 'будет' : '';
+    const number = sbNumberFor(sb);
+    const obj = wgDeclineNP({ adj, noun, kasus: 'Nom.', number });
+    const mitte = zeit === 'past' ? sbBytForm(noun, number) : zeit === 'future' ? (number === 'pl' ? 'будут' : 'будет') : '';
     const teile = [sb.owner, mitte, obj.ru].filter(Boolean);
     return {
       answer: teile.join(' '),
       tokens: [...sb.owner.split(' '), ...(mitte ? [mitte] : []), ...obj.tokens],
       promptTop: sb.owner + (mitte ? ' ' + mitte : '') + ' + ' + adj + ' ' + noun,
-      promptDe: sbOwnerSentence(sb.owner, adj, noun, 'sg', zeit, false),
+      promptDe: sbOwnerSentence(sb.owner, adj, noun, number, zeit, false),
       hint: sbHint('possession', { zeit }, sb),
       // mit есть ist der Satz ebenfalls richtig (betont, dass man die Sache hat)
       // umgestellt ebenfalls richtig: „Новая книга у меня (есть)“, „…у меня была“
