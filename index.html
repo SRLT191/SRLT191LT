@@ -479,6 +479,7 @@
       mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); }
     #sb-type-switcher::-webkit-scrollbar { display: none; }
     #sb-type-switcher .mode-btn { flex-shrink: 0; }
+    #sb-type-switcher .mode-btn.sb-fokus { outline: 2px solid var(--c-accent); outline-offset: -2px; }
     .gt-settings-body .gt-field:has(#sb-type-switcher) { min-width: 0; max-width: 100%; }
     /* Kopf (12.11.): Titel und ⋯ in einer Zeile, Fortschritt klein darunter */
     .grammar-panel > .grammar-panel-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; align-items: center; }
@@ -2583,27 +2584,28 @@
 <p>Mit <strong>Wort-Tipp</strong> (Taste 2) deckst du die Lösung Wort für Wort auf; im Bausteine-Modus wird der passende Baustein gleich gesetzt. <em>Lösung zeigen</em> (Taste 3) zeigt sofort den ganzen Satz. Danach sagst du selbst, ob du ihn wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Mit <em>Vorlesen</em> (Einstellungen) hörst du nach dem Prüfen oder Aufdecken automatisch den ganzen Satz, bei jedem Wort-Tipp das neue Wort und bei <em>Bausteine</em> jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Lautsprecher oder Taste 4: ganzer Satz, während der Wort-Tipps die schon aufgedeckten Wörter. Am Rundenende hat jeder Fehler einen Lautsprecher.</p>
 </details>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
+<p><strong>Auswahl:</strong> Mit dem Schalter <em>Auswahl</em> übst du mehrere Satzarten gemischt, jede mit eigenen Zeiten. Tippe eine neue Satzart an – sie kommt mit allen Zeiten dazu; die Zeile <em>Zeit</em> zeigt die Zeiten der umrandeten Satzart, ein Klick wählt eine Zeit dazu oder ab. Eine schon gewählte Satzart holst du mit einem Klick nach vorn, ein zweiter Klick wählt sie ab. Über jeder Aufgabe steht, welche Satzart und Zeit gefragt ist.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Satzart</span><div class="tense-switcher" id="sb-type-switcher" role="group" aria-label="Satzart" style="flex-wrap:wrap">
-<button data-std="1" class="mode-btn active" id="sb-type-sentence" onclick="setWgType('sentence')">Ganzer Satz</button>
-<button class="mode-btn" id="sb-type-prepsentence" onclick="setWgType('prepsentence')">Satz + Präposition</button>
-<button class="mode-btn" id="sb-type-possession" onclick="setWgType('possession')">Besitz</button>
-<button class="mode-btn" id="sb-type-negation" onclick="setWgType('negation')">Verneinung</button>
-<button class="mode-btn" id="sb-type-dative" onclick="setWgType('dative')">Dativ-Satz</button>
-<button class="mode-btn" id="sb-type-question" onclick="setWgType('question')">Frage</button>
-<button class="mode-btn" id="sb-type-modal" onclick="setWgType('modal')">Modalsatz</button>
-<button class="mode-btn" id="sb-type-imperative" onclick="setWgType('imperative')">Aufforderung</button>
-<button class="mode-btn" id="sb-type-place" onclick="setWgType('place')" title="wo? в/на + Präpositiv · wohin? в/на + Akkusativ">Ort / Richtung</button>
-<button class="mode-btn" id="sb-type-nebensatz" onclick="setWgType('nebensatz')" title="чтобы, если, когда, хотя, ли">Nebensatz</button>
-<button class="mode-btn" id="sb-type-rede" onclick="setWgType('rede')" title="Он сказал, что …">Indirekte Rede</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="false" class="tool-btn gt-toggle" id="sb-auswahl-toggle" onclick="toggleSbAuswahl()" title="Mehrere Satzarten und je Satzart mehrere Zeiten zugleich üben"><span>Auswahl</span></button><span class="gt-field"><span class="gt-field-label">Satzart</span><div class="tense-switcher" id="sb-type-switcher" role="group" aria-label="Satzart" style="flex-wrap:wrap">
+<button data-std="1" class="mode-btn active" id="sb-type-sentence" onclick="sbTypeClick('sentence')">Ganzer Satz</button>
+<button class="mode-btn" id="sb-type-prepsentence" onclick="sbTypeClick('prepsentence')">Satz + Präposition</button>
+<button class="mode-btn" id="sb-type-possession" onclick="sbTypeClick('possession')">Besitz</button>
+<button class="mode-btn" id="sb-type-negation" onclick="sbTypeClick('negation')">Verneinung</button>
+<button class="mode-btn" id="sb-type-dative" onclick="sbTypeClick('dative')">Dativ-Satz</button>
+<button class="mode-btn" id="sb-type-question" onclick="sbTypeClick('question')">Frage</button>
+<button class="mode-btn" id="sb-type-modal" onclick="sbTypeClick('modal')">Modalsatz</button>
+<button class="mode-btn" id="sb-type-imperative" onclick="sbTypeClick('imperative')">Aufforderung</button>
+<button class="mode-btn" id="sb-type-place" onclick="sbTypeClick('place')" title="wo? в/на + Präpositiv · wohin? в/на + Akkusativ">Ort / Richtung</button>
+<button class="mode-btn" id="sb-type-nebensatz" onclick="sbTypeClick('nebensatz')" title="чтобы, если, когда, хотя, ли">Nebensatz</button>
+<button class="mode-btn" id="sb-type-rede" onclick="sbTypeClick('rede')" title="Он сказал, что …">Indirekte Rede</button>
 </div></span></div><div class="gt-settings-row"><span class="gt-field" id="sb-num-field" style="display:none"><span class="gt-field-label">Zahl</span><div class="tense-switcher" role="group" aria-label="Zahl">
 <button data-std="1" class="mode-btn active" id="sb-num-sg" onclick="setSbNumber('sg')">Singular</button>
 <button class="mode-btn" id="sb-num-pl" onclick="setSbNumber('pl')">Plural</button>
 <button class="mode-btn" id="sb-num-both" onclick="setSbNumber('both')">Beide</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher" id="sb-tense-switcher" role="group" aria-label="Zeit">
-<button data-std="1" class="mode-btn active" id="sb-tense-present" onclick="setWgTense('present')">Präsens</button>
-<button class="mode-btn" id="sb-tense-past" onclick="setWgTense('past')">Vergangenheit</button>
-<button class="mode-btn" id="sb-tense-future" onclick="setWgTense('future')">Zukunft</button>
+<button data-std="1" class="mode-btn active" id="sb-tense-present" onclick="sbTenseClick('present')">Präsens</button>
+<button class="mode-btn" id="sb-tense-past" onclick="sbTenseClick('past')">Vergangenheit</button>
+<button class="mode-btn" id="sb-tense-future" onclick="sbTenseClick('future')">Zukunft</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Antwort</span><div class="tense-switcher" role="group" aria-label="Antwort">
 <button data-std="1" class="mode-btn active" id="sb-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
 <button class="mode-btn" id="sb-ansmode-click" onclick="setWgAnswerMode('click')"><i class="ti ti-hand-click"></i> Bausteine</button>
@@ -20333,6 +20335,7 @@ function updateGtSettingsSummary(root) {
     const parts = [];
     box.querySelectorAll('.gt-settings-body .tense-switcher').forEach(sw => {
       if (sw.offsetParent === null && sw.style.display === 'none') return;
+      if (sw.dataset.sumskip) return;
       const aktiv = [...sw.querySelectorAll('.mode-btn.active')];
       const txt = aktiv.map(a => a.dataset.sum || a.textContent.trim()).join('+');
       if (aktiv.length && !(aktiv.length === 1 && aktiv[0].dataset.std)) parts.push(txt);
@@ -22103,6 +22106,9 @@ const TOOL_SETTINGS = [
   ['wgTool', ...tsProp(() => wgState, 'tool'), tsOneOf('sentence', 'wordgroup')],
   ['wgNumber', ...tsProp(() => wgState, 'number'), tsOneOf('sg', 'pl')],
   ['sbNumber', ...tsProp(() => wgState, 'sbNumber'), tsOneOf('sg', 'pl', 'both')],
+  ['sbAuswahl', ...tsProp(() => wgState, 'sbAuswahl'), TS_BOOL],
+  ['sbSel', ...tsProp(() => wgState, 'sbSel'), TS_STR],
+  ['sbFocus', ...tsProp(() => wgState, 'sbFocus'), TS_STR],
   ['wgTense', ...tsProp(() => wgState, 'tense'), tsOneOf('present', 'past', 'future')],
   ['wgCaseScope', ...tsProp(() => wgState, 'caseScope'), TS_STR],
   ['wgHintVisible', ...tsProp(() => wgState, 'hintVisible'), TS_BOOL],
@@ -24878,6 +24884,9 @@ function isAnimate(data, ru) {
 const wgState = {
   number: 'sg',
   sbNumber: 'sg',        // Satzbau: Zahl bei Besitz/Verneinung – sg | pl | both (19.11.)
+  sbAuswahl: false,      // Satzbau: mehrere Satzarten mit je eigenen Zeiten (19.11.)
+  sbSel: '',             // „negation:past,future;possession:present,past,future“
+  sbFocus: '',           // zuletzt angetippte Satzart der Auswahl (ihre Zeiten stehen in der Zeile „Zeit“)
   sbHintVisible: true,   // Satzbau: Kasus-Hinweis unter dem Satz (10.11.) – alt, seit 12.11. sbHintMode
   sbHintMode: null,      // immer | fehler | nie (null = aus sbHintVisible abgeleitet)
   autoSpeak: true,       // Wortgruppen/Satzbau: Lösung und Wort-Tipps automatisch vorlesen (10.11.)
@@ -25726,6 +25735,7 @@ function setWgType(t) {
   // Kasusfilter nur bei adjnoun/detnoun sinnvoll (sonst bestimmt Präp./Zahl/Verb den Kasus)
   if (caseSelect) caseSelect.style.display = (t === 'adjnoun' || t === 'detnoun') ? '' : 'none';
   if (wgState.tool === 'sentence') sbSyncTypeInfo();
+  if (sbAuswahlAn()) sbAuswahlSync();
   restartWordgroup();
 }
 function setWgAnswerMode(m) {
@@ -25759,6 +25769,99 @@ function toggleDictationInfo() {
 function toggleHoertrainerInfo() {
   const el = document.getElementById('hoertrainer-info-panel');
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+// ── Satzbau „Auswahl“ (19.11.): mehrere Satzarten, je Satzart eigene Zeiten ──
+// Klick auf eine neue Satzart: kommt mit allen Zeiten dazu und wird angetippt; Klick auf eine gewählte,
+// nicht angetippte: wird angetippt (Zeile „Zeit“ zeigt ihre Zeiten); zweiter Klick: abgewählt.
+// Klick auf eine Zeit: für die angetippte Satzart dazu oder ab. Je eine Satzart und eine Zeit bleiben immer.
+const SB_ZEIT_TYPEN = ['sentence', 'prepsentence', 'possession', 'negation'];
+const SB_ZEITEN = ['present', 'past', 'future'];
+const SB_TYP_NAME = { sentence: 'Ganzer Satz', prepsentence: 'Satz + Präposition', possession: 'Besitz', negation: 'Verneinung',
+  dative: 'Dativ-Satz', question: 'Frage', modal: 'Modalsatz', imperative: 'Aufforderung', place: 'Ort / Richtung', nebensatz: 'Nebensatz', rede: 'Indirekte Rede' };
+const SB_ZEIT_NAME = { present: 'Präsens', past: 'Vergangenheit', future: 'Zukunft' };
+const SB_ZEIT_KURZ = { present: 'Präs.', past: 'Verg.', future: 'Zuk.' };
+function sbSelLesen() {
+  const sel = {};
+  (wgState.sbSel || '').split(';').forEach(t => {
+    const [typ, z] = t.split(':');
+    if (!WG_SENTENCE_TYPES.includes(typ)) return;
+    const zeiten = SB_ZEIT_TYPEN.includes(typ) ? (z || '').split(',').filter(x => SB_ZEITEN.includes(x)) : ['present'];
+    sel[typ] = zeiten.length ? zeiten : ['present'];
+  });
+  return sel;
+}
+function sbSelSchreiben(sel) { wgState.sbSel = Object.entries(sel).map(([t, z]) => t + ':' + z.join(',')).join(';'); }
+function sbAlleZeiten(typ) { return SB_ZEIT_TYPEN.includes(typ) ? [...SB_ZEITEN] : ['present']; }
+function sbAuswahlAn() { return wgState.tool === 'sentence' && wgState.sbAuswahl; }
+function toggleSbAuswahl() {
+  wgState.sbAuswahl = !wgState.sbAuswahl;
+  if (wgState.sbAuswahl) {
+    let sel = sbSelLesen();
+    if (!Object.keys(sel).length) sel = { [wgState.type]: SB_ZEIT_TYPEN.includes(wgState.type) ? [wgState.tense] : ['present'] };
+    if (!sel[wgState.type]) sel[wgState.type] = SB_ZEIT_TYPEN.includes(wgState.type) ? [wgState.tense] : ['present'];
+    sbSelSchreiben(sel); wgState.sbFocus = wgState.type;
+    saveToolSettings(); sbAuswahlSync(); restartWordgroup();
+  } else {
+    const sel = sbSelLesen(), f = sel[wgState.sbFocus] ? wgState.sbFocus : Object.keys(sel)[0] || 'sentence';
+    wgState.tense = (sel[f] || ['present'])[0];
+    saveToolSettings();
+    document.getElementById('sb-auswahl-toggle').setAttribute('aria-pressed', 'false');
+    document.getElementById('sb-type-switcher').querySelectorAll('.mode-btn').forEach(b => { b.classList.remove('sb-fokus'); delete b.dataset.sum; });
+    const tsw = document.getElementById('sb-tense-switcher'); if (tsw) delete tsw.dataset.sumskip;
+    setWgType(f);
+  }
+}
+function sbTypeClick(t) {
+  if (!sbAuswahlAn()) return setWgType(t);
+  const sel = sbSelLesen();
+  if (!sel[t]) { sel[t] = sbAlleZeiten(t); wgState.sbFocus = t; }
+  else if (wgState.sbFocus !== t) wgState.sbFocus = t;
+  else if (Object.keys(sel).length > 1) { delete sel[t]; wgState.sbFocus = Object.keys(sel).pop(); }
+  sbSelSchreiben(sel); saveToolSettings(); sbAuswahlSync(); restartWordgroup();
+}
+function sbTenseClick(z) {
+  if (!sbAuswahlAn()) return setWgTense(z);
+  const sel = sbSelLesen(), f = wgState.sbFocus;
+  if (!sel[f] || !SB_ZEIT_TYPEN.includes(f)) return;
+  const i = sel[f].indexOf(z);
+  if (i < 0) sel[f] = SB_ZEITEN.filter(x => x === z || sel[f].includes(x));
+  else if (sel[f].length > 1) sel[f].splice(i, 1);
+  sbSelSchreiben(sel); saveToolSettings(); sbAuswahlSync(); restartWordgroup();
+}
+// Knöpfe, Zeile „Zeit“, Zahl und Kurzfassung nach der Auswahl stellen
+function sbAuswahlSync() {
+  const an = sbAuswahlAn(), tg = document.getElementById('sb-auswahl-toggle');
+  if (tg) tg.setAttribute('aria-pressed', an ? 'true' : 'false');
+  if (!an) return;
+  const sel = sbSelLesen();
+  if (!sel[wgState.sbFocus]) wgState.sbFocus = Object.keys(sel)[0];
+  const f = wgState.sbFocus;
+  WG_SENTENCE_TYPES.forEach(t => {
+    const b = document.getElementById('sb-type-' + t); if (!b) return;
+    b.classList.toggle('active', !!sel[t]);
+    b.classList.toggle('sb-fokus', t === f);
+    b.setAttribute('aria-pressed', sel[t] ? 'true' : 'false');
+    if (sel[t] && SB_ZEIT_TYPEN.includes(t)) b.dataset.sum = SB_TYP_NAME[t] + (sel[t].length === 3 ? '' : ' (' + sel[t].map(z => SB_ZEIT_KURZ[z]).join(', ') + ')');
+    else delete b.dataset.sum;
+  });
+  const tsw = document.getElementById('sb-tense-switcher');
+  if (tsw) { tsw.dataset.sumskip = '1'; tsw.style.display = SB_ZEIT_TYPEN.includes(f) ? '' : 'none'; }
+  const fut = document.getElementById('sb-tense-future'); if (fut) fut.style.display = '';
+  SB_ZEITEN.forEach(z => wgToggle('tense-' + z, SB_ZEIT_TYPEN.includes(f) && sel[f].includes(z)));
+  const zahl = document.getElementById('sb-num-field');
+  if (zahl) zahl.style.display = (sel.possession || sel.negation) ? '' : 'none';
+  ['sg', 'pl', 'both'].forEach(x => wgToggle('num-' + x, x === (wgState.sbNumber || 'sg')));
+  const cs = wgEl('case-switcher'); if (cs) cs.style.display = 'none';
+  document.querySelectorAll('#sentencebuild-info-panel .sb-type-info').forEach(d => { d.hidden = d.dataset.sbtype !== f; });
+  if (typeof updateGtSettingsSummary === 'function') updateGtSettingsSummary();
+}
+// nächste Kombination für eine Aufgabe: Satzart nach Zufall, dann eine ihrer Zeiten (Plural nur wo möglich)
+function sbAuswahlZiehen() {
+  const sel = sbSelLesen(), typen = Object.keys(sel);
+  if (!typen.length) return;
+  const t = wgRand(typen);
+  wgState.type = t;
+  wgState.tense = SB_ZEIT_TYPEN.includes(t) ? wgRand(sel[t]) : 'present';
 }
 // Im Infofenster nur die Erklärung zur gewählten Satzart zeigen
 function sbSyncTypeInfo() {
@@ -26111,8 +26214,9 @@ const wgRundeId = () => wgState.tool === 'sentence' ? 'sb' : 'wg';
 function restartWordgroup() {
   if (!wgState.pairs) wgState.pairs = buildWordgroupPairs();
   const z = gtRundeZwang(wgRundeId());
-  if (z) wgState.current = z;
+  if (z) { wgState.current = z; if (sbAuswahlAn() && z.sbType) { wgState.type = z.sbType; wgState.tense = z.sbTense; } }
   else {
+  if (sbAuswahlAn()) sbAuswahlZiehen();
   // Im Satzbau kommen Subjekt, Verb und Objekt aus SB_ITEMS, damit die Sätze
   // auch inhaltlich Sinn ergeben.
   const sb = (wgState.tool === 'sentence') ? sbPick(wgState.type) : null;
@@ -26145,6 +26249,7 @@ function restartWordgroup() {
     answer: task.answer, tokens: task.tokens, promptTop: task.promptTop, promptDe: task.promptDe,
     hint: task.hint, sbId, altAnswers, fullAnswer: task.answer, srsKey: task.srsKey || null,
     femAnswers, femSwap: task.femSwap || null,
+    sbType: wgState.tool === 'sentence' ? wgState.type : null, sbTense: wgState.tool === 'sentence' ? wgState.tense : null,
   };
   }
   applySbHelpLevel();
@@ -26266,7 +26371,10 @@ function renderWordgroupTask() {
   const zeigeTop = wgState.current.promptTop && (wgState.tool === 'sentence' || wgState.hintVisible);
   // Satzbau „Nur Deutsch“: der deutsche Satz ist die Aufgabe – groß, mit dem Lautsprecher daneben (12.11.)
   const deGross = !zeigeTop && wgState.tool === 'sentence';
-  wgEl('q').innerHTML =
+  const cur = wgState.current;
+  const abz = sbAuswahlAn() && cur.sbType
+    ? '<span class="cf-form-chip sb-auswahl-chip">' + SB_TYP_NAME[cur.sbType] + (SB_ZEIT_TYPEN.includes(cur.sbType) ? ' · ' + SB_ZEIT_NAME[cur.sbTense] : '') + '</span>' : '';
+  wgEl('q').innerHTML = abz +
     (zeigeTop ? '<span class="case-prep" lang="ru">' + wgState.current.promptTop + '</span>' : '')
     + (deGross ? '<span class="case-prep sb-de-gross">' + wgState.current.promptDe + '</span>' : wgState.current.promptDe) +
     (wgState.current.hint && wgHintSichtbar() ? '<span class="' + (wgState.tool === 'sentence' ? 'case-hint' : 'cf-form-chip') + '">' + (wgState.tool === 'sentence' ? 'Hinweis: ' : '') + wgState.current.hint + '</span>' : '');
