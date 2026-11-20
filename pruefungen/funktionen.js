@@ -189,14 +189,17 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
       }, 20);
     }, 20));
   }));
-  await check('G Tabellen: zweites Prüfen ohne Änderung weiter, Aufgedecktes zählt nicht', () => ev(() => {
+  await check('G Tabellen: zweites Prüfen ohne Änderung weiter, ganz aufgedeckt = Selbstbewertung', () => ev(() => {
     setAppView('grammar'); openNounDecline();
     const sel = document.getElementById('noun-select'); const v0 = sel.value;
     document.querySelectorAll('#noun-grid input.conj-input').forEach(i => i.value = 'xx'); checkNounTable(); const bleibt = sel.value === v0;
     checkNounTable(); const weiter = sel.value !== v0;
+    // 20.11.: ganz aufgedeckt → „Gewusst“/„Nicht gewusst“ statt „Prüfen“; Prüfen springt nicht ohne Bewertung weiter
     const c = nounState.correct; revealNounTable(); const v1 = sel.value; checkNounTable();
-    const ok = bleibt && weiter && sel.value !== v1 && nounState.correct === c && BACKUP_KEYS.includes('vokabeltrainer-grammar-cat-last');
-    return { ok, info: [bleibt, weiter, sel.value !== v1, nounState.correct === c].join(' ') };
+    const bewerten = sel.value === v1 && !!document.querySelector('#noun-grid').closest('.grammar-panel').querySelector('.gt-table-rate .gt-rate');
+    gtRateAnswer(false);
+    const ok = bleibt && weiter && bewerten && sel.value !== v1 && nounState.correct === c && BACKUP_KEYS.includes('vokabeltrainer-grammar-cat-last');
+    return { ok, info: [bleibt, weiter, bewerten, sel.value !== v1, nounState.correct === c].join(' ') };
   }));
   await check('G Kurzform & Steigerung + neue Pronomen', () => ev(() => {
     setAppView('grammar'); openAdjForm(); const r = [];
