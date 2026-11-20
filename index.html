@@ -479,7 +479,7 @@
       mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); }
     #sb-type-switcher::-webkit-scrollbar { display: none; }
     #sb-type-switcher .mode-btn { flex-shrink: 0; }
-    #sb-type-switcher .mode-btn.sb-fokus { outline: 2px solid var(--c-accent); outline-offset: -2px; }
+    #sb-type-switcher .mode-btn.sb-fokus, #wg-type-switcher .mode-btn.sb-fokus { outline: 2px solid var(--c-accent); outline-offset: -2px; }
     .gt-settings-body .gt-field:has(#sb-type-switcher) { min-width: 0; max-width: 100%; }
     /* Kopf (12.11.): Titel und ⋯ in einer Zeile, Fortschritt klein darunter */
     .grammar-panel > .grammar-panel-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; align-items: center; }
@@ -2066,8 +2066,9 @@
 <button class="mode-btn" id="rektion-mode-satz" onclick="setRektionMode('satz')">Im Satz</button>
 <button class="mode-btn" id="rektion-mode-list" onclick="openRektionList()" title="Alle Verben nach Fall (eigenes Fenster)"><i class="ti ti-list"></i> Liste</button>
 </div>
+<p><strong>Mehrere Fälle:</strong> Ein Klick auf einen Fall wählt ihn dazu oder ab (z. B. Dativ + Instrumental), <em>Alle</em> setzt zurück.</p>
 </div>
-<div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="rektion-kasus-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-std="1" data-v="all" onclick="setRektionKasus('all')" type="button">Alle</button><button class="mode-btn" data-v="Dat" onclick="setRektionKasus('Dat')" type="button">Dat.</button><button class="mode-btn" data-v="Gen" onclick="setRektionKasus('Gen')" type="button">Gen.</button><button class="mode-btn" data-v="Instr" onclick="setRektionKasus('Instr')" type="button">Instr.</button><button class="mode-btn" data-v="Akk" onclick="setRektionKasus('Akk')" type="button">Akk.</button><button class="mode-btn" data-v="praep" data-sum="mit Präp." onclick="setRektionKasus('praep')" type="button">mit Präposition</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" id="rektion-anders-toggle" onclick="toggleRektionAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-eye-off"></i> <span>nur ≠ Deutsch</span></button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-pron-toggle" onclick="toggleRektionPron()" title="Bei Personen ab und zu ein Pronomen statt des Substantivs (мне, ему, о ней)"><i class="ti ti-eye"></i> <span>Pronomen</span></button></div></div></div>
+<div class="gt-settings" id="rektion-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-hint-toggle" onclick="toggleRektionHint()" title="Verlangten Fall ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="rektion-kasus-switcher" role="group" aria-label="Fall"><button class="mode-btn active" data-std="1" data-v="all" onclick="rektionKasusKlick('all')" type="button">Alle</button><button class="mode-btn" data-v="Dat" onclick="rektionKasusKlick('Dat')" type="button">Dat.</button><button class="mode-btn" data-v="Gen" onclick="rektionKasusKlick('Gen')" type="button">Gen.</button><button class="mode-btn" data-v="Instr" onclick="rektionKasusKlick('Instr')" type="button">Instr.</button><button class="mode-btn" data-v="Akk" onclick="rektionKasusKlick('Akk')" type="button">Akk.</button><button class="mode-btn" data-v="praep" data-sum="mit Präp." onclick="rektionKasusKlick('praep')" type="button">mit Präposition</button></div></span><button aria-pressed="false" class="tool-btn gt-toggle" id="rektion-anders-toggle" onclick="toggleRektionAnders()" title="Nur Verben, deren Rektion anders ist als im Deutschen"><i class="ti ti-eye-off"></i> <span>nur ≠ Deutsch</span></button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="rektion-pron-toggle" onclick="toggleRektionPron()" title="Bei Personen ab und zu ein Pronomen statt des Substantivs (мне, ему, о ней)"><i class="ti ti-eye"></i> <span>Pronomen</span></button></div></div></div>
 <div id="rektion-practice-view">
 <div class="gt-task"><div class="case-question" id="rektion-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakRektion()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options" id="rektion-opts"></div>
@@ -2108,13 +2109,14 @@
 <p><strong>Nur Plural:</strong> Manche Wörter haben keine Einzahl: деньги, часы (Uhr), очки, брюки, ножницы, каникулы. Begleiter und Adjektive stehen dann immer im Plural: эти часы, новые часы.</p>
 <p><strong>Bedienung:</strong> Antippen oder Taste 1–4 (m, f, n, Pl.) bewertet sofort und markiert die richtige Option. Danach steht das Wort in der Farbe seines Geschlechts (m blau, f rot, n grün, Pl. grau), die entscheidende Endung ist markiert, und darunter steht es mit Begleiter (моя мебель) zum Anhören. Ist die Antwort richtig, geht es nach einer kurzen Pause von selbst weiter; ist sie falsch, bleibt die Regel stehen, bis du Enter oder <em>Weiter</em> drückst. <em>Lösung zeigen</em> markiert die Lösung; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Eine Runde hat 15 Wörter.</p>
 <p><strong>Einstellungen:</strong> <em>Regelfälle</em> (Endung eindeutig), <em>-ь-Wörter</em>, <em>Ausnahmen</em> (männliche Personen auf -а/-я, кофе, Fremdwörter, -мя) und <em>nur Plural</em>. Regelfälle zählen nicht zum Fortschritt „gelernt“ – der Kopf zeigt den gewählten Bereich. <strong>⋯-Menü:</strong> <em>Liste der -ь-Wörter</em> (nach Faustregel geordnet, je Gruppe „üben“) und <em>Neue Runde</em>. Am Ende einer Runde stehen deine Fehler mit Lösung; <em>Fehler wiederholen</em> übt sie gleich noch einmal.</p>
+<p><strong>Mehrere Bereiche:</strong> Ein Klick auf einen Bereich wählt ihn dazu oder ab (z. B. -ь-Wörter + Ausnahmen), <em>Alle</em> setzt zurück.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Bereich</span><div class="tense-switcher" role="group" aria-label="Umfang">
-<button data-std="1" class="mode-btn active" id="gender-scope-all" onclick="setGenderScope('all')">Alle</button>
-<button class="mode-btn" id="gender-scope-easy" onclick="setGenderScope('easy')">Regelfälle</button>
-<button class="mode-btn" id="gender-scope-soft" onclick="setGenderScope('soft')" title="Wörter auf -ь: Faustregeln und Wörter zum Mitlernen">-ь-Wörter</button>
-<button class="mode-btn" id="gender-scope-exc" onclick="setGenderScope('exc')" title="Männliche Personen auf -а/-я, кофе, unveränderliche Fremdwörter, -мя">Ausnahmen</button>
-<button class="mode-btn" id="gender-scope-pl" onclick="setGenderScope('pl')" title="Wörter ohne Einzahl (деньги, часы, очки)">nur Plural</button>
+<button data-std="1" class="mode-btn active" id="gender-scope-all" onclick="genderScopeKlick('all')">Alle</button>
+<button class="mode-btn" id="gender-scope-easy" onclick="genderScopeKlick('easy')">Regelfälle</button>
+<button class="mode-btn" id="gender-scope-soft" onclick="genderScopeKlick('soft')" title="Wörter auf -ь: Faustregeln und Wörter zum Mitlernen">-ь-Wörter</button>
+<button class="mode-btn" id="gender-scope-exc" onclick="genderScopeKlick('exc')" title="Männliche Personen auf -а/-я, кофе, unveränderliche Fremdwörter, -мя">Ausnahmen</button>
+<button class="mode-btn" id="gender-scope-pl" onclick="genderScopeKlick('pl')" title="Wörter ohne Einzahl (деньги, часы, очки)">nur Plural</button>
 </div></span></div></div></div>
 <div class="gt-task"><div class="case-question" id="gender-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakGender()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="case-options gender-options" id="gender-opts"></div>
@@ -2277,15 +2279,16 @@
 <p><strong>видеть, хотеть, мочь:</strong> Sehen, wollen und können lassen sich nicht befehlen. Die Formen sind grammatisch bildbar, im Alltag aber praktisch nie zu hören.</p>
 </div>
 <p><strong>Tastatur und Menü:</strong> Enter springt ins nächste leere Feld; ist keins mehr leer, wird geprüft. Ein zweites „Prüfen“ ohne Änderung führt zum nächsten Verb. Aufgedeckte Felder zählen nicht als gewusst. Im ⋯-Menü oben rechts findest du <em>Leeren</em>; <em>Erklärung zur Form</em> steht unter <em>Einstellungen</em>.</p>
-<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
+<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p><p><strong>Mehrere Zeiten:</strong> Ein Klick auf eine Zeit wählt sie dazu oder ab. Sind zwei oder mehr gewählt, kommt jedes Verb in einer davon (noch offene zuerst); mit nur einer Zeit steht die feste Tabelle. <em>Gemischt</em> nimmt Präsens, Vergangenheit und Imperativ.</p>
+</div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="false" class="tool-btn gt-toggle" id="conj-class-toggle" onclick="toggleConjClassHint()" title="Konjugationsmuster neben dem Verb zeigen (z. B. 2. Konj.)"><i class="ti ti-eye-off"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Aspekt</span><div class="tense-switcher">
 <button data-std="1" class="mode-btn active" id="conj-aspect-btn-ipf" onclick="setConjAspect('ipf')">Unvollendet</button>
 <button class="mode-btn" id="conj-aspect-btn-pf" onclick="setConjAspect('pf')">Vollendet</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Zeit</span><div class="tense-switcher">
-<button data-std="1" class="mode-btn active" id="conj-tense-btn-nonpast" onclick="setConjTense('nonpast')">Präsens</button>
-<button class="mode-btn" id="conj-tense-btn-past" onclick="setConjTense('past')">Vergangenheit</button>
-<button class="mode-btn" id="conj-tense-btn-future" onclick="setConjTense('future')" title="буду + Infinitiv – zum Üben, zählt nicht im Lernstand">Futur</button>
-<button class="mode-btn" id="conj-tense-btn-imperative" onclick="setConjTense('imperative')">Imperativ</button>
+<button data-std="1" class="mode-btn active" id="conj-tense-btn-nonpast" onclick="conjZeitKlick('nonpast')">Präsens</button>
+<button class="mode-btn" id="conj-tense-btn-past" onclick="conjZeitKlick('past')">Vergangenheit</button>
+<button class="mode-btn" id="conj-tense-btn-future" onclick="conjZeitKlick('future')" title="буду + Infinitiv – zum Üben, zählt nicht im Lernstand">Futur</button>
+<button class="mode-btn" id="conj-tense-btn-imperative" onclick="conjZeitKlick('imperative')">Imperativ</button>
 <button class="mode-btn" id="conj-tense-btn-mixed" onclick="setConjMixed()" title="Jedes Verb in einer zufälligen, noch offenen Zeit (Präsens, Vergangenheit, Imperativ)">Gemischt</button>
 </div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="Nur Endungen" id="conj-endings-toggle" onclick="toggleConjEndings()" title="Stamm vorgeben, nur die Endungen eintippen"><i class="ti ti-eye-off"></i> <span>Nur Endungen</span></button><span aria-hidden="true" class="gt-settings-sep"></span><button class="tool-btn" id="conj-sort-btn" onclick="cycleConjSortMode()" title="Reihenfolge der Verben umschalten" type="button"><i class="ti ti-sort-ascending-2"></i> <span>Regel → Sonderfall</span></button><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle grammar-note-toggle" data-sum="Erklärung" onclick="toggleGrammarNotes()" title="Erklärung zur abgefragten Form unter der Tabelle ein-/ausblenden"><i class="ti ti-eye"></i> <span>Erklärung zur Form</span></button><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="ohne Tabelle" id="conj-scope-btn" onclick="toggleConjScope()" title="Auch Verben des Wortschatzes ohne Konjugationstabelle in der Liste zeigen" type="button"><i class="ti ti-list-check"></i> <span>Ohne Tabelle</span></button></div></div></div>
 <div class="gt-task"><div class="conj-de-hint" id="conj-de-hint"></div><div class="gt-task-tools"><button class="tool-btn gt-pick" id="conj-verb-btn" onclick="openVerbPicker()" title="Verb aus der Liste wählen"><i class="ti ti-list-search"></i>
@@ -2445,17 +2448,18 @@
 <p>• <strong>Zahl + Adj + Subst:</strong> Nach 2–4 steht das Substantiv im Genitiv Singular, das Adjektiv im Genitiv Plural (два новых стола) – bei weiblichen Wörtern im Nominativ Plural (две новые книги).</p>
 <p>• <strong>Präposition:</strong> Die Präposition bestimmt den Fall: в новом доме, с моим братом.</p>
 <p><strong>Lebewesen im Akkusativ</strong> sehen aus wie der Genitiv (нового студента), Dinge wie der Nominativ (новый дом).</p>
+<p><strong>Auswahl:</strong> Mit dem Schalter <em>Auswahl</em> übst du mehrere Arten gemischt. Eine neue Art kommt mit Singular und Plural dazu; die Zeile <em>Zahl</em> zeigt die Zahl der umrandeten Art, ein Klick wählt sie dazu oder ab. Eine schon gewählte Art holst du mit einem Klick nach vorn, ein zweiter Klick wählt sie ab. Über jeder Aufgabe steht, welche Art und Zahl gefragt ist.</p>
 <p><strong>Bedienung:</strong> Singular/Plural und Fall wählst du oben. <em>Nur regelmäßige</em> beschränkt die Auswahl auf harte Adjektive und regelmäßige Substantive. Antworten kannst du frei tippen oder mit <em>Bausteine</em> die Teile in der richtigen Reihenfolge anklicken. Mit <em>Vorlesen</em> (Einstellungen) wird die Lösung nach dem Prüfen oder Aufdecken automatisch vorgelesen, bei <em>Bausteine</em> auch jedes angetippte Wort; der Schalter gilt für alle Grammatikwerkzeuge (auch unter Einstellungen → Grammatik vorlesen). Der Lautsprecher bzw. Taste 4 spielt die Lösung erneut.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
 </div>
-<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" id="wg-type-switcher" role="group" aria-label="Art" style="flex-wrap:wrap">
-<button data-std="1" class="mode-btn active" id="wg-type-adjnoun" onclick="setWgType('adjnoun')">Adj + Subst</button>
-<button class="mode-btn" id="wg-type-detnoun" onclick="setWgType('detnoun')">Begleiter + Subst</button>
-<button class="mode-btn" id="wg-type-numadjnoun" onclick="setWgType('numadjnoun')">Zahl + Adj + Subst</button>
-<button class="mode-btn" id="wg-type-prepphrase" onclick="setWgType('prepphrase')">Präposition</button>
+<div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button aria-pressed="false" class="tool-btn gt-toggle" id="wg-auswahl-toggle" onclick="toggleWgAuswahl()" title="Mehrere Arten und je Art Singular/Plural zugleich üben"><span>Auswahl</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" id="wg-type-switcher" role="group" aria-label="Art" style="flex-wrap:wrap">
+<button data-std="1" class="mode-btn active" id="wg-type-adjnoun" onclick="wgTypeKlick('adjnoun')">Adj + Subst</button>
+<button class="mode-btn" id="wg-type-detnoun" onclick="wgTypeKlick('detnoun')">Begleiter + Subst</button>
+<button class="mode-btn" id="wg-type-numadjnoun" onclick="wgTypeKlick('numadjnoun')">Zahl + Adj + Subst</button>
+<button class="mode-btn" id="wg-type-prepphrase" onclick="wgTypeKlick('prepphrase')">Präposition</button>
 </div></span></div><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="wg-hint-toggle" onclick="toggleWordgroupHint()" title="Grundformen über der Übersetzung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Zahl</span><div class="tense-switcher" id="wg-num-switcher" role="group" aria-label="Zahl">
-<button data-std="1" class="mode-btn active" id="wg-num-btn-sg" onclick="setWgNumber('sg')">Singular</button>
-<button class="mode-btn" id="wg-num-btn-pl" onclick="setWgNumber('pl')">Plural</button>
+<button data-std="1" class="mode-btn active" id="wg-num-btn-sg" onclick="wgNumKlick('sg')">Singular</button>
+<button class="mode-btn" id="wg-num-btn-pl" onclick="wgNumKlick('pl')">Plural</button>
 </div></span><span class="gt-field"><span class="gt-field-label">Fall</span><div class="tense-switcher" id="wg-case-switcher" role="group" aria-label="Fall"><button data-std="1" class="mode-btn active" data-v="all" onclick="setWgCase('all')">Alle</button><button class="mode-btn" data-v="Nom." onclick="setWgCase('Nom.')" title="Nominativ">Nom</button><button class="mode-btn" data-v="Gen." onclick="setWgCase('Gen.')" title="Genitiv">Gen</button><button class="mode-btn" data-v="Dat." onclick="setWgCase('Dat.')" title="Dativ">Dat</button><button class="mode-btn" data-v="Akk." onclick="setWgCase('Akk.')" title="Akkusativ">Akk</button><button class="mode-btn" data-v="Instr." onclick="setWgCase('Instr.')" title="Instrumental">Instr</button><button class="mode-btn" data-v="Präp." onclick="setWgCase('Präp.')" title="Präpositiv">Präp</button></div></span><span class="gt-field"><span class="gt-field-label">Antwort</span><div class="tense-switcher" role="group" aria-label="Antwort">
 <button data-std="1" class="mode-btn active" id="wg-ansmode-type" onclick="setWgAnswerMode('type')"><i class="ti ti-keyboard"></i> Tippen</button>
 <button class="mode-btn" id="wg-ansmode-click" onclick="setWgAnswerMode('click')"><i class="ti ti-hand-click"></i> Bausteine</button>
@@ -2758,14 +2762,15 @@
 <p>• <strong>который · никто (B1):</strong> ein Satz mit Lücke. который richtet sich in Geschlecht und Zahl nach dem Bezugswort, der Fall nach seiner Rolle im Nebensatz (Это книга, которую я читаю). Dazu unbestimmte und verneinte Pronomen: кто-то/что-нибудь (jemand, etwas), никого, ни с кем (die Präposition steht zwischen ни und dem Pronomen), некого/нечего + Infinitiv (niemand/nichts, um … zu). Diese Aufgaben kommen nur über die eigene Auswahl, nicht unter <em>Alle</em>.</p>
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt die übrigen Typen. <em>Hilfe</em> blendet die deutsche Entsprechung ein (к нему – zu ihm). <em>Anhören</em> liest vor dem Prüfen die Grundform, danach die Lösung.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
+<p><strong>Mehrere Bereiche:</strong> Ein Klick auf einen Bereich wählt ihn dazu oder ab (z. B. Mit Präposition + который · никто), <em>Alle</em> setzt zurück.</p>
 </div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="pronform-hint-toggle" onclick="togglePronFormHint()" title="Deutsche Entsprechung ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher">
-<button data-std="1" class="mode-btn active" id="pronform-scope-all" onclick="setPronFormScope('all')">Alle</button>
-<button class="mode-btn" id="pronform-scope-case" onclick="setPronFormScope('case')">Personal</button>
-<button class="mode-btn" id="pronform-scope-prep" onclick="setPronFormScope('prep')">Mit Präposition</button>
-<button class="mode-btn" id="pronform-scope-poss" onclick="setPronFormScope('poss')">Possessiv</button>
-<button class="mode-btn" id="pronform-scope-extra" lang="ru" onclick="setPronFormScope('extra')">кто · весь</button>
-<button class="mode-btn" id="pronform-scope-rel" lang="ru" onclick="setPronFormScope('rel')">который · никто</button>
+<button data-std="1" class="mode-btn active" id="pronform-scope-all" onclick="pronFormScopeKlick('all')">Alle</button>
+<button class="mode-btn" id="pronform-scope-case" onclick="pronFormScopeKlick('case')">Personal</button>
+<button class="mode-btn" id="pronform-scope-prep" onclick="pronFormScopeKlick('prep')">Mit Präposition</button>
+<button class="mode-btn" id="pronform-scope-poss" onclick="pronFormScopeKlick('poss')">Possessiv</button>
+<button class="mode-btn" id="pronform-scope-extra" lang="ru" onclick="pronFormScopeKlick('extra')">кто · весь</button>
+<button class="mode-btn" id="pronform-scope-rel" lang="ru" onclick="pronFormScopeKlick('rel')">который · никто</button>
 </div></span></div></div></div>
 <div class="gt-task"><div class="case-question" id="pronform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakPronForm()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -2798,13 +2803,14 @@
 <p><strong>Partizip-Kurzform (B2):</strong> Die Kurzform der Passivpartizipien steht im Passiv: дом построен (das Haus ist gebaut), дверь открыта, письмо написано, книги прочитаны. -нный wird zu -н, -тый zu -т, dazu -а / -о / -ы. Kommt nur über die eigene Auswahl, nicht unter <em>Alle</em>.</p>
 <p><strong>Bedienung:</strong> <em>Alle</em> mischt alle Typen. <em>Hilfe</em> zeigt die Regel zur Aufgabe. <em>Anhören</em> liest vor dem Prüfen die Grundform bzw. den Satz mit Lücke, danach die Lösung. Wo zwei Formen richtig sind (старше/старее, лучший/самый лучший), gilt jede.</p>
 <p><strong>Runden:</strong> Eine Runde hat 15 Aufgaben (Zähler „3 / 15 · 2 richtig“). Am Ende stehen deine Fehler mit Lösung zum Anhören; <em>Fehler wiederholen</em> übt genau diese Aufgaben noch einmal, <em>Neue Runde</em> fängt neu an.</p>
-<p><strong>Außerdem:</strong> <em>Nur regelmäßige</em> lässt unregelmäßige Komparative und Kurzformen mit flüchtigem Vokal weg.</p><p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
+<p><strong>Außerdem:</strong> <em>Nur regelmäßige</em> lässt unregelmäßige Komparative und Kurzformen mit flüchtigem Vokal weg.</p><p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p><p><strong>Mehrere Bereiche:</strong> Ein Klick auf einen Bereich wählt ihn dazu oder ab (z. B. Komparativ + Partizip-Kurzform), <em>Alle</em> setzt zurück.</p>
+</div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="adjform-hint-toggle" onclick="toggleAdjFormHint()" title="Regel zur Aufgabe ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Art</span><div class="tense-switcher" role="group" aria-label="Aufgabentyp">
-<button data-std="1" class="mode-btn active" id="adjform-scope-all" onclick="setAdjFormScope('all')">Alle</button>
-<button class="mode-btn" id="adjform-scope-short" onclick="setAdjFormScope('short')">Kurzform</button>
-<button class="mode-btn" id="adjform-scope-comp" onclick="setAdjFormScope('comp')">Komparativ</button>
-<button class="mode-btn" id="adjform-scope-sup" onclick="setAdjFormScope('sup')">Superlativ</button>
-<button class="mode-btn" id="adjform-scope-ppp" onclick="setAdjFormScope('ppp')">Partizip-Kurzform</button>
+<button data-std="1" class="mode-btn active" id="adjform-scope-all" onclick="adjFormScopeKlick('all')">Alle</button>
+<button class="mode-btn" id="adjform-scope-short" onclick="adjFormScopeKlick('short')">Kurzform</button>
+<button class="mode-btn" id="adjform-scope-comp" onclick="adjFormScopeKlick('comp')">Komparativ</button>
+<button class="mode-btn" id="adjform-scope-sup" onclick="adjFormScopeKlick('sup')">Superlativ</button>
+<button class="mode-btn" id="adjform-scope-ppp" onclick="adjFormScopeKlick('ppp')">Partizip-Kurzform</button>
 </div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="adjform-reg-toggle" onclick="toggleAdjFormReg()" title="Ohne unregelmäßige Komparative, Sonderformen und Kurzformen mit flüchtigem Vokal" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="adjform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakAdjForm()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -3005,17 +3011,18 @@
 <p>Eine Runde hat 15 Aufgaben: zuerst fällige Wiederholungen, dann zuletzt falsch beantwortete, dann neue, zuletzt die am längsten nicht geübten. Am Ende siehst du deine Fehler mit Lösung und kannst sie mit <em>Fehler wiederholen</em> gleich nochmal üben.</p>
 <p><strong>Lösung zeigen</strong> (Taste 3) setzt die Lösung in die Lücke; danach sagst du selbst, ob du es wusstest: <em>Gewusst</em> (Taste 1) zählt als richtig, <em>Nicht gewusst</em> (Taste 2) als falsch. Bei typischen Fehlern (Endung, -ся, -те, буду-Form, Aspekt verwechselt) steht ein Tipp unter der Lösung.</p>
 <p><strong>Hilfe</strong> blendet das Zielverb ein. Im ⋯-Menü startet <em>Neue Runde</em> 15 neue Aufgaben und setzt den Zähler zurück. <em>Nur regelmäßige</em> lässt Sonderfälle und Verben mit Stammwechsel weg.</p>
-<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p></div>
+<p><strong>Sichere Muster:</strong> Regelmäßige Formen gehören zu einem Muster. Hast du ein Muster mit 10 verschiedenen Wörtern richtig (kleinere Muster: mit allen), gilt es als sicher: seine übrigen Formen zählen als gelernt und kommen nur noch zur Wiederholung. Ein Fehler öffnet es wieder. Oben rechts steht der Stand („Muster 3/20“); der Schalter <em>Sichere Muster</em> fragt sie trotzdem weiter ab.</p><p><strong>Mehrere Bereiche:</strong> Ein Klick auf einen Bereich wählt ihn dazu oder ab (z. B. Konjunktiv + Partizip), <em>Alle</em> setzt zurück.</p>
+</div>
 <div class="gt-settings"><button aria-expanded="false" class="gt-settings-toggle" onclick="toggleGtSettings(this)" type="button"><i class="ti ti-adjustments-horizontal"></i><span class="gt-settings-label">Einstellungen</span><span class="gt-settings-sum"></span><i class="ti ti-chevron-down gt-chev"></i></button><div class="gt-settings-body"><div class="gt-settings-row"><button data-std="1" aria-pressed="true" class="tool-btn gt-toggle" id="transform-hint-toggle" onclick="toggleTransformHint()" title="Zielverb im Hinweis ein-/ausblenden"><i class="ti ti-eye"></i> <span>Hilfe</span></button><span class="gt-field"><span class="gt-field-label">Form</span><div class="tense-switcher">
-<button data-std="1" class="mode-btn active" id="transform-scope-btn-all" onclick="setTransformScope('all')">Alle</button>
-<button class="mode-btn" id="transform-scope-btn-past" onclick="setTransformScope('past')">Vergangenheit</button>
-<button class="mode-btn" id="transform-scope-btn-future" onclick="setTransformScope('future')">Futur</button>
-<button class="mode-btn" id="transform-scope-btn-imperative" onclick="setTransformScope('imperative')">Imperativ</button>
-<button class="mode-btn" id="transform-scope-btn-aspect" onclick="setTransformScope('aspect')">Aspekt</button>
-<button class="mode-btn" id="transform-scope-btn-konj" onclick="setTransformScope('konj')">Konjunktiv</button>
-<button class="mode-btn" id="transform-scope-btn-gerund" onclick="setTransformScope('gerund')">Adverbialpartizip</button>
-<button class="mode-btn" id="transform-scope-btn-part" onclick="setTransformScope('part')">Partizip</button>
-<button class="mode-btn" id="transform-scope-btn-passiv" onclick="setTransformScope('passiv')">Passiv</button>
+<button data-std="1" class="mode-btn active" id="transform-scope-btn-all" onclick="transformScopeKlick('all')">Alle</button>
+<button class="mode-btn" id="transform-scope-btn-past" onclick="transformScopeKlick('past')">Vergangenheit</button>
+<button class="mode-btn" id="transform-scope-btn-future" onclick="transformScopeKlick('future')">Futur</button>
+<button class="mode-btn" id="transform-scope-btn-imperative" onclick="transformScopeKlick('imperative')">Imperativ</button>
+<button class="mode-btn" id="transform-scope-btn-aspect" onclick="transformScopeKlick('aspect')">Aspekt</button>
+<button class="mode-btn" id="transform-scope-btn-konj" onclick="transformScopeKlick('konj')">Konjunktiv</button>
+<button class="mode-btn" id="transform-scope-btn-gerund" onclick="transformScopeKlick('gerund')">Adverbialpartizip</button>
+<button class="mode-btn" id="transform-scope-btn-part" onclick="transformScopeKlick('part')">Partizip</button>
+<button class="mode-btn" id="transform-scope-btn-passiv" onclick="transformScopeKlick('passiv')">Passiv</button>
 </div></span><button aria-pressed="false" class="tool-btn gt-toggle" data-sum="nur regelmäßige" id="transform-reg-toggle" onclick="toggleTransformReg()" title="Ohne Sonderfälle und Verben mit Stammwechsel" type="button"><i class="ti ti-eye-off"></i> <span>Nur regelmäßige</span></button></div></div></div>
 <div class="gt-task"><div class="case-question" id="transform-q"></div><div class="gt-task-tools"><button aria-label="Russisch anhören" class="tool-btn gt-icon-btn" onclick="speakTransform()" title="Anhören"><i class="ti ti-volume"></i></button></div></div>
 <div class="conj-row" style="grid-template-columns: 1fr;">
@@ -16159,7 +16166,7 @@ const GRAMMAR_BADGE_LEVEL = [['#transform-scope-btn-imperative', 'A2'], ['#sb-nu
   ['#noun-num-btn-both', 'A2'], ['#cf-num-mixed', 'A2'], ['#ca-num-mixed', 'A2'], ['#decl-gender-btn-all', 'A2']];
 const GRAMMAR_PART_LEVEL = [
   // Verben: Imperativ, vollendete Formen (Aspekt)
-  ['#conj-tense-btn-imperative', 'A2'], ['#conj-aspect-btn-pf', 'A2'], ['[onclick="setTransformScope(\'aspect\')"]', 'A2'],
+  ['#conj-tense-btn-imperative', 'A2'], ['#conj-aspect-btn-pf', 'A2'], ['#transform-scope-btn-aspect', 'A2'],
   // Plural in allen Fällen
   ['#noun-num-btn-pl', 'A2'], ['#cf-num-pl', 'A2'], ['#ca-num-pl', 'A2'], ['#decl-gender-btn-plural', 'A2'], ['#pronoun-gender-plural', 'A2'],
   ['#case-plural-toggle', 'A2'], ['#wg-num-btn-pl', 'A2'], ['#wg-type-numadjnoun', 'A2'],
@@ -20316,10 +20323,23 @@ function syncGtToggles() {
   };
   Object.keys(st).forEach(id => { const b = document.getElementById(id); if (b) setGtToggle(b, st[id]()); });
 }
-// Fall-Knopfgruppe (Alle/Nom/…) markieren
+// Fall-Knopfgruppe (Alle/Nom/…) markieren; v darf eine Liste „Dat,Instr“ sein
 function markCaseSwitcher(el, v) {
   if (!el) return;
-  el.querySelectorAll('[data-v]').forEach(b => b.classList.toggle('active', b.dataset.v === v));
+  el.querySelectorAll('[data-v]').forEach(b => b.classList.toggle('active', b.dataset.v === v || (v !== 'all' && b.dataset.v !== 'all' && String(v).split(',').includes(b.dataset.v))));
+}
+// Mehrfachauswahl wie in Kasus bilden (19.11.): Klick wählt einen Bereich dazu oder ab, „Alle“ setzt zurück;
+// ist nichts mehr gewählt, gilt wieder „Alle“. Gespeichert als 'all' oder „a,b“ (Reihenfolge wie die Knöpfe).
+function mfListe(cur) { return !cur || cur === 'all' ? [] : String(cur).split(','); }
+function mfHat(cur, v) { return mfListe(cur).includes(v); }
+function mfKlick(cur, v, reihenfolge) {
+  if (v === 'all') return 'all';
+  const set = mfListe(cur), neu = set.includes(v) ? set.filter(x => x !== v) : set.concat(v);
+  const geordnet = reihenfolge.filter(x => neu.includes(x));
+  return geordnet.length ? geordnet.join(',') : 'all';
+}
+function mfKnoepfe(ids, cur) {   // ids: Wert → Element-Id
+  Object.entries(ids).forEach(([v, id]) => { const b = document.getElementById(id); if (b) b.classList.toggle('active', v === 'all' ? cur === 'all' : mfHat(cur, v)); });
 }
 // Einstellungen: auf schmalen Schirmen zugeklappt, mit Zusammenfassung im Kopf
 function toggleGtSettings(btn) {
@@ -21853,6 +21873,7 @@ const conjState = {
   classHint: false,   // Muster (Konjugationsklasse) neben dem Verb zeigen
   endings: false,     // Nur Endungen: Stamm vorgegeben
   mixed: false,       // Gemischt: Zeit je Verb zufällig (offene zuerst)
+  zeiten: '',         // Mehrfachauswahl (19.11.): „past,imperative“; leer = Gemischt mit Präsens, Vergangenheit, Imperativ
 };
 
 // ── Aspektpartner ───────────────────────────────────────────────
@@ -22075,12 +22096,15 @@ const tsProp = (obj, f) => [() => obj()[f], v => { obj()[f] = v; }];
 const TS_BOOL = v => typeof v === 'boolean';
 const TS_STR = v => typeof v === 'string';
 const tsOneOf = (...w) => v => w.includes(v);
+// Mehrfachauswahl (19.11.): 'all' oder eine Liste „a,b“ aus erlaubten Werten
+const tsMulti = (...w) => v => typeof v === 'string' && (v === 'all' || (v.length > 0 && v.split(',').every(x => w.includes(x))));
 const TOOL_SETTINGS = [
   ['conjScope', ...tsProp(() => conjState, 'scope'), tsOneOf('table', 'all')],
   ['conjSortMode', ...tsProp(() => conjState, 'sortMode'), tsOneOf('rules', 'recent', 'random')],
   ['conjClassHint', ...tsProp(() => conjState, 'classHint'), TS_BOOL],
   ['conjEndings', ...tsProp(() => conjState, 'endings'), TS_BOOL],
   ['conjMixed', ...tsProp(() => conjState, 'mixed'), TS_BOOL],
+  ['conjZeiten', ...tsProp(() => conjState, 'zeiten'), v => v === '' || tsMulti('nonpast', 'past', 'future', 'imperative')(v)],
   ['declSortMode', ...tsProp(() => declState, 'sortMode'), tsOneOf('type', 'alpha', 'random', 'random-hard')],
   ['aspectHintVisible', ...tsProp(() => aspectState, 'hintVisible'), TS_BOOL],
   ['declHintVisible', ...tsProp(() => declState, 'hintVisible'), TS_BOOL],
@@ -22109,6 +22133,9 @@ const TOOL_SETTINGS = [
   ['sbAuswahl', ...tsProp(() => wgState, 'sbAuswahl'), TS_BOOL],
   ['sbSel', ...tsProp(() => wgState, 'sbSel'), TS_STR],
   ['sbFocus', ...tsProp(() => wgState, 'sbFocus'), TS_STR],
+  ['wgAuswahl', ...tsProp(() => wgState, 'wgAuswahl'), TS_BOOL],
+  ['wgSel', ...tsProp(() => wgState, 'wgSel'), TS_STR],
+  ['wgFocus', ...tsProp(() => wgState, 'wgFocus'), TS_STR],
   ['wgTense', ...tsProp(() => wgState, 'tense'), tsOneOf('present', 'past', 'future')],
   ['wgCaseScope', ...tsProp(() => wgState, 'caseScope'), TS_STR],
   ['wgHintVisible', ...tsProp(() => wgState, 'hintVisible'), TS_BOOL],
@@ -22131,18 +22158,18 @@ const TOOL_SETTINGS = [
   ['caKasus', ...tsProp(() => caseAdjState, 'kasus'), v => cfKasusOk(v)],
   ['caGenus', ...tsProp(() => caseAdjState, 'genus'), tsOneOf('all', 'masc', 'fem', 'neut')],
   ['caHintVisible', ...tsProp(() => caseAdjState, 'hintVisible'), TS_BOOL],
-  ['pfScope', ...tsProp(() => pronFormState, 'scope'), tsOneOf('all', 'case', 'prep', 'poss', 'extra', 'rel')],
+  ['pfScope', ...tsProp(() => pronFormState, 'scope'), tsMulti('case', 'prep', 'poss', 'extra', 'rel')],
   ['pfHintVisible', ...tsProp(() => pronFormState, 'hintVisible'), TS_BOOL],
-  ['afScope', ...tsProp(() => adjFormState, 'scope'), tsOneOf('all', 'short', 'comp', 'sup', 'ppp')],
+  ['afScope', ...tsProp(() => adjFormState, 'scope'), tsMulti('short', 'comp', 'sup', 'ppp')],
   ['afHintVisible', ...tsProp(() => adjFormState, 'hintVisible'), TS_BOOL],
   ['rkMode', ...tsProp(() => rektionState, 'mode'), tsOneOf('choose', 'form', 'satz', 'list')],
   ['rkHintVisible', ...tsProp(() => rektionState, 'hintVisible'), TS_BOOL],
   ['rkNurAnders', ...tsProp(() => rektionState, 'nurAnders'), TS_BOOL],
-  ['rkKasus', ...tsProp(() => rektionState, 'kasus'), tsOneOf('all', 'Dat', 'Gen', 'Instr', 'Akk', 'praep')],
+  ['rkKasus', ...tsProp(() => rektionState, 'kasus'), tsMulti('Dat', 'Gen', 'Instr', 'Akk', 'praep')],
   ['rkPron', ...tsProp(() => rektionState, 'pron'), TS_BOOL],
-  ['gdScope', ...tsProp(() => genderState, 'scope'), tsOneOf('all', 'easy', 'soft', 'exc', 'pl')],
+  ['gdScope', ...tsProp(() => genderState, 'scope'), tsMulti('easy', 'soft', 'exc', 'pl')],
   ['transformHintVisible', ...tsProp(() => transformState, 'hintVisible'), TS_BOOL],
-  ['transformScope', ...tsProp(() => transformState, 'scope'), tsOneOf('all', 'past', 'future', 'imperative', 'aspect')],
+  ['transformScope', ...tsProp(() => transformState, 'scope'), tsMulti('past', 'future', 'imperative', 'aspect', 'konj', 'gerund', 'part', 'passiv')],
   ['grammarNotesVisible', () => grammarNotesVisible, v => { grammarNotesVisible = v; }, TS_BOOL],
   ['hoertrainerOrder', ...tsProp(() => htState, 'order'), tsOneOf('shuffle', 'seq')],
 ];
@@ -22878,25 +22905,44 @@ function openConjugate() {
 
 function setConjTense(tense, gemischt) {
   conjState.tense = tense;
-  if (!gemischt && conjState.mixed) { conjState.mixed = false; saveToolSettings(); }
+  if (!gemischt && conjState.mixed) { conjState.mixed = false; conjState.zeiten = ''; saveToolSettings(); }
   updateConjTenseButtons();
   updateConjInfoSections();
   renderConjugationTable();
 }
 function updateConjTenseButtons() {
+  const liste = conjState.mixed ? conjZeitenListe() : [conjState.tense];
   ['nonpast', 'past', 'future', 'imperative'].forEach(t =>
-    document.getElementById('conj-tense-btn-' + t).classList.toggle('active', !conjState.mixed && conjState.tense === t));
-  document.getElementById('conj-tense-btn-mixed').classList.toggle('active', !!conjState.mixed);
+    document.getElementById('conj-tense-btn-' + t).classList.toggle('active', liste.includes(t)));
+  document.getElementById('conj-tense-btn-mixed').classList.toggle('active', !!conjState.mixed && !conjState.zeiten);
+}
+// Mehrfachauswahl (19.11.): Klick auf eine Zeit wählt sie dazu oder ab; ab zwei Zeiten wird gemischt,
+// mit einer Zeit steht wieder die feste Tabelle. „Gemischt“ = Präsens, Vergangenheit, Imperativ.
+const CONJ_ZEITEN = ['nonpast', 'past', 'future', 'imperative'];
+const CONJ_ZEIT_KEY = { nonpast: 'conj', past: 'conj:past', future: 'conj:future', imperative: 'conj:imperative' };
+function conjZeitenListe() { return conjState.zeiten ? conjState.zeiten.split(',') : CONJ_MIX_TENSES.map(x => x[0]); }
+function conjZeitKlick(t) {
+  const alt = conjState.mixed ? conjZeitenListe() : [conjState.tense];
+  let neu = alt.includes(t) ? alt.filter(x => x !== t) : alt.concat(t);
+  if (!neu.length) neu = [t];
+  neu = CONJ_ZEITEN.filter(x => neu.includes(x));
+  if (neu.length === 1) { setConjTense(neu[0]); return; }
+  const standard = CONJ_MIX_TENSES.map(x => x[0]).join(',');
+  conjState.zeiten = neu.join(',') === standard ? '' : neu.join(',');
+  conjState.mixed = true; saveToolSettings();
+  setConjTense(conjMixedTense(document.getElementById('conj-verb-select').value), true);
 }
 // Gemischt (7.11.): jedes Verb in einer zufälligen Zeit, bevorzugt einer, die bei diesem Verb noch offen ist
 function conjMixedTense(inf) {
   const all = loadGrammarSrs();
-  const offen = CONJ_MIX_TENSES.filter(([, key]) => !srsDone((all[key] || {})[inf])).map(x => x[0]);
-  const wahl = offen.length ? offen : CONJ_MIX_TENSES.map(x => x[0]);
+  let liste = conjZeitenListe();
+  if (conjState.aspect === 'pf' && liste.length > 1) liste = liste.filter(t => t !== 'future');   // vollendete Verben haben kein буду-Futur
+  const offen = liste.filter(t => !srsDone((all[CONJ_ZEIT_KEY[t]] || {})[inf]));
+  const wahl = offen.length ? offen : liste;
   return wahl[Math.floor(Math.random() * wahl.length)];
 }
 function setConjMixed() {
-  conjState.mixed = true; saveToolSettings();
+  conjState.mixed = true; conjState.zeiten = ''; saveToolSettings();
   setConjTense(conjMixedTense(document.getElementById('conj-verb-select').value), true);
 }
 
@@ -24887,6 +24933,9 @@ const wgState = {
   sbAuswahl: false,      // Satzbau: mehrere Satzarten mit je eigenen Zeiten (19.11.)
   sbSel: '',             // „negation:past,future;possession:present,past,future“
   sbFocus: '',           // zuletzt angetippte Satzart der Auswahl (ihre Zeiten stehen in der Zeile „Zeit“)
+  wgAuswahl: false,      // Wortgruppen: mehrere Arten mit je eigener Zahl (19.11.)
+  wgSel: '',             // „adjnoun:sg,pl;prepphrase:pl;detnoun:sg“
+  wgFocus: '',
   sbHintVisible: true,   // Satzbau: Kasus-Hinweis unter dem Satz (10.11.) – alt, seit 12.11. sbHintMode
   sbHintMode: null,      // immer | fehler | nie (null = aus sbHintVisible abgeleitet)
   autoSpeak: true,       // Wortgruppen/Satzbau: Lösung und Wort-Tipps automatisch vorlesen (10.11.)
@@ -25736,6 +25785,7 @@ function setWgType(t) {
   if (caseSelect) caseSelect.style.display = (t === 'adjnoun' || t === 'detnoun') ? '' : 'none';
   if (wgState.tool === 'sentence') sbSyncTypeInfo();
   if (sbAuswahlAn()) sbAuswahlSync();
+  if (wgAuswahlAn()) wgAuswahlSync();
   restartWordgroup();
 }
 function setWgAnswerMode(m) {
@@ -25862,6 +25912,88 @@ function sbAuswahlZiehen() {
   const t = wgRand(typen);
   wgState.type = t;
   wgState.tense = SB_ZEIT_TYPEN.includes(t) ? wgRand(sel[t]) : 'present';
+}
+// ── Wortgruppen „Auswahl“ (19.11.): wie im Satzbau, statt der Zeiten die Zahl je Art ──
+const WG_ZAHL_TYPEN = ['adjnoun', 'prepphrase'];
+const WG_ZAHLEN = ['sg', 'pl'];
+const WG_TYP_NAME = { adjnoun: 'Adj + Subst', detnoun: 'Begleiter + Subst', numadjnoun: 'Zahl + Adj + Subst', prepphrase: 'Präposition' };
+const WG_ZAHL_NAME = { sg: 'Singular', pl: 'Plural' };
+function wgAuswahlAn() { return wgState.tool === 'wordgroup' && wgState.wgAuswahl; }
+function wgSelLesen() {
+  const sel = {};
+  (wgState.wgSel || '').split(';').forEach(t => {
+    const [typ, z] = t.split(':');
+    if (!WG_PHRASE_TYPES.includes(typ)) return;
+    const zahlen = WG_ZAHL_TYPEN.includes(typ) ? (z || '').split(',').filter(x => WG_ZAHLEN.includes(x)) : ['sg'];
+    sel[typ] = zahlen.length ? zahlen : ['sg'];
+  });
+  return sel;
+}
+function wgSelSchreiben(sel) { wgState.wgSel = Object.entries(sel).map(([t, z]) => t + ':' + z.join(',')).join(';'); }
+function wgAlleZahlen(typ) { return WG_ZAHL_TYPEN.includes(typ) ? [...WG_ZAHLEN] : ['sg']; }
+function toggleWgAuswahl() {
+  wgState.wgAuswahl = !wgState.wgAuswahl;
+  if (wgState.wgAuswahl) {
+    const sel = wgSelLesen(), t = WG_PHRASE_TYPES.includes(wgState.type) ? wgState.type : 'adjnoun';
+    if (!sel[t]) sel[t] = WG_ZAHL_TYPEN.includes(t) ? [wgState.number === 'pl' ? 'pl' : 'sg'] : ['sg'];
+    wgSelSchreiben(sel); wgState.wgFocus = t;
+    saveToolSettings(); wgAuswahlSync(); restartWordgroup();
+  } else {
+    const sel = wgSelLesen(), f = sel[wgState.wgFocus] ? wgState.wgFocus : Object.keys(sel)[0] || 'adjnoun';
+    wgState.number = (sel[f] || ['sg'])[0];
+    saveToolSettings();
+    document.getElementById('wg-auswahl-toggle').setAttribute('aria-pressed', 'false');
+    document.getElementById('wg-type-switcher').querySelectorAll('.mode-btn').forEach(b => { b.classList.remove('sb-fokus'); delete b.dataset.sum; });
+    const nsw = document.getElementById('wg-num-switcher'); if (nsw) delete nsw.dataset.sumskip;
+    wgToggle('num-btn-sg', wgState.number === 'sg'); wgToggle('num-btn-pl', wgState.number === 'pl');
+    setWgType(f);
+  }
+}
+function wgTypeKlick(t) {
+  if (!wgAuswahlAn()) return setWgType(t);
+  const sel = wgSelLesen();
+  if (!sel[t]) { sel[t] = wgAlleZahlen(t); wgState.wgFocus = t; }
+  else if (wgState.wgFocus !== t) wgState.wgFocus = t;
+  else if (Object.keys(sel).length > 1) { delete sel[t]; wgState.wgFocus = Object.keys(sel).pop(); }
+  wgSelSchreiben(sel); saveToolSettings(); wgAuswahlSync(); restartWordgroup();
+}
+function wgNumKlick(n) {
+  if (!wgAuswahlAn()) return setWgNumber(n);
+  const sel = wgSelLesen(), f = wgState.wgFocus;
+  if (!sel[f] || !WG_ZAHL_TYPEN.includes(f)) return;
+  const i = sel[f].indexOf(n);
+  if (i < 0) sel[f] = WG_ZAHLEN.filter(x => x === n || sel[f].includes(x));
+  else if (sel[f].length > 1) sel[f].splice(i, 1);
+  wgSelSchreiben(sel); saveToolSettings(); wgAuswahlSync(); restartWordgroup();
+}
+function wgAuswahlSync() {
+  const an = wgAuswahlAn(), tg = document.getElementById('wg-auswahl-toggle');
+  if (tg) tg.setAttribute('aria-pressed', an ? 'true' : 'false');
+  if (!an) return;
+  const sel = wgSelLesen();
+  if (!sel[wgState.wgFocus]) wgState.wgFocus = Object.keys(sel)[0];
+  const f = wgState.wgFocus;
+  WG_PHRASE_TYPES.forEach(t => {
+    const b = document.getElementById('wg-type-' + t); if (!b) return;
+    b.classList.toggle('active', !!sel[t]);
+    b.classList.toggle('sb-fokus', t === f);
+    b.setAttribute('aria-pressed', sel[t] ? 'true' : 'false');
+    if (sel[t] && WG_ZAHL_TYPEN.includes(t) && sel[t].length === 1) b.dataset.sum = WG_TYP_NAME[t] + ' (' + (sel[t][0] === 'pl' ? 'Pl.' : 'Sg.') + ')';
+    else delete b.dataset.sum;
+  });
+  const nsw = document.getElementById('wg-num-switcher');
+  if (nsw) { nsw.dataset.sumskip = '1'; nsw.style.display = WG_ZAHL_TYPEN.includes(f) ? '' : 'none'; }
+  WG_ZAHLEN.forEach(z => wgToggle('num-btn-' + z, WG_ZAHL_TYPEN.includes(f) && sel[f].includes(z)));
+  const cs = document.getElementById('wg-case-switcher');
+  if (cs) cs.style.display = (sel.adjnoun || sel.detnoun) ? '' : 'none';
+  if (typeof updateGtSettingsSummary === 'function') updateGtSettingsSummary();
+}
+function wgAuswahlZiehen() {
+  const sel = wgSelLesen(), typen = Object.keys(sel);
+  if (!typen.length) return;
+  const t = wgRand(typen);
+  wgState.type = t;
+  if (WG_ZAHL_TYPEN.includes(t)) wgState.number = wgRand(sel[t]);
 }
 // Im Infofenster nur die Erklärung zur gewählten Satzart zeigen
 function sbSyncTypeInfo() {
@@ -26214,9 +26346,14 @@ const wgRundeId = () => wgState.tool === 'sentence' ? 'sb' : 'wg';
 function restartWordgroup() {
   if (!wgState.pairs) wgState.pairs = buildWordgroupPairs();
   const z = gtRundeZwang(wgRundeId());
-  if (z) { wgState.current = z; if (sbAuswahlAn() && z.sbType) { wgState.type = z.sbType; wgState.tense = z.sbTense; } }
+  if (z) {
+    wgState.current = z;
+    if (sbAuswahlAn() && z.sbType) { wgState.type = z.sbType; wgState.tense = z.sbTense; }
+    if (wgAuswahlAn() && z.wgType) { wgState.type = z.wgType; wgState.number = z.wgNumber; }
+  }
   else {
   if (sbAuswahlAn()) sbAuswahlZiehen();
+  if (wgAuswahlAn()) wgAuswahlZiehen();
   // Im Satzbau kommen Subjekt, Verb und Objekt aus SB_ITEMS, damit die Sätze
   // auch inhaltlich Sinn ergeben.
   const sb = (wgState.tool === 'sentence') ? sbPick(wgState.type) : null;
@@ -26250,6 +26387,7 @@ function restartWordgroup() {
     hint: task.hint, sbId, altAnswers, fullAnswer: task.answer, srsKey: task.srsKey || null,
     femAnswers, femSwap: task.femSwap || null,
     sbType: wgState.tool === 'sentence' ? wgState.type : null, sbTense: wgState.tool === 'sentence' ? wgState.tense : null,
+    wgType: wgState.tool === 'wordgroup' ? wgState.type : null, wgNumber: wgState.tool === 'wordgroup' ? wgState.number : null,
   };
   }
   applySbHelpLevel();
@@ -26373,7 +26511,9 @@ function renderWordgroupTask() {
   const deGross = !zeigeTop && wgState.tool === 'sentence';
   const cur = wgState.current;
   const abz = sbAuswahlAn() && cur.sbType
-    ? '<span class="cf-form-chip sb-auswahl-chip">' + SB_TYP_NAME[cur.sbType] + (SB_ZEIT_TYPEN.includes(cur.sbType) ? ' · ' + SB_ZEIT_NAME[cur.sbTense] : '') + '</span>' : '';
+    ? '<span class="cf-form-chip sb-auswahl-chip">' + SB_TYP_NAME[cur.sbType] + (SB_ZEIT_TYPEN.includes(cur.sbType) ? ' · ' + SB_ZEIT_NAME[cur.sbTense] : '') + '</span>'
+    : wgAuswahlAn() && cur.wgType
+    ? '<span class="cf-form-chip sb-auswahl-chip">' + WG_TYP_NAME[cur.wgType] + (WG_ZAHL_TYPEN.includes(cur.wgType) ? ' · ' + WG_ZAHL_NAME[cur.wgNumber] : '') + '</span>' : '';
   wgEl('q').innerHTML = abz +
     (zeigeTop ? '<span class="case-prep" lang="ru">' + wgState.current.promptTop + '</span>' : '')
     + (deGross ? '<span class="case-prep sb-de-gross">' + wgState.current.promptDe + '</span>' : wgState.current.promptDe) +
@@ -27158,7 +27298,7 @@ function pfPrep(p, form) {
 }
 function buildPronFormTask() {
   const rand = arr => arr[Math.floor(Math.random() * arr.length)];
-  const typ = pronFormState.scope === 'all' ? rand(['case', 'prep', 'poss', 'extra']) : pronFormState.scope;
+  const typ = pronFormState.scope === 'all' ? rand(['case', 'prep', 'poss', 'extra']) : rand(mfListe(pronFormState.scope));
   if (typ === 'extra') return rand(pfExtraTasks());
   if (typ === 'rel') return rand(pfRelTasks());
   if (typ === 'case') {
@@ -27281,12 +27421,12 @@ function togglePronFormHint() {
   saveToolSettings();
   applyPronFormHint();
 }
+const PF_SCOPES = ['case', 'prep', 'poss', 'extra', 'rel'];
+function pronFormScopeKlick(v) { setPronFormScope(mfKlick(pronFormState.scope, v, PF_SCOPES)); }
 function setPronFormScope(v) {
+  if (!v || (v !== 'all' && !mfListe(v).every(x => PF_SCOPES.includes(x)))) v = 'all';
   pronFormState.scope = v;
-  ['all', 'case', 'prep', 'poss', 'extra', 'rel'].forEach(x => {
-    const b = document.getElementById('pronform-scope-' + x);
-    if (b) b.classList.toggle('active', x === v);
-  });
+  mfKnoepfe(Object.fromEntries(['all', ...PF_SCOPES].map(x => [x, 'pronform-scope-' + x])), v);
   saveToolSettings();
   restartPronForm();
 }
@@ -27493,7 +27633,7 @@ function adjFormItems() {
 }
 function adjFormTotal() { return adjFormItems().length; }
 function buildAdjFormTask() {
-  let basis = adjFormItems().filter(x => adjFormState.scope === 'all' ? x.typ !== 'ppp' : x.typ === adjFormState.scope);
+  let basis = adjFormItems().filter(x => adjFormState.scope === 'all' ? x.typ !== 'ppp' : mfHat(adjFormState.scope, x.typ));
   if (adjFormState.regOnly) { const r = basis.filter(adjFormIstRegel); if (r.length) basis = r; }
   const pool = musterFrei(basis, 'adjform', x => x.id);
   const ids = pool.map(x => x.id);
@@ -27540,12 +27680,12 @@ function toggleAdjFormHint() {
   saveToolSettings();
   applyAdjFormHint();
 }
+const AF_SCOPES = ['short', 'comp', 'sup', 'ppp'];
+function adjFormScopeKlick(v) { setAdjFormScope(mfKlick(adjFormState.scope, v, AF_SCOPES)); }
 function setAdjFormScope(v) {
+  if (!v || (v !== 'all' && !mfListe(v).every(x => AF_SCOPES.includes(x)))) v = 'all';
   adjFormState.scope = v;
-  ['all', 'short', 'comp', 'sup', 'ppp'].forEach(x => {
-    const b = document.getElementById('adjform-scope-' + x);
-    if (b) b.classList.toggle('active', x === v);
-  });
+  mfKnoepfe(Object.fromEntries(['all', ...AF_SCOPES].map(x => [x, 'adjform-scope-' + x])), v);
   saveToolSettings();
   restartAdjForm();
 }
@@ -27689,7 +27829,7 @@ const genderState = {
 const GENDER_SCOPES = { all: 'Alle', easy: 'Regelfälle', soft: '-ь-Wörter', exc: 'Ausnahmen', pl: 'nur Plural' };
 function genderScopePool() {
   const p = genderPool();
-  return genderState.scope === 'all' ? p : p.filter(x => x.typ === genderState.scope);
+  return genderState.scope === 'all' ? p : p.filter(x => mfHat(genderState.scope, x.typ));
 }
 // Fortschritt: nur Wörter, deren Geschlecht man nicht an der Endung ablesen kann
 function genderTotal() { return genderPool().filter(x => x.typ !== 'easy').length; }
@@ -27698,18 +27838,17 @@ function genderProgressText(all) {
   const sc = genderState.scope, key = 'gender';
   const pool = sc === 'all' ? genderPool().filter(x => x.typ !== 'easy') : genderScopePool();
   const map = all[key] || {}, n = pool.filter(x => srsDone(map[x.id])).length;
-  return (sc === 'all' ? '' : GENDER_SCOPES[sc] + ': ') + n + ' von ' + pool.length + ' gelernt';
+  return (sc === 'all' ? '' : mfListe(sc).map(x => GENDER_SCOPES[x]).join(' + ') + ': ') + n + ' von ' + pool.length + ' gelernt';
 }
 function toggleGenderInfo() {
   const el = document.getElementById('gender-info-panel');
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
+function genderScopeKlick(v) { setGenderScope(mfKlick(genderState.scope, v, Object.keys(GENDER_SCOPES).slice(1))); }
 function setGenderScope(v) {
+  if (!v || (v !== 'all' && !mfListe(v).every(x => GENDER_SCOPES[x] && x !== 'all'))) v = 'all';
   genderState.scope = v;
-  Object.keys(GENDER_SCOPES).forEach(x => {
-    const b = document.getElementById('gender-scope-' + x);
-    if (b) b.classList.toggle('active', x === v);
-  });
+  mfKnoepfe(Object.fromEntries(Object.keys(GENDER_SCOPES).map(x => [x, 'gender-scope-' + x])), v);
   saveToolSettings();
   updateGrammarTileProgress();
   restartGender();
@@ -28166,11 +28305,13 @@ function toggleRektionHint() {
 function toggleRektionAnders() { rektionState.nurAnders = !rektionState.nurAnders; saveToolSettings(); restartRektion(); }
 function toggleRektionPron() { rektionState.pron = !rektionState.pron; saveToolSettings(); restartRektion(); }
 function setRektionKasus(k) { rektionState.kasus = k; saveToolSettings(); restartRektion(); }
+const RK_KASUS_FILTER = ['Dat', 'Gen', 'Instr', 'Akk', 'praep'];
+function rektionKasusKlick(k) { setRektionKasus(mfKlick(rektionState.kasus, k, RK_KASUS_FILTER)); }
 // Filter der Einstellungen; passt nichts, gilt alles
 function rkPasst(x) {
   const st = rektionState, o = rkOpt(x.r);
   if (st.nurAnders && !rkAnders(x)) return false;
-  return st.kasus === 'all' || (st.kasus === 'praep' ? !!o.prep : x.r === st.kasus);
+  return st.kasus === 'all' || mfListe(st.kasus).some(k => k === 'praep' ? !!o.prep : x.r === k);
 }
 function rektionPool(mode) { const alle = rektionItems(mode), p = alle.filter(t => rkPasst(t.verb)); return p.length ? p : alle; }
 // „Form bilden“ ab und zu mit Pronomen (14.11.): bei Personen statt мама/брат ein Personalpronomen –
@@ -29941,13 +30082,13 @@ function tfDe(inf) {
 }
 function tfVollendet(inf) { return Object.keys(aspectData).some(k => aspectData[k].pf === inf) || /^(прочитать|сказать|сделать|посмотреть|написать|ответить|отдохнуть|приготовить|купить|открыть|вернуться|прийти|уйти|закрыть|построить|дать|взять|забыть)$/.test(inf); }
 function setTransformScope(scope) {
-  if (!TRANSFORM_SCOPES.includes(scope)) scope = 'all';
+  if (!scope || !mfListe(scope).every(x => TRANSFORM_SCOPES.includes(x) && x !== 'all')) scope = 'all';
   transformState.scope = scope;
   saveToolSettings();
-  TRANSFORM_SCOPES.forEach(s =>
-    document.getElementById('transform-scope-btn-' + s).classList.toggle('active', s === scope));
+  mfKnoepfe(Object.fromEntries(TRANSFORM_SCOPES.map(s => [s, 'transform-scope-btn-' + s])), scope);
   restartTransform();
 }
+function transformScopeKlick(v) { setTransformScope(mfKlick(transformState.scope, v, TRANSFORM_SCOPES.slice(1))); }
 
 function openTransform() {
   setTransformScope(transformState.scope || 'all');
@@ -30001,7 +30142,7 @@ function transformRoundPick(pool, now) {
 }
 function transformPool() {
   const pool = buildTransformItems();
-  const auswahl = transformState.scope === 'all' ? pool : pool.filter(i => i.kind === transformState.scope);
+  const auswahl = transformState.scope === 'all' ? pool : pool.filter(i => mfHat(transformState.scope, i.kind));
   // je Einheit eine Aufgabe
   const je = {};
   shuffleInPlace(auswahl.slice()).forEach(t => { const u = transformUnitId(t); if (!je[u]) je[u] = t; });
