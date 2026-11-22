@@ -24,15 +24,15 @@ const { chromium } = require('playwright');
   await p.clock.install({ time: new Date(JETZT) });
   await p.goto('file://' + APP_PATH); await p.waitForTimeout(300); await p.evaluate(SAAT, [JETZT, D]);
   const r = await p.evaluate(() => ({
-    go: document.querySelector('.home-go').textContent.replace(/\s+/g, ' ').trim(), plan: document.getElementById('home-plan').textContent,
+    go: document.querySelector('.home-go').textContent.replace(/\s+/g, ' ').trim(), goTitle: document.querySelector('.home-go').title, plan: document.getElementById('home-plan').textContent,
     fc: document.getElementById('home-forecast').getAttribute('aria-label'), fcBars: document.querySelectorAll('#home-forecast .home-fc-bars > div').length,
-    morgen: document.querySelectorAll('#home-forecast .home-fc-bars > div')[1].title,
+    morgen: document.querySelectorAll('#home-forecast .home-fc-bars > div')[1].title, fc0: document.querySelectorAll('#home-forecast .home-fc-bars > div')[0].title,
     st: [...document.querySelectorAll('.home-due-st-t .home-due-st-i')].map(x => x.title + ': ' + x.querySelector('b').textContent).join(' · '), stSegs: [...document.querySelectorAll('.home-due-st span')].map(x => x.className).join(),
     week: document.getElementById('home-weeksum').textContent, wTip: [...document.querySelectorAll('.home-week div')].map(x => x.title),
     gew: document.getElementById('home-gewinn').textContent.trim(), pick: [...document.querySelectorAll('.home-goal-pick button')].map(x => x.textContent).join(),
   }));
-  ok('Knopf: was als Nächstes kommt (Kategorie und offen); Zeile darunter: fällig und neu in der Auswahl', /^Weiterlernen· Sport · \d+ offen$/.test(r.go.replace(/\s+/g, ' ').replace('Weiterlernen ·', 'Weiterlernen·')) && /^Vokabeln · Sport: 3 fällig, \d+ neu$/.test(r.plan), r.go + ' | ' + r.plan);
-  ok('Vorschau als Balkenreihe über 8 Tage, „später heute“, Zahlen im Tooltip', r.fcBars === 8 && /^Fällig in den kommenden Tagen: später heute 1, morgen 1,/.test(r.fc) && r.morgen === 'morgen: 1 fällig', r.fc);
+  ok('Knopf nur „Weiterlernen“ (22.11., was als Nächstes kommt im Tooltip); Zeile darunter: fällig und neu in der Auswahl', r.go === 'Weiterlernen' && /^Weiterlernen · Sport · \d+ offen$/.test(r.goTitle) && /^Vokabeln · Sport: 3 fällig, \d+ neu$/.test(r.plan), r.go + ' | ' + r.plan);
+  ok('Vorschau als Balkenreihe über 8 Tage, „später heute“, Zahlen im Tooltip', r.fcBars === 8 && /^Fällig in den kommenden Tagen: später heute 1, morgen 1,/.test(r.fc) && r.morgen === 'morgen: 1 fällig' && r.fc0 === 'kommen im Lauf des Tages noch dazu: +1 fällig', r.fc + ' | ' + r.fc0);
   ok('Fällige nach Stufe: Balken und Text', r.st === 'Wiederholung 1: 3 · Wiederholung 2: 1 · Wiederholung 3: 1' && r.stSegs === 's1,s2,s3', r.st + ' / ' + r.stSegs);
   ok('Woche: Schnitt je Übungstag', r.week === '90 Antworten · Ø 30 je Übungstag (3 von 7) · 86 % richtig', r.week);
   ok('Woche: Tooltip je Balken mit Antworten und Quote', r.wTip[6] === 'Do: 30 Antworten · 90 % richtig' && r.wTip[0] === 'Fr: nicht geübt', r.wTip.join(' | '));

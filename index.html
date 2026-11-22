@@ -783,7 +783,13 @@
   .home-split-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
   .home-hard-g { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--c-border); }
   .home-hard-g-k { font-weight: 600; margin-bottom: 4px; }
-  .home-hard-g-row { display: flex; align-items: baseline; gap: 8px; width: 100%; background: none; border: 0; padding: 3px 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .home-hard-g-row { display: flex; align-items: baseline; gap: 8px; width: 100%; background: none; border: 0; padding: 0; color: inherit; font: inherit; font-size: 13.5px; text-align: left; cursor: pointer; min-width: 0; }
+  .home-hard-g-rows { display: flex; flex-direction: column; gap: 4px; margin: 2px 0 4px; }
+  .home-hard-g-row b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .home-hard-fa { font-style: normal; color: var(--c-text-muted); margin-left: 6px; font-size: 12.5px; }
+  /* Zuletzt geübt über die ganze Breite, Einträge nebeneinander (22.11.) */
+  .home-full { grid-column: 1 / -1; }
+  #home-zuletzt .home-res { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
   .home-hard-g-row:hover b { text-decoration: underline; }
   .home-hard-g-row b { font-weight: 600; }
   .home-hard-g-row span { color: var(--c-text-muted); font-size: 12.5px; flex: 1; }
@@ -1724,9 +1730,15 @@
     /* Fällig (mit Vorschau) und Heute (mit Zielknöpfen) brauchen am Handy die volle Breite */
     .home-grid > #home-due, .home-grid > #home-today { grid-column: 1 / -1; }
     #home-today .home-ring { display: grid; width: 64px; height: 64px; } #home-today .home-ring span { width: 50px; height: 50px; font-size: 13px; }
+    /* Handy: Ring oben rechts in der Karte, damit „Heute“ nicht höher wird (22.11.) */
+    #home-today { position: relative; gap: 0; } #home-today .home-today-top .home-ring { position: absolute; top: 12px; right: 14px; width: 56px; height: 56px; } #home-today .home-today-top .home-ring span { width: 44px; height: 44px; font-size: 12px; }
   }
   .home-card { background: var(--c-surface); border: 0.5px solid var(--c-border-light); border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .home-card.home-row { flex-direction: row; align-items: center; gap: 16px; }
+  .home-g-nie { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .home-g-heute b { color: var(--c-text-primary); font-weight: 600; }
+  .home-today-top { display: flex; align-items: center; gap: 14px; }
+  .home-today-top .home-ring { width: 64px; height: 64px; } .home-today-top .home-ring span { width: 50px; height: 50px; font-size: 13px; }
   .home-wide { grid-column: span 2; }
   .home-k { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--c-text-muted); display: flex; gap: 6px; align-items: center; }
   .home-big { font-size: 30px; font-weight: 600; } .home-big small { font-size: 14px; color: var(--c-text-muted); font-weight: 400; }
@@ -3518,6 +3530,17 @@
             <option value="1000">1000 Antworten</option>
             <option value="2000">2000 Antworten</option>
             <option value="5000">5000 Antworten</option>
+          </select>
+        </div>
+        <div class="set-row">
+          <i class="ti ti-repeat" aria-hidden="true"></i>
+          <div class="set-text"><strong>Wiederholen in Portionen</strong><span>So viele fällige Wörter nimmt „Wiederholen“ auf einmal, die dringendsten zuerst</span></div>
+          <select class="settings-select" id="dueportion-select" aria-label="Wiederholen in Portionen" onchange="setDuePortion(this.value)">
+            <option value="50">50 Wörter</option>
+            <option value="100" selected>100 Wörter</option>
+            <option value="200">200 Wörter</option>
+            <option value="500">500 Wörter</option>
+            <option value="0">alle</option>
           </select>
         </div>
         <div class="set-row">
@@ -8934,6 +8957,7 @@ function resetLifetime() {
     + '(Zählungen, „gelernt seit“). Der Übungsstand bleibt. Tipp: Vorher unter „Sicherung“ sichern.')) return;
   lifetime = { v: {}, g: {}, ver: 3, run: 1 };
   saveLifetime();
+  fehlMem = {}; try { localStorage.removeItem(FEHL_KEY); } catch (e) {}
   noteReset('life');
   flushSaves();
   ghAfterReset();
@@ -8974,10 +8998,11 @@ function reloadStateFromStorage() {
     lifetime = null; loadLifetime();
     grammarSrs = null; loadGrammarSrs();
     bookmarkedWords = loadBookmarks();
-    daylogMem = null;
+    daylogMem = null; fehlMem = null;
     // Tagesziel und „Oft falsch“-Schwelle können beim Zusammenführen neu hinzukommen
     { const v = parseInt(localStorage.getItem(DAY_GOAL_KEY), 10); if (v > 0) dayGoal = v; }
     { const v = Number(localStorage.getItem(HARD_MIN_KEY)); if (HARD_MINS.includes(v)) hardMin = v; }
+    loadDuePortion();
   } catch (e) {}
 }
 function saveLifetime() {
@@ -9154,6 +9179,13 @@ function homeGrammarDue() {
 }
 // lesbare Aufgabe aus dem Schlüssel im Lernstand („f:пользоваться:телефон“ → „пользоваться · телефон“)
 function homeGrammarTaskText(id) {
+  // Satzbau (22.11.): Kennung „negation#100“ → der Satz selbst (russisch, sonst die deutsche Vorgabe)
+  const sb = /^([a-z]+)#(\d+)$/.exec(String(id));
+  if (sb && typeof SB_ITEMS !== 'undefined' && SB_ITEMS[+sb[2]] && SB_ITEMS[+sb[2]].type === sb[1]) {
+    const i = SB_ITEMS[+sb[2]], zeit = x => x && typeof x === 'object' ? (x.present || Object.values(x)[0] || '') : (x || '');
+    const ru = String(zeit(i.ru)).trim();
+    return ru ? (/[.!?]$/.test(ru) ? ru : ru + '.') : String(zeit(i.de));
+  }
   return String(id).replace(/^(f|c|past|apast|sb|w):/, '').replace(/:(Vergangenheit|Imperativ|vollendet \((Futur|Vergangenheit)\))$/, ' ($1)').split(':').join(' · ').replace(/ \+ /g, ' + ');
 }
 function homeRelDay(ts) {
@@ -9495,6 +9527,20 @@ function homeGrammarRows(now) {
     return z;
   });
 }
+// Stand Grammatik (22.11.): heute geübte Aufgaben je Bereich und Bereiche, die noch nie geübt wurden
+function homeGrammarHeute() {
+  const g = loadLifetime().g || {}, src = grammarToolSources(), h0 = daysAgo(0); h0.setHours(0, 0, 0, 0);
+  return Object.keys(GRAMMAR_CATS).map(c => {
+    let heute = 0, je = 0;
+    GRAMMAR_CATS[c].forEach(t => { const q = src[t]; if (!q) return; q[0].forEach(k => Object.values(g[k] || {}).forEach(e => { if (!e) return; je++; if ((e.z || 0) >= h0.getTime()) heute++; })); });
+    return { c, name: GRAMMAR_CAT_LABEL[c], heute, nie: !je, tool: GRAMMAR_CATS[c].find(t => src[t]) };
+  });
+}
+function homeGrammarHeuteHtml() {
+  const z = homeGrammarHeute(), geuebt = z.filter(x => x.heute), nie = z.filter(x => x.nie && x.tool);
+  return `<div class="home-s home-g-heute" id="home-g-heute">${geuebt.length ? 'Heute geübt: ' + geuebt.map(x => x.name + ' <b>' + fmtN(x.heute) + '</b>').join(' · ') : 'Heute noch keine Grammatik geübt.'}</div>`
+    + (nie.length ? `<div class="home-g-nie" id="home-g-nie"><span class="home-s">Noch nie geübt:</span>${nie.map(x => `<button type="button" class="home-btn home-btn-2" onclick="homeOpenTool('${x.tool}')" title="${htmlEsc(homeToolName(x.tool))} öffnen"><i class="ti ti-player-play"></i>${x.name}</button>`).join('')}</div>` : '');
+}
 function homeGrammarSumAnteil(now) {
   const g = loadLifetime().g || {}, src = grammarToolSources();
   return homeMittel(Object.values(GRAMMAR_CATS).flat().map(t => homeToolAnteile(t, g, src, now)));
@@ -9600,12 +9646,31 @@ function setHardMin(n) {
 }
 // „Älteste zuerst“: bei den fälligen Wörtern zuerst die, deren Wartezeit am längsten abgelaufen ist
 let homeDueOrder = 'zufall';
+// Wiederholen in Portionen (22.11.): „Wiederholen“ nimmt höchstens so viele fällige Wörter, die dringendsten zuerst
+// (niedrigste Wiederholungsstufe, dann am längsten fällig); 0 = alle. Je Gerät gemerkt, Standard 100.
+const DUE_PORTION_KEY = 'vokabeltrainer-due-portion', DUE_PORTIONS = [0, 50, 100, 200, 500];
+let duePortion = 100;
+function loadDuePortion() { try { const r = localStorage.getItem(DUE_PORTION_KEY); if (r !== null && DUE_PORTIONS.includes(Number(r))) duePortion = Number(r); } catch (e) {} }
+loadDuePortion();
+function setDuePortion(v) {
+  const n = Number(v); if (!DUE_PORTIONS.includes(n)) return;
+  duePortion = n; try { localStorage.setItem(DUE_PORTION_KEY, String(n)); } catch (e) {}
+  const sel = document.getElementById('dueportion-select'); if (sel) sel.value = String(n);
+  if (appView === 'home') renderHome();
+}
+function homePortion(n) { return duePortion && n > duePortion ? duePortion : n; }
+function homePortionText(n) { return homePortion(n) < n ? fmtN(homePortion(n)) + ' von ' + fmtN(n) : fmtN(n) + ' fällig'; }
 function homeStartPool(kind, order, max) {
   homeDueOrder = kind === 'due' && order === 'alt' ? 'alt' : 'zufall';
   const now = Date.now();
-  const list = kind === 'due'
-    ? allVocabWords().filter(w => { const e = lifeVocabEntry(w); return e && e.d > 0 && e.d < LIFE_RUNS_MAX && now >= lifeNextDue(e); })
-    : homeHardList(homeStats().hardAll).map(x => x.w).slice(0, max || undefined);
+  let list;
+  if (kind === 'due') {
+    const due = allVocabWords().map(w => ({ w, e: lifeVocabEntry(w) })).filter(x => x.e && x.e.d > 0 && x.e.d < LIFE_RUNS_MAX && now >= lifeNextDue(x.e));
+    // dringendste zuerst: niedrige Wiederholungsstufe (sonst rutscht ein Wort ganz heraus), dann am längsten fällig;
+    // „Älteste zuerst“ nur nach Fälligkeit
+    due.sort((a, b) => (order === 'alt' ? 0 : a.e.d - b.e.d) || lifeNextDue(a.e) - lifeNextDue(b.e));
+    list = due.slice(0, homePortion(due.length)).map(x => x.w);
+  } else list = homeHardList(homeStats().hardAll).map(x => x.w).slice(0, max || undefined);
   if (!list.length) {
     if (kind === 'due' && homeStats().dueGrammar) setAppView('grammar');
     return;
@@ -9729,8 +9794,8 @@ function homeKopfHtml(s) {
   const datum = new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
   const plan = homePlanText(s), goLabel = homeGoLabel();
   return `<div class="home-hello"><div><h1 lang="ru">${gruss}</h1><p>${htmlEsc(datum)}${s.streak ? ' · <i class="ti ti-flame"></i> ' + s.streak + (s.streak === 1 ? ' Tag' : ' Tage') + ' in Folge geübt' : ''}</p></div>
-    <div class="home-go-wrap"><div class="home-go-row">${s.dueWords ? `<button class="home-go-due" id="home-go-due" type="button" onclick="homeStartPool('due')"><i class="ti ti-repeat"></i>Wiederholen<span>· ${fmtN(s.dueWords)} fällig</span></button>` : ''}<button class="home-go${s.dueWords ? ' home-go-2' : ''}" type="button" onclick="homeContinue()"${s.dueWords ? ' title="Weiterlernen' + (goLabel ? ' · ' + htmlEsc(goLabel) : '') + '"' : ''}><i class="ti ti-player-play"></i>Weiterlernen${goLabel ? '<span>· ' + htmlEsc(goLabel) + '</span>' : ''}</button></div>
-    ${plan ? `<div class="home-plan" id="home-plan">${htmlEsc(plan)}</div>` : ''}</div></div>
+    <div class="home-go-wrap"><div class="home-go-row">${s.dueWords ? `<button class="home-go-due" id="home-go-due" type="button" onclick="homeStartPool('due')"><i class="ti ti-repeat"></i>Wiederholen<span>· ${homePortionText(s.dueWords)}</span></button>` : ''}<button class="home-go${s.dueWords ? ' home-go-2' : ''}" type="button" onclick="homeContinue()"${goLabel ? ' title="Weiterlernen · ' + htmlEsc(goLabel) + '"' : ''}><i class="ti ti-player-play"></i>Weiterlernen</button></div>
+    ${plan || goLabel ? `<div class="home-plan" id="home-plan">${htmlEsc(plan || goLabel)}</div>` : ''}</div></div>
   <div class="home-sync" id="home-sync" role="status" hidden><i class="ti ti-upload"></i><span>Lernstand noch nicht auf GitHub gespeichert</span><button type="button" onclick="ghSync()">Jetzt speichern</button></div>`;
 }
 function homeDueCard(s) {
@@ -9739,22 +9804,23 @@ function homeDueCard(s) {
       let rdue = []; try { rdue = readingFaellig(); } catch (e) {}
       const rsum = rdue.reduce((a, x) => a + x.n, 0);
       const vorschau = s.forecast.some(d => d.n) ? `<div class="home-fc" id="home-forecast" role="img" aria-label="Fällig in den kommenden Tagen: ${s.forecast.map((d, i) => (i === 0 ? 'später heute' : d.tag) + ' ' + d.n).join(', ')}">
-        <div class="home-fc-bars">${s.forecast.map((d, i) => `<div title="${i === 0 ? 'später heute' : d.tag}: ${d.n} fällig"><small>${d.n ? fmtN(d.n) : ''}</small><span class="${d.n ? '' : 'leer'}" style="height:${d.n ? Math.max(10, Math.round(d.n / fmax * 100)) : 6}%"></span></div>`).join('')}</div>
-        <div class="home-wl">${s.forecast.map((d, i) => `<span${i === 0 ? ' title="später heute"' : ''}>${i === 0 ? 'heute' : d.tag}</span>`).join('')}</div></div>` : '';
+        <div class="home-fc-bars">${s.forecast.map((d, i) => `<div title="${i === 0 ? 'kommen im Lauf des Tages noch dazu' : d.tag}: ${i === 0 ? '+' : ''}${d.n} fällig"><small>${d.n ? (i === 0 ? '+' : '') + fmtN(d.n) : ''}</small><span class="${d.n ? '' : 'leer'}" style="height:${d.n ? Math.max(10, Math.round(d.n / fmax * 100)) : 6}%"></span></div>`).join('')}</div>
+        <div class="home-wl">${s.forecast.map((d, i) => `<span${i === 0 ? ' title="kommen im Lauf des Tages noch dazu (die schon fälligen stehen oben)"' : ''}>${i === 0 ? '<span class="home-lang">noch </span>heute' : d.tag}</span>`).join('')}</div></div>` : '';
       const stufenBalken = dsum ? `<div class="home-t home-due-st" role="img" aria-label="Fällige nach Wiederholungsstufe: ${s.dueStufen.map((n, i) => 'Wiederholung ' + (i + 1) + ' ' + n).join(', ')}">${s.dueStufen.map((n, i) => n ? `<span class="s${i + 1}" style="width:${n / dsum * 100}%" title="Wiederholung ${i + 1}: ${n} fällig – mit einer richtigen Antwort auf Wiederholung ${i + 2}"></span>` : '').join('')}</div>
         <div class="home-s home-due-st-t" title="fällig je Wiederholungsstufe">${s.dueStufen.map((n, i) => n ? '<span class="home-due-st-i" title="Wiederholung ' + (i + 1) + '"><span class="home-lg s' + (i + 1) + '"></span>' + (i + 1) + ' <b>' + fmtN(n) + '</b></span>' : '').filter(Boolean).join('')}</div>` : '';
       return `<div class="home-card home-pair" id="home-due"${due ? ' onclick="if (!event.target.closest(\'button\')) homeStartPool(\'due\')"' : ''}><div class="home-k"><i class="ti ti-repeat"></i>Fällig<span class="home-lang"> zur Wiederholung</span></div>
       <div class="home-big home-warm">${fmtN(s.dueWords)} <small>${s.dueWords === 1 ? 'Wort' : 'Wörter'}</small></div>
       <div class="home-s">${s.dueGrammar ? 'dazu ' + fmtN(s.dueGrammar) + (s.dueGrammar === 1 ? ' Grammatikaufgabe' : ' Grammatikaufgaben') : ''}${rsum ? (s.dueGrammar ? ' · ' : due ? 'dazu ' : '') + fmtN(rsum) + (rsum === 1 ? ' Satz' : ' Sätze') + ' aus Texten' + (due ? '' : ' zum Wiederholen') : ''}${!due && !rsum ? (naechste ? 'Nächste: ' + (naechste === s.forecast[0] ? 'später heute' : naechste.tag) + ' · ' + naechste.n : 'Noch nichts in Wiederholung') : ''}</div>
       ${stufenBalken}
-      ${due || rsum ? `<div class="home-due-btns">${s.dueWords ? `<button type="button" class="home-btn" onclick="homeStartPool('due')" aria-label="Fällige wiederholen: ${s.dueWords}"><i class="ti ti-player-play"></i>Wiederholen</button><button type="button" class="home-btn home-btn-2" onclick="homeStartPool('due', 'alt')" title="Zuerst die Wörter, deren Wartezeit am längsten abgelaufen ist"><i class="ti ti-clock"></i>Älteste zuerst</button>` : ''}${s.dueGrammar ? `<button type="button" class="home-btn home-btn-2" id="home-gram-due" onclick="homeGrammarDue()" title="Öffnet das Grammatikwerkzeug mit den meisten fälligen Aufgaben"><i class="ti ti-book-2"></i>Grammatik wiederholen</button>` : ''}${rsum ? `<button type="button" class="home-btn home-btn-2" id="home-read-due" onclick="homeReadingDue()" title="Nicht gewusste Sätze aus „${htmlEsc(rdue[0].t.titel)}“, zuletzt vor mindestens ${READ_WIEDERHOLEN_TAGE} Tagen gelesen"><i class="ti ti-book"></i>Sätze wiederholen</button>` : ''}</div>` : ''}
+      ${due || rsum ? `<div class="home-due-btns">${s.dueWords ? `<button type="button" class="home-btn" onclick="homeStartPool('due')" aria-label="Fällige wiederholen: ${homePortionText(s.dueWords)}"${homePortion(s.dueWords) < s.dueWords ? ` title="Die ${fmtN(homePortion(s.dueWords))} dringendsten zuerst – Portion unter Einstellungen → Üben"` : ''}><i class="ti ti-player-play"></i>Wiederholen${homePortion(s.dueWords) < s.dueWords ? ' <small>' + fmtN(homePortion(s.dueWords)) + '</small>' : ''}</button><button type="button" class="home-btn home-btn-2" onclick="homeStartPool('due', 'alt')" title="Zuerst die Wörter, deren Wartezeit am längsten abgelaufen ist"><i class="ti ti-clock"></i>Älteste zuerst</button>` : ''}${s.dueGrammar ? `<button type="button" class="home-btn home-btn-2" id="home-gram-due" onclick="homeGrammarDue()" title="Öffnet das Grammatikwerkzeug mit den meisten fälligen Aufgaben"><i class="ti ti-book-2"></i>Grammatik wiederholen</button>` : ''}${rsum ? `<button type="button" class="home-btn home-btn-2" id="home-read-due" onclick="homeReadingDue()" title="Nicht gewusste Sätze aus „${htmlEsc(rdue[0].t.titel)}“, zuletzt vor mindestens ${READ_WIEDERHOLEN_TAGE} Tagen gelesen"><i class="ti ti-book"></i>Sätze wiederholen</button>` : ''}</div>` : ''}
       ${vorschau}</div>`;
 }
 function homeTodayCard(s) {
   const ziel = s.goal > 0 ? Math.min(100, Math.round(s.today.a / s.goal * 100)) : 0;
-  return `<div class="home-card home-row home-pair home-click" id="home-today" role="button" tabindex="0" onclick="homeOpenGoal()" onkeydown="homeKey(event)" title="${s.goal ? 'Tagesziel ändern' : 'Tagesziel festlegen'}">${s.goal > 0 ? `<div class="home-ring${s.today.a >= s.goal ? ' voll' : ''}" style="--p:${ziel}%" role="img" aria-label="${s.today.a} von ${s.goal}"><span>${s.today.a >= s.goal ? '<i class="ti ti-check"></i>' : ziel + ' %'}</span></div>` : ''}
-      <div><div class="home-k"><i class="ti ti-target-arrow"></i>Heute</div><div class="home-big">${fmtN(s.today.a)} <small>${s.goal > 0 ? (s.today.a >= s.goal ? (s.today.a >= 2 * s.goal ? (s.today.a / s.goal).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' × Tagesziel ✓' : 'von ' + fmtN(s.goal) + ' ✓') : 'von ' + fmtN(s.goal)) : (s.today.a === 1 ? 'Antwort' : 'Antworten')}</small></div>
-      <div class="home-s">${fmtN(s.today.r)} richtig · ${fmtN(s.today.a - s.today.r)} falsch</div>
+  // Ring direkt neben der Zahl, Inhalt oben (22.11.) – vorher stand der Ring mittig mit viel Leerraum daneben
+  return `<div class="home-card home-pair home-click" id="home-today" role="button" tabindex="0" onclick="homeOpenGoal()" onkeydown="homeKey(event)" title="${s.goal ? 'Tagesziel ändern' : 'Tagesziel festlegen'}">
+      <div class="home-k"><i class="ti ti-target-arrow"></i>Heute</div><div class="home-today-body"><div class="home-today-top">${s.goal > 0 ? `<div class="home-ring${s.today.a >= s.goal ? ' voll' : ''}" style="--p:${ziel}%" role="img" aria-label="${s.today.a} von ${s.goal}"><span>${s.today.a >= s.goal ? '<i class="ti ti-check"></i>' : ziel + ' %'}</span></div>` : ''}<div><div class="home-big">${fmtN(s.today.a)} <small>${s.goal > 0 ? (s.today.a >= s.goal ? (s.today.a >= 2 * s.goal ? (s.today.a / s.goal).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' × Tagesziel ✓' : 'von ' + fmtN(s.goal) + ' ✓') : 'von ' + fmtN(s.goal)) : (s.today.a === 1 ? 'Antwort' : 'Antworten')}</small></div>
+      <div class="home-s">${fmtN(s.today.r)} richtig · ${fmtN(s.today.a - s.today.r)} falsch</div></div></div>
       ${(() => { const h = s.heuteTeile; const sum = h.v + h.g; if (!sum) return '';
         return `<div class="home-split" id="home-split" title="heute geübte verschiedene Wörter und Grammatikaufgaben"><div class="home-split-bar"><span class="v" style="width:${h.v / sum * 100}%"></span><span class="g" style="width:${h.g / sum * 100}%"></span></div>
         <div class="home-s"><span class="home-split-dot v"></span>${fmtN(h.v)} ${h.v === 1 ? 'Wort' : 'Wörter'} · <span class="home-split-dot g"></span>${fmtN(h.g)} ${h.g === 1 ? 'Grammatikaufgabe' : 'Grammatikaufgaben'}</div></div>`; })()}
@@ -9775,16 +9841,18 @@ function homeStandCards(s) {
       <div class="home-card home-wide" id="home-gstufen"><div class="home-k"><i class="ti ti-book"></i>Stand Grammatik</div>
       <div class="home-lv">${homeStufenRows([...gram, gsum], { id: 'gr', wort: ['Aufgabe', 'Aufgaben'] })}</div>
       <div class="home-s home-lv-sum">${fmtN(gsum.total)} Grammatikaufgaben · ${fmtN(gsum.sicher)} sicher · ${fmtN(gsum.arbeit)} in Wiederholung · ${fmtN(gsum.total - gsum.sicher - gsum.arbeit)} noch nicht geübt${gsum.bereit ? ' · ' + fmtN(gsum.bereit) + ' heute aufstiegsbereit' : ''}</div>
+      ${homeGrammarHeuteHtml()}
       <div class="home-s">Prozent: Fortschritt über die Wiederholungsstufen, Durchschnitt der Werkzeuge – jedes zählt gleich viel. Ein Klick auf einen Bereich zeigt die Werkzeuge einzeln.</div></div>`; 
 }
 function homeHardCard(s) {
   return `${(() => { const gh = Object.values(homeGrammarTools()).flatMap(x => x.hard).sort((a, b) => b.f - a.f); s.gHard = gh; return ''; })()}
     ${s.hardAll.length || s.gHard.length ? (() => {
       const liste = homeHardList(s.hardAll), mehr = liste.length - 5, eff = homeHardMin(s.hardAll);
-      const gram = s.gHard.length ? `<div class="home-hard-g" id="home-hard-g"><div class="home-s home-hard-g-k">Grammatik</div>${s.gHard.slice(0, 5).map(x => `<button type="button" class="home-hard-g-row" onclick="homeOpenTool('${x.t}')" title="${htmlEsc(homeToolName(x.t))} öffnen"><b lang="ru">${htmlEsc(homeGrammarTaskText(x.id))}</b><span>${htmlEsc(homeToolName(x.t))}</span><small>${x.f}× falsch</small></button>`).join('')}${s.gHard.length > 5 ? `<div class="home-s">und ${s.gHard.length - 5} weitere</div>` : ''}<div class="home-hard-sw"><button type="button" class="home-btn" id="home-hard-g-btn" onclick="homeGrammarHard()" title="Öffnet das Grammatikwerkzeug mit den meisten oft falschen Aufgaben"><i class="ti ti-player-play"></i>Grammatikfehler üben</button></div></div>` : '';
+      const gram = s.gHard.length ? `<div class="home-hard-g" id="home-hard-g"><div class="home-s home-hard-g-k">Grammatik</div><div class="home-hard-g-rows">${s.gHard.slice(0, 5).map(x => `<button type="button" class="home-hard-g-row" onclick="homeOpenTool('${x.t}')" title="${htmlEsc(homeToolName(x.t))} öffnen">${(() => { const t = homeGrammarTaskText(x.id); return `<b lang="${/[а-яё]/i.test(t) ? 'ru' : 'de'}">${htmlEsc(t)}</b>`; })()}<span>${htmlEsc(homeToolName(x.t))}</span><small>${x.f}× falsch</small></button>`).join('')}</div>${s.gHard.length > 5 ? `<div class="home-s home-hard-mehr">und ${s.gHard.length - 5} weitere</div>` : ''}<div class="home-hard-sw"><button type="button" class="home-btn" id="home-hard-g-btn" onclick="homeGrammarHard()" title="Öffnet das Grammatikwerkzeug mit den meisten oft falschen Aufgaben"><i class="ti ti-player-play"></i>Grammatikfehler üben</button></div></div>` : '';
       if (!s.hardAll.length) return `<div class="home-card" id="home-hard"><div class="home-k"><i class="ti ti-circle-x"></i>Oft falsch</div>${gram}</div>`;
       return `<div class="home-card" id="home-hard"><div class="home-k"><i class="ti ti-circle-x"></i>Oft falsch</div>
-      <div class="home-hard">${liste.slice(0, 5).map(x => `<div><b lang="ru">${htmlEsc(x.w.ru)}</b><span>${htmlEsc((x.w.de || [])[0] || '')}</span><small title="Fehlerzähler: +1 bei falsch, −1 bei richtig">${x.falsch}× falsch</small></div>`).join('')}</div>
+      <div class="home-hard">${liste.slice(0, 5).map(x => { const fa = x.falsch >= 10 ? topFehlantwort(x.w) : null;
+        return `<div><b lang="ru">${htmlEsc(x.w.ru)}</b><span>${htmlEsc((x.w.de || [])[0] || '')}${fa ? `<em class="home-hard-fa" title="deine häufigste falsche Antwort (${fa.n}×)">oft: „<span lang="${/[а-яё]/i.test(fa.a) ? 'ru' : 'de'}">${htmlEsc(fa.a)}</span>“</em>` : ''}</span><small title="Fehlerzähler: +1 bei falsch, −1 bei richtig">${x.falsch}× falsch</small></div>`; }).join('')}</div>
       ${mehr > 0 ? `<div class="home-s home-hard-mehr">und ${mehr} ${mehr === 1 ? 'weiteres' : 'weitere'}</div>` : ''}
       <div class="home-hard-sw"><div class="set-seg" role="group" aria-label="Wörter üben ab so vielen Fehlern">${HARD_MINS.map(n => { const k = s.hardAll.filter(x => x.falsch >= n).length; return `<button type="button" class="${n === eff ? 'on' : ''}" aria-pressed="${n === eff}" ${k ? '' : 'disabled'} onclick="setHardMin(${n})" title="${k} ${k === 1 ? 'Wort' : 'Wörter'} mit mindestens ${n} Fehlern">ab ${n}× <small>${k}</small></button>`; }).join('')}</div>
       <button type="button" class="home-btn" onclick="homeStartPool('hard')"><i class="ti ti-player-play"></i>${liste.length === 1 ? 'Dieses Wort' : 'Alle ' + liste.length} üben</button>${liste.length > 5 ? `<button type="button" class="home-btn home-btn-2" id="home-hard-top5" onclick="homeStartPool('hard', null, 5)" title="Nur die fünf Wörter mit den meisten Fehlern"><i class="ti ti-player-play"></i>Top 5 üben</button>` : ''}</div>${gram}</div>`;
@@ -9802,7 +9870,7 @@ function homeZuletztCard(s) {
     return '';
   };
   const zuletzt = LERN_ANSICHTEN.filter(v => s.times[v]).sort((a, b) => s.times[b] - s.times[a]);
-  return `<div class="home-card"><div class="home-k"><i class="ti ti-history"></i>Zuletzt geübt</div><div class="home-res">
+  return `<div class="home-card home-full" id="home-zuletzt"><div class="home-k"><i class="ti ti-history"></i>Zuletzt geübt</div><div class="home-res">
       ${zuletzt.map(v => { const tag = dayKey(new Date(s.times[v])), d = (loadDaystats()[tag] || {})[v];
         const wann = tag === dayKey() ? new Date(s.times[v]).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : homeRelDay(s.times[v]);
         const menge = d ? `<em class="home-res-n">${fmtN(d[0])} ${d[0] === 1 ? 'Antwort' : 'Antworten'} · ${fmtN(d[1])} richtig</em>` : '';
@@ -10088,6 +10156,36 @@ function getWeight(w) {
 // einzubauen und würden wegen ihrer schieren Menge (1000 Wörter) sonst
 // einen Großteil der Sätze dominieren. Deshalb hier ein extremer Abschlag,
 // statt sie ganz auszuschließen (gelegentlich dürfen sie noch vorkommen).
+// Häufigste falsche Antworten je Wort (22.11.): für „Oft falsch“ – zeigt, womit ein Wort verwechselt wird.
+// Je Wort höchstens FEHL_MAX Antworten (die häufigsten bleiben), in Sicherung und GitHub-Abgleich (je Antwort das Höhere).
+const FEHL_KEY = 'vokabeltrainer-fehlantworten', FEHL_MAX = 5;
+let fehlMem = null;
+function cleanFehlMap(x) {
+  const out = {};
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return out;
+  Object.keys(x).forEach(k => {
+    const m = x[k]; if (!m || typeof m !== 'object' || Array.isArray(m)) return;
+    const e = Object.entries(m).filter(([a, n]) => a && a.length <= 60 && Number.isFinite(Number(n)) && Number(n) > 0).map(([a, n]) => [a, Math.round(Number(n))]);
+    if (e.length) out[k] = Object.fromEntries(e.sort((a, b) => b[1] - a[1]).slice(0, FEHL_MAX));
+  });
+  return out;
+}
+function loadFehl() { if (!fehlMem) { try { fehlMem = cleanFehlMap(JSON.parse(localStorage.getItem(FEHL_KEY) || '{}')); } catch (e) { fehlMem = {}; } } return fehlMem; }
+function noteFehlantwort(w, text) {
+  const a = String(text || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 60); if (!a) return;
+  const m = loadFehl(), k = getKey(w), e = m[k] || (m[k] = {});
+  e[a] = (e[a] || 0) + 1;
+  m[k] = Object.fromEntries(Object.entries(e).sort((x, y) => y[1] - x[1]).slice(0, FEHL_MAX));
+  deferSave(FEHL_KEY, () => { try { localStorage.setItem(FEHL_KEY, JSON.stringify(fehlMem || {})); } catch (err) {} });
+}
+// häufigste falsche Antwort eines Worts (ab 2×), sonst null
+function topFehlantwort(w) { const e = loadFehl()[getKey(w)]; if (!e) return null; const t = Object.entries(e).sort((a, b) => b[1] - a[1])[0]; return t && t[1] >= 2 ? { a: t[0], n: t[1] } : null; }
+function mergeFehl(localRaw, backupRaw) {
+  const p = r => { try { return cleanFehlMap(JSON.parse(r)); } catch (e) { return {}; } };
+  const a = p(localRaw), b = p(backupRaw);
+  Object.keys(b).forEach(k => { const m = a[k] || (a[k] = {}); Object.entries(b[k]).forEach(([x, n]) => { m[x] = Math.max(m[x] || 0, n); }); });
+  return JSON.stringify(cleanFehlMap(a));
+}
 function updateScore(w, isCorrect) {
   const k = getKey(w);
   const now = Date.now();
@@ -10223,7 +10321,7 @@ function updateSettingsSummaries() {
   const sel = id => { const e = document.getElementById(id); return e && e.selectedOptions && e.selectedOptions[0] ? e.selectedOptions[0].textContent.trim() : ''; };
   const an = id => { const e = document.getElementById(id); return !!(e && e.checked); };
   const T = {
-    ueben: [sel('maxlevel-select'), sel('blocksize-select'), 'Tagesziel ' + sel('daygoal-select'), 'Ziel ' + sel('sessiongoal-select'), an('cognate-toggle') ? 'ohne Lehnwörter' : '', an('lifedemote-toggle') ? 'Rückstufung an' : ''],
+    ueben: [sel('maxlevel-select'), sel('blocksize-select'), 'Tagesziel ' + sel('daygoal-select'), 'Portion ' + sel('dueportion-select'), 'Ziel ' + sel('sessiongoal-select'), an('cognate-toggle') ? 'ohne Lehnwörter' : '', an('lifedemote-toggle') ? 'Rückstufung an' : ''],
     niveau: [sel('mylevel-select')],
     aussprache: ['Vorlesen ' + (an('autoplay-toggle') ? 'an' : 'aus'), (() => { try { return russianVoice ? russianVoice.name : ''; } catch (e) { return ''; } })(), sel('speakrate-select'), 'Umschrift: ' + (typeof TR_MODE_LABEL !== 'undefined' ? ({ speech: 'Aussprache', letters: 'Buchstaben', off: 'aus' })[transcriptionMode] : '')],
     darstellung: [{ light: 'hell', dark: 'dunkel', system: 'wie das System' }[themeMode()], ruFontMode() === 'sans' ? 'Russisch ohne Serifen' : 'Russisch mit Serifen', { auto: '', gross: 'Karte groß', sehrgross: 'Karte sehr groß' }[cardSizeMode()]],
@@ -10479,7 +10577,7 @@ const BACKUP_KEYS = ['vokabeltrainer-grammar-info-open','vokabeltrainer-grammar-
   'vokabeltrainer-hoertrainer-opts','vokabeltrainer-dictation-opts','vokabeltrainer-daystats',
   'vokabeltrainer-autoplay','vokabeltrainer-block-size','vokabeltrainer-direction',
   'vokabeltrainer-skip-cognates','vokabeltrainer-theme','vokabeltrainer-session-goal',
-  'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-width-reading','vokabeltrainer-texte','vokabeltrainer-texte-modus','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-alphabet-order','vokabeltrainer-card-size'];
+  'vokabeltrainer-cyr-keyboard','vokabeltrainer-max-level','vokabeltrainer-lifetime','vokabeltrainer-level-order','vokabeltrainer-my-level','vokabeltrainer-speak-rate','vokabeltrainer-view','vokabeltrainer-grammar-panel','vokabeltrainer-listening-panel','vokabeltrainer-sidebar-width','vokabeltrainer-width-vocab','vokabeltrainer-width-grammar','vokabeltrainer-width-listening','vokabeltrainer-width-reading','vokabeltrainer-texte','vokabeltrainer-texte-modus','vokabeltrainer-dialog-sizes','vokabeltrainer-voice-ru','vokabeltrainer-voice-de','vokabeltrainer-life-demote','vokabeltrainer-reset-marks','vokabeltrainer-settings-ui','vokabeltrainer-ru-font','vokabeltrainer-daylog','vokabeltrainer-day-goal','vokabeltrainer-hard-min','vokabeltrainer-due-portion','vokabeltrainer-fehlantworten','vokabeltrainer-alphabet-order','vokabeltrainer-card-size'];
 function exportBackup() {
   flushSaves();
   const data = { app: APP_ID, version: 1, saved: new Date().toISOString(), data: {} };
@@ -10554,6 +10652,7 @@ function mergeBackupValue(key, localRaw, backupRaw) {
   if (key === 'vokabeltrainer-daylog') return mergeDaylog(localRaw, backupRaw);
   if (key === DAYSTATS_KEY) return mergeDaystats(localRaw, backupRaw);
   if (key === 'vokabeltrainer-texte') return mergeReading(localRaw, backupRaw);
+  if (key === FEHL_KEY) return mergeFehl(localRaw, backupRaw);
   if (key === 'vokabeltrainer-bookmarks') {
     const a = parse(localRaw), b = parse(backupRaw);
     if (!Array.isArray(b)) return null;
@@ -10971,6 +11070,7 @@ function loadSessionGoal() {
   const sel = document.getElementById('sessiongoal-select');
   if (sel) sel.value = String(sessionGoal);
   const dg = document.getElementById('daygoal-select'); if (dg) dg.value = String(dayGoal);
+  const dp = document.getElementById('dueportion-select'); if (dp) dp.value = String(duePortion);
   updateSessionGoal();
 }
 function setSessionGoal(v) {
@@ -17922,6 +18022,7 @@ function checkMC(idx) {
   const useRu = quizDirection === 'de-ru';
   const chosen = mcOptions[idx];
   const isCorrect = useRu ? chosen.toLowerCase() === currentWord.ru.toLowerCase() : currentWord.de.some(d => d.toLowerCase() === chosen.toLowerCase());
+  if (!isCorrect) noteFehlantwort(currentWord, chosen);
   updateScore(currentWord, isCorrect);
   const card = document.getElementById('word-card');
   const banner = document.getElementById('result-banner');
@@ -18151,6 +18252,7 @@ async function checkAnswer() {
     summaryText = cardRu(currentWord) + ' = ' + getDeDisplay(currentWord);
     matchedAnswerForTypo = matchedAnswer ? stripClarification(matchedAnswer) : matchedAnswer;
   }
+  if (!isCorrect) noteFehlantwort(currentWord, userInput);
   updateScore(currentWord, isCorrect);
   const card = document.getElementById('word-card');
   const banner = document.getElementById('result-banner');
