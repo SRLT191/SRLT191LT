@@ -21,10 +21,10 @@ const { chromium } = require('playwright');
   });
   await p.reload(); await p.waitForTimeout(400);
   let r = await p.evaluate(() => { setAppView('home'); const q = s => (document.querySelector(s) || {}).textContent || ''; return {
-    go: q('.home-go').replace(/\s+/g, ' ').trim(), plan: q('#home-plan'), heute: q('#home-today .home-big').replace(/\s+/g, ' ').trim(), up: [...document.querySelectorAll('#home-goal-up button')].map(x => x.textContent).join(','),
+    go: q('.home-go').replace(/\s+/g, ' ').trim(), goTitle: document.querySelector('.home-go').title, plan: q('#home-plan'), heute: q('#home-today .home-big').replace(/\s+/g, ' ').trim(), up: [...document.querySelectorAll('#home-goal-up button')].map(x => x.textContent).join(','),
     erste: q('#home-erste-sicher'), verlauf: !!document.querySelector('#home-stufen .home-verlauf'), nums: [...document.querySelectorAll('#home-weeknums span')].map(x => x.textContent).join(','),
     vorwoche: q('#home-vorwoche'), best: q('#home-best'), ueben: q('#home-lv-ueben').trim() }; });
-  ok('Weiterlernen nennt Kategorie und offene Wörter, nicht die Gesamtzahl der Fälligen', /^Weiterlernen ?· Reisen · \d+ offen$/.test(r.go) && !/insgesamt/.test(r.plan), r.go + ' | ' + r.plan);
+  ok('Weiterlernen nennt Kategorie und offene Wörter (im Tooltip, 22.11.), nicht die Gesamtzahl der Fälligen', r.go === 'Weiterlernen' && /^Weiterlernen · Reisen · \d+ offen$/.test(r.goTitle) && !/insgesamt/.test(r.plan), r.go + ' | ' + r.plan);
   ok('Tagesziel überschritten: „2,4 × Tagesziel ✓“', /^1\.200 2,4 × Tagesziel ✓$/.test(r.heute), r.heute);
   ok('ab doppeltem Ziel: höheres Ziel 1000 · 2000 · 5000 wählbar', r.up === '1000,2000,5000', r.up);
   ok('noch kein Wort sicher: „Erste sichere Wörter frühestens am …“ statt flacher Linie', /^Erste sichere Wörter frühestens am \S+ \d+\.\d+\.$/.test(r.erste.trim()) && !r.verlauf, r.erste);

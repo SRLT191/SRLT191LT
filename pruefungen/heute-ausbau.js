@@ -34,7 +34,7 @@ const { chromium } = require('playwright');
   }));
   await check('Fällige Wörter: Hauptknopf „Wiederholen“, daneben „Weiterlernen“', () => ev(() => {
     const due = document.getElementById('home-go-due'), go = document.querySelector('.home-go');
-    const ok = due && /Wiederholen/.test(due.textContent) && /fällig/.test(due.textContent) && /Weiterlernen/.test(go.textContent) && go.classList.contains('home-go-2');
+    const ok = due && /Wiederholen/.test(due.textContent) && /fällig| von /.test(due.textContent) && /Weiterlernen/.test(go.textContent) && go.classList.contains('home-go-2');
     due.click(); const ok2 = appView === 'vocab' && activeMain === 'due'; setAppView('home');
     return { ok: ok && ok2, info: due && due.textContent.trim() };
   }));
