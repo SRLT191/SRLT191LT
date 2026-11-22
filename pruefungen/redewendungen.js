@@ -1,11 +1,15 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Begrüßungen & Redewendungen (22.11.): Kategorie umbenannt (alter Name wird übernommen), 10 Redewendungen
+// Begrüßungen & Redewendungen (22.11.): Kategorie umbenannt (alter Name wird übernommen), 2 × 10 Redewendungen
 // hinten angehängt, всего доброго nach dem Lexikalischen Minimum auf A2
 const { chromium } = require('playwright');
 const NEU = [
   ['не за что', 'A1'], ['без проблем', 'A1'], ['всё в порядке', 'A2'], ['ничего страшного', 'A2'],
   ['с удовольствием', 'A2'], ['удачи', 'A2'], ['будьте здоровы', 'A2'], ['счастливого пути', 'A2'],
   ['так себе', 'A2'], ['с Новым годом', 'A2'],
+  // zweite Runde (22.11. mittags): FIPI A1, dann Lexikalisches Minimum A2 (Этикет)
+  ['алло', 'A1'], ['меня зовут', 'A1'], ['давайте познакомимся', 'A1'], ['очень приятно', 'A2'],
+  ['простите', 'A2'], ['к сожалению', 'A2'], ['очень жаль', 'A2'], ['всего хорошего', 'A2'],
+  ['с праздником', 'A2'], ['будьте добры', 'A2'],
 ];
 const CAT = 'Begrüßungen & Redewendungen';
 (async () => {
@@ -23,8 +27,8 @@ const CAT = 'Begrüßungen & Redewendungen';
       gender: GENDER_SKIP_CATS.has(CAT) };
   }, [CAT, NEU]).catch(e => ({ fehler: e.message }));
   ok('Kategorie heißt „' + CAT + '“, alter Name weg', r.gibt && !r.alt, JSON.stringify(r).slice(0, 200));
-  ok('30 Wörter', r.n === 30, r.n);
-  ok('10 Redewendungen hinten in der Reihenfolge des Vorschlags', JSON.stringify(r.hinten) === JSON.stringify(NEU.map(x => x[0])), (r.hinten || []).join(', '));
+  ok('40 Wörter', r.n === 40, r.n);
+  ok('20 Redewendungen hinten in der Reihenfolge der Vorschläge', JSON.stringify(r.hinten) === JSON.stringify(NEU.map(x => x[0])), (r.hinten || []).join(', '));
   ok('Stufen wie bestätigt', JSON.stringify(r.stufen) === JSON.stringify(NEU.map(x => x[1])), (r.stufen || []).join(' '));
   ok('всего доброго auf A2 (Lexikalisches Minimum)', r.vd === 'A2', r.vd);
   ok('с днём рождения auf A2 (Lexikalisches Minimum)', r.gb === 'A2', r.gb);
