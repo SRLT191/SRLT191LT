@@ -28,11 +28,14 @@ const { chromium } = require('playwright');
       const k = document.getElementById('flip-known').getBoundingClientRect(), nav = document.getElementById('app-header').getBoundingClientRect();
       return { ok: k.bottom <= nav.top + 0.5 && k.top >= 0, info: Math.round(k.top) + '–' + Math.round(k.bottom) + ', Leiste ab ' + Math.round(nav.top) };
     }));
-    await check(w + '×' + h + ': Kategorie, Vokabelliste und Alphabet in einer Zeile; Kartenaktionen in einer Zeile; kein Überlauf', () => m.evaluate(() => {
+    await check(w + '×' + h + ': Kategorie, Vokabelliste und Alphabet in einer Zeile; Kartenaktionen in einer Zeile (auch Verbkarte mit Aspektpaar, fünf Knöpfe); kein Überlauf', () => m.evaluate(() => {
+      // fester Fall statt zufälliger Karte (22.11.): die breiteste Kartenzeile hat eine Verbkarte mit Aspektpaar (Knopf „Vollendet“)
+      selectWholeCat('Alltagsverben'); for (let i = 0; i < 300 && !document.getElementById('pf-btn').offsetParent; i++) nextWord();
+      const pfSichtbar = !!document.getElementById('pf-btn').offsetParent;
       const t = document.getElementById('sidebar-mobile-toggle').getBoundingClientRect(), tools = document.getElementById('sidebar-tools').getBoundingClientRect();
       const acts = [...document.querySelectorAll('#card-actions .card-act')].filter(e => e.offsetParent).map(e => Math.round(e.getBoundingClientRect().top));
       const eineZeile = Math.abs(t.top - tools.top) < 2, aktZeile = new Set(acts).size === 1, kein = document.documentElement.scrollWidth <= innerWidth;
-      return { ok: eineZeile && aktZeile && kein, info: 'Kopf ' + eineZeile + ', Aktionen ' + aktZeile + ', Breite ' + document.documentElement.scrollWidth };
+      return { ok: eineZeile && aktZeile && kein && pfSichtbar, info: 'Kopf ' + eineZeile + ', Aktionen ' + aktZeile + ' (' + acts.length + ' Knöpfe, „Vollendet“ ' + pfSichtbar + '), Breite ' + document.documentElement.scrollWidth };
     }));
     await m.close();
   }
