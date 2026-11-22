@@ -20,13 +20,15 @@ Der Lernstand liegt **nur im Browser** (localStorage) – nicht in diesem Reposi
 
 ## Prüfungen
 
-`pruefungen/` enthält Browser-Prüfungen (Playwright), die die App in einem echten Chromium durchklicken. Sie laufen bei jedem Push und Pull Request automatisch (GitHub Actions). Lokal:
+`pruefungen/` enthält Browser-Prüfungen (Playwright), die die App in einem echten Chromium durchklicken. Sie laufen bei jedem Pull Request und jedem Push auf `main` automatisch (GitHub Actions), vier gleichzeitig und mit festem Startwert für den Zufall, damit jeder Lauf dieselben Wörter und Aufgaben zieht. Zusätzlich läuft sonntags nachts eine Zufallsprüfung mit neuem Startwert; findet sie etwas, öffnet sie ein Issue mit dem Startwert. Lokal:
 
 ```bash
 cd pruefungen
 npm install
 npx playwright install chromium
-npm test
+npm test                 # fester Startwert 1
+SEED=48213 npm test      # einen gemeldeten Startwert nachstellen
+SEED=zufall npm test     # neuen Startwert ziehen
 ```
 
 ## Arbeitsweise
