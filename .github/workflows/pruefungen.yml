@@ -1,8 +1,15 @@
 name: Prüfungen
 
+# Bei Zweigen läuft nur der PR-Lauf, auf main der Push-Lauf – kein Doppellauf mehr.
+# Ein neuer Push in denselben PR bricht den noch laufenden alten Lauf ab.
 on:
   push:
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: pruefungen-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -21,4 +28,7 @@ jobs:
           node-version: 24
       - run: npm install
       - run: npx playwright install --with-deps chromium
+      # fester Startwert (SEED=1), vier Prüfungen gleichzeitig
       - run: bash alle.sh
+        env:
+          JOBS: 4

@@ -1,0 +1,61 @@
+name: Wöchentliche Zufallsprüfung
+
+# Läuft sonntags um etwa 3 Uhr (deutsche Zeit) mit einem neuen Startwert für den Zufall,
+# damit über die Wochen viele verschiedene Wörter und Aufgaben geprüft werden.
+# Hält keinen PR auf. Bei einem Fund öffnet sie ein Issue mit dem Startwert zum Nachstellen.
+on:
+  schedule:
+    - cron: '17 2 * * 0'
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: 'Startwert (leer = neuen ziehen)'
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  zufall:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: pruefungen
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - id: lauf
+        run: bash alle.sh | tee lauf.txt; exit "${PIPESTATUS[0]}"
+        env:
+          JOBS: 4
+          SEED: ${{ inputs.seed || 'zufall' }}
+      - if: failure() && steps.lauf.outputs.seed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SEED: ${{ steps.lauf.outputs.seed }}
+          LAUF: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            echo "Die wöchentliche Zufallsprüfung ist mit **Startwert $SEED** fehlgeschlagen."
+            echo
+            echo '```'
+            grep -A8 '^FEHLER' lauf.txt | head -60
+            echo '```'
+            echo
+            echo "Nachstellen: \`SEED=$SEED bash pruefungen/alle.sh\`"
+            echo
+            echo "Lauf: $LAUF"
+          } > fund.md
+          gh label create zufallsprüfung --color D93F0B --description 'Fund der wöchentlichen Zufallsprüfung' 2>/dev/null || true
+          offen=$(gh issue list --label zufallsprüfung --state open --json number --jq '.[0].number')
+          if [ -n "$offen" ]; then
+            gh issue comment "$offen" --body-file fund.md
+          else
+            gh issue create --title "Zufallsprüfung fehlgeschlagen · Startwert $SEED" --label zufallsprüfung --body-file fund.md
+          fi
