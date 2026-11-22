@@ -19,7 +19,7 @@ const CAT = 'Begrüßungen & Redewendungen';
     const stufen = NEU.map(([ru]) => wordLevel(ws.find(w => w.ru === ru)));
     const doppelt = NEU.filter(([ru]) => allVocabWords().filter(w => w.ru === ru).length !== 1).map(x => x[0]);
     return { gibt: !!vocab[CAT], alt: !!vocab['Begrüßungen'], n: ws.length, hinten, stufen,
-      vd: wordLevel(ws.find(w => w.ru === 'всего доброго')), mig: migrateCatName('Begrüßungen'), doppelt,
+      vd: wordLevel(ws.find(w => w.ru === 'всего доброго')), gb: wordLevel(ws.find(w => w.ru === 'с днём рождения')), mig: migrateCatName('Begrüßungen'), doppelt,
       gender: GENDER_SKIP_CATS.has(CAT) };
   }, [CAT, NEU]).catch(e => ({ fehler: e.message }));
   ok('Kategorie heißt „' + CAT + '“, alter Name weg', r.gibt && !r.alt, JSON.stringify(r).slice(0, 200));
@@ -27,6 +27,7 @@ const CAT = 'Begrüßungen & Redewendungen';
   ok('10 Redewendungen hinten in der Reihenfolge des Vorschlags', JSON.stringify(r.hinten) === JSON.stringify(NEU.map(x => x[0])), (r.hinten || []).join(', '));
   ok('Stufen wie bestätigt', JSON.stringify(r.stufen) === JSON.stringify(NEU.map(x => x[1])), (r.stufen || []).join(' '));
   ok('всего доброго auf A2 (Lexikalisches Minimum)', r.vd === 'A2', r.vd);
+  ok('с днём рождения auf A2 (Lexikalisches Minimum)', r.gb === 'A2', r.gb);
   ok('Jede Redewendung genau einmal im Wortschatz', r.doppelt && r.doppelt.length === 0, (r.doppelt || []).join(', '));
   ok('Alter Name wird übernommen', r.mig === CAT, r.mig);
   ok('Nicht im Werkzeug Geschlecht', r.gender);
