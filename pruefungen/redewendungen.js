@@ -1,5 +1,5 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Begrüßungen & Redewendungen (22.11.): Kategorie umbenannt (alter Name wird übernommen), 2 × 10 Redewendungen
+// Begrüßungen & Redewendungen (22.11.): Kategorie umbenannt (alter Name wird übernommen), 3 × 10 Redewendungen
 // hinten angehängt, всего доброго nach dem Lexikalischen Minimum auf A2
 const { chromium } = require('playwright');
 const NEU = [
@@ -10,6 +10,10 @@ const NEU = [
   ['алло', 'A1'], ['меня зовут', 'A1'], ['давайте познакомимся', 'A1'], ['очень приятно', 'A2'],
   ['простите', 'A2'], ['к сожалению', 'A2'], ['очень жаль', 'A2'], ['всего хорошего', 'A2'],
   ['с праздником', 'A2'], ['будьте добры', 'A2'],
+  // dritte Runde (22.11. nachmittags): FIPI A1, dann Lexikalisches Minimum A2 (Этикет)
+  ['уважаемые пассажиры', 'A1'], ['я говорю по-русски', 'A1'], ['моя фамилия', 'A1'], ['рад вас видеть', 'A2'],
+  ['как вы себя чувствуете', 'A2'], ['минуточку', 'A2'], ['познакомьтесь', 'A2'], ['приходите в гости', 'A2'],
+  ['дорогие друзья', 'A2'], ['как здоровье', 'A2'],
 ];
 const CAT = 'Begrüßungen & Redewendungen';
 (async () => {
@@ -27,8 +31,8 @@ const CAT = 'Begrüßungen & Redewendungen';
       gender: GENDER_SKIP_CATS.has(CAT) };
   }, [CAT, NEU]).catch(e => ({ fehler: e.message }));
   ok('Kategorie heißt „' + CAT + '“, alter Name weg', r.gibt && !r.alt, JSON.stringify(r).slice(0, 200));
-  ok('40 Wörter', r.n === 40, r.n);
-  ok('20 Redewendungen hinten in der Reihenfolge der Vorschläge', JSON.stringify(r.hinten) === JSON.stringify(NEU.map(x => x[0])), (r.hinten || []).join(', '));
+  ok('50 Wörter', r.n === 50, r.n);
+  ok('30 Redewendungen hinten in der Reihenfolge der Vorschläge', JSON.stringify(r.hinten) === JSON.stringify(NEU.map(x => x[0])), (r.hinten || []).join(', '));
   ok('Stufen wie bestätigt', JSON.stringify(r.stufen) === JSON.stringify(NEU.map(x => x[1])), (r.stufen || []).join(' '));
   ok('всего доброго auf A2 (Lexikalisches Minimum)', r.vd === 'A2', r.vd);
   ok('с днём рождения auf A2 (Lexikalisches Minimum)', r.gb === 'A2', r.gb);
