@@ -1650,6 +1650,8 @@
     #russian-word { font-size: 42px; }
     #bookmark-btn.card-act span, #detail-btn.card-act span, #pf-btn.card-act span { display: none; }
     .card-act { padding: 0 11px; }
+    /* sehr schmale Handys (320 px): Verbkarten mit Aspektpaar haben fünf Knöpfe – enger setzen, damit sie in eine Zeile passen (22.11.) */
+    @media (max-width: 340px) { #card-actions { gap: 4px; } .card-act, #speak-btn.card-act { padding: 0 9px; } }
     #sidebar-tools .tile-tool[onclick^="openVocabList"] { border-radius: 8px 0 0 8px; border-left: 0; }
     #vocab-status { flex-wrap: wrap; row-gap: 8px; }
     #vocab-status #progress-bar-wrap { order: 5; flex-basis: 100%; }
