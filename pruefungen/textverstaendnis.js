@@ -97,8 +97,8 @@ const PROBE = `TEXTE.length = 0; TEXTE.push(
     return [b.length === TEXTE[0].saetze.length, b.every(x => x.tagName === 'BUTTON' && /^Satz \d+/.test(x.getAttribute('aria-label'))), b[0].getAttribute('aria-label'), b[1].getAttribute('aria-current'), b[1].getAttribute('aria-label'), kurz.includes('Textverständnis')]; });
   ok('Sätze sind Knöpfe mit Beschriftung (Nummer, Stand, aktuell); Tastenkürzel-Übersicht nennt Textverständnis', z[0] && z[1] && /^Satz 1, gewusst: /.test(z[2]) && z[3] === 'true' && /^Satz 2, aktuell: /.test(z[4]) && z[5], JSON.stringify(z));
   const tx = await p.evaluate(() => { const S = id => (TEXTE.find(t => t.id === id) || { saetze: [] }).saetze.map(s => s.ru).join(' ');
-    return [/люблю свою работу/.test(S('moj-den-2')), /плавали туда на лодке/.test(S('otpusk-na-more-2')), !/обед/.test(S('den-rozhdenija-babuschki-2')), genderPool().some(g => g.ru === 'сутки' && g.g === 'pl')]; });
-  ok('Korrekturen 15.11.: свою работу, плавали, ужин statt обед, сутки im Werkzeug Geschlecht (nur Plural)', tx.every(Boolean), tx.join());
+    return [/люблю свою работу/.test(S('moj-den-3')), /взяли лодку/.test(S('otpusk-na-more-3')), !/обед/.test(S('den-rozhdenija-babuschki-3')), genderPool().some(g => g.ru === 'сутки' && g.g === 'pl')]; });
+  ok('Korrekturen 15.11.: свою работу, лодка (seit 22.11. взяли лодку), ужин statt обед, сутки im Werkzeug Geschlecht (nur Plural)', tx.every(Boolean), tx.join());
   for (const w of [320, 360]) {
     const ctx = await b.newContext({ viewport: { width: w, height: 700 }, isMobile: true, hasTouch: true }); const m = await ctx.newPage(); m.on('pageerror', e => errs.push(e.message));
     await m.goto('file://' + APP_PATH); await m.waitForTimeout(400);
