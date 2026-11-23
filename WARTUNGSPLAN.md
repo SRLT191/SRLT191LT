@@ -271,4 +271,5 @@ Noch nicht gebaut; wird erst nach ausdrücklichem Auftrag umgesetzt.
 - Änderungen am Repository nur über einen eigenen Zweig und einen Pull Request; gemergt wird nur vom Besitzer. Kein Force-Push auf `main`.
 - Arbeitskopie, ausgelieferte Datei und `index.html` in `main` bleiben gleich; eine neue Prüfung kommt auch nach `pruefungen/`.
 - Lernstand, Sicherungsdateien und persönliche Daten nie ins Repository.
+- Sperrliste (23.11.): Israel kommt nicht in die App – kein Wort (Израиль, израильский …), kein Beispielsatz, kein Text, auch nicht in Vorschlägen. Prüfung `sperrliste` durchsucht die ganze `index.html`; neue Einträge nur auf ausdrücklichen Wunsch.
 - Nach jeder Änderung am Wartungsplan das Projektdokument `wartungsplan-sprachtool.md` im Claude-Projekt „Russisch“ gleich `WARTUNGSPLAN.md` setzen.
