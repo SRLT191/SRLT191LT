@@ -35,11 +35,17 @@ const { chromium } = require('playwright');
   ok('Per Tastatur (Fokus auf der Legende) ebenso, Verlassen stellt wieder her', fok[0].startsWith('6 /') && fok[1] === z0.n, fok.join(' → '));
 
   // Fortschritt nach Stufen
-  await p.evaluate(() => openLevelOverview()); await p.waitForTimeout(150);
-  await p.hover('#level-overview-body .lvl-row[data-l="A1"] .s3');
+  await p.evaluate(() => openLevelOverview());
+  // warten, bis der Dialog steht (unter Last läuft die Einblend-Animation länger, sonst trifft hover den Nachbarabschnitt)
+  await p.waitForFunction(() => { const e = document.querySelector('#level-overview-body .lvl-row[data-l="A1"] .s3'); if (!e) return false;
+    const r = JSON.stringify(e.getBoundingClientRect()); const alt = window.__lvRect; window.__lvRect = r; return alt === r; }, null, { polling: 100, timeout: 5000 });
+  // Abschnitt 3 ist bei 3 von 854 Wörtern nur etwa 1 px breit – ein echter Mauszeiger trifft dort je nach Rundung den Nachbarn,
+  // deshalb das Ereignis direkt am Abschnitt auslösen
+  const s3 = '#level-overview-body .lvl-row[data-l="A1"] .s3';
+  await p.$eval(s3, e => e.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })));
   const lv = await p.evaluate(() => { const r = document.querySelector('#level-overview-body .lvl-row[data-l="A1"]'); return { n: r.querySelector('.lvl-num').textContent, p: r.querySelector('.lvl-pct').textContent }; });
   ok('Stufen-Übersicht: Abschnitt „Wiederholung 3“ zeigt 3 / …', lv.n === '3 / ' + soll.total, JSON.stringify(lv));
-  await p.mouse.move(5, 5); await p.waitForTimeout(80);
+  await p.$eval(s3, e => e.dispatchEvent(new MouseEvent('mouseout', { bubbles: true })));
   const lvz = await p.evaluate(() => document.querySelector('#level-overview-body .lvl-row[data-l="A1"] .lvl-num').textContent);
   ok('Stufen-Übersicht: Wegfahren stellt wieder her', lvz === '19 / ' + soll.total, lvz);
 
