@@ -16777,7 +16777,9 @@ const SUBSTANTIVE_GROUPS = {
   'Reisen & Welt': ['Verkehr','Reisen','Geographie','Länder'],
   'Gesellschaft & Geschichte': ['Ökonomie','Krieg','Politik','Religion','Geschichte','Kommunismus'],
   'Wissenschaft & Technik': ['Wissenschaft & Forschung','Technik','Weltraum & Astronomie'],
-  'Natur': ['Natur','Tiere','Pflanzen','Wetter','Landwirtschaft','Geologie'],
+  // 23.11.: Gruppe heißt nicht mehr wie ihre Kategorie „Natur“ – sonst wählte ein Klick auf
+  // die Kategorie alle 420 Wörter der Gruppe (isCatGroup prüft vor vocab)
+  'Natur & Umwelt': ['Natur','Tiere','Pflanzen','Wetter','Landwirtschaft','Geologie'],
 };
 const SUBSTANTIVE_GROUP_ICONS = {
   'Grundbegriffe': 'ti-bulb',
@@ -16787,7 +16789,7 @@ const SUBSTANTIVE_GROUP_ICONS = {
   'Reisen & Welt': 'ti-map-pin',
   'Gesellschaft & Geschichte': 'ti-building-bank',
   'Wissenschaft & Technik': 'ti-flask',
-  'Natur': 'ti-leaf',
+  'Natur & Umwelt': 'ti-leaf',
 };
 // "Zahlen" fasst analog alle Zahlenbereiche (je 100er-Schritte) als zweite Stufe zusammen.
 const FLAT_CATS = Object.keys(vocab).filter(c => !SUBSTANTIVE_THEMEN.includes(c));
