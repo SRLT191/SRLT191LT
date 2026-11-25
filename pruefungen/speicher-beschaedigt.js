@@ -21,6 +21,8 @@ const { chromium } = require('playwright');
     'Hörtrainer mit unbekannter Kategorie': [K + 'hoertrainer-cats', '["gibtesnicht"]'],
     'Fehlantworten mit Fremdtypen': [K + 'fehlantworten', JSON.stringify({ 'мама': 'x', 'папа': [1], 'дом': { '<b>x</b>': 'y', 'haus': -2, 'gut': 3 } })], 'Fehlantworten kaputt': [K + 'fehlantworten', '{kaputt'],
     'Portion mit Fremdwert': [K + 'due-portion', '17'],
+    'Rundengröße mit Fremdwert': [K + 'round-size', 'abc'],
+    'Rundengröße als JSON': [K + 'round-size', '{"x":1}'],
     'Hörtrainer-Optionen mit Fremdwerten': [K + 'hoertrainer-opts', JSON.stringify({ dir: 'x', level: 'Z9', satz: 'ja' })], 'Hörtrainer-Optionen kaputt': [K + 'hoertrainer-opts', '{kaputt'],
     'Diktat-Optionen mit Fremdwerten': [K + 'dictation-opts', JSON.stringify({ level: 5, cats: ['gibtesnicht', null], gelernt: 'ja', texte: [] })], 'Diktat-Optionen sind ein Feld': [K + 'dictation-opts', '[1]'],
     'Hörquiz mit Fremdwerten': [K + 'hearquiz-settings', JSON.stringify({ mode: 'x', lang: 5, level: 'Z9', cats: 'x', speed: '<b>' })],
