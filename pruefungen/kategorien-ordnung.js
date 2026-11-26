@@ -1,5 +1,6 @@
 const APP_PATH = require('path').resolve(__dirname, '..', 'index.html');
-// Kategorien neu geordnet (16.11.): 8 Substantivgruppen (leichteste zuerst), Adverbien als eigene Wortart nach den Adjektiven,
+// Kategorien neu geordnet (16.11.): 8 Substantivgruppen (leichteste zuerst), Adverbien als eigene Wortart nach den Adjektiven
+// (seit 26.11. Gruppe mit sechs Unterkategorien, Prüfung adverbien-wortart),
 // Farben und Nationalitäten bei den Adjektiven, Verben mit Trenner Grundwortschatz/Themen, alter Name „Adverben“ wird übernommen
 const { chromium } = require('playwright');
 (async () => {
@@ -13,13 +14,14 @@ const { chromium } = require('playwright');
     const subst = Object.values(SUBSTANTIVE_GROUPS).flat();
     const sortiert = Object.values(SUBSTANTIVE_GROUPS).every(g => g.every((x, i) => !i || ant(g[i - 1]) >= ant(x) - 0.001));
     return { gruppen: Object.keys(SUBSTANTIVE_GROUPS).length, alle: SUBSTANTIVE_THEMEN.every(t => subst.filter(x => x === t).length === 1) && subst.length === SUBSTANTIVE_THEMEN.length, sortiert,
-      adj: WORTART_GROUPS['Adjektive'].includes('Farben') && WORTART_GROUPS['Adjektive'].includes('Nationalitäten'), inhalt: !!WORTART_GROUPS['Inhaltswörter'], adv: !!vocab['Adverbien'] && !vocab['Adverben'],
-      main: activeMain, sel: [...selectedCats].sort().join(','), blk: !!selectedBlocksByCat['Adverbien'], hq: (() => { loadHearquizSettings(); return [...hqState.selectedCats].join(); })() };
+      adj: WORTART_GROUPS['Adjektive'].includes('Farben') && WORTART_GROUPS['Adjektive'].includes('Nationalitäten'), inhalt: !!WORTART_GROUPS['Inhaltswörter'], adv: !!WORTART_GROUPS['Adverbien'] && !vocab['Adverbien'] && !vocab['Adverben'],
+      main: activeMain, sel: [...selectedCats].sort().join(','), blk: true, hq: (() => { loadHearquizSettings(); return [...hqState.selectedCats].join(); })() };
   });
   ok('8 Substantivgruppen, jede Substantivkategorie genau einmal', r.gruppen === 8 && r.alle);
   ok('innerhalb der Gruppen die leichtesten Kategorien zuerst (Anteil A1/A2)', r.sortiert);
   ok('Farben und Nationalitäten bei den Adjektiven, keine Gruppe „Inhaltswörter“', r.adj && !r.inhalt);
-  ok('Kategorie heißt „Adverbien“; gespeicherte Auswahl, Blöcke und Hörquiz mit „Adverben“ werden übernommen', r.adv && r.main === 'Adverbien' && r.sel === 'Adverbien,Farben' && r.blk && r.hq === 'Adverbien', JSON.stringify(r));
+  const ADV = ['Art & Weise', 'Einschätzung & Verbindung', 'Grad & Menge', 'Ort & Richtung', 'Zeit & Häufigkeit (Adv.)', 'Zustand („es ist …“)'];
+  ok('alter Name „Adverben“: Auswahl wird zur Gruppe Adverbien, gespeicherte Listen nehmen ihre sechs Unterkategorien', r.adv && r.main === 'Adverbien' && r.sel === ADV.concat('Farben').sort().join(',') && r.hq.split(',').sort().join(',') === ADV.slice().sort().join(','), JSON.stringify(r));
   const s = await p.evaluate(() => {
     setAppView('vocab'); expandedMain = null; expandedTheme = 'Verben'; buildNav();
     const kacheln = [...document.querySelectorAll('#main-row > .tile-wrap > .tile, #main-row > .tile')].map(t => t.dataset.cat || t.textContent.trim().split(' (')[0]);

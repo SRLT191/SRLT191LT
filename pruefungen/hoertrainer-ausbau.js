@@ -50,9 +50,9 @@ const { chromium } = require('playwright');
     const t = document.querySelector('#hoertrainer-cat-body .cat-group-sel').textContent;
     return { ok: /^\d+ von \d+ Kategorien? · \d+ Wörter$/.test(t), info: t };
   }));
-  await check('Zahlen und Adverbien stehen als eigene klappbare Gruppe (16.11.)', () => ev(() => {
+  await check('Zahlen und Adverbien stehen als eigene klappbare Gruppe (16.11.; Adverbien seit 26.11. mit Unterkategorien)', () => ev(() => {
     const z = document.querySelector('#hoertrainer-cat-body input[data-cat="Zahlen"]').closest('.cat-check-row');
-    const a = document.querySelector('#hoertrainer-cat-body input[data-cat="Adverbien"]').closest('.cat-check-row');
+    const a = document.querySelector('#hoertrainer-cat-body input[data-cat="Ort & Richtung"]').closest('.cat-check-row');
     const gz = document.querySelector('#hoertrainer-cat-body .cat-group-title[data-sub="Zahlen"]');
     return { ok: z.dataset.sub === 'Zahlen' && a.dataset.sub === 'Adverbien' && !!gz && !document.querySelector('[data-sub="Inhaltswörter"]'), info: z.dataset.sub + ' / ' + a.dataset.sub };
   }));
