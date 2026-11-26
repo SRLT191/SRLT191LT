@@ -6753,85 +6753,62 @@ const vocab = {
     newBlock: [],
   },
 
-  Adverbien: {
+  // Adverbien (26.11.): eigene Wortart mit sechs Unterkategorien (vorher eine Kategorie „Adverbien“, 110 Wörter);
+  // Reihenfolge der Wörter wie in der alten Kategorie, Lernstand hängt am Wort
+  'Grad & Menge': {
+    blocks: [
+      // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
+      [
+        {ru:"очень", tr:"otschen'", de:["sehr"]},
+        {ru:"много", tr:"mnogo", de:["viel"]},
+        {ru:"только", tr:"tol'ko", de:["nur"]},
+        {ru:"тоже", tr:"tosche", de:["auch"]},
+        {ru:"почти", tr:"potschti", de:["fast"]},
+        {ru:"немного", tr:"nemnogo", de:["ein wenig"]},
+        {ru:"слишком", tr:"slischkom", de:["zu","zu viel"]},
+        {ru:"совсем", tr:"sowsem", de:["ganz"]},
+        {ru:"достаточно", tr:"dostatotschno", de:["genug"]},
+        {ru:"несколько", tr:"neskol'ko", de:["einige"]},
+        {ru:"особенно", tr:"ossobenno", de:["besonders"]},
+        {ru:"едва", tr:"jedwa", de:["kaum"]},
+        {ru:"мало", tr:"malo", de:["wenig"]},
+        {ru:"вполне", tr:"wpolne", de:["durchaus"]}
+      ]
+    ],
+    newBlock: [],
+  },
+
+  'Einschätzung & Verbindung': {
+    blocks: [
+      // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
+      [
+        {ru:"конечно", tr:"konetschno", de:["natürlich","selbstverständlich"]},
+        {ru:"поэтому", tr:"poetomu", de:["deshalb"]},
+        {ru:"действительно", tr:"dejstwitel'no", de:["wirklich"]},
+        {ru:"скорее", tr:"skoreje", de:["eher"]},
+        {ru:"значит", tr:"snatschit", de:["folglich"]},
+        {ru:"например", tr:"naprimer", de:["zum Beispiel"]},
+        {ru:"обязательно", tr:"objasatel'no", de:["unbedingt"]},
+        {ru:"наверняка", tr:"nawernjaka", de:["bestimmt"]}
+      ]
+    ],
+    newBlock: [],
+  },
+
+  'Ort & Richtung': {
     blocks: [
       // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
       [
         {ru:"здесь", tr:"sdes'", de:["hier"]},
         {ru:"там", tr:"tam", de:["dort","da"]},
-        {ru:"сейчас", tr:"sejtschas", de:["jetzt","gerade"]},
-        {ru:"потом", tr:"potom", de:["dann","danach","später"]},
-        {ru:"всегда", tr:"wsegda", de:["immer"]},
-        {ru:"сегодня", tr:"segodnja", de:["heute"]},
-        {ru:"вчера", tr:"wtschera", de:["gestern"]},
-        {ru:"завтра", tr:"sawtra", de:["morgen"]},
-        {ru:"очень", tr:"otschen'", de:["sehr"]},
-        {ru:"много", tr:"mnogo", de:["viel"]},
-        {ru:"хорошо", tr:"choroscho", de:["gut"]},
-        {ru:"плохо", tr:"plocho", de:["schlecht"]},
-        {ru:"так", tr:"tak", de:["so","also"]},
-        {ru:"конечно", tr:"konetschno", de:["natürlich","selbstverständlich"]},
-        {ru:"уже", tr:"usche", de:["schon","bereits"]},
-        {ru:"только", tr:"tol'ko", de:["nur"]},
-        {ru:"тоже", tr:"tosche", de:["auch"]},
-        {ru:"вдруг", tr:"wdrug", de:["plötzlich"]},
-        {ru:"сразу", tr:"srasu", de:["sofort"]},
-        {ru:"рано", tr:"rano", de:["früh"]},
-        {ru:"почти", tr:"potschti", de:["fast"]},
-        {ru:"поэтому", tr:"poetomu", de:["deshalb"]},
-        {ru:"вместе", tr:"wmeste", de:["zusammen"]},
-        {ru:"поздно", tr:"posdno", de:["spät"]},
         {ru:"рядом", tr:"rjadom", de:["daneben","in der Nähe"]},
         {ru:"домой", tr:"domoj", de:["nach Hause"]},
-        {ru:"наконец", tr:"nakonez", de:["endlich"]},
-        {ru:"никогда", tr:"nikogda", de:["niemals"]},
-        {ru:"иногда", tr:"inogda", de:["manchmal"]},
-        {ru:"снова", tr:"snowa", de:["wieder"]},
         {ru:"назад", tr:"nasad", de:["zurück"]},
-        {ru:"сначала", tr:"snatschala", de:["zuerst"]},
-        {ru:"немного", tr:"nemnogo", de:["ein wenig"]},
-        {ru:"слишком", tr:"slischkom", de:["zu","zu viel"]},
-        {ru:"быстро", tr:"bystro", de:["schnell"]},
-        {ru:"теперь", tr:"teper'", de:["jetzt"]},
-        {ru:"тогда", tr:"togda", de:["damals"]},
-        {ru:"совсем", tr:"sowsem", de:["ganz"]},
-        {ru:"долго", tr:"dolgo", de:["lange"]},
-        {ru:"точно", tr:"totschno", de:["genau"]},
         {ru:"сюда", tr:"sjuda", de:["hierher"]},
         {ru:"туда", tr:"tuda", de:["dorthin"]},
-        {ru:"утром", tr:"utrom", de:["morgens"]},
-        {ru:"вечером", tr:"wetscherom", de:["abends"]},
-        {ru:"действительно", tr:"dejstwitel'no", de:["wirklich"]},
-        {ru:"достаточно", tr:"dostatotschno", de:["genug"]},
-        {ru:"несколько", tr:"neskol'ko", de:["einige"]},
-        {ru:"скорее", tr:"skoreje", de:["eher"]},
-        {ru:"ясно", tr:"jasno", de:["klar","heiter"]},
-        {ru:"ещё", tr:"jeschtschjo", de:["noch"]},
-        {ru:"просто", tr:"prosto", de:["einfach","schlichtweg"]},
-        {ru:"прямо", tr:"prjamo", de:["direkt","geradezu"]},
-        {ru:"затем", tr:"satem", de:["danach"]},
-        {ru:"значит", tr:"snatschit", de:["folglich"]},
-        {ru:"например", tr:"naprimer", de:["zum Beispiel"]},
         {ru:"дома", tr:"doma", de:["zu Hause"]},
-        {ru:"днём", tr:"dnjom", de:["tagsüber"]},
-        {ru:"раньше", tr:"ran'sche", de:["früher"]},
-        {ru:"летом", tr:"letom", de:["im Sommer"]},
-        {ru:"зимой", tr:"simoj", de:["im Winter"]},
-        {ru:"весной", tr:"wesnoj", de:["im Frühling"]},
-        {ru:"осенью", tr:"ossen'ju", de:["im Herbst"]},
-        {ru:"холодно", tr:"cholodno", de:["kalt"]},
-        {ru:"жарко", tr:"scharko", de:["heiß"]},
-        {ru:"по-русски", tr:"po-russki", de:["auf Russisch"]},
-        {ru:"часто", tr:"tschasto", de:["oft"]},
-        {ru:"особенно", tr:"ossobenno", de:["besonders"]},
         {ru:"далеко", tr:"daleko", de:["weit","weit weg"]},
         {ru:"близко", tr:"blisko", de:["nah"]},
-        {ru:"редко", tr:"redko", de:["selten"]},
-        {ru:"обычно", tr:"obytschno", de:["gewöhnlich","meistens"]},
-        {ru:"вовремя", tr:"wowremja", de:["rechtzeitig"]},
-        {ru:"случайно", tr:"slutschajno", de:["zufällig"]},
-        {ru:"навсегда", tr:"nawsegda", de:["für immer"]},
-        {ru:"едва", tr:"jedwa", de:["kaum"]},
         {ru:"везде", tr:"wesde", de:["überall"]},
         {ru:"вперёд", tr:"wperjod", de:["vorwärts"]},
         {ru:"справа", tr:"sprawa", de:["rechts (wo?)"]},
@@ -6840,32 +6817,102 @@ const vocab = {
         {ru:"налево", tr:"nalewo", de:["nach links"]},
         {ru:"впереди", tr:"wperedi", de:["vorn"]},
         {ru:"сзади", tr:"ssadi", de:["hinten"]},
-        {ru:"медленно", tr:"medlenno", de:["langsam"]},
-        {ru:"обязательно", tr:"objasatel'no", de:["unbedingt"]},
+        {ru:"недалеко", tr:"nedaleko", de:["nicht weit"]},
+        {ru:"сверху", tr:"swerchu", de:["oben"]},
+        {ru:"снизу", tr:"snisu", de:["unten"]}
+      ]
+    ],
+    newBlock: [],
+  },
+
+  'Zeit & Häufigkeit (Adv.)': {
+    blocks: [
+      // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
+      [
+        {ru:"сейчас", tr:"sejtschas", de:["jetzt","gerade"]},
+        {ru:"потом", tr:"potom", de:["dann","danach","später"]},
+        {ru:"всегда", tr:"wsegda", de:["immer"]},
+        {ru:"сегодня", tr:"segodnja", de:["heute"]},
+        {ru:"вчера", tr:"wtschera", de:["gestern"]},
+        {ru:"завтра", tr:"sawtra", de:["morgen"]},
+        {ru:"уже", tr:"usche", de:["schon","bereits"]},
+        {ru:"вдруг", tr:"wdrug", de:["plötzlich"]},
+        {ru:"сразу", tr:"srasu", de:["sofort"]},
+        {ru:"рано", tr:"rano", de:["früh"]},
+        {ru:"поздно", tr:"posdno", de:["spät"]},
+        {ru:"наконец", tr:"nakonez", de:["endlich"]},
+        {ru:"никогда", tr:"nikogda", de:["niemals"]},
+        {ru:"иногда", tr:"inogda", de:["manchmal"]},
+        {ru:"снова", tr:"snowa", de:["wieder"]},
+        {ru:"сначала", tr:"snatschala", de:["zuerst"]},
+        {ru:"теперь", tr:"teper'", de:["jetzt"]},
+        {ru:"тогда", tr:"togda", de:["damals"]},
+        {ru:"долго", tr:"dolgo", de:["lange"]},
+        {ru:"утром", tr:"utrom", de:["morgens"]},
+        {ru:"вечером", tr:"wetscherom", de:["abends"]},
+        {ru:"ещё", tr:"jeschtschjo", de:["noch"]},
+        {ru:"затем", tr:"satem", de:["danach"]},
+        {ru:"днём", tr:"dnjom", de:["tagsüber"]},
+        {ru:"раньше", tr:"ran'sche", de:["früher"]},
+        {ru:"летом", tr:"letom", de:["im Sommer"]},
+        {ru:"зимой", tr:"simoj", de:["im Winter"]},
+        {ru:"весной", tr:"wesnoj", de:["im Frühling"]},
+        {ru:"осенью", tr:"ossen'ju", de:["im Herbst"]},
+        {ru:"часто", tr:"tschasto", de:["oft"]},
+        {ru:"редко", tr:"redko", de:["selten"]},
+        {ru:"обычно", tr:"obytschno", de:["gewöhnlich","meistens"]},
+        {ru:"вовремя", tr:"wowremja", de:["rechtzeitig"]},
+        {ru:"навсегда", tr:"nawsegda", de:["für immer"]},
         {ru:"недавно", tr:"nedawno", de:["neulich"]},
+        {ru:"заранее", tr:"saraneje", de:["im Voraus"]},
+        {ru:"постепенно", tr:"postepenno", de:["allmählich"]},
+        {ru:"регулярно", tr:"reguljarno", de:["regelmäßig"]},
+        {ru:"позавчера", tr:"posawtschera", de:["vorgestern"]},
+        {ru:"послезавтра", tr:"poslesawtra", de:["übermorgen"]}
+      ]
+    ],
+    newBlock: [],
+  },
+
+  'Art & Weise': {
+    blocks: [
+      // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
+      [
+        {ru:"хорошо", tr:"choroscho", de:["gut"]},
+        {ru:"плохо", tr:"plocho", de:["schlecht"]},
+        {ru:"так", tr:"tak", de:["so","also"]},
+        {ru:"вместе", tr:"wmeste", de:["zusammen"]},
+        {ru:"быстро", tr:"bystro", de:["schnell"]},
+        {ru:"точно", tr:"totschno", de:["genau"]},
+        {ru:"просто", tr:"prosto", de:["einfach","schlichtweg"]},
+        {ru:"прямо", tr:"prjamo", de:["direkt","geradezu"]},
+        {ru:"по-русски", tr:"po-russki", de:["auf Russisch"]},
+        {ru:"случайно", tr:"slutschajno", de:["zufällig"]},
+        {ru:"медленно", tr:"medlenno", de:["langsam"]},
         {ru:"пешком", tr:"peschkom", de:["zu Fuß"]},
         {ru:"громко", tr:"gromko", de:["laut"]},
-        {ru:"мало", tr:"malo", de:["wenig"]},
+        {ru:"неплохо", tr:"neplocho", de:["nicht schlecht"]},
+        {ru:"нарочно", tr:"narotschno", de:["absichtlich"]},
+        {ru:"отдельно", tr:"otdel'no", de:["getrennt"]},
+        {ru:"молча", tr:"moltscha", de:["schweigend"]}
+      ]
+    ],
+    newBlock: [],
+  },
+
+  'Zustand („es ist …“)': {
+    blocks: [
+      // Hauptliste (wird zur Laufzeit in Blöcke geschnitten)
+      [
+        {ru:"ясно", tr:"jasno", de:["klar","heiter"]},
+        {ru:"холодно", tr:"cholodno", de:["kalt"]},
+        {ru:"жарко", tr:"scharko", de:["heiß"]},
         {ru:"интересно", tr:"interesno", de:["interessant"]},
         {ru:"приятно", tr:"prijatno", de:["angenehm"]},
         {ru:"сложно", tr:"sloschno", de:["schwierig"]},
         {ru:"смешно", tr:"smeschno", de:["lustig"]},
         {ru:"невозможно", tr:"newosmoschno", de:["unmöglich"]},
-        {ru:"недалеко", tr:"nedaleko", de:["nicht weit"]},
-        {ru:"наверняка", tr:"nawernjaka", de:["bestimmt"]},
-        {ru:"вполне", tr:"wpolne", de:["durchaus"]},
-        {ru:"неплохо", tr:"neplocho", de:["nicht schlecht"]},
-        {ru:"нарочно", tr:"narotschno", de:["absichtlich"]},
-        {ru:"заранее", tr:"saraneje", de:["im Voraus"]},
-        {ru:"сверху", tr:"swerchu", de:["oben"]},
         {ru:"стыдно", tr:"stydno", de:["peinlich"]},
-        {ru:"постепенно", tr:"postepenno", de:["allmählich"]},
-        {ru:"отдельно", tr:"otdel'no", de:["getrennt"]},
-        {ru:"снизу", tr:"snisu", de:["unten"]},
-        {ru:"регулярно", tr:"reguljarno", de:["regelmäßig"]},
-        {ru:"молча", tr:"moltscha", de:["schweigend"]},
-        {ru:"позавчера", tr:"posawtschera", de:["vorgestern"]},
-        {ru:"послезавтра", tr:"poslesawtra", de:["übermorgen"]},
         {ru:"пасмурно", tr:"pasmurno", de:["bewölkt","trüb"]}
       ]
     ],
@@ -11223,7 +11270,7 @@ function loadSelection() {
       if (d.activeMain && !['session', 'due', 'hard', 'textw'].includes(d.activeMain) && (d.activeMain !== 'exam' || levelExam)) activeMain = d.activeMain;
       if (d.activeSub) activeSub = d.activeSub;
       if (activeMain && !isCatGroup(activeMain) && RENAMED_CATS[activeMain]) activeMain = migrateCatName(activeMain);
-      if (Array.isArray(d.selectedCats)) selectedCats = new Set(d.selectedCats.map(migrateCatName).filter(c => vocab[c]));
+      if (Array.isArray(d.selectedCats)) selectedCats = new Set(d.selectedCats.flatMap(migrateCatNames).filter(c => vocab[c]));
       if (d.blocks) Object.keys(d.blocks).forEach(c => {
         const m = migrateCatName(c); if (vocab[m] && Array.isArray(d.blocks[c])) selectedBlocksByCat[m] = new Set(d.blocks[c]);
       });
@@ -16766,6 +16813,12 @@ const CAT_ICONS = {
   Funktionswörter: 'ti-arrows-shuffle',
   Präpositionen: 'ti-arrows-join',
   Adverbien:   'ti-arrows-exchange',
+  'Grad & Menge': 'ti-chart-bar',
+  'Einschätzung & Verbindung': 'ti-bulb',
+  'Ort & Richtung': 'ti-map-pin',
+  'Zeit & Häufigkeit (Adv.)': 'ti-clock',
+  'Art & Weise': 'ti-adjustments',
+  'Zustand („es ist …“)': 'ti-sun',
   Zeit:        'ti-clock',
   Tiere:       'ti-paw',
   Körperteile: 'ti-walk',
@@ -16843,12 +16896,14 @@ const WORTART_GROUPS = {
   // 16.11.: leichteste zuerst; Farben und Nationalitäten gehören zu den Adjektiven
   'Adjektive': ['Bewertung & Qualität','Zustand & Person','Zeit & Häufigkeit','Sinne & Beschaffenheit','Zugehörigkeit & Bereich','Gesellschaft & Politik',
                 'Größe & Form','Menge & Maß','Farben','Raum & Lage','Charakter & Gefühl','Nationalitäten','Natur & Wetter (Adj.)','Material & Stoff'],
+  // 26.11.: Adverbien als Wortart mit Unterkategorien (vorher eine Kategorie), leichteste zuerst (Anteil A1/A2)
+  'Adverbien': ['Grad & Menge','Einschätzung & Verbindung','Ort & Richtung','Zeit & Häufigkeit (Adv.)','Art & Weise','Zustand („es ist …“)'],
   'Grammatikwörter': ['Pronomen','Funktionswörter','Präpositionen','Konjunktionen','Partikel','Modalwörter'],
   'Sprechakte & Umgangssprache': ['Interjektionen','Begrüßungen & Redewendungen','Umgangssprache'],
 };
-// Wortarten, die nur aus einer Kategorie bestehen: stehen als eigene Kachel zwischen den Gruppen
-// (Adverbien nach den Adjektiven), sind aber keine Gruppe (der Name ist zugleich die Kategorie)
-const EIGENE_WORTARTEN = { 'Adverbien': 'Adjektive' };   // Kategorie → steht nach dieser Gruppe
+// Wortarten, die nur aus einer Kategorie bestehen: stehen als eigene Kachel zwischen den Gruppen,
+// sind aber keine Gruppe (der Name ist zugleich die Kategorie). Bis 26.11. die Adverbien, die jetzt eine Gruppe sind.
+const EIGENE_WORTARTEN = {};   // Kategorie → steht nach dieser Gruppe
 const VERB_THEMEN_AB = 'Handlungsverben';
 // Reihenfolge aller Wortart-Kategorien wie in der Seitenleiste
 function wortartFolge() {
@@ -16893,12 +16948,16 @@ function updateBlocksToolBtn() {
 // umbenannte Kategorien: alte gespeicherte Namen auf neue abbilden
 const RENAMED_CATS = { 'Verben': 'Grundverben', 'Adverben': 'Adverbien', 'Wetter & Natur': 'Natur & Wetter (Adj.)', 'Begrüßungen': 'Begrüßungen & Redewendungen' };
 function migrateCatName(c) { return RENAMED_CATS[c] || c; }
+// aufgeteilte Kategorien (26.11.: Adverbien → Gruppe mit Unterkategorien): gespeicherte Auswahllisten
+// nehmen statt der alten Kategorie alle neuen Unterkategorien
+const SPLIT_CATS = { 'Adverbien': ['Grad & Menge','Einschätzung & Verbindung','Ort & Richtung','Zeit & Häufigkeit (Adv.)','Art & Weise','Zustand („es ist …“)'] };
+function migrateCatNames(c) { const m = migrateCatName(c); return SPLIT_CATS[m] || [m]; }
 const FAVORITE_CATS_STORAGE_KEY = 'vokabeltrainer-favorite-cats';
 let favoriteCats = new Set();
 function loadFavoriteCats() {
   try {
     const saved = localStorage.getItem(FAVORITE_CATS_STORAGE_KEY);
-    if (saved) favoriteCats = new Set(JSON.parse(saved).map(migrateCatName));
+    if (saved) favoriteCats = new Set(JSON.parse(saved).flatMap(migrateCatNames));
   } catch (e) { console.warn('Sprachtool: Favoriten konnten nicht geladen werden.', e); }
 }
 function saveFavoriteCats() {
@@ -32347,7 +32406,7 @@ function loadDictOpts() {
   try {
     const d = JSON.parse(localStorage.getItem(DICT_OPTS_KEY) || 'null') || {};
     if (d.level === '' || LEVELS.includes(d.level)) dictOpts.level = d.level;
-    if (Array.isArray(d.cats)) dictOpts.cats = d.cats.map(migrateCatName).filter(c => vocab[c]);
+    if (Array.isArray(d.cats)) dictOpts.cats = d.cats.flatMap(migrateCatNames).filter(c => vocab[c]);
     dictOpts.gelernt = d.gelernt === true; dictOpts.texte = d.texte === true;
   } catch (e) {}
 }
@@ -32795,7 +32854,7 @@ function openHoertrainer() {
   }
   try {
     const savedCats = JSON.parse(localStorage.getItem(HOERTRAINER_CATS_KEY) || 'null');
-    if (Array.isArray(savedCats)) htState.selectedCats = new Set(savedCats.map(migrateCatName).filter(c => vocab[c]));
+    if (Array.isArray(savedCats)) htState.selectedCats = new Set(savedCats.flatMap(migrateCatNames).filter(c => vocab[c]));
   } catch (e) {}
   // nichts gespeichert: Kategorien der Vokabelansicht übernehmen, damit „Abspielen“ sofort geht
   if (!htState.selectedCats.size) { try { htState.selectedCats = new Set(vocabSelectionCats()); } catch (e) {} }
@@ -33136,7 +33195,7 @@ function loadHearquizSettings() {
       if (['type','choice','flip'].includes(d.mode)) hqState.mode = d.mode;
       if (d.lang === 'ru' || d.lang === 'de') hqState.lang = d.lang;
       if (d.level === '' || LEVELS.includes(d.level)) hqState.level = d.level;
-      if (Array.isArray(d.cats)) hqState.selectedCats = new Set(d.cats.filter(c => typeof c === 'string').map(migrateCatName).filter(c => vocab[c]));
+      if (Array.isArray(d.cats)) hqState.selectedCats = new Set(d.cats.filter(c => typeof c === 'string').flatMap(migrateCatNames).filter(c => vocab[c]));
       const el = document.getElementById('hearquiz-speed-range');
       if (el && d.speed && /^\d+$/.test(String(d.speed))) { el.value = d.speed; updateHearquizSpeedLabel(); }
     }
