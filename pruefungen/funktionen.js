@@ -325,7 +325,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
   // ── Hörverstehen ──
   await check('H Hörtrainer starten/stoppen', () => ev(() => new Promise(res => { setAppView('listening'); showListeningPanel('hoertrainer'); setAllHoertrainerCatCheckboxes(true); window.__spoken.length = 0; startHoertrainer(); setTimeout(() => { const n = window.__spoken.length; stopHoertrainer(); res({ ok: n > 0, info: n + ' gesprochen' }); }, 900); })));
   await check('H Hörtrainer-Auswahl (Chips, Klappgruppen, Suche, Übernahme)', () => ev(() => {
-    setAppView('listening'); showListeningPanel('hoertrainer'); setAllHoertrainerCatCheckboxes(false);
+    setAppView('listening'); showListeningPanel('hoertrainer'); setAllHoertrainerCatCheckboxes(false); openHoerCats('ht');
     const body = document.getElementById('hoertrainer-cat-body'); const dis = document.getElementById('ht-play-btn').disabled;
     body.querySelector('input[data-cat="Familie"]').click(); const chips = document.querySelectorAll('.ht-chip').length;
     document.querySelector('.ht-chip').click(); const leer = !document.querySelectorAll('.ht-chip').length;
@@ -334,7 +334,7 @@ const FILE = 'file://' + (process.argv[2] || APP_PATH);
     document.getElementById('ht-cat-search').value = ''; filterHoertrainerCats();
     const ws = [activeMain, selectedCats]; activeMain = 'multi'; selectedCats = new Set(['Essen']); takeHoertrainerCatsFromVocab();
     const ueb = [...htState.selectedCats].join(); activeMain = ws[0]; selectedCats = ws[1];
-    setAllHoertrainerCatCheckboxes(true);
+    setAllHoertrainerCatCheckboxes(true); closeOverlay('overlay-hoercats');
     return { ok: dis && chips === 1 && leer && treffer >= 1 && ueb === 'Essen', info: [dis, chips, leer, treffer, ueb].join(' ') };
   }));
   await check('H Hörtrainer stoppt beim Ansichtswechsel', () => ev(() => new Promise(res => { startHoertrainer(); setTimeout(() => { setAppView('vocab'); const pl = htState.playing; window.__spoken.length = 0; setTimeout(() => res({ ok: !pl && window.__spoken.length === 0, info: 'playing=' + pl + ', danach gesprochen=' + window.__spoken.length }), 600); }, 200); })));
