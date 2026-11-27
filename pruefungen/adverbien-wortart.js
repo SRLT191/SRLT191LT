@@ -5,7 +5,9 @@ const { chromium } = require('playwright');
 const path = require('path');
 let fehler = 0, n = 0;
 const ok = (name, bed, info) => { n++; if (bed) console.log('OK  ' + name); else { fehler++; console.log('XX ' + name + (info !== undefined ? ' ' + JSON.stringify(info).slice(0, 600) : '')); } };
-const UK = { 'Grad & Menge': 14, 'Einschätzung & Verbindung': 8, 'Ort & Richtung': 21, 'Zeit & Häufigkeit (Adv.)': 40, 'Art & Weise': 17, 'Zustand („es ist …“)': 10 };
+// später hinten angehängt (27.11.: Grad & Menge +1, Einschätzung & Verbindung +2, Prüfung adverbien-3)
+const NEU = ['довольно', 'может быть', 'по-моему'];
+const UK = { 'Grad & Menge': 15, 'Einschätzung & Verbindung': 10, 'Ort & Richtung': 21, 'Zeit & Häufigkeit (Adv.)': 40, 'Art & Weise': 17, 'Zustand („es ist …“)': 10 };
 // alte Reihenfolge der Kategorie „Adverbien“ (bis 25.11.)
 const ALT = 'здесь там сейчас потом всегда сегодня вчера завтра очень много хорошо плохо так конечно уже только тоже вдруг сразу рано почти поэтому вместе поздно рядом домой наконец никогда иногда снова назад сначала немного слишком быстро теперь тогда совсем долго точно сюда туда утром вечером действительно достаточно несколько скорее ясно ещё просто прямо затем значит например дома днём раньше летом зимой весной осенью холодно жарко по-русски часто особенно далеко близко редко обычно вовремя случайно навсегда едва везде вперёд справа слева направо налево впереди сзади медленно обязательно недавно пешком громко мало интересно приятно сложно смешно невозможно недалеко наверняка вполне неплохо нарочно заранее сверху стыдно постепенно отдельно снизу регулярно молча позавчера послезавтра пасмурно'.split(' ');
 (async () => {
@@ -33,10 +35,10 @@ const ALT = 'здесь там сейчас потом всегда сегодн
       hq: (() => { loadHearquizSettings(); return [...hqState.selectedCats].sort(); })() };
   }, UK);
   ok('Gruppe Adverbien mit sechs Unterkategorien, alte Kategorie weg', JSON.stringify(r.grp) === JSON.stringify(Object.keys(UK)) && !r.alt, r.grp);
-  ok('Unterkategorien mit 14 · 8 · 21 · 40 · 17 · 10 Wörtern', JSON.stringify(r.zahlen) === JSON.stringify(Object.values(UK)), r.zahlen);
-  ok('alle 110 Adverbien genau einmal, keine Dubletten im Wortschatz', r.woerter.length === 110 && ALT.every(w => r.woerter.includes(w)) && !r.doppelt.length, { fehlt: ALT.filter(w => !r.woerter.includes(w)), doppelt: r.doppelt });
+  ok('Unterkategorien mit 15 · 10 · 21 · 40 · 17 · 10 Wörtern', JSON.stringify(r.zahlen) === JSON.stringify(Object.values(UK)), r.zahlen);
+  ok('alle 110 alten und die neuen Adverbien genau einmal, keine Dubletten im Wortschatz', r.woerter.length === 110 + NEU.length && NEU.every(w => r.woerter.includes(w)) && ALT.every(w => r.woerter.includes(w)) && !r.doppelt.length, { fehlt: ALT.filter(w => !r.woerter.includes(w)), doppelt: r.doppelt });
   const proKat = await page.evaluate(() => WORTART_GROUPS['Adverbien'].map(c => getAllWordsOfCat(c).map(w => w.ru)));
-  ok('innerhalb jeder Unterkategorie die alte Reihenfolge', proKat.every(ws => ws.every((w, i) => !i || ALT.indexOf(ws[i - 1]) < ALT.indexOf(w))));
+  ok('innerhalb jeder Unterkategorie die alte Reihenfolge', proKat.every(ws => ws.filter(w => !NEU.includes(w)).every((w, i, a) => !i || ALT.indexOf(a[i - 1]) < ALT.indexOf(w))));
   ok('leichteste Unterkategorie zuerst (Anteil A1/A2)', r.sortiert);
   ok('keine Oberkategorie heißt wie eine Kategorie', !r.gleicheNamen.length, r.gleicheNamen);
   ok('jede Unterkategorie hat ein Symbol', r.symbole.every(Boolean), r.symbole);
@@ -53,7 +55,7 @@ const ALT = 'здесь там сейчас потом всегда сегодн
     selectWholeCat('Ort & Richtung'); const ort = getPoolRaw().length;
     return { gruppe, ort, knoepfe: [...document.querySelectorAll('.sub-btn[data-cat]')].map(b => b.dataset.cat).filter(c => WORTART_GROUPS['Adverbien'].includes(c)).length };
   });
-  ok('Klick auf Adverbien übt alle 110, auf „Ort & Richtung“ nur deren 21; sechs Knöpfe in der Seitenleiste', s.gruppe === 110 && s.ort === 21 && s.knoepfe === 6, s);
+  ok('Klick auf Adverbien übt alle, auf „Ort & Richtung“ nur deren 21; sechs Knöpfe in der Seitenleiste', s.gruppe === 110 + NEU.length && s.ort === 21 && s.knoepfe === 6, s);
 
   ok('keine JS-Fehler', !fehlerJs.length, fehlerJs);
   console.log(n - fehler + ' von ' + n + ' bestanden');
