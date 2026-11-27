@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
   await m.goto('file://' + APP_PATH); await m.waitForTimeout(300);
   const R = []; const check = async (n, f) => { try { const r = await f(); const ok = typeof r === 'object' ? r.ok : r; R.push([ok ? 'OK ' : 'XX ', n, r && r.info || '']); } catch (e) { R.push(['XX ', n, e.message]); } };
   await check('Hörtrainer-Kategorien: Zeilen, Häkchen-Fläche, Alle/Keine und Suche mindestens 44 px', () => m.evaluate(async () => {
-    setAppView('listening'); await new Promise(r => setTimeout(r, 80));
+    setAppView('listening'); showListeningPanel('hoertrainer'); openHoerCats('ht'); await new Promise(r => setTimeout(r, 80));
     const vis = sel => [...document.querySelectorAll(sel)].filter(e => e.offsetParent);
     const row = vis('.cat-group-title[data-cats]')[0], hit = vis('.cat-group-hit')[0], links = vis('.picker-quick a'), su = document.getElementById('ht-cat-search');
     const r = e => e.getBoundingClientRect();
@@ -17,7 +17,7 @@ const { chromium } = require('playwright');
     return { ok, info: info.join(', ') };
   }));
   await check('Häkchen der Gruppe wählt alle aus, ohne die Gruppe zuzuklappen', () => m.evaluate(async () => {
-    setAppView('listening'); await new Promise(r => setTimeout(r, 80));
+    setAppView('listening'); showListeningPanel('hoertrainer'); openHoerCats('ht'); await new Promise(r => setTimeout(r, 80));
     const t = [...document.querySelectorAll('.cat-group-title[data-sub]')].find(e => e.offsetParent);
     if (!t) return { ok: false, info: 'keine Untergruppe' };
     const cats = t.dataset.cats.split('|'); const vorher = getComputedStyle(t.parentElement.querySelector('input[data-cat="' + cats[0] + '"]').closest('label, div')).display;
@@ -26,7 +26,7 @@ const { chromium } = require('playwright');
     t.querySelector('.cat-group-hit').click();
     const alle = cats.every(c => { const cb = t.parentElement.querySelector('input[data-cat="' + c + '"]'); return !cb || cb.checked === soll; });
     const nachher = getComputedStyle(t.parentElement.querySelector('input[data-cat="' + cats[0] + '"]').closest('label, div')).display;
-    t.querySelector('.cat-group-hit').click();
+    t.querySelector('.cat-group-hit').click(); closeOverlay('overlay-hoercats');
     return { ok: alle && vorher === nachher, info: 'alle ' + alle + ', Anzeige ' + vorher + ' → ' + nachher };
   }));
   await check('Konjugieren: Eingabefelder am Handy 44 px hoch', () => m.evaluate(() => { setAppView('grammar'); showGrammarPanel('conjugate'); const h = document.getElementById('conj-input-0').getBoundingClientRect().height; return { ok: h >= 44, info: h + ' px' }; }));

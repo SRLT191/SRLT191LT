@@ -1186,7 +1186,7 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
   #dictation-loesung { text-align: center; margin: 16px 0 6px; padding: 16px 12px; background: var(--c-surface-alt); border-radius: 14px; }
   #dictation-loesung .dl-ru { font-size: 22px; font-weight: 600; color: var(--c-text-primary); }
   #dictation-loesung .dl-de { font-size: 14px; color: var(--c-text-muted); margin-top: 6px; }
-  #dictation-loesung .tool-btn { margin-top: 10px; }
+  #dictation-loesung .tool-btn { margin: 10px auto 0; display: flex; }
   #dictation-selbst { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 14px; color: var(--c-text-label); }
   #dictation-ende { text-align: center; margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
   #dictation-keys { text-align: center; font-size: 11px; color: var(--c-text-faint); margin-top: 14px; }
@@ -1843,6 +1843,52 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
   /* fünf Bereiche in der Leiste unten (14.11.) */
   @media (max-width: 700px) { #view-switcher { flex: 4; } }
   @media (max-width: 400px) { #view-switcher .mode-btn { flex: 1 1 auto; } }   /* Breite nach Wortlänge, sonst passt „Grammatik“ nicht */
+  /* ── Hörwerkzeuge, Design 26.11. ── */
+  .grammar-panel-header .hoer-kopf { margin-left: auto; display: flex; gap: 14px; font-size: 12px; color: var(--c-text-muted); font-variant-numeric: tabular-nums; }
+  .hoer-kopf b { font-weight: 600; color: var(--c-text-label); }
+  .hq-toolbar { gap: 10px 18px; }
+  .hoer-cat-row { grid-column: 1 / -1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 6px 2px; font-size: 13px; color: var(--c-text-label); }
+  .hoer-cat-sum { flex: 1 1 0; min-width: 0; color: var(--c-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hoer-tempo input[type="range"] { flex: 1 1 140px; max-width: 220px; }
+  .hoer-tempo-wert { font-size: 12px; font-weight: 600; color: var(--c-accent); min-width: 34px; font-variant-numeric: tabular-nums; }
+  #overlay-hoercats .ht-cats { border: none; padding: 0; }
+  #overlay-hoercats .list-search { width: 100%; box-sizing: border-box; margin-bottom: 8px; }
+  #overlay-hoercats #hoertrainer-cat-body, #overlay-hoercats #hearquiz-cat-body, #overlay-hoercats #dict-cat-body { max-height: none; overflow: visible; }
+  /* Fortschritt der Runde: Zeile mit Balken (grün richtig, rot falsch) */
+  .hoer-fort { display: flex; align-items: center; gap: 10px; margin: 6px 0 4px; font-size: 12px; color: var(--c-text-muted); font-variant-numeric: tabular-nums; }
+  .hoer-fort > div:first-child { margin: 0 !important; text-align: left !important; white-space: nowrap; font-size: 12px; color: var(--c-text-muted); }
+  .hoer-fort:has(> div:first-child:empty) { display: none; }
+  .hoer-fort-bar { flex: 1; height: 6px; border-radius: 99px; background: var(--c-border-light); overflow: hidden; display: flex; }
+  .hoer-fort-bar i { display: block; height: 100%; width: 0; transition: width .25s; }
+  .hoer-fort-bar i.ok { background: var(--c-success-border, #3fa34d); }
+  .hoer-fort-bar i.nok { background: var(--c-error-border, #d9534f); }
+  .hoer-fort-n { white-space: nowrap; }
+  #hoertrainer-fort .hoer-fort-bar i.ok { background: var(--c-accent); }
+  #hoertrainer-fort .hoer-fort-n { display: none; }
+  #hearquiz-score, #dictation-score { display: none; }
+  /* Hörbereich: großer Kreis, daneben „Langsam“ */
+  .hoer-play-row { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .hoer-play-row .hq-play { margin: 4px 0 0; }
+  .hoer-langsam { font-size: 13px; }
+  /* Lösung: russisches Wort groß in der russischen Schrift, Übersetzung darunter, Satz als Teil der Lösung */
+  .hq-flip-answer { font-size: 30px; }
+  .hq-flip-answer .hq-flip-ru, .hq-loesung .dl-ru { font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 30px; font-weight: 600; color: var(--c-text-primary); }
+  .hq-flip-answer .hq-flip-de, .hq-loesung .dl-de { font-size: 18px; font-weight: 500; color: var(--c-text-label); margin-top: 4px; }
+  .hq-loesung { background: none; padding: 4px 8px 8px; margin: 6px 0 4px; }
+  .hq-loesung .dl-satz { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--c-border-light); font-family: var(--ru-font), 'Noto Sans', system-ui, sans-serif; font-size: 16px; }
+  #hearquiz-result:empty { display: none; }
+  /* Selbstbewertung wie eine Karte: groß, grün / rot, mit Taste */
+  .hoer-rate { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; width: 100%; }
+  #hq-selbst.hoer-selbst, #dictation-selbst.hoer-selbst { display: flex; flex-direction: column; align-items: stretch; gap: 4px; margin-top: 10px; }
+  .hoer-selbst-q { text-align: center; font-size: 13px; color: var(--c-text-muted); }
+  .rate-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; padding: 0.7rem 1rem; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; border: 1px solid; }
+  .rate-btn.rate-ok { background: var(--c-success-bg); border-color: var(--c-success-border); color: var(--c-success-text); }
+  .rate-btn.rate-nok { background: var(--c-error-bg); border-color: var(--c-error-border); color: var(--c-error-text); }
+  .rate-btn:hover { filter: brightness(0.97); }
+  .rate-btn:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+  .hoer-undo { border: none; background: none; color: var(--c-text-muted); font-size: 12.5px; cursor: pointer; padding: 6px 8px; display: inline-flex; align-items: center; gap: 4px; }
+  .hoer-undo:hover { color: var(--c-accent); }
+  @media (hover: none) { .rate-btn .gt-kbd { display: none; } }
 </style>
 </head>
 <body>
@@ -3078,9 +3124,9 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
       <div class="conj-info-panel" id="hoertrainer-info-panel" style="display:none">
         <p><strong>Worum es geht:</strong> Zuhören ohne Tippen. Der Trainer liest die gewählten Kategorien vor: erst das russische Wort, nach einer Pause die deutsche Bedeutung. Gedacht fürs Nebenbeilernen – unterwegs, beim Aufräumen, ohne Bildschirm.</p>
         <p><strong>Einstellungen:</strong> <em>Pause zwischen Wort und Übersetzung</em> bestimmt die Zeit zum Mitdenken, <em>Abspielgeschwindigkeit</em> das Vorlesetempo. <em>Reihenfolge</em> spielt die Wörter wie in der Kategorie oder <em>gemischt</em>. <em>Nur Russisch</em> lässt die Übersetzung weg, <em>Nach dem letzten Wort von vorn beginnen</em> startet die Liste neu (gemischt jedes Mal neu gemischt). <em>Deutsch → Russisch</em> liest zuerst die Bedeutung und nach der Pause das russische Wort – zum Mitdenken und Abrufen. <em>Beispielsatz mit vorlesen</em> hängt nach jedem Wort seinen Übungssatz an.</p>
-        <p><strong>Abspielen:</strong> Groß steht das aktuelle Wort mit Kategorie und Stufe. <em>Zurück</em> und <em>Vor</em> springen ein Wort, <em>Nochmal</em> wiederholt es. Tasten: Leertaste Pause/Weiter, Pfeil links/rechts, N.</p>
+        <p><strong>Abspielen:</strong> Groß steht das aktuelle Wort mit Kategorie und Stufe. <em>Zurück</em> und <em>Vor</em> springen ein Wort, <em>Nochmal</em> wiederholt es; der Balken zeigt, wie weit die Liste schon gespielt ist. Tasten: Leertaste Pause/Weiter, Pfeil links/rechts, N.</p>
         <p><strong>Sprachniveau:</strong> <em>Wörter bis Stufe</em> wählt hier direkt, bis zu welcher Stufe vorgelesen wird. Bei <em>Alle</em> gilt die Einstellung <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen. Neben dem Knopf steht, wie viele Wörter das sind und wie lange ein Durchgang ungefähr dauert.</p>
-        <p><strong>Kategorien:</strong> Die gewählten stehen als Knöpfe über der Liste – ein Klick auf × nimmt eine wieder heraus. Die Gruppen in der Liste lassen sich auf- und zuklappen und zeigen, wie viele ihrer Kategorien gewählt sind; die Suche findet jede Kategorie direkt. <em>Aus Vokabeln übernehmen</em> holt die Kategorien, die gerade in der Vokabelabfrage ausgewählt sind. Die Auswahl wird sofort gespeichert und beim nächsten Öffnen wiederhergestellt; ist noch nichts gewählt, übernimmt der Trainer die Kategorien der Vokabelansicht. Der Lernstand der Vokabeln ändert sich hier nicht.</p>
+        <p><strong>Kategorien:</strong> Die Zeile <em>Kategorien</em> nennt die Auswahl; <em>Ändern</em> öffnet ein eigenes Fenster mit der Liste. Die gewählten stehen dort als Knöpfe über der Liste – ein Klick auf × nimmt eine wieder heraus. Die Gruppen in der Liste lassen sich auf- und zuklappen und zeigen, wie viele ihrer Kategorien gewählt sind; die Suche findet jede Kategorie direkt. <em>Aus Vokabeln übernehmen</em> holt die Kategorien, die gerade in der Vokabelabfrage ausgewählt sind. Die Auswahl wird sofort gespeichert und beim nächsten Öffnen wiederhergestellt; ist noch nichts gewählt, übernimmt der Trainer die Kategorien der Vokabelansicht. Der Lernstand der Vokabeln ändert sich hier nicht.</p>
       </div>
       <div id="hoertrainer-setup">
         <div class="ht-start">
@@ -3138,23 +3184,15 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
             <input type="checkbox" id="hoertrainer-ruonly-toggle" onchange="saveToolSettings(); updateHoertrainerCatCount()">
             <span>Nur Russisch (ohne deutsche Übersetzung)</span>
           </label>
-        </div>
-        <div class="ht-cats">
-          <div class="ht-cats-head">
-            <strong>Kategorien</strong>
-            <span class="picker-quick">
-              <a href="#" onclick="setAllHoertrainerCatCheckboxes(true); return false">Alle</a>
-              <a href="#" onclick="setAllHoertrainerCatCheckboxes(false); return false">Keine</a>
-              <a href="#" onclick="takeHoertrainerCatsFromVocab(); return false" title="Die Kategorien der aktuellen Vokabelauswahl übernehmen">Aus Vokabeln übernehmen</a>
-            </span>
+          <div class="hoer-cat-row">
+            <span class="hoer-cat-lbl">Kategorien</span>
+            <span class="hoer-cat-sum" id="ht-hc-sum">keine gewählt</span>
+            <button class="tool-btn" type="button" id="ht-hc-btn" onclick="openHoerCats('ht')"><i class="ti ti-checkbox"></i> Kategorien wählen …</button>
           </div>
-          <div id="ht-chips"></div>
-          <input type="text" class="list-search" id="ht-cat-search" placeholder="Kategorie suchen…" autocomplete="off" aria-label="Kategorie suchen" oninput="filterHoertrainerCats()">
-          <div id="hoertrainer-cat-body"></div>
         </div>
       </div>
       <div id="hoertrainer-player" style="display:none">
-        <div id="hoertrainer-progress"></div>
+        <div class="hoer-fort" id="hoertrainer-fort"><div id="hoertrainer-progress"></div><div class="hoer-fort-bar" aria-hidden="true"><i class="ok"></i><i class="nok"></i></div><div class="hoer-fort-n"></div></div>
         <div id="hoertrainer-card">
           <div id="hoertrainer-meta"></div>
           <div id="hoertrainer-word">–</div>
@@ -3184,9 +3222,9 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
         <p><strong>Worum es geht:</strong> Du hörst einen russischen Satz und tippst ihn so genau wie möglich. Das übt Hörverstehen und Rechtschreibung zugleich.</p>
         <p>Die Sätze stammen aus den Beispielsätzen der Vokabeln – das Zielwort kennst du also aus dem Wortschatz.</p>
         <p><strong>Sprachniveau:</strong> Jeder Satz trägt die Stufe seines schwersten Worts (Abzeichen neben der Aufgabe, ein Richtwert). Ist in den Einstellungen <em>Wörter bis Stufe</em> gesetzt, kommen nur Sätze bis zu dieser Stufe.</p>
-        <p><strong>Bedienung:</strong> Der Satz wird bei jedem neuen Satz gleich vorgelesen. <em>Vorlesen</em> wiederholt ihn, <em>Langsam</em> liest ihn einmal mit halbem Tempo, <em>2. Hälfte</em> nur den hinteren Teil; das Grundtempo stellst du mit dem Regler ein. Über dem Feld steht, wie viele Wörter der Satz hat; <em>Tipp</em> deckt nacheinander je ein Wort auf. <em>Übersetzung</em> blendet die deutsche Bedeutung ein. <em>Lösung zeigen</em> zeigt den Satz – danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>, Tasten 1 / 2; Enter zählt als nicht gewusst). Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam, Enter prüfen und danach weiter.</p>
+        <p><strong>Bedienung:</strong> Der Satz wird bei jedem neuen Satz gleich vorgelesen. <em>Vorlesen</em> wiederholt ihn, <em>Langsam</em> liest ihn einmal mit halbem Tempo, <em>2. Hälfte</em> nur den hinteren Teil; das Grundtempo stellst du unter <em>Einstellungen</em> mit dem Regler <em>Tempo</em> ein. Über dem Feld steht, wie viele Wörter der Satz hat; <em>Tipp</em> deckt nacheinander je ein Wort auf. <em>Übersetzung</em> blendet die deutsche Bedeutung ein. <em>Lösung zeigen</em> zeigt den Satz – danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>, Tasten 1 / 2; Enter zählt als nicht gewusst). Tasten: Strg+Leertaste vorlesen, Strg+Umschalt+Leertaste langsam, Enter prüfen und danach weiter.</p>
         <p><strong>Runden:</strong> Eine Runde hat so viele Sätze, wie unter Einstellungen → Üben bei <em>Rundengröße</em> eingestellt ist (Standard 15, „Satz 3 von 15“; „alle“ = alle offenen), zuerst neue und zuletzt falsche. Am Ende siehst du die Fehler und kannst sie wiederholen. Richtig gelöste Sätze zählen in den Lernstand.</p>
-        <p><strong>Einstellungen:</strong> <em>Sätze bis Stufe</em> wählt die Stufe direkt (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen). Mit den <em>Kategorien</em> kommen nur Sätze zu Wörtern daraus; <em>Nur Sätze zu gelernten Wörtern</em> übt Hören mit bekanntem Wortschatz; <em>Auch Sätze aus den Texten</em> nimmt die zusammenhängenden Sätze aus dem Textverständnis dazu.</p>
+        <p><strong>Einstellungen:</strong> <em>Sätze bis Stufe</em> wählt die Stufe direkt (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen). Mit <em>Kategorien</em> (Knopf <em>Ändern</em> öffnet ein eigenes Fenster mit der Liste) kommen nur Sätze zu Wörtern daraus; <em>Nur Sätze zu gelernten Wörtern</em> übt Hören mit bekanntem Wortschatz; <em>Auch Sätze aus den Texten</em> nimmt die zusammenhängenden Sätze aus dem Textverständnis dazu.</p>
         <p>Nach dem Prüfen siehst du deine Eingabe Wort für Wort mit dem Original verglichen. Kleine Tippfehler im Wortstamm werden verziehen – die Endung und kurze Wörter wie я, не, к müssen stimmen.</p>
       </div>
       <details class="dict-optionen" id="dict-optionen">
@@ -3203,30 +3241,23 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
         </div>
         <label class="hoertrainer-loop-row"><input type="checkbox" id="dict-gelernt" onchange="setDictOpt('gelernt', this.checked)"><span>Nur Sätze zu Wörtern, die ich schon gelernt habe</span></label>
         <label class="hoertrainer-loop-row"><input type="checkbox" id="dict-texte" onchange="setDictOpt('texte', this.checked)"><span>Auch Sätze aus den Texten (Textverständnis)</span></label>
-        <div class="ht-cats dict-cats">
-          <div class="ht-cats-head">
-            <strong>Kategorien</strong>
-            <span class="picker-quick">
-              <a href="#" onclick="setDictCats('alle'); return false">Alle</a>
-              <a href="#" onclick="setDictCats('keine'); return false">Keine</a>
-              <a href="#" onclick="setDictCats('vokabeln'); return false">Aus Vokabeln übernehmen</a>
-            </span>
-            <span class="dict-cat-hint">keine gewählt = alle</span>
-          </div>
-          <div id="dict-cat-body"></div>
+        <div class="ht-order-row hoer-tempo">
+          <span>Tempo</span>
+          <input type="range" id="dictation-speed-range" aria-label="Vorlese-Tempo" min="6" max="11" step="1" value="9" oninput="updateDictationSpeedLabel()">
+          <span id="dictation-speed-value" class="hoer-tempo-wert">0,9×</span>
+        </div>
+        <div class="hoer-cat-row">
+          <span class="hoer-cat-lbl">Kategorien</span>
+          <span class="hoer-cat-sum" id="dict-hc-sum">alle</span>
+          <button class="tool-btn" type="button" id="dict-hc-btn" onclick="openHoerCats('dict')"><i class="ti ti-checkbox"></i> Kategorien wählen …</button>
         </div>
       </details>
       <div class="conj-toolbar dict-toolbar">
         <button class="tool-btn tool-btn-primary" onclick="playDictation()" title="Vorlesen (Strg+Leertaste)" aria-keyshortcuts="Control+Space"><i class="ti ti-volume"></i> Vorlesen</button>
         <button class="tool-btn" onclick="playDictation(0.5)" title="Langsam vorlesen (Strg+Umschalt+Leertaste)" aria-keyshortcuts="Control+Shift+Space"><i class="ti ti-volume"></i> Langsam</button>
         <button class="tool-btn" onclick="playDictationHalf()" title="Nur die zweite Hälfte vorlesen"><i class="ti ti-volume"></i> 2. Hälfte</button>
-        <div class="hoertrainer-pause-control" style="flex:1; min-width:150px;">
-          <span style="font-size:12px; color:var(--c-text-muted)">Tempo</span>
-          <input type="range" id="dictation-speed-range" aria-label="Vorlese-Tempo" min="6" max="11" step="1" value="9" oninput="updateDictationSpeedLabel()">
-          <span id="dictation-speed-value" style="font-size:12px; font-weight:600; color:var(--c-accent); min-width:34px; text-align:right">0,9×</span>
-        </div>
       </div>
-      <div id="dictation-runde"></div>
+      <div class="hoer-fort" id="dictation-fort"><div id="dictation-runde"></div><div class="hoer-fort-bar" aria-hidden="true"><i class="ok"></i><i class="nok"></i></div><div class="hoer-fort-n"></div></div>
       <div class="case-question" id="dictation-hint"></div>
       <div id="dictation-woerter" aria-live="polite"></div>
       <div id="dictation-eingabe">
@@ -3241,10 +3272,12 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
       <div id="dictation-loesung" style="display:none"></div>
       <div id="dictation-diff" style="display:none; font-size:16px; line-height:1.7; margin-top:10px;"></div>
       <div aria-live="polite" class="conj-result" id="dictation-result" role="status"></div>
-      <div id="dictation-selbst" style="display:none">
-        <span>Wusstest du ihn?</span>
-        <button class="tool-btn" onclick="dictSelbst(true)"><i class="ti ti-check"></i> Gewusst</button>
-        <button class="tool-btn" onclick="dictSelbst(false)"><i class="ti ti-x"></i> Nicht gewusst</button>
+      <div id="dictation-selbst" class="hoer-selbst" style="display:none">
+        <span class="hoer-selbst-q">Wusstest du ihn?</span>
+        <div class="hoer-rate">
+          <button class="rate-btn rate-ok" onclick="dictSelbst(true)" aria-keyshortcuts="1"><i class="ti ti-check"></i> Gewusst <kbd aria-hidden="true" class="gt-kbd">1</kbd></button>
+          <button class="rate-btn rate-nok" onclick="dictSelbst(false)" aria-keyshortcuts="2"><i class="ti ti-x"></i> Nicht gewusst <kbd aria-hidden="true" class="gt-kbd">2</kbd></button>
+        </div>
       </div>
       <div class="conj-result" id="dictation-score"></div>
       <div id="dictation-ende" style="display:none"></div>
@@ -3258,24 +3291,33 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
       <span class="overlay-title"><i class="ti ti-vocabulary"></i> Hörquiz</span>
       <button class="conj-info-btn" onclick="toggleHearquizInfo()" title="Worum geht es beim Hörquiz?" aria-label="Erklärung anzeigen"><i class="ti ti-info-circle"></i></button>
     </span>
+    <!-- Kennzahlen klein in der Kopfzeile (26.11.) -->
+    <div class="hoer-kopf" id="hearquiz-info" aria-label="Kennzahlen">
+      <span><b id="hq-info-total">–</b> <span id="hq-info-total-lbl">Wörter</span></span>
+      <span><b id="hq-info-open">–</b> offen</span>
+      <span><b id="hq-info-right">–</b> richtig</span>
+    </div>
   </div>
   <div class="overlay-body">
     <div class="conj-info-panel" id="hearquiz-info-panel" style="display:none">
       <p><strong>Worum es geht:</strong> Du hörst ein russisches Wort und musst es erkennen – aktiv statt nur zuhören.</p>
-      <p><strong>Drei Modi:</strong></p>
+      <p><strong>Drei Arten</strong> (Zeile <em>Art</em>):</p>
       <p>• <strong>Tippen:</strong> Wort anhören und die Antwort schreiben; Enter im leeren Feld überspringt das Wort. <em>Lösung zeigen</em> (oder Taste 3 im leeren Feld) deckt auf, danach bewertest du dich selbst (<em>Gewusst</em> / <em>Nicht gewusst</em>, Tasten 1 / 2).</p>
       <p>• <strong>Auswahl:</strong> Wort anhören und aus vier Antworten die richtige wählen – mit der Maus oder den Tasten 1–4.</p>
-      <p>• <strong>Aufdecken:</strong> Wort anhören, selbst beantworten, aufdecken und ehrlich bewerten. Enter deckt auf, 1 = gewusst, 2 = nicht gewusst, 3 liest erneut vor, 4 nimmt eine versehentliche Bewertung zurück.</p>
-      <p><strong>Antwort: Russisch / Deutsch</strong> legt fest, worauf du antwortest: <strong>Russisch</strong> = das gehörte Wort selbst (schreiben bzw. Schriftbild erkennen), <strong>Deutsch</strong> = seine Bedeutung. Jede Kombination hat ihren eigenen Lernfortschritt.</p>
-      <p><strong>Runden:</strong> Eine Runde hat so viele Wörter, wie unter Einstellungen → Üben bei <em>Rundengröße</em> eingestellt ist (Standard 15, „Wort 3 von 15“; „alle“ = alle offenen) – zuerst fällige, dann zuletzt falsche, dann neue. Nach jeder Antwort steht das Wort groß da, mit Übersetzung, Stufe und Beispielsatz. Am Ende siehst du die Fehler und kannst sie mit <em>Fehler wiederholen</em> noch einmal üben.</p>
-      <p><strong>Einstellungen:</strong> <em>Wörter bis Stufe</em> wählt die Stufe direkt im Hörquiz (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen; bleibt dabei nichts übrig, kommen alle Wörter der Kategorien). Die <em>Kategorien</em> gelten sofort; keine gewählt = alle. <em>Lernstand zurücksetzen</em> setzt den Hörquiz-Fortschritt zurück.</p>
-      <p><strong>Tasten:</strong> Strg+Leertaste spielt das Wort ab, Strg+Umschalt+Leertaste langsam; außerhalb des Eingabefelds genügt die Leertaste. Enter prüft und geht beim zweiten Drücken weiter. Kommt kein Ton, tippe auf <em>Anhören</em>.</p>
+      <p>• <strong>Aufdecken:</strong> Wort anhören, selbst beantworten, aufdecken und ehrlich bewerten. Enter deckt auf, 1 = gewusst, 2 = nicht gewusst, 3 liest erneut vor, 4 nimmt eine versehentliche Bewertung zurück (Knopf <em>Bewertung zurücknehmen</em>).</p>
+      <p><strong>Antwort: Russisch / Deutsch</strong> (Zeile <em>Antwort</em>) legt fest, worauf du antwortest: <strong>Russisch</strong> = das gehörte Wort selbst (schreiben bzw. Schriftbild erkennen), <strong>Deutsch</strong> = seine Bedeutung. Jede Kombination hat ihren eigenen Lernfortschritt.</p>
+      <p><strong>Runden:</strong> Eine Runde hat so viele Wörter, wie unter Einstellungen → Üben bei <em>Rundengröße</em> eingestellt ist (Standard 15, „Wort 3 von 15“; „alle“ = alle offenen) – zuerst fällige, dann zuletzt falsche, dann neue. Der Balken zeigt, wie viele Wörter der Runde richtig und falsch waren; oben rechts stehen Wörter gesamt, offen und richtig. Nach jeder Antwort steht das russische Wort groß da, darunter Übersetzung, Stufe und Beispielsatz (<em>Satz anhören</em>). Am Ende siehst du die Fehler und kannst sie mit <em>Fehler wiederholen</em> noch einmal üben.</p>
+      <p><strong>Einstellungen:</strong> <em>Wörter bis Stufe</em> wählt die Stufe direkt im Hörquiz (bei <em>Alle</em> gilt <em>Wörter bis Stufe</em> aus den allgemeinen Einstellungen; bleibt dabei nichts übrig, kommen alle Wörter der Kategorien). <em>Tempo</em> stellt die Vorlesegeschwindigkeit ein. <em>Kategorien</em> – <em>Ändern</em> öffnet ein eigenes Fenster mit der Liste; die Auswahl gilt sofort, keine gewählt = alle. <em>Lernstand zurücksetzen</em> setzt den Hörquiz-Fortschritt zurück.</p>
+      <p><strong>Tasten:</strong> Strg+Leertaste spielt das Wort ab, Strg+Umschalt+Leertaste langsam; außerhalb des Eingabefelds genügt die Leertaste. Enter prüft und geht beim zweiten Drücken weiter. Kommt kein Ton, tippe auf den Abspielknopf; <em>Langsam</em> liest das Wort einmal mit halbem Tempo.</p>
     </div>
     <div class="conj-toolbar hq-toolbar">
-      <div class="tense-switcher" role="group" aria-label="Modus">
+      <div class="hq-lang-wrap">
+        <span class="hq-lang-lbl">Art</span>
+        <div class="tense-switcher" role="group" aria-label="Modus">
         <button class="mode-btn active" id="hq-mode-type" onclick="setHearquizMode('type')">Tippen</button>
         <button class="mode-btn" id="hq-mode-choice" onclick="setHearquizMode('choice')">Auswahl</button>
         <button class="mode-btn" id="hq-mode-flip" onclick="setHearquizMode('flip')">Aufdecken</button>
+        </div>
       </div>
       <div class="hq-lang-wrap">
         <span class="hq-lang-lbl">Antwort</span>
@@ -3297,48 +3339,26 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
           <button class="mode-btn" data-l="B2" onclick="setHearquizLevel('B2')">B2</button>
         </div>
       </div>
-      <div class="ht-cats dict-cats">
-        <div class="ht-cats-head">
-          <strong>Kategorien</strong>
-          <span class="picker-quick">
-            <a href="#" onclick="setHearquizCats('alle'); return false">Alle</a>
-            <a href="#" onclick="setHearquizCats('keine'); return false">Keine</a>
-            <a href="#" onclick="setHearquizCats('vokabeln'); return false" title="Die Kategorien der aktuellen Vokabelauswahl übernehmen">Aus Vokabeln übernehmen</a>
-          </span>
-          <span class="dict-cat-hint">keine gewählt = alle</span>
-        </div>
-        <div id="hq-chips"></div>
-        <input type="text" class="list-search" id="hq-cat-search" placeholder="Kategorie suchen…" autocomplete="off" aria-label="Kategorie suchen" oninput="applyCatPickerFilter(document.getElementById('hearquiz-cat-body'), this.value.trim().toLowerCase())">
-        <div id="hearquiz-cat-body"></div>
+      <div class="ht-order-row hoer-tempo">
+        <span>Tempo</span>
+        <input type="range" id="hearquiz-speed-range" aria-label="Vorlese-Tempo" min="6" max="11" step="1" value="9" oninput="updateHearquizSpeedLabel()">
+        <span id="hearquiz-speed-value" class="hoer-tempo-wert">0,9×</span>
+      </div>
+      <div class="hoer-cat-row">
+        <span class="hoer-cat-lbl">Kategorien</span>
+        <span class="hoer-cat-sum" id="hq-hc-sum">alle</span>
+        <button class="tool-btn" type="button" id="hq-hc-btn" onclick="openHoerCats('hq')"><i class="ti ti-checkbox"></i> Kategorien wählen …</button>
       </div>
       <div class="hq-reset-row">
         <button class="tool-btn tool-btn-reset" id="hq-reset-btn" onclick="resetHearquizProgress()" title="Hörquiz-Fortschritt zurücksetzen"><i class="ti ti-refresh"></i> Lernstand zurücksetzen</button>
       </div>
     </details>
-    <div class="hq-info" id="hearquiz-info">
-      <div class="info-item">
-        <div class="info-num" id="hq-info-total">–</div>
-        <div class="info-label" id="hq-info-total-lbl">Wörter</div>
-      </div>
-      <div class="info-divider"></div>
-      <div class="info-item">
-        <div class="info-num" id="hq-info-open">–</div>
-        <div class="info-label">Offen</div>
-      </div>
-      <div class="info-divider"></div>
-      <div class="info-item">
-        <div class="info-num" id="hq-info-right">–</div>
-        <div class="info-label">Richtig</div>
-      </div>
-    </div>
-    <div id="hq-runde"></div>
+    <div class="hoer-fort" id="hq-fort"><div id="hq-runde"></div><div class="hoer-fort-bar" aria-hidden="true"><i class="ok"></i><i class="nok"></i></div><div class="hoer-fort-n"></div></div>
     <div id="hq-spiel">
     <div id="hearquiz-card" style="text-align:center; padding:14px 6px;">
-      <button class="tool-btn tool-btn-primary hq-play" id="hq-play-btn" onclick="speakHearquiz()" aria-label="Anhören" title="Anhören (Strg+Leertaste)"><i class="ti ti-volume"></i><span>Anhören</span></button>
-      <div class="hoertrainer-pause-control" style="justify-content:center; margin-top:10px;">
-        <span style="font-size:12px; color:var(--c-text-muted)">Tempo</span>
-        <input type="range" id="hearquiz-speed-range" aria-label="Vorlese-Tempo" min="6" max="11" step="1" value="9" oninput="updateHearquizSpeedLabel()" style="max-width:160px">
-        <span id="hearquiz-speed-value" style="font-size:12px; font-weight:600; color:var(--c-accent); min-width:34px; text-align:right">0,9×</span>
+      <div class="hoer-play-row">
+        <button class="tool-btn tool-btn-primary hq-play" id="hq-play-btn" onclick="speakHearquiz()" aria-label="Anhören" title="Anhören (Strg+Leertaste)"><i class="ti ti-volume"></i><span>Anhören</span></button>
+        <button class="tool-btn hoer-langsam" id="hq-slow-btn" type="button" onclick="speakHearquiz(0.5)" title="Langsam anhören (Strg+Umschalt+Leertaste)"><i class="ti ti-volume"></i> Langsam</button>
       </div>
     </div>
     <div id="hq-type-row">
@@ -3348,25 +3368,27 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
     <div id="hq-flip-row" style="display:none; text-align:center; padding:4px 6px 2px;">
       <div id="hq-flip-answer" class="hq-flip-answer"></div>
     </div>
-    <div class="conj-actions" id="hq-flip-actions" style="display:none">
-      <button class="tool-btn" onclick="rateHearquiz(true)"><i class="ti ti-check"></i> Gewusst</button>
-      <button class="tool-btn" onclick="rateHearquiz(false)"><i class="ti ti-x"></i> Nicht gewusst</button>
+    <div class="conj-result" id="hearquiz-result" role="status" aria-live="polite"></div>
+    <div class="hq-loesung" id="hq-loesung" style="display:none"></div>
+    <div class="hoer-rate" id="hq-flip-actions" style="display:none">
+      <button class="rate-btn rate-ok" onclick="rateHearquiz(true)" aria-keyshortcuts="1"><i class="ti ti-check"></i> Gewusst <kbd aria-hidden="true" class="gt-kbd">1</kbd></button>
+      <button class="rate-btn rate-nok" onclick="rateHearquiz(false)" aria-keyshortcuts="2"><i class="ti ti-x"></i> Nicht gewusst <kbd aria-hidden="true" class="gt-kbd">2</kbd></button>
     </div>
     <div style="text-align:center">
-      <button id="hq-undo-btn" style="display:none" onclick="undoHearquizRate()"
-        title="Letzte Bewertung zurücknehmen"><i class="ti ti-history"></i> Zurück</button>
+      <button id="hq-undo-btn" class="hoer-undo" style="display:none" onclick="undoHearquizRate()"
+        title="Letzte Bewertung zurücknehmen (Taste 4)"><i class="ti ti-history"></i> Bewertung zurücknehmen</button>
     </div>
     <div class="conj-actions gt-actions" id="hq-actions">
       <button class="tool-btn gt-primary" onclick="hearquizAction()" id="hq-check-btn"><i class="ti ti-check" id="hq-check-icon"></i> <span id="hq-check-label">Prüfen</span></button>
       <button class="tool-btn" id="hq-reveal-btn" onclick="revealHearquiz()" title="Lösung zeigen (Taste 3 im leeren Feld)"><i class="ti ti-eye"></i> Lösung zeigen</button>
     </div>
-    <div id="hq-selbst" style="display:none">
-      <span>Wusstest du es?</span>
-      <button class="tool-btn" onclick="rateHearquizType(true)"><i class="ti ti-check"></i> Gewusst</button>
-      <button class="tool-btn" onclick="rateHearquizType(false)"><i class="ti ti-x"></i> Nicht gewusst</button>
+    <div id="hq-selbst" class="hoer-selbst" style="display:none">
+      <span class="hoer-selbst-q">Wusstest du es?</span>
+      <div class="hoer-rate">
+        <button class="rate-btn rate-ok" onclick="rateHearquizType(true)" aria-keyshortcuts="1"><i class="ti ti-check"></i> Gewusst <kbd aria-hidden="true" class="gt-kbd">1</kbd></button>
+        <button class="rate-btn rate-nok" onclick="rateHearquizType(false)" aria-keyshortcuts="2"><i class="ti ti-x"></i> Nicht gewusst <kbd aria-hidden="true" class="gt-kbd">2</kbd></button>
+      </div>
     </div>
-    <div class="conj-result" id="hearquiz-result" role="status" aria-live="polite"></div>
-    <div class="hq-loesung" id="hq-loesung" style="display:none"></div>
     </div>
     <div id="hq-ende" style="display:none"></div>
     <div class="conj-result" id="hearquiz-score"></div>
@@ -3819,6 +3841,58 @@ html.runde-alle .gt-runde-beenden { display: flex !important; }
       </div>
       <div class="rkl-sprung" id="rektion-list-sprung" role="group" aria-label="Zum Fall springen"></div>
       <div id="rektion-list-body" class="rkl"></div>
+    </div>
+  </div>
+</div>
+<!-- Kategorien der Hörwerkzeuge (26.11.): die lange Liste steht im eigenen Fenster statt in den Einstellungen -->
+<div class="overlay" id="overlay-hoercats">
+  <div class="overlay-box overlay-box-wide">
+    <div class="overlay-header">
+      <span class="overlay-title" id="overlay-hoercats-title"><i class="ti ti-checkbox"></i> Kategorien · <span id="hoercats-tool">Hörquiz</span></span>
+      <button class="overlay-close" onclick="closeOverlay('overlay-hoercats')" aria-label="Schließen">×</button>
+    </div>
+    <div class="overlay-body">
+      <div data-hc="ht" hidden class="ht-cats">
+        <div class="ht-cats-head">
+          <strong>Kategorien</strong>
+          <span class="picker-quick">
+            <a href="#" onclick="setAllHoertrainerCatCheckboxes(true); return false">Alle</a>
+            <a href="#" onclick="setAllHoertrainerCatCheckboxes(false); return false">Keine</a>
+            <a href="#" onclick="takeHoertrainerCatsFromVocab(); return false" title="Die Kategorien der aktuellen Vokabelauswahl übernehmen">Aus Vokabeln übernehmen</a>
+          </span>
+        </div>
+        <div id="ht-chips"></div>
+        <input type="text" class="list-search" id="ht-cat-search" placeholder="Kategorie suchen…" autocomplete="off" aria-label="Kategorie suchen" oninput="filterHoertrainerCats()">
+        <div id="hoertrainer-cat-body"></div>
+      </div>
+      <div data-hc="hq" hidden class="ht-cats dict-cats">
+        <div class="ht-cats-head">
+          <strong>Kategorien</strong>
+          <span class="picker-quick">
+            <a href="#" onclick="setHearquizCats('alle'); return false">Alle</a>
+            <a href="#" onclick="setHearquizCats('keine'); return false">Keine</a>
+            <a href="#" onclick="setHearquizCats('vokabeln'); return false" title="Die Kategorien der aktuellen Vokabelauswahl übernehmen">Aus Vokabeln übernehmen</a>
+          </span>
+          <span class="dict-cat-hint">keine gewählt = alle</span>
+        </div>
+        <div id="hq-chips"></div>
+        <input type="text" class="list-search" id="hq-cat-search" placeholder="Kategorie suchen…" autocomplete="off" aria-label="Kategorie suchen" oninput="applyCatPickerFilter(document.getElementById('hearquiz-cat-body'), this.value.trim().toLowerCase())">
+        <div id="hearquiz-cat-body"></div>
+      </div>
+      <div data-hc="dict" hidden class="ht-cats dict-cats">
+        <div class="ht-cats-head">
+          <strong>Kategorien</strong>
+          <span class="picker-quick">
+            <a href="#" onclick="setDictCats('alle'); return false">Alle</a>
+            <a href="#" onclick="setDictCats('keine'); return false">Keine</a>
+            <a href="#" onclick="setDictCats('vokabeln'); return false">Aus Vokabeln übernehmen</a>
+          </span>
+          <span class="dict-cat-hint">keine gewählt = alle</span>
+        </div>
+        <input type="text" class="list-search" id="dict-cat-search" placeholder="Kategorie suchen…" autocomplete="off" aria-label="Kategorie suchen" oninput="applyCatPickerFilter(document.getElementById('dict-cat-body'), this.value.trim().toLowerCase())">
+        <div id="dict-cat-body"></div>
+      </div>
+      <div class="picker-actions"><button class="primary" type="button" onclick="closeOverlay('overlay-hoercats')">Fertig</button></div>
     </div>
   </div>
 </div>
@@ -32412,6 +32486,7 @@ function loadDictOpts() {
 }
 function saveDictOpts() { try { localStorage.setItem(DICT_OPTS_KEY, JSON.stringify(dictOpts)); } catch (e) {} }
 function markDictOpts() {
+  if (typeof hcSumAktualisieren === 'function') hcSumAktualisieren();
   document.querySelectorAll('#dict-level-switch .mode-btn').forEach(b => b.classList.toggle('active', b.dataset.l === dictOpts.level));
   const g = document.getElementById('dict-gelernt'); if (g) g.checked = dictOpts.gelernt;
   const t = document.getElementById('dict-texte'); if (t) t.checked = dictOpts.texte;
@@ -32512,6 +32587,7 @@ function dictZeigeSatz() {
   hint.dataset.shown = '0';
   hint.innerHTML = '<span class="case-hint">Hör zu und schreibe den Satz auf.</span> ' + lvlBadge(dictState.current.lvl);
   document.getElementById('dictation-runde').textContent = 'Satz ' + (dictState.idx + 1) + ' von ' + dictState.runde.length;
+  hoerFortschritt('dictation-fort', dictState.runde.length, dictState.richtig, dictState.idx - dictState.richtig);
   dictZeigeWoerter();
   ['dictation-diff', 'dictation-loesung', 'dictation-selbst'].forEach(id => { document.getElementById(id).style.display = 'none'; });
   document.getElementById('dictation-result').textContent = '';
@@ -32604,6 +32680,7 @@ function dictWerte(ok) {
   if (ok) { dictState.correct++; dictState.richtig++; }
   else if (!dictState.fehler.some(f => f.item === dictState.current)) dictState.fehler.push({ item: dictState.current });
   document.getElementById('dictation-score').textContent = dictState.correct + ' von ' + dictState.done + ' richtig';
+  hoerFortschritt('dictation-fort', dictState.runde.length, dictState.richtig, dictState.idx + 1 - dictState.richtig);
 }
 
 function checkDictation() {
@@ -32896,6 +32973,7 @@ function onHoertrainerCatsChanged() {
   updateHoertrainerCatCount();
 }
 function renderHoertrainerChips() {
+  if (typeof hcSumAktualisieren === 'function') hcSumAktualisieren();
   const box = document.getElementById('ht-chips');
   if (!box) return;
   box.innerHTML = '';
@@ -33038,6 +33116,7 @@ function htZeigeWort(word, bisSchritt) {
   const cat = htState.catOf.get(word.ru);
   document.getElementById('hoertrainer-meta').innerHTML = (cat ? '<span>' + escapeHtmlText(cat) + '</span>' : '') + lvlBadge(wordLevel(word));
   document.getElementById('hoertrainer-progress').textContent = 'Wort ' + (htState.index + 1) + ' von ' + htState.queue.length;
+  hoerFortschritt('hoertrainer-fort', htState.queue.length, htState.index + 1, 0);
 }
 function escapeHtmlText(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
@@ -33246,6 +33325,40 @@ function buildHearquizPool() {
   if (hqState.level) { const max = levelIdx(hqState.level); return pool.filter(w => levelIdx(wordLevel(w)) <= max); }
   return filterLevelOrAll(pool, wordLevel);
 }
+// ── Hörwerkzeuge, Design 26.11. ──
+// Kategorien im eigenen Fenster (overlay-hoercats, je Werkzeug ein Block data-hc), in den Einstellungen nur eine Zeile
+const HOER_CAT_TOOLS = { ht: 'Hörtrainer', hq: 'Hörquiz', dict: 'Satzdiktat' };
+function hcAuswahl(t) {
+  const sel = t === 'ht' ? [...htState.selectedCats] : t === 'hq' ? [...hqState.selectedCats] : (dictOpts.cats || []).slice();
+  return sel.filter(c => vocab[c]);
+}
+function hcSumAktualisieren() {
+  Object.keys(HOER_CAT_TOOLS).forEach(t => {
+    const el = document.getElementById(t + '-hc-sum'); if (!el) return;
+    const cats = hcAuswahl(t);
+    el.textContent = !cats.length ? (t === 'ht' ? 'keine gewählt' : 'alle')
+      : cats.length <= 3 ? cats.join(', ') : cats.slice(0, 3).join(', ') + ' + ' + (cats.length - 3) + ' weitere';
+    el.title = cats.join(', ');
+  });
+}
+function openHoerCats(t) {
+  if (!HOER_CAT_TOOLS[t]) return;
+  if (t === 'hq') renderHearquizCats(); else if (t === 'dict') renderDictCats();
+  document.querySelectorAll('#overlay-hoercats [data-hc]').forEach(b => { b.hidden = b.dataset.hc !== t; });
+  document.getElementById('hoercats-tool').textContent = HOER_CAT_TOOLS[t];
+  document.getElementById('overlay-hoercats').classList.add('open');
+  const q = document.querySelector('#overlay-hoercats [data-hc="' + t + '"] .list-search');
+  if (q && window.matchMedia('(hover: hover)').matches) setTimeout(() => q.focus(), 0);
+}
+// Fortschritt einer Runde: Text bleibt im ersten Feld (z. B. „Wort 3 von 15“), dazu Balken und „2 richtig · 1 falsch“
+function hoerFortschritt(id, n, ok, falsch) {
+  const box = document.getElementById(id); if (!box) return;
+  const bar = box.querySelectorAll('.hoer-fort-bar i'), zahl = box.querySelector('.hoer-fort-n');
+  const p = x => (n ? Math.min(100, x / n * 100) : 0) + '%';
+  if (bar[0]) bar[0].style.width = p(ok || 0);
+  if (bar[1]) bar[1].style.width = p(falsch || 0);
+  if (zahl) zahl.textContent = (ok == null || !(ok + (falsch || 0))) ? '' : ok + ' richtig' + (falsch ? ' · ' + falsch + ' falsch' : '');
+}
 // Kategorien: dieselbe Auswahl wie Hörtrainer/Diktat, gilt sofort
 function renderHearquizCats() {
   const body = document.getElementById('hearquiz-cat-body'); if (!body) return;
@@ -33257,6 +33370,7 @@ function renderHearquizCats() {
   renderHearquizChips();
 }
 function renderHearquizChips() {
+  hcSumAktualisieren();
   const box = document.getElementById('hq-chips'); if (!box) return;
   box.innerHTML = '';
   [...document.querySelectorAll('#hearquiz-cat-body input[data-cat]:checked')].forEach(cb => {
@@ -33329,6 +33443,7 @@ function hqZeigeWort(w, stumm) {
   document.getElementById('hq-spiel').style.display = '';
   document.getElementById('hq-ende').style.display = 'none';
   document.getElementById('hq-runde').textContent = 'Wort ' + (hqState.idx + 1) + ' von ' + hqState.runde.length;
+  hoerFortschritt('hq-fort', hqState.runde.length, hqState.richtig, hqState.idx - hqState.richtig);
   const typeMode = hqState.mode === 'type', flipMode = hqState.mode === 'flip';
   document.getElementById('hq-type-row').style.display = typeMode ? '' : 'none';
   document.getElementById('hq-choice-row').style.display = hqState.mode === 'choice' ? '' : 'none';
@@ -33390,6 +33505,7 @@ function hqWerte(ok) {
   progressMark(hearquizSrsKey(), w.ru, ok);
   updateHearquizInfo();
   document.getElementById('hearquiz-score').textContent = hqState.correct + ' von ' + hqState.done + ' richtig';
+  hoerFortschritt('hq-fort', hqState.runde.length, hqState.richtig, hqState.idx + 1 - hqState.richtig);
 }
 // Nach der Antwort: Wort groß mit Umschrift, Übersetzung, Stufe und Beispielsatz
 function hqZeigeLoesung(ohneWort) {
@@ -33398,13 +33514,13 @@ function hqZeigeLoesung(ohneWort) {
   const satz = typeof getWordSentence === 'function' ? getWordSentence(w) : null;
   let h = '';
   if (!ohneWort) {
-    h += '<div class="dl-ru" lang="ru">' + esc(w.ru) + ' ' + lvlBadge(wordLevel(w)) + '</div>';
+    h += '<div class="dl-ru"><span lang="ru">' + esc(w.ru) + '</span> ' + lvlBadge(wordLevel(w)) + '</div>';
     if (showTranscription && w.tr) h += '<div class="dl-tr">' + esc(trFor(w)) + '</div>';
     h += '<div class="dl-de">' + esc(getDeDisplay(w)) + '</div>';
   }
   if (satz && satz.ru) h += '<div class="dl-satz" lang="ru">' + esc(satz.ru) + '</div><div class="dl-satz-de">' + esc(satz.de || '') + '</div>';
-  if (AUDIO_SUPPORTED) h += '<div class="dl-knoepfe"><button class="tool-btn" type="button" onclick="speakHearquiz()"><i class="ti ti-volume"></i> Anhören</button>'
-    + (satz && satz.ru ? '<button class="tool-btn" type="button" onclick="hqSatzAnhoeren()"><i class="ti ti-volume"></i> Satz anhören</button>' : '') + '</div>';
+  // ein Knopf für den Satz – das Wort hört man mit dem großen Knopf oben (26.11.)
+  if (AUDIO_SUPPORTED && satz && satz.ru) h += '<div class="dl-knoepfe"><button class="tool-btn" type="button" onclick="hqSatzAnhoeren()"><i class="ti ti-volume"></i> Satz anhören</button></div>';
   const el = document.getElementById('hq-loesung');
   el.innerHTML = h; el.style.display = h ? '' : 'none';
 }
@@ -33476,15 +33592,11 @@ function revealHearquizFlip() {
   hqState.revealed = true;
   const esc = t => htmlEsc(t);
   const zeilen = [];
-  if (hqState.lang === 'ru') {
-    zeilen.push('<span>' + esc(w.ru) + '</span>');
-    if (showTranscription && w.tr) zeilen.push('<span class="hq-flip-tr">' + esc(trFor(w)) + '</span>');
-    zeilen.push('<span class="hq-flip-sub">' + esc(getDeDisplay(w)) + ' ' + lvlBadge(wordLevel(w)) + '</span>');
-  } else {
-    zeilen.push('<span>' + esc(getDeDisplay(w)) + '</span>');
-    zeilen.push('<span class="hq-flip-sub">' + esc(w.ru) + ' ' + lvlBadge(wordLevel(w)) + '</span>');
-    if (showTranscription && w.tr) zeilen.push('<span class="hq-flip-tr">' + esc(trFor(w)) + '</span>');
-  }
+  // 26.11.: das gehörte russische Wort groß (russische Schrift) mit Stufe, Umschrift, darunter die Übersetzung –
+  // gleich für beide Antwortsprachen
+  zeilen.push('<span class="hq-flip-ru"><span lang="ru">' + esc(w.ru) + '</span> ' + lvlBadge(wordLevel(w)) + '</span>');
+  if (showTranscription && w.tr) zeilen.push('<span class="hq-flip-tr">' + esc(trFor(w)) + '</span>');
+  zeilen.push('<span class="hq-flip-de">' + esc(getDeDisplay(w)) + '</span>');
   document.getElementById('hq-flip-answer').innerHTML = zeilen.join('');
   document.getElementById('hq-actions').style.display = 'none';
   document.getElementById('hq-flip-actions').style.display = '';

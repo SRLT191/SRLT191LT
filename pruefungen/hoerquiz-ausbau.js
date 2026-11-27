@@ -29,13 +29,17 @@ const { chromium } = require('playwright');
     const ok = Math.max(...kinder) - Math.min(...kinder) < 4 && document.getElementById('hq-lang-ru').textContent === 'Russisch' && /Antwort/.test(tb.textContent) && !/Runde/.test(tb.textContent) && !document.getElementById('overlay-hq-session');
     return { ok, info: kinder.join(',') };
   }));
-  await check('Einstellungen: Kategorienauswahl mit Gruppen, Suche, Zurücksetzen; gilt ohne „Übernehmen“', () => ev(() => {
+  await check('Einstellungen: Kategorien im eigenen Fenster (26.11.) mit Gruppen, Suche; gilt ohne „Übernehmen“, Zeile in den Einstellungen nennt die Auswahl', () => ev(() => {
     const d = document.getElementById('hq-optionen'); d.open = true;
-    const grp = d.querySelectorAll('#hearquiz-cat-body .cat-group-title').length;
-    const cb = d.querySelector('#hearquiz-cat-body input[data-cat="Tiere"]'); cb.click();
-    const ok = grp > 2 && !!document.getElementById('hq-cat-search') && !!d.querySelector('#hq-reset-btn') && !/Übernehmen/.test(document.getElementById('listening-hearquiz').textContent)
-      && hqState.selectedCats.has('Tiere') && hqState.runde.every(w => getAllWordsOfCat('Tiere').some(x => x.ru === w.ru)) && document.querySelectorAll('#hq-chips .ht-chip').length === 1;
-    setHearquizCats('keine'); d.open = false;
+    const zeile = d.querySelector('#hq-hc-btn') && !d.querySelector('#hearquiz-cat-body');
+    openHoerCats('hq');
+    const dlg = document.getElementById('overlay-hoercats'), offen = dlg.classList.contains('open') && !dlg.querySelector('[data-hc="hq"]').hidden && dlg.querySelector('[data-hc="ht"]').hidden;
+    const grp = dlg.querySelectorAll('#hearquiz-cat-body .cat-group-title').length;
+    const cb = dlg.querySelector('#hearquiz-cat-body input[data-cat="Tiere"]'); cb.click();
+    const ok = zeile && offen && grp > 2 && !!document.getElementById('hq-cat-search') && !!d.querySelector('#hq-reset-btn') && !/Übernehmen/.test(dlg.textContent)
+      && hqState.selectedCats.has('Tiere') && hqState.runde.every(w => getAllWordsOfCat('Tiere').some(x => x.ru === w.ru)) && document.querySelectorAll('#hq-chips .ht-chip').length === 1
+      && document.getElementById('hq-hc-sum').textContent === 'Tiere';
+    closeOverlay('overlay-hoercats'); setHearquizCats('keine'); d.open = false;
     return { ok, info: grp + ' Gruppen, ' + hqState.pool.length + ' Wörter' };
   }));
   await check('Stufe A1 im Panel: nur A1-Wörter, gemerkt, Kennzahl „Wörter bis A1“', () => ev(() => {
@@ -46,12 +50,12 @@ const { chromium } = require('playwright');
     const n = hqState.pool.length; setHearquizLevel('');
     return { ok: ok && hqState.pool.length > n, info: n + ' Wörter, zu schwer ' + bad };
   }));
-  await check('Tippen richtig: Lösung groß mit Übersetzung, Stufe, Beispielsatz und Anhören', () => ev(() => {
+  await check('Tippen richtig: Lösung groß mit Übersetzung, Stufe, Beispielsatz und „Satz anhören“ (Wort nur über den großen Knopf)', () => ev(() => {
     restartHearquiz(true); const w = hqState.current;
     document.getElementById('hq-input').value = w.ru; checkHearquiz();
     const l = document.getElementById('hq-loesung');
     const s = getWordSentence(w);
-    return { ok: l.style.display !== 'none' && l.querySelector('.dl-ru').textContent.includes(w.ru) && !!l.querySelector('.lvl-badge') && (!s || l.textContent.includes(s.ru)) && /Anhören/.test(l.textContent)
+    return { ok: l.style.display !== 'none' && l.querySelector('.dl-ru').textContent.includes(w.ru) && !!l.querySelector('.lvl-badge') && (!s || (l.textContent.includes(s.ru) && /Satz anhören/.test(l.textContent))) && l.querySelectorAll('button').length <= 1
       && hqState.richtig === 1 && document.getElementById('hq-info-right').textContent === hqState.correct + '/' + hqState.done, info: l.textContent.slice(0, 80) };
   }));
   await check('Lösung zeigen → Selbstbewertung; „Gewusst“ zählt und geht weiter', () => ev(() => {
